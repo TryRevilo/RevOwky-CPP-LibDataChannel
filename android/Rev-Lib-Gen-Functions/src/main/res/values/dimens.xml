@@ -1,0 +1,54 @@
+<resources>
+
+    <dimen name="rev_size_5">5dp</dimen>
+    <dimen name="rev_size_10">10dp</dimen>
+    <dimen name="rev_button_H_size_small">22dp</dimen>
+
+    <!-- Default font sizes, per the Android Design guidelines. -->
+    <dimen name="font_size_extra_small">10sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
+    <dimen name="font_size_medium">17sp</dimen>
+    <dimen name="font_size_large">22sp</dimen>
+
+    <!-- REV TEXT SIZE -->
+    <dimen name="rev_font_size_extra_small">10dp</dimen>
+    <dimen name="rev_font_size_small">15dp</dimen>
+    <dimen name="rev_font_size_medium">20dp</dimen>
+    <dimen name="rev_font_size_large">30dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="rev_activity_margin_tiny">1dp</dimen>
+    <dimen name="rev_activity_margin_extra_small">4dp</dimen>
+    <dimen name="rev_activity_margin_small">8dp</dimen>
+    <dimen name="rev_activity_margin_medium">16dp</dimen>
+    <dimen name="rev_activity_margin_large">32dp</dimen>
+
+    <dimen name="activity_vertical_margin_small">11dp</dimen>
+    <dimen name="activity_vertical_margin_top">67dp</dimen>
+
+    <!-- REV PADDINGS -->
+
+    <dimen name="padding_extra_small">2dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">22dp</dimen>
+
+    <dimen name="rev_footer_toggler_tabs_padding_h">20dp</dimen>
+    <dimen name="rev_footer_toggler_tabs_padding_v">12dp</dimen>
+
+    <!-- START REV CUST -->
+
+    <dimen name="rev_core_views_image_size_extra_small">8dp</dimen>
+    <dimen name="rev_core_views_image_size_small">16dp</dimen>
+    <dimen name="rev_core_views__image_size_mid">32dp</dimen>
+    <dimen name="rev_core_views__image_size_large">64dp</dimen>
+
+    <!-- END REV CUST FONT -->
+
+</resources>

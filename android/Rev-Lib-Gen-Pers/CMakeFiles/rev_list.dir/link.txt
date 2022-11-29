@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -m64 -O3 -DNDEBUG -m64 -shared -Wl,-soname,librev_list.so -o librev_list.so CMakeFiles/rev_list.dir/libs/rev_list/rev_linked_list.c.o 
