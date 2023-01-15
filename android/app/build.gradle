@@ -264,6 +264,7 @@ dependencies {
 
     implementation project(path: ':Rev-Lib-Gen-Pers')
     implementation project(path: ':Rev-Lib-WebRTC')
+    implementation project(path: ':Rev-Lib-Gen-Functions')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
@@ -286,6 +287,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation project(':react-native-fs')
+
+    implementation project(':react-native-contacts')
 
     implementation project(':react-native-fs')
 }

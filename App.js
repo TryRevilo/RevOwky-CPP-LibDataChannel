@@ -8,38 +8,21 @@
 
 import React from 'react';
 
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  TextInput,
-} from 'react-native';
+import {RevRemoteSocketContextProvider} from './rev_contexts/RevRemoteSocketContext';
+import {RevSiteDataContextProvider} from './rev_contexts/RevSiteDataContext';
+import {ReViewsContextProvider} from './rev_contexts/ReViewsContext';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import RevWalledGarden from './components/rev_views/RevWalledGarden';
 
-import {RemoteSocketContextProvider} from './rev_function_libs/rev_server_lib';
-import {SocketContextProvider} from './rev_function_libs/Context';
-
-import SiteContainer from './components/SiteContainer';
-
-const App: () => Node = () => {
+const App = () => {
   return (
-    <RemoteSocketContextProvider>
-      <SocketContextProvider>
-        <SiteContainer />
-      </SocketContextProvider>
-    </RemoteSocketContextProvider>
+    <RevRemoteSocketContextProvider>
+      <RevSiteDataContextProvider>
+        <ReViewsContextProvider>
+          <RevWalledGarden />
+        </ReViewsContextProvider>
+      </RevSiteDataContextProvider>
+    </RevRemoteSocketContextProvider>
   );
 };
 

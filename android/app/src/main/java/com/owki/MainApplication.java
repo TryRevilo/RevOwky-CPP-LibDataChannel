@@ -11,10 +11,14 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.owki.newarchitecture.MainApplicationReactNativeHost;
-import com.owki.rev_react_modules.MyAppPackage;
+import com.owki.rev_react_modules.RevGenFunctionLibs;
+import com.owki.rev_react_modules.RevPersistencePackages;
+import com.owki.rev_react_modules.RevWebRTCPackages;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import com.rnfs.RNFSPackage;  // <--- import
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -27,10 +31,12 @@ public class MainApplication extends Application implements ReactApplication {
 
                 @Override
                 protected List<ReactPackage> getPackages() {
-                    @SuppressWarnings("UnnecessaryLocalVariable")
                     List<ReactPackage> packages = new PackageList(this).getPackages();
 
-                    packages.add(new MyAppPackage());
+                    packages.add(new RevWebRTCPackages());
+                    packages.add(new RevPersistencePackages());
+                    packages.add(new RevGenFunctionLibs());
+                    // packages.add(new RNFSPackage());
 
                     return packages;
                 }

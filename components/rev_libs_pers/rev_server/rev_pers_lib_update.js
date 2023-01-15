@@ -1,0 +1,180 @@
+/** START REV ENTITY UPDATE */
+
+export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
+  let revEntityGUID = revEntityOriginal._remoteRevEntityGUID;
+
+  let revWalkRevEntityMetadata = (
+    revEntityUpdateMetadataArr,
+    revOriginalMetatadataArr,
+  ) => {
+    let revEntityNewMetaDataArr = [];
+    let revEntityUpdateMetaDataArr = [];
+    let revEntityDeleteMetadataArr = [];
+
+    /** REV START DELETE SAVED DUPLICATES */
+    let revSavedMetadataDuplicatesArr = window.revGetDuplicateMetadataArr(
+      revOriginalMetatadataArr,
+    );
+
+    for (let i = 0; i < revSavedMetadataDuplicatesArr.length; i++) {
+      let revCurrDuplicateMetadata = revSavedMetadataDuplicatesArr[i];
+
+      /** REV START GET LAST ONES ADDED */
+      for (let t = 0; t < revSavedMetadataDuplicatesArr.length; t++) {
+        if (
+          revCurrDuplicateMetadata.remoteRevMetadataId ==
+          revSavedMetadataDuplicatesArr[t].remoteRevMetadataId
+        ) {
+          continue;
+        }
+
+        let revIsDuplicate = window.revIsDuplicateMetadata(
+          revSavedMetadataDuplicatesArr,
+          revCurrDuplicateMetadata,
+        );
+
+        if (revIsDuplicate === false) {
+          continue;
+        }
+
+        let revCurrDuplicateMetadataDate = Number(
+          revCurrDuplicateMetadata._revPublishedDate,
+        );
+        let revSavedMetadataDuplicateDate = Number(
+          revSavedMetadataDuplicatesArr[t]._revPublishedDate,
+        );
+
+        if (
+          revCurrDuplicateMetadataDate &&
+          revCurrDuplicateMetadataDate <= revSavedMetadataDuplicateDate
+        ) {
+          continue;
+        }
+
+        revEntityDeleteMetadataArr.push(revCurrDuplicateMetadata);
+      }
+
+      /** REV END GET LAST ONES ADDED */
+    }
+
+    /** REV START DELETE SAVED DUPLICATES */
+
+    for (let i = 0; i < revEntityUpdateMetadataArr.length; i++) {
+      let revUpdateMetadata = revEntityUpdateMetadataArr[i];
+
+      let revMetadataName = revUpdateMetadata._revMetadataName;
+
+      let revUpdateMetadataValue = revUpdateMetadata._metadataValue;
+      let revOriginalMetadataValue = window.revGetMetadataValue(
+        revOriginalMetatadataArr,
+        revMetadataName,
+      );
+
+      if (!revOriginalMetadataValue || !revUpdateMetadata._revIsUnique) {
+        let revIsInOriginalMetadataList = window.revArrIncludesElement(
+          window.revGetMetadataValuesArr(
+            revOriginalMetatadataArr,
+            revMetadataName,
+          ),
+          revUpdateMetadata._metadataValue,
+        );
+        let revIsUpdateDuplicateVal = window.revIsDuplicateMetadata(
+          revEntityUpdateMetaDataArr,
+          revUpdateMetadata,
+        );
+
+        if (!revIsInOriginalMetadataList && !revIsUpdateDuplicateVal) {
+          revUpdateMetadata['revEntityGUID'] = revEntityGUID;
+
+          revEntityNewMetaDataArr.push(revUpdateMetadata);
+        }
+      } else if (
+        revOriginalMetadataValue &&
+        revOriginalMetadataValue.localeCompare(revUpdateMetadataValue) !== 0
+      ) {
+        let remoteRevMetadataId = window.revGetRemoteMetadataId(
+          revOriginalMetatadataArr,
+          revMetadataName,
+        );
+
+        if (remoteRevMetadataId && remoteRevMetadataId > 0) {
+          revUpdateMetadata.remoteRevMetadataId = remoteRevMetadataId;
+          revEntityUpdateMetaDataArr.push(revUpdateMetadata);
+        }
+      }
+
+      for (let i = 0; i < revOriginalMetatadataArr.length; i++) {
+        let revOriginalMetatadata = revOriginalMetatadataArr[i];
+
+        if (revUpdateMetadata._revIsUnique) {
+          let revDeleteMetadataValue = window.revGetMetadataValue(
+            revEntityUpdateMetadataArr,
+            revOriginalMetatadata._revMetadataName,
+          );
+
+          if (!revDeleteMetadataValue) {
+            revEntityDeleteMetadataArr.push(revOriginalMetatadata);
+          }
+        } else {
+          let revUpdateMetadataValuesArr = window.revGetMetadataValuesArr(
+            revEntityUpdateMetadataArr,
+            revOriginalMetatadata._revMetadataName,
+          );
+
+          if (
+            !window.revArrIncludesElement(
+              revUpdateMetadataValuesArr,
+              revOriginalMetatadata._metadataValue,
+            )
+          ) {
+            revEntityDeleteMetadataArr.push(revOriginalMetatadata);
+          }
+        }
+      }
+
+      /** REV START REMOVE DUPLICATES */
+      let revMetadataDuplicatesArr = window.revGetDuplicateMetadataArr(
+        revEntityUpdateMetadataArr,
+      );
+      revMetadataDuplicatesArr = revMetadataDuplicatesArr.concat(
+        window.revGetDuplicateMetadataArr(revEntityUpdateMetadataArr),
+      );
+
+      for (let dup = 0; dup < revMetadataDuplicatesArr.length; dup++) {
+        let revMetadata = revMetadataDuplicatesArr[dup];
+
+        if (revMetadata.remoteRevMetadataId < 1) {
+          continue;
+        }
+
+        /** REV START GET LAST ONES ADDED */
+        for (let i = 0; i < revMetadataDuplicatesArr.length; i++) {
+          if (
+            revMetadata._revPublishedDate &&
+            revMetadata._revPublishedDate <
+              revMetadataDuplicatesArr[i]._revTimePublished
+          ) {
+            continue;
+          }
+
+          revEntityDeleteMetadataArr.push(revMetadata);
+        }
+        /** REV END GET LAST ONES ADDED */
+      }
+      /** REV END REMOVE DUPLICATES */
+    }
+
+    return {
+      revEntityNewMetaDataArr: revEntityNewMetaDataArr,
+      revEntityUpdateMetaDataArr: revEntityUpdateMetaDataArr,
+      revEntityDeleteMetadataArr: revEntityDeleteMetadataArr,
+    };
+  };
+
+  return revWalkRevEntityMetadata(
+    revEntityUpdate._revEntityMetadataList,
+    revEntityOriginal._revEntityMetadataList,
+  );
+};
+
+/** END REV ENTITY UPDATE */

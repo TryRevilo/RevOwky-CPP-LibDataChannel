@@ -1,0 +1,9 @@
+{
+    "version": 4,
+    "vendor": {
+        "conan": {}
+    },
+    "include": [
+        "/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/cmake-build-release/CMakePresets.json"
+    ]
+}

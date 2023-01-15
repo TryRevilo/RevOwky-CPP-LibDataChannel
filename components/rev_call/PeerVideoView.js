@@ -2,29 +2,13 @@ import React, {createContext, useContext, useState, useEffect} from 'react';
 
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-import {SocketContext} from '../../rev_function_libs/Context';
-
-import {RemoteSocketContext} from '../../rev_function_libs/rev_server_lib';
+import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 
 export default function PeerVideoView({revId, revPeerStream}) {
-  const {
-    me,
-    name,
-    callAccepted,
-    myVideo,
-    callEnded,
-    stream,
-    call,
-    initiateVideoCall,
-    endVideoCall,
-  } = useContext(SocketContext);
-
-  const {peerStream} = useContext(RemoteSocketContext);
+  const {peerStream} = useContext(RevRemoteSocketContext);
 
   if (peerStream) {
-    return (
-      <TouchableOpacity></TouchableOpacity>
-    );
+    return <TouchableOpacity></TouchableOpacity>;
   }
 
   return (

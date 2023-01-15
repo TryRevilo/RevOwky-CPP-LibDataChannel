@@ -10,12 +10,18 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@loadable/component": "^5.15.2",
     "events": "^3.3.0",
+    "expo-modules-core": "^1.0.3",
     "lorem-ipsum": "^2.0.8",
     "randomstring": "^1.2.2",
     "react": "18.1.0",
+    "react-loadable": "^5.5.0",
     "react-native": "0.70.5",
+    "react-native-contacts": "^7.0.5",
     "react-native-document-picker": "^8.1.2",
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-modal": "^13.0.1",
     "react-native-vector-icons": "^9.2.0",
