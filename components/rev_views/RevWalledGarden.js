@@ -20,52 +20,66 @@ import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {revGetSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
-import {RevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
+import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
+
+import {revIsEmptyVar} from '../../rev_function_libs/rev_gen_helper_functions';
 
 import RevSiteContainer from './RevSiteContainer';
 
-const {
-  RevPersLibCreate_React,
-  RevWebRTCReactModule,
-  RevPersLibRead_React,
-  RevGenLibs_Server_React,
-} = NativeModules;
-
-function isEmpty(obj) {
-  for (var prop in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-      return false;
-    }
-  }
-
-  return (
-    JSON.stringify(obj) === JSON.stringify({}) ||
-    JSON.stringify(obj) == null ||
-    JSON.stringify(obj) == 'null'
-  );
-}
+const {RevPersLibCreate_React, RevWebRTCReactModule} = NativeModules;
 
 const RevWalledGarden = () => {
   const {
     REV_LOGGED_IN_ENTITY_GUID,
     SET_REV_LOGGED_IN_ENTITY_GUID,
     REV_LOGGED_IN_ENTITY,
-    SET_REV_LOGGED_IN_ENTITY,
   } = useContext(RevSiteDataContext);
 
   const {REV_IP} = useContext(RevRemoteSocketContext);
+  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   const [RevLogInForm, setRevLogInForm] = useState(null);
 
   DeviceEventEmitter.addListener('rev_c_sever_ping', event => {
     console.log('>>> Event - rev_c_sever_ping : ' + event.eventProperty);
 
-    let revInitWSStatus = RevWebRTCReactModule.revInitWS(
-      REV_IP,
-      REV_LOGGED_IN_ENTITY_GUID.toString(),
-    );
+    let revPingStatus = event.eventProperty;
 
-    console.log('>>> revInitWSStatus ' + revInitWSStatus);
+    if (revPingStatus > 0) {
+      let revInitWSStatus = RevWebRTCReactModule.revInitWS(
+        REV_IP,
+        REV_LOGGED_IN_ENTITY_GUID.toString(),
+      );
+
+      console.log('>>> revInitWSStatus ' + revInitWSStatus);
+    }
+  });
+
+  DeviceEventEmitter.addListener('rev_curl_file_uoad_retdata', event => {
+    let revRetDataStr = event.eventProperty;
+
+    if (revIsEmptyVar(revRetDataStr)) {
+      return;
+    }
+
+    try {
+      let revRetData = JSON.parse(revRetDataStr);
+
+      if (!revRetData.hasOwnProperty('revFilterSuccess')) {
+        console.log('>>> revRetDataStr ' + revRetDataStr);
+        return;
+      }
+
+      let revFilterSuccess = revRetData.revFilterSuccess;
+      let revFilterFail = revRetData.revFilterFail;
+
+      for (let i = 0; i < revFilterSuccess.length; i++) {
+        let revCurrFile = revFilterSuccess[i];
+        console.log('>>> FILE : ' + revCurrFile);
+      }
+    } catch (error) {
+      console.log('>>> ' + error);
+    }
   });
 
   let revLoggedInState = 0;
@@ -77,7 +91,7 @@ const RevWalledGarden = () => {
       return;
     }
 
-    if (REV_LOGGED_IN_ENTITY_GUID > 0 && !isEmpty(REV_LOGGED_IN_ENTITY)) {
+    if (REV_LOGGED_IN_ENTITY_GUID > 0 && !revIsEmptyVar(REV_LOGGED_IN_ENTITY)) {
       console.log(
         '>>> Event - revWebServerConnected - STR ' + event.eventProperty,
       );
@@ -117,9 +131,9 @@ const RevWalledGarden = () => {
     let revDbPath = RNFS.DownloadDirectoryPath;
     let dbLong = RevPersLibCreate_React.revPersInitReact(revDbPath);
 
-    let revSiteEntity = revGetSiteEntity();
+    let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
 
-    if (revSiteEntity && !isEmpty(revSiteEntity)) {
+    if (!revIsEmptyVar(revSiteEntity)) {
       SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntity._revEntityOwnerGUID);
     }
 
@@ -132,10 +146,13 @@ const RevWalledGarden = () => {
     setRevLogInForm(RevView);
   }, []);
 
+  revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+    console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
+  });
+
   const RevWalledGarden = () => {
     return (
       <View style={[styles.revFlexContainer, styles.revlogInContainer]}>
-        {RevPersSyncDataComponent()}
         <View style={[styles.revFlexContainer, styles.revHeaderContainer]}>
           <View style={[styles.revFlexWrapper, styles.revSiteLogoWrapper]}>
             <Text style={[styles.revSiteTxtColor, styles.revSiteLogoTxt]}>

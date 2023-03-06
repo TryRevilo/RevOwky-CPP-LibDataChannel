@@ -1,3 +1,13 @@
+import React, {useContext, useRef, useEffect} from 'react';
+
+import {NativeModules} from 'react-native';
+
+import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
+import {revPostServerData} from './rev_pers_lib_create';
+
+const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
+
+import {REV_UPDATE_METADATA_ARR_URL} from './rev_pers_urls';
 /** START REV ENTITY UPDATE */
 
 export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
@@ -178,3 +188,19 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
 };
 
 /** END REV ENTITY UPDATE */
+
+export const useRev_Server_UpdateMetadata = () => {
+  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
+  const rev_Server_UpdateMetadata = (revMetadataArr, revCallBack) => {
+    revPostServerData(
+      `${REV_ROOT_URL}${REV_UPDATE_METADATA_ARR_URL}`,
+      revMetadataArr,
+      revRetData => {
+        revCallBack(revRetData);
+      },
+    );
+  };
+
+  return {rev_Server_UpdateMetadata};
+};

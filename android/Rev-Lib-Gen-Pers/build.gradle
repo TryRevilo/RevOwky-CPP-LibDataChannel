@@ -2,9 +2,12 @@ plugins {
     id 'com.android.library'
 }
 
+ext {
+    REV_NDK_ROOT = "/home/rev/Downloads/rev_data/rev_progs/rev_android_studio/rev_ndk/android-ndk-r25-linux/android-ndk-r25"
+}
+
 android {
     compileSdk rootProject.ext.compileSdkVersion
-    // android.ndkPath "/home/rev/Downloads/rev_data/rev_progs/rev_android_studio/rev_ndk/android-ndk-r25-linux/android-ndk-r25"
 
     defaultConfig {
         minSdk 21
@@ -32,7 +35,14 @@ android {
     externalNativeBuild {
         cmake {
             path file('CMakeLists.txt')
-            version '3.18.1'
+            version '3.6.0'
+        }
+    }
+
+    sourceSets {
+        main {
+            // ...
+            jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
 }
@@ -41,7 +51,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
-    
+
     implementation project(path: ':Rev-Lib-Gen-Functions')
 
     testImplementation 'junit:junit:4.13.2'

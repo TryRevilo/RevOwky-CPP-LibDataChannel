@@ -7,6 +7,8 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
+import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
 export const RevStoresListingViewWidget = () => {
   const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
@@ -64,7 +66,7 @@ export const RevStoresListingViewWidget = () => {
         renderItem={renderItem}
         keyExtractor={item => {
           return (
-            item._revEntityGUID.toString() + '_' + revGetRndInteger(100, 1000)
+            item._revEntityGUID.toString() + '_' + revGetRandInteger(100, 1000)
           );
         }}
         initialNumToRender={10}

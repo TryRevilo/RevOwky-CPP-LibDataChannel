@@ -85,7 +85,7 @@ public class RevDownloadUserFromServer {
                 public void revFileDownloadComplete(boolean output) {
                     RevEntityRelationship revInfoPicAlbumRel = new RevEntityRelationship("rev_picture_of", aLong, revPicsAlbumGUID);
                     revInfoPicAlbumRel.set_revResolveStatus(0);
-                    revInfoPicAlbumRel.set_remoteRevEntitySubjectGUID(revPersLibRead.getRemoteRevEntityGUID(aLong));
+                    revInfoPicAlbumRel.set_remoteRevEntitySubjectGUID(revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(aLong));
                     revInfoPicAlbumRel.set_remoteRevEntityTargetGUID(revPicsAlbum.get_remoteRevEntityGUID());
                     revPersJava.saveRevEntity_NO_REMOTE_SYNC(revInfoPicAlbumRel);
                 }

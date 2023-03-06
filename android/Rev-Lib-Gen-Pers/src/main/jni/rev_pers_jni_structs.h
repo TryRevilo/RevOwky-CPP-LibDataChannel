@@ -23,7 +23,7 @@ typedef struct REV_ENTITY_JNI_POSREC {
     jfieldID _revEntityOwnerGUID_ID;
     jfieldID _revEntityContainerGUID_ID;
     jfieldID _remoteRevEntityContainerGUID;
-    jfieldID _revSiteEntityGUID_ID;
+    jfieldID _revEntitySiteGUID_ID;
     jfieldID _revEntityAccessPermission_ID;
 
     jfieldID _revEntityMetadataList_ID;
@@ -31,14 +31,13 @@ typedef struct REV_ENTITY_JNI_POSREC {
     jfieldID _timeCreated_ID;
     jfieldID _timeUpdated_ID;
 
-    jfieldID _revPublisherEntity;
+    jfieldID _revPublisherEntity_ID;
+    jfieldID _revInfoEntity_ID;
 
     jfieldID _revTimeCreated;
     jfieldID _revTimePublished;
     jfieldID _revTimePublishedUpdated;
-
 } REV_ENTITY_JNI_POSREC;
-
 
 typedef struct REV_ENTITY_METADATA_JNI_POSREC {
     jclass cls;
@@ -47,6 +46,7 @@ typedef struct REV_ENTITY_METADATA_JNI_POSREC {
     jfieldID _resolveStatus;
     jfieldID revMetadataId;
     jfieldID revMetadataValueId;
+    jfieldID remoteRevMetadataId;
 
     jfieldID _revMetadataName;
     jfieldID _metadataValue;
@@ -56,9 +56,7 @@ typedef struct REV_ENTITY_METADATA_JNI_POSREC {
     jfieldID _revTimeCreated;
     jfieldID _revTimePublished;
     jfieldID _revTimePublishedUpdated;
-
 } REV_ENTITY_METADATA_JNI_POSREC;
-
 
 typedef struct REV_ENTITY_ANNOTATION_JNI_POSREC {
     jclass cls;
@@ -85,7 +83,6 @@ typedef struct REV_ENTITY_ANNOTATION_JNI_POSREC {
     jfieldID _revTimePublishedUpdated;
 
 } REV_ENTITY_ANNOTATION_JNI_POSREC;
-
 
 typedef struct REV_ENTITY_RELATIONSHIP_JNI_POSREC {
     jclass cls;

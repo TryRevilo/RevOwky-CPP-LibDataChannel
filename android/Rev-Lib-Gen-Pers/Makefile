@@ -398,1133 +398,1133 @@ libs/rev_list/rev_linked_list.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_list.dir/build.make CMakeFiles/rev_list.dir/libs/rev_list/rev_linked_list.c.s
 .PHONY : libs/rev_list/rev_linked_list.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.o
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.o: src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.i
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.i: src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.s
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.s: src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s
+src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_db_init.dir/build.make CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity.dir/build.make CMakeFiles/rev_pers_rev_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.cpp.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_group_entity.dir/build.make CMakeFiles/rev_pers_rev_group_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_object_entity.dir/build.make CMakeFiles/rev_pers_rev_object_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s: src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
+src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_user_entity.dir/build.make CMakeFiles/rev_pers_rev_user_entity.dir/src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_relationships.dir/build.make CMakeFiles/rev_pers_rev_entity_relationships.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_annotations.dir/build.make CMakeFiles/rev_pers_rev_entity_annotations.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_entity_metadata.dir/build.make CMakeFiles/rev_pers_rev_entity_metadata.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s: src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
+src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_entity_metastrings.dir/build.make CMakeFiles/rev_pers_entity_metastrings.dir/src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.o
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.o: src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.o
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.o
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.o
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.i
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.i: src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.i
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.i
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.i
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.s
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.s: src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.s
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.c.s
+src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_lib_connectors.dir/build.make CMakeFiles/rev_lib_connectors.dir/src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.s
+.PHONY : src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s: src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
+src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_rev_timeline.dir/build.make CMakeFiles/rev_pers_rev_timeline.dir/src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.c.s
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o: src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o
 
 # target to build an object file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i: src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i: src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i
 
 # target to preprocess a source file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
 
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s: src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s: src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s
 
 # target to generate assembly for a file
-src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
-.PHONY : src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
+src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rev_pers_lib_includes.dir/build.make CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
+.PHONY : src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
 
 src/main/jni/rev-pers-lib-create.o: src/main/jni/rev-pers-lib-create.cpp.o
 .PHONY : src/main/jni/rev-pers-lib-create.o
@@ -1726,147 +1726,147 @@ help:
 	@echo "... libs/rev_list/rev_linked_list.o"
 	@echo "... libs/rev_list/rev_linked_list.i"
 	@echo "... libs/rev_list/rev_linked_list.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i"
-	@echo "... src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/FEED_ENTRY_REV_GROUP_ENTITY.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/db_create/rev_group_entity_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_read/rev_pers_read_rev_group_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_group_entity/rev_pers_rev_group_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_OBJECT_ENTITY.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/db_create/rev_object_entity_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_object_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_object_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_object_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/FEED_ENTRY_REV_USER_ENTITY.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/db_create/rev_user_entity_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_user_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity/rev_pers_rev_user_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read_rev_user_entity.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METASTRING.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/db_create/rev_entity_metastring_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.s"
+	@echo "... src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.o"
+	@echo "... src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.i"
+	@echo "... src/main/cpp/rev_pers_lib_connectors/rev_perslib_create_init.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/db_create/rev_timeline_feedreaderdbhelper.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_lib_create/rev_pers_create/rev_pers_rev_timeline.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_timeline/rev_pers_read/rev_pers_read_rev_timeline.s"
+	@echo "... src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.o"
+	@echo "... src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.i"
+	@echo "... src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.s"
 	@echo "... src/main/jni/rev-pers-lib-create.o"
 	@echo "... src/main/jni/rev-pers-lib-create.i"
 	@echo "... src/main/jni/rev-pers-lib-create.s"

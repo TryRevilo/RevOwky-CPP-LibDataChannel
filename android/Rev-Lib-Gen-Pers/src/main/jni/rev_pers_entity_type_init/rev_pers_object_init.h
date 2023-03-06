@@ -3,7 +3,7 @@
 //
 
 #include <jni.h>
-#include "../../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_db_models/rev_entity.h"
+#include "../../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_db_models/rev_entity.h"
 
 #ifndef REVCAMPANN_REV_PERS_OBJECT_INIT_H
 #define REVCAMPANN_REV_PERS_OBJECT_INIT_H

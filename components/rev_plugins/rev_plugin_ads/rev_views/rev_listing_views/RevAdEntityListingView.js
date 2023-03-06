@@ -10,7 +10,7 @@ import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
-import {revGetRndInteger} from '../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetRandInteger} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 export const RevAdEntityListingView = () => {
   let minMessageLen = 7;
@@ -22,23 +22,23 @@ export const RevAdEntityListingView = () => {
       min: 4,
     },
     wordsPerSentence: {
-      max: revGetRndInteger(minMessageLen, maxMessageLen),
-      min: revGetRndInteger(1, 2),
+      max: revGetRandInteger(minMessageLen, maxMessageLen),
+      min: revGetRandInteger(1, 2),
     },
   });
 
-  let chatMsg = lorem.generateSentences(revGetRndInteger(1, 5));
+  let chatMsg = lorem.generateSentences(revGetRandInteger(1, 5));
 
   let RevLikes = () => {
     return (
       <View
-        key={revGetRndInteger(100, 1000)}
+        key={revGetRandInteger(100, 1000)}
         style={[styles.revFlexWrapper, styles.revLikesTabsWrapper]}>
-        <TouchableOpacity key={revGetRndInteger(100, 1000)}>
+        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
           <FontAwesome name="arrow-up" style={styles.revLikesTab} />
         </TouchableOpacity>
-        <Text style={styles.revLikesText}>{revGetRndInteger(1, 100)}</Text>
-        <TouchableOpacity key={revGetRndInteger(100, 1000)}>
+        <Text style={styles.revLikesText}>{revGetRandInteger(1, 100)}</Text>
+        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
           <FontAwesome name="arrow-down" style={styles.revLikesTab} />
         </TouchableOpacity>
       </View>
@@ -49,7 +49,7 @@ export const RevAdEntityListingView = () => {
 
   let RevPostTagItem = () => {
     return (
-      <TouchableOpacity key={revGetRndInteger(100, 1000)}>
+      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
         <Text style={styles.revPostTagsListItem}>hello_world</Text>
       </TouchableOpacity>
     );
@@ -59,14 +59,14 @@ export const RevAdEntityListingView = () => {
 
   const RevCommentEntityIcon = () => {
     return (
-      <TouchableOpacity key={revGetRndInteger(100, 1000)}>
+      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
         <View style={[styles.revCommentUserIcon]}></View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View key={revGetRndInteger(100, 1000)} style={[styles.revFlexContainer]}>
+    <View key={revGetRandInteger(100, 1000)} style={[styles.revFlexContainer]}>
       <View style={[styles.revFlexWrapper, styles.revAdHeaderWrapper]}>
         <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
           Promoted

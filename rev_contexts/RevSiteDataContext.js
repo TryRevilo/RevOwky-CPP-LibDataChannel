@@ -1,12 +1,13 @@
 import React, {createContext, useState, useEffect} from 'react';
 import {NativeModules} from 'react-native';
 
-const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
+const {RevPersLibRead_React} = NativeModules;
 
 import {
-  revCreateSiteEntity,
+  useRevCreateSiteEntity,
   revGetSiteEntity,
 } from '../components/rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
 
 const RevSiteDataContext = createContext();
 
@@ -17,8 +18,11 @@ const RevSiteDataContextProvider = ({children}) => {
 
   const [REV_LOGGED_IN_ENTITY_GUID, SET_REV_LOGGED_IN_ENTITY_GUID] =
     useState(0);
+  const [REV_SITE_ENTITY_GUID, SET_REV_SITE_ENTITY_GUID] = useState(0);
 
   const [REV_LOGGED_IN_ENTITY, SET_REV_LOGGED_IN_ENTITY] = useState(null);
+
+  const {revCreateSiteEntity} = useRevCreateSiteEntity();
 
   useEffect(() => {
     if (REV_LOGGED_IN_ENTITY_GUID > 0) {
@@ -33,29 +37,35 @@ const RevSiteDataContextProvider = ({children}) => {
 
       SET_REV_LOGGED_IN_ENTITY(revLoggedInEntity);
 
-      let revSiteEntity = revGetSiteEntity();
+      /** START SET UP SITE */
+      let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
 
-      if (revSiteEntity && revSiteEntity.hasOwnProperty('_revEntityGUID')) {
+      if (
+        !revIsEmptyJSONObject(revSiteEntity) &&
+        revSiteEntity.hasOwnProperty('_revEntityGUID')
+      ) {
         revSiteEntityGUID = revSiteEntity._revEntityGUID;
         revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
       } else {
         revSiteEntityGUID = revCreateSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
-        revSiteEntityOwnerGUID =
-          RevPersLibRead_React.getRevEntityByRevEntityOwnerGUID_Subtype(
-            REV_LOGGED_IN_ENTITY_GUID,
-            'rev_site',
-          );
+        let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
+
+        revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
       }
 
-      if (
-        revSiteEntityGUID > 0 &&
-        revSiteEntityOwnerGUID !== REV_LOGGED_IN_ENTITY_GUID
-      ) {
-        RevPersLibUpdate_React.resetRevEntityOwnerGUID(
+      console.log(
+        '>>> REV_LOGGED_IN_ENTITY_GUID ' +
+          REV_LOGGED_IN_ENTITY_GUID +
+          ' >>> revSiteEntityOwnerGUID ' +
+          revSiteEntityOwnerGUID +
+          ' revSiteEntityGUID ' +
           revSiteEntityGUID,
-          REV_LOGGED_IN_ENTITY_GUID,
-        );
+      );
+
+      if (revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID) {
+        SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
       }
+      /** END SET UP SITE */
     }
   }, [REV_LOGGED_IN_ENTITY_GUID]);
 
@@ -68,6 +78,8 @@ const RevSiteDataContextProvider = ({children}) => {
         SET_REV_LOGGED_IN_ENTITY_GUID,
         REV_LOGGED_IN_ENTITY,
         SET_REV_LOGGED_IN_ENTITY,
+        REV_SITE_ENTITY_GUID,
+        SET_REV_SITE_ENTITY_GUID,
       }}>
       {children}
     </RevSiteDataContext.Provider>

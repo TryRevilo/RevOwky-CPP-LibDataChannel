@@ -13,7 +13,7 @@ import {REV_ENTITY_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/
 import {
   REV_ENTITY_METADATA_STRUCT,
   REV_METADATA_FILLER,
-} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+} from '../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityRelationship';
 
@@ -63,11 +63,7 @@ var revHandleSendMsg = (revTargetId, revMsg, revCallBack) => {
   revCallBack(revSendMessageStatus);
 };
 
-export default function RevSubmitChatTab({
-  revTargetId,
-  revMsg,
-  revInputFieldCallback,
-}) {
+export function RevSubmitChatTab({revTargetId, revMsg, revInputFieldCallback}) {
   const {revHandleMsgSentEvent} = useContext(RevRemoteSocketContext);
 
   let minMessageLen = 1;

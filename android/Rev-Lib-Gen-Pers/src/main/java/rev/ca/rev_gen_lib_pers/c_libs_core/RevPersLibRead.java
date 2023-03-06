@@ -18,9 +18,21 @@ public class RevPersLibRead {
 
     public native int revEntityExistsByRemoteEntityGUID(long remoteRevEntityGUID);
 
+    public native long revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
+
     public native long revGetPublicationDate(long localRevEntityGUID);
 
-    public native long getRemoteRevEntityGUID(long localRevEntityGUID);
+    public native RevEntity[] revPersGetALLRevEntityTYPE(String revEntityType);
+
+    public native RevEntity[] revPersGetALLRevEntity_By_SubType(String revEntitySubType);
+
+    public native RevEntity[] revPersGetALLRevEntity_By_SubType_RevVarArgs(String revVarArgs);
+
+    public native RevEntity revPersGetRevEntityByGUID(long revEntityGUID);
+
+    public native RevEntity revPersGetRevEntity_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
+
+    public native long revGetRemoteEntityGUID_BY_LocalEntityGUID(long localRevEntityGUID);
 
     public native long getLocalRevEntityGUID_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
 
@@ -51,14 +63,6 @@ public class RevPersLibRead {
     public native RevEntity[] revPersGetALLRevEntityUnSyched();
 
     public native RevEntity[] revPersGetALLRevEntityUnSychedByType(String revEntityType);
-
-    public native RevEntity[] revPersGetALLRevEntityTYPE(String revEntityType);
-
-    public native RevEntity[] revPersGetALLRevEntity_By_SubType(String revEntitySubType);
-
-    public native RevEntity revPersGetRevEntityByGUID(long revEntityGUID);
-
-    public native RevEntity revPersGetRevEntity_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
 
     /**
      * REV USER ENTITY
@@ -106,6 +110,8 @@ public class RevPersLibRead {
 
     public native List<Long> revPersGetALLRelSubjectGUIDs_By_TargetGUID(long revEntityTargetGUID);
 
+    public native long revPersGetSubjectGUID_BY_RelStr_TargetGUID(String revEntityRelationship, long revEntityTargetGUID);
+
     public native List<Long> revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(String revEntityRelationship, long revEntityTargetGUID);
 
     public native List<Long> revPersGetUnresolvedRemoteTargetGUIDSRelIds();
@@ -129,6 +135,8 @@ public class RevPersLibRead {
     public native List<RevEntityMetadata> revPersGetALLRevEntityMetadataByRevEntityGUID(long revEntityGUID);
 
     public native List<Long> revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus);
+
+    public native List<RevEntityMetadata> revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveStatus, String revMetadataName);
 
     public native List<Long> revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID);
 

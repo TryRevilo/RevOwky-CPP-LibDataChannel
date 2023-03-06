@@ -97,21 +97,21 @@ void revPersInitNativeEvent(std::string revEventName, std::string revData) {
 
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revInitNativeEvent - revJEventName_J : %s - revJEventData_J : %s", revJEventName_J, revJEventData_J);
 
-    jclass RevWebRTCEventsReactModule = findClass("com/owki/rev_react_modules/rev_web_rtc/RevWebRTCEventsReactModule");
+    jclass RevReactNativeEvents = findClass("com/owki/rev_react_modules/rev_gen_function_libs/RevReactNativeEvents");
 
-    if (RevWebRTCEventsReactModule == nullptr) {
+    if (RevReactNativeEvents == nullptr) {
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> Class NOT Found!");
         return;
     }
 
-    jmethodID revInitNativeEvent = g_env->GetStaticMethodID(RevWebRTCEventsReactModule, "revInitNativeEvent", "(Ljava/lang/String;Ljava/lang/String;)V");
+    jmethodID revInitNativeEvent = g_env->GetStaticMethodID(RevReactNativeEvents, "revInitNativeEvent", "(Ljava/lang/String;Ljava/lang/String;)V");
 
     if (revInitNativeEvent == NULL) {
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> METHOD NOT Found!");
         return;
     }
 
-    g_env->CallStaticVoidMethod(RevWebRTCEventsReactModule, revInitNativeEvent, revJEventName, revJEventData);
+    g_env->CallStaticVoidMethod(RevReactNativeEvents, revInitNativeEvent, revJEventName, revJEventData);
 
     if (g_env->ExceptionCheck()) {
         g_env->ExceptionDescribe();

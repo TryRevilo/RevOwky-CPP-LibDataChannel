@@ -11,13 +11,26 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
+import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
-import {revRequestPermissions} from '../../rev_function_libs/rev_req_perms';
+import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
+import {REV_GET_REV_ENTITIES_BY_SUBTYPE_URL} from '../rev_libs_pers/rev_server/rev_pers_urls';
+import {
+  revPersGetALLRevEntity_By_SubType_RevVarArgs,
+  revPersGetFilledRevEntity_By_GUID,
+  useRevPersGetRevEntities_By_EntityGUIDsArr,
+} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import RevVideoCallModal from '../rev_video_call/RevVideoCallModal';
 
 import ChatMessageInputComposer from '../rev_plugins/rev_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
+
+import {useRev_Server_UpdateMetadata} from '../rev_libs_pers/rev_server/rev_pers_lib_update';
+import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/rev_server/rev_pers_lib_delete';
+import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
+
+import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 const {
   RevPersLibCreate_React,
@@ -31,43 +44,219 @@ const handleEndVideoCall = () => {
 };
 
 function RevFooterArea() {
-  const {REV_SITE_VAR_ARGS, SET_REV_SITE_VAR_ARGS} =
+  const {REV_SITE_VAR_ARGS, REV_LOGGED_IN_ENTITY_GUID} =
     useContext(RevSiteDataContext);
 
   const {REV_SITE_BODY, SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
 
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
   const [revChatStatus, setRevChatStatus] = useState(false);
 
+  const {rev_Server_UpdateMetadata} = useRev_Server_UpdateMetadata();
+  const {rev_Server_DeleteEntities_By_entityGUIDsArr} =
+    useRev_Server_DeleteEntities_By_entityGUIDsArr();
+
+  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
+
+  const revGetLocalData = () => {
+    let revPassVarArgs = {
+      revSelect: [
+        '_revEntityGUID',
+        '_revOwnerEntityGUID',
+        '_revContainerEntityGUID',
+        '_revEntitySiteGUID',
+        '_revEntityAccessPermission',
+        '_revEntityType',
+        '_revEntitySubType',
+        '_revTimeCreated',
+      ],
+      revWhere: {
+        _revEntityType: 'rev_object',
+        _revEntitySubType: 'rev_kiwi',
+        _revEntityResolveStatus: [0, -1, -101],
+      },
+      revLimit: 20,
+    };
+    let revEntitiesArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+      JSON.stringify(revPassVarArgs),
+    );
+
+    for (let i = 0; i < revEntitiesArr.length; i++) {
+      let revCurrEntity = revEntitiesArr[i];
+      let revEntityGUID = revCurrEntity._revEntityGUID;
+
+      let revPicAlbumGUID =
+        RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+          'rev_pics_album_of',
+          revEntityGUID,
+        );
+
+      if (revPicAlbumGUID < 1) {
+        continue;
+      }
+
+      let revPicAlbumEntity =
+        revPersGetFilledRevEntity_By_GUID(revPicAlbumGUID);
+
+      let revPicAlbumEntityGUID = revPicAlbumEntity._revEntityGUID;
+
+      let revPicAlbumPicsGUIDsArr =
+        RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+          'rev_picture_of',
+          revPicAlbumEntityGUID,
+        );
+
+      let revPicsEntitiesArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+        JSON.parse(revPicAlbumPicsGUIDsArr),
+      );
+
+      revPicAlbumEntity._revEntityChildrenList = revPicsEntitiesArr;
+
+      revEntitiesArr[i]._revEntityChildrenList.push(revPicAlbumEntity);
+    }
+
+    return revEntitiesArr;
+  };
+
   let revHandleTaggedPostsTabPress = () => {
-    let RevTaggedPostsListing = revPluginsLoader({
-      revPluginName: 'rev_plugin_tagged_posts',
-      revViewName: 'RevTaggedPostsListing',
-      revData: 'Hello World!',
+    /**** */
+    let revURL =
+      REV_ROOT_URL +
+      '/rev_api?' +
+      'rev_logged_in_entity_guid=' +
+      REV_LOGGED_IN_ENTITY_GUID +
+      '&rev_entity_guid=' +
+      -1 +
+      '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
+
+    revGetServerData_JSON(revURL, revRetData => {
+      if (
+        revRetData.hasOwnProperty('revError') ||
+        revRetData.hasOwnProperty('revServerStatus') ||
+        revRetData.revServerStatus == 'Network Request Failed'
+      ) {
+        revRetData = revGetLocalData();
+        revRetData = {
+          revTimelineEntities: revRetData,
+          revEntityPublishersArr: [],
+        };
+      }
+
+      let RevTaggedPostsListing = revPluginsLoader({
+        revPluginName: 'rev_plugin_tagged_posts',
+        revViewName: 'RevTaggedPostsListing',
+        revVarArgs: revRetData,
+      });
+
+      SET_REV_SITE_BODY(RevTaggedPostsListing);
     });
+  };
 
-    SET_REV_SITE_BODY(RevTaggedPostsListing);
+  const revHandleGetSiteUsersTabPress = async () => {
+    // let revURL =
+    //   REV_ROOT_URL +
+    //   REV_GET_REV_ENTITIES_BY_SUBTYPE_URL +
+    //   '?rev_entity_subtype=rev_user_entity';
 
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
+    // let revData = await revGetServerData_JSON_Async(revURL);
+
+    // console.log('>>> revData ' + revData.filter.length);
+
+    // let revUpdateMetadataArrStr =
+    //   RevPersLibRead_React.revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(
+    //     101,
+    //     'revPostText',
+    //   );
+
+    // let revUpdateMetadataArr = JSON.parse(revUpdateMetadataArrStr);
+
+    // let revPostUpdateMetadataArr = [];
+
+    // for (let i = 0; i < revUpdateMetadataArr.length; i++) {
+    //   let revCurrMetadata = revUpdateMetadataArr[i];
+    //   revPostUpdateMetadataArr.push({
+    //     remoteRevMetadataId: revCurrMetadata.remoteRevMetadataId,
+    //     _metadataValue: revCurrMetadata._metadataValue,
+    //   });
+    // }
+
+    // let revServData = {
+    //   filter: revPostUpdateMetadataArr,
+    // };
+
+    // rev_Server_UpdateMetadata(revServData, revMetadataUpdateRetData => {
+    //   console.log(
+    //     '>>> revMetadataUpdateRetData ' +
+    //       JSON.stringify(revMetadataUpdateRetData),
+    //   );
+    // });
+
+    revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+      console.log(
+        '>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
+      );
     });
   };
 
   const handleDocumentSelection = useCallback(async () => {
-    try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        allowMultiSelection: true,
-      });
+    // try {
+    //   const response = await DocumentPicker.pick({
+    //     presentationStyle: 'fullScreen',
+    //     allowMultiSelection: true,
+    //   });
 
-      for (let i = 0; i < response.length; i++) {
-        new RevSendFile(peerConnections[2].dataChannel).transferFile(
-          response[i],
-        );
+    //   for (let i = 0; i < response.length; i++) {
+    //     new RevSendFile(peerConnections[2].dataChannel).transferFile(
+    //       response[i],
+    //     );
+    //   }
+    // } catch (err) {
+    //   console.warn(err);
+    // }
+
+    let revDeleEntityGUIDsStr =
+      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(-3);
+
+    let revDeleEntityGUIDsArr = JSON.parse(revDeleEntityGUIDsStr);
+
+    let revPostDelEntityGUIDsArr = [];
+
+    for (let i = 0; i < revDeleEntityGUIDsArr.length; i++) {
+      if (i > 2) {
+        break;
       }
-    } catch (err) {
-      console.warn(err);
+
+      let revCurrEntityGUID = revDeleEntityGUIDsArr[i];
+      let revCurrEntityStr =
+        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
+
+      let revCurRemoteEntityGUID =
+        JSON.parse(revCurrEntityStr)._remoteRevEntityGUID;
+
+      if (revCurRemoteEntityGUID && revCurRemoteEntityGUID >= 0)
+        revPostDelEntityGUIDsArr.push(revCurRemoteEntityGUID);
     }
+
+    console.log(
+      '>>> revPostDelEntityGUIDsArr ' +
+        JSON.stringify(revPostDelEntityGUIDsArr),
+    );
+
+    let revServData = {
+      filter: revPostDelEntityGUIDsArr,
+    };
+
+    rev_Server_DeleteEntities_By_entityGUIDsArr(
+      revServData,
+      revDelEnitityGUIDsRetData => {
+        console.log(
+          '>>> revDelEnitityGUIDsRetData ' +
+            JSON.stringify(revDelEnitityGUIDsRetData),
+        );
+      },
+    );
   }, []);
 
   let revChatMessageTxt = '';
@@ -128,7 +317,7 @@ function RevFooterArea() {
 
               <TouchableOpacity
                 onPress={() => {
-                  revHandleTaggedPostsTabPress();
+                  revHandleGetSiteUsersTabPress();
                 }}>
                 <FontAwesome name="flash" style={styles.channelOptionItem} />
               </TouchableOpacity>

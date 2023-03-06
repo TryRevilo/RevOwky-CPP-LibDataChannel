@@ -68,7 +68,7 @@ public class RevSaveRevEntitiesToServerResolver {
 
                 /** REV RESOLVE OWNER **/
                 if (revEntity.get_revEntityOwnerGUID().longValue() > 0) {
-                    long revRemoteOwnerGUID = revPersLibRead.getRemoteRevEntityGUID(revEntity.get_revEntityOwnerGUID());
+                    long revRemoteOwnerGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revEntity.get_revEntityOwnerGUID());
 
                     if (revRemoteOwnerGUID < 0) {
                         revPersLibUpdate.setRevEntityResolveStatusByRevEntityGUID(-107, revEntity.get_revEntityGUID());
@@ -80,7 +80,7 @@ public class RevSaveRevEntitiesToServerResolver {
 
                 /** REV RESOLVE CONTAINER **/
                 if (revEntity.get_revEntityContainerGUID().longValue() > 0) {
-                    long revRemoteContainerGUID = revPersLibRead.getRemoteRevEntityGUID(revEntity.get_revEntityContainerGUID());
+                    long revRemoteContainerGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revEntity.get_revEntityContainerGUID());
 
                     if (revRemoteContainerGUID < 0) {
                         revPersLibUpdate.setRevEntityResolveStatusByRevEntityGUID(-107, revEntity.get_revEntityGUID());

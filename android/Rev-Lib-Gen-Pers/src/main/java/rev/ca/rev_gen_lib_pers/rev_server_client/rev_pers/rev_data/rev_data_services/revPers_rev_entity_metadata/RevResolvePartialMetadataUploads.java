@@ -65,7 +65,7 @@ public class RevResolvePartialMetadataUploads {
                 continue;
             }
 
-            Long remoteRevEntityGUID = revPersLibRead.getRemoteRevEntityGUID(revEntityMetadata.getRevMetadataOwnerGUID());
+            Long remoteRevEntityGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revEntityMetadata.getRevMetadataOwnerGUID());
 
             if (remoteRevEntityGUID < 0) {
                 revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID(-107, revEntityMetadata.getRevMetadataId());

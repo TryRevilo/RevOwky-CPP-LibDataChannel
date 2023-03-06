@@ -31,7 +31,7 @@
 #define PING_PKT_S 64
 
 // Automatic port number
-#define PORT_NO 0
+#define PORT_NO 4000
 
 // Automatic port number
 #define PING_SLEEP_RATE 1000000
@@ -42,7 +42,6 @@
 
 // Define the Ping Loop
 int pingloop = 1;
-
 
 // ping packet structure
 struct ping_pkt {
@@ -66,7 +65,6 @@ unsigned short checksum(void *b, int len) {
     return result;
 }
 
-
 // Interrupt handler
 void intHandler(int dummy) {
     pingloop = 0;
@@ -84,16 +82,15 @@ char *dns_lookup(char *addr_host, struct sockaddr_in *addr_con) {
         return NULL;
     }
 
-    //filling up address structure
+    // filling up address structure
     strcpy(ip, inet_ntoa(*(struct in_addr *)
             host_entity->h_addr));
 
     (*addr_con).sin_family = host_entity->h_addrtype;
-    (*addr_con).sin_port = htons (PORT_NO);
+    (*addr_con).sin_port = htons(PORT_NO);
     (*addr_con).sin_addr.s_addr = *(long *) host_entity->h_addr;
 
     return ip;
-
 }
 
 // Resolves the reverse lookup of the hostname
@@ -130,7 +127,6 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr, char *ping_dom, c
 
     clock_gettime(CLOCK_MONOTONIC, &tfs);
 
-
     // set socket options at ip to TTL and value to 64,
     // change to what you want by setting ttl_val
     if (setsockopt(ping_sockfd, SOL_IP, IP_TTL,
@@ -149,8 +145,8 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr, char *ping_dom, c
         // flag is whether packet was sent or not
         flag = 1;
 
-        //filling packet
-        // bzero(&pckt, sizeof(pckt));
+        // filling packet
+        //  bzero(&pckt, sizeof(pckt));
         memset(&pckt, 0, sizeof(pckt));
 
         pckt.hdr.type = ICMP_ECHO;
@@ -165,14 +161,14 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr, char *ping_dom, c
 
         usleep(PING_SLEEP_RATE);
 
-        //send packet
+        // send packet
         clock_gettime(CLOCK_MONOTONIC, &time_start);
         if (sendto(ping_sockfd, &pckt, sizeof(pckt), 0, (struct sockaddr *) ping_addr, sizeof(*ping_addr)) <= 0) {
             __android_log_print(ANDROID_LOG_WARN, "MyApp", "\nPacket Sending Failed!\n");
             flag = 0;
         }
 
-        //receive packet
+        // receive packet
         addr_len = sizeof(r_addr);
 
         if (recvfrom(ping_sockfd, &pckt, sizeof(pckt), 0, (struct sockaddr *) &r_addr, &addr_len) <= 0 && msg_count > 1) {
@@ -213,6 +209,7 @@ void send_ping(int ping_sockfd, struct sockaddr_in *ping_addr, char *ping_dom, c
 
 // Driver Code
 void rev_ping(const char *revIpAddress, void (*rev_call_back_func)(char *revRetStr)) {
+    /**
     int sockfd;
     char *ip_addr, *reverse_hostname;
     struct sockaddr_in addr_con;
@@ -220,7 +217,7 @@ void rev_ping(const char *revIpAddress, void (*rev_call_back_func)(char *revRetS
     char net_buf[NI_MAXHOST];
 
     if (revIsCharStrEmpty(revIpAddress)) {
-        rev_call_back_func("+++ 0 +++");
+        rev_call_back_func("0");
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", "\n>>> Format %s <address>\n", revIpAddress);
         return;
@@ -239,7 +236,7 @@ void rev_ping(const char *revIpAddress, void (*rev_call_back_func)(char *revRetS
     __android_log_print(ANDROID_LOG_WARN, "MyApp", "\nTrying to connect to '%s' IP: %s\n", revIpAddress, ip_addr);
     __android_log_print(ANDROID_LOG_WARN, "MyApp", "\nReverse Lookup domain: %s", reverse_hostname);
 
-    //socket()
+    // socket()
     sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     if (sockfd < 0) {
         __android_log_print(ANDROID_LOG_WARN, "MyApp", "\nSocket file descriptor not received!!\n");
@@ -252,6 +249,47 @@ void rev_ping(const char *revIpAddress, void (*rev_call_back_func)(char *revRetS
 
     signal(SIGINT, intHandler); // catching interrupt
 
-    //send pings continuously
+    // send pings continuously
     send_ping(sockfd, &addr_con, reverse_hostname, ip_addr, revIpAddress, rev_call_back_func);
+
+    **/
+
+    int count = 1;
+    struct in_addr ip_bin;
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (sock < 0) {
+        rev_call_back_func("0");
+        return;
+    }
+
+    struct sockaddr_in server_addr;
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(PORT_NO);
+    server_addr.sin_addr.s_addr = inet_pton(AF_INET, revIpAddress, &ip_bin);
+
+    __android_log_print(ANDROID_LOG_WARN, "MyApp", "Binary representation of %s: %x\n", revIpAddress, ntohl(ip_bin.s_addr));
+
+    int i;
+    for (i = 0; i < count; i++) {
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "\n>>> %d PING <<<", i);
+
+        if (connect(sock, (struct sockaddr *) &server_addr, sizeof(server_addr)) >= 0) {
+            close(sock);
+
+            __android_log_print(ANDROID_LOG_WARN, "MyApp", "\n>>> IP connection successful !!! <<<");
+
+            rev_call_back_func("1");
+
+            return;
+        }
+
+        usleep(PING_SLEEP_RATE);
+    }
+
+    close(sock);
+
+    __android_log_print(ANDROID_LOG_WARN, "MyApp", "Unable to connect to IP");
 }

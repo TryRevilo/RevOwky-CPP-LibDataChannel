@@ -15,7 +15,7 @@ import React, {useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {revRemoveLinebreaks} from '../../../../../../rev_function_libs/rev_string_function_libs';
-import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 

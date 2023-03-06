@@ -1,52 +1,98 @@
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React, {createContext, useContext, useState, useRef} from 'react';
 
 import {
   StyleSheet,
   Text,
+  Button,
   View,
   Image,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Dimensions,
   NativeModules,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {LoremIpsum} from 'lorem-ipsum';
+import Video from 'react-native-video';
 
-const {RevPersLibRead_React} = NativeModules;
+const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
 
-import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
-import {revGetRndInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
+
+import {
+  revIsEmptyJSONObject,
+  revIsLocalFilePathOrUrl,
+  revGetRandInteger,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
+import {
+  revGetLocal_OR_RemoteGUID,
+  revGetEntityChildren_By_Subtype,
+} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
+import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {useRevGetRemoteEntity_By_RemoteEntityGUID} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
+
+const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevTaggedPostsListingItem = ({revVarArgs}) => {
-  let revEntityGUID = revVarArgs._revEntityGUID;
+  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
+    useContext(RevSiteDataContext);
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
+  let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
+
+  if (revEntityGUID < 1) {
+    return null;
+  }
+
+  if (
+    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_entity_full_names_value',
+  );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    8,
+  );
+
+  const {revSiteStyles} = useRevSiteStyles();
+  const {revDeleteEntity} = useRevDeleteEntity();
+
+  let revInfoEntity = revVarArgs._revInfoEntity;
   let timeCreated = revVarArgs._timeCreated;
 
-  let revInfoEntityGUIDArrStr =
-    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-      'rev_entity_info',
-      revEntityGUID,
-    );
-
-  let revInfoEntityGUIDArr = JSON.parse(revInfoEntityGUIDArrStr);
-
-  if (!Array.isArray(revInfoEntityGUIDArr) || revInfoEntityGUIDArr.length < 1) {
+  if (
+    !revVarArgs.hasOwnProperty('_revInfoEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revInfoEntity)
+  ) {
+    console.log('>>> revIsEmptyJSONObject(revInfoEntity) - TRUE \n');
+    revDeleteEntity(revVarArgs);
     return null;
   }
 
-  let revInfoEntityGUID = revInfoEntityGUIDArr[0];
-
-  let revInfoEntityStr =
-    RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
-
-  let revInfoEntity = JSON.parse(revInfoEntityStr);
-
-  if (revIsEmptyJSONObject(revInfoEntity)) {
-    return null;
-  }
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   let minMessageLen = 1;
   let maxMessageLen = 200;
@@ -57,35 +103,37 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
       min: 4,
     },
     wordsPerSentence: {
-      max: revGetRndInteger(minMessageLen, maxMessageLen),
-      min: revGetRndInteger(1, 2),
+      max: revGetRandInteger(minMessageLen, maxMessageLen),
+      min: revGetRandInteger(1, 2),
     },
   });
 
-  let chatMsg = revGetMetadataValue(
+  let revKiwiTxtVal = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
     'revPostText',
   );
 
-  if (!chatMsg) {
+  if (!revKiwiTxtVal) {
     return null;
   }
 
-  let chatMessageText = (chatMsg, revTxtStyle = {}) => {
+  let chatMessageText = (_revKiwiTxtVal, revTxtStyle = {}) => {
     let chatMessageView = (
       <Text
-        key={revGetRndInteger(100, 1000)}
+        key={revGetRandInteger(100, 1000)}
         style={[styles.chatMsgContentTxt, revTxtStyle]}>
-        {chatMsg.length > maxMessageLen
-          ? chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : chatMsg}
+        {_revKiwiTxtVal.length > maxMessageLen
+          ? _revKiwiTxtVal.substring(0, maxMessageLen) + ' . . .'
+          : _revKiwiTxtVal}
       </Text>
     );
 
     return (
-      <View key={revEntityGUID} style={styles.chatMsgContentTxtContainer}>
+      <View
+        key={revEntityGUID + '_' + revGetRandInteger()}
+        style={styles.chatMsgContentTxtContainer}>
         {chatMessageView}
-        {chatMsg.length > maxMessageLen ? (
+        {revKiwiTxtVal.length > maxMessageLen ? (
           <Text style={styles.readMoreTextTab}>Read more</Text>
         ) : null}
       </View>
@@ -96,7 +144,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let RevPostTagItem = () => {
     return (
-      <TouchableOpacity key={revGetRndInteger(100, 1000)}>
+      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
         <Text style={styles.revPostTagsListItem}>hello_world</Text>
       </TouchableOpacity>
     );
@@ -105,8 +153,8 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let RevCommentItem = () => {
     return (
       <TouchableOpacity
-        key={revGetRndInteger(100, 1000).toString()}
-        style={[styles.revFlexWrapper, styles.revCommentItemWrapper]}>
+        key={revGetRandInteger(100, 1000).toString()}
+        style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
         <TouchableOpacity>
           <View style={styles.revCommentMsgUserIcon}>
             <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
@@ -114,7 +162,9 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
         </TouchableOpacity>
         <View style={styles.revChatMsgCommentContentContainer}>
           <View style={styles.chatMsgHeaderWrapper}>
-            <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
+            <Text style={styles.chatMsgOwnerTxt}>
+              {revPublisherEntityNames_Trunc}
+            </Text>
             <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
             <View style={styles.chatMsgOptionsWrapper}>
               <Text style={styles.chatMsgOptions}>
@@ -133,7 +183,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
           </View>
           <View style={styles.revChatMsgCommentContentTxtContainer}>
             {chatMessageText(
-              lorem.generateSentences(revGetRndInteger(1, 5)),
+              lorem.generateSentences(revGetRandInteger(1, 5)),
               styles.revChatMsgCommentContentTxt,
             )}
           </View>
@@ -142,38 +192,41 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
-  const RevMedia = revEntityGUID => {
-    if (revEntityGUID < 1) {
-      return null;
-    }
-
-    let revRelSubGUIDs =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_file_of',
-        revEntityGUID,
-      );
-
-    let revRelSubGUIDsArr = JSON.parse(revRelSubGUIDs);
-
+  const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
 
-    for (let i = 0; i < revRelSubGUIDsArr.length; i++) {
-      let revRelSubGUID = revRelSubGUIDsArr[i];
+    let revPicsArr = revPicsAlbum._revEntityChildrenList;
 
-      let revEntityStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revRelSubGUID);
-
-      let revEntity = JSON.parse(revEntityStr);
+    for (let i = 0; i < revPicsArr.length; i++) {
+      let revPic = revPicsArr[i];
 
       let revEntityImageURI = revGetMetadataValue(
-        revEntity._revEntityMetadataList,
-        'rev_file_uri',
+        revPic._revEntityMetadataList,
+        'rev_remote_file_name',
       );
+
+      if (!revVarArgs._fromRemote) {
+        revEntityImageURI =
+          'file:///' +
+          revSettings.revPublishedMediaDir +
+          '/' +
+          revEntityImageURI;
+      } else {
+        revEntityImageURI =
+          revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
+      }
+
+      let revLastImageStyle =
+        i == revPicsArr.length - 1
+          ? {
+              borderRightWidth: 0,
+            }
+          : null;
 
       let RevImage = (
         <TouchableOpacity
-          key={revGetRndInteger(100, 1000)}
-          style={styles.revImageTouchableOpacity}>
+          key={revPic._revEntityGUID + '_' + revGetRandInteger(100, 1000)}
+          style={[styles.revImageTouchableOpacity, revLastImageStyle]}>
           <Image
             style={styles.revEntityImageStyle}
             source={{
@@ -186,24 +239,66 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
       revImagesViews.push(RevImage);
     }
 
-    return (
-      <ScrollView
-        horizontal
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.profileImagesScroller}>
-        <View style={[styles.revFlexWrapper]}>
-          {revImagesViews.map(RevImage => {
-            return RevImage;
-          })}
-        </View>
-      </ScrollView>
-    );
+    let RevRetView =
+      revImagesViews.length < 1 ? null : (
+        <ScrollView
+          horizontal
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          style={styles.revProfileImagesScroller}>
+          <View style={[revSiteStyles.revFlexWrapper]}>
+            {revImagesViews.map(RevImage => {
+              return RevImage;
+            })}
+          </View>
+        </ScrollView>
+      );
+
+    return RevRetView;
   };
+
+  let RevImagesMediaView = null;
+
+  if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
+    let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
+      revVarArgs._revEntityChildrenList,
+      'rev_pics_album',
+    );
+
+    if (revPicsAlbumArr && revPicsAlbumArr.length) {
+      RevImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
+    }
+  }
+
+  const RevVideoPlayer = () => {
+    let revVidPathsArr = [
+      'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/1.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/2.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/3.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/4.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/5.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/6.mp4',
+    ];
+    const randomIndex = Math.floor(Math.random() * revVidPathsArr.length);
+    const randomElement = revVidPathsArr[randomIndex];
+
+    let RevInlineVideoPlayer = revPluginsLoader({
+      revPluginName: 'rev_plugin_video',
+      revViewName: 'RevInlineVideoPlayer',
+      revVarArgs: {
+        revURL: randomElement,
+      },
+    });
+
+    return RevInlineVideoPlayer;
+  };
+
+  let RevVideoPlayerView = RevVideoPlayer();
 
   let RevGenComments = () => {
     let revCommentsArr = [];
-    let revRand = revGetRndInteger(0, 4);
+    let revRand = revGetRandInteger(0, 4);
 
     for (let i = 0; i < revRand; i++) {
       revCommentsArr.push(i);
@@ -220,11 +315,11 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let RevLikes = () => {
     return (
-      <View style={[styles.revFlexWrapper, styles.revLikesTabsWrapper]}>
+      <View style={[revSiteStyles.revFlexWrapper, styles.revLikesTabsWrapper]}>
         <TouchableOpacity>
           <FontAwesome name="arrow-up" style={styles.revLikesTab} />
         </TouchableOpacity>
-        <Text style={styles.revLikesText}>{revGetRndInteger(1, 100)}</Text>
+        <Text style={styles.revLikesText}>{revGetRandInteger(1, 100)}</Text>
         <TouchableOpacity>
           <FontAwesome name="arrow-down" style={styles.revLikesTab} />
         </TouchableOpacity>
@@ -232,12 +327,48 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
+  const handleRevUserProfileClick = () => {
+    let RevUserProfileObjectView = revPluginsLoader({
+      revPluginName: 'rev_plugin_user_profile',
+      revViewName: 'rev_object_views',
+      revVarArgs: revPublisherEntity,
+    });
+
+    SET_REV_SITE_BODY(RevUserProfileObjectView);
+  };
+
+  const handleRevTaggedPostLongPressed = _revVarArgs => {
+    let RevKiwiObjectView = revPluginsLoader({
+      revPluginName: 'rev_plugin_tagged_posts',
+      revViewName: 'rev_object_views',
+      revVarArgs: revVarArgs,
+    });
+
+    if (RevKiwiObjectView) {
+      SET_REV_SITE_BODY(RevKiwiObjectView);
+    } else {
+      console.log('Error openning object');
+    }
+  };
+
   return (
-    <TouchableOpacity key={revEntityGUID.toString()}>
-      <View style={styles.revFlexWrapper}>
-        <View style={styles.chatMsgUserIcon}>
-          <FontAwesome name="user" style={styles.availableChatPeopleNonIcon} />
-        </View>
+    <TouchableOpacity
+      key={revEntityGUID.toString()}
+      onLongPress={() => {
+        handleRevTaggedPostLongPressed(revVarArgs);
+      }}>
+      <View style={revSiteStyles.revFlexWrapper}>
+        <TouchableOpacity
+          onPress={() => {
+            handleRevUserProfileClick();
+          }}>
+          <View style={styles.chatMsgUserIcon}>
+            <FontAwesome
+              name="user"
+              style={styles.availableChatPeopleNonIcon}
+            />
+          </View>
+        </TouchableOpacity>
         <View style={styles.chatMsgContentWrapper}>
           <View style={styles.chatMsgContentCarretView}>
             <FontAwesome
@@ -247,7 +378,9 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
           </View>
           <View style={styles.chatMsgContentContainer}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
+              <Text style={styles.chatMsgOwnerTxt}>
+                {revPublisherEntityNames}
+              </Text>
               <Text style={styles.chatMsgSendTime}>{timeCreated}</Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
@@ -265,26 +398,40 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
               </View>
             </View>
             <View
-              style={[styles.revFlexWrapper, styles.revPostTagsListWrapper]}>
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revPostTagsListWrapper,
+              ]}>
               <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
-              <View style={[styles.revFlexWrapper]}>
+              <View style={[revSiteStyles.revFlexWrapper]}>
                 {revPostTagsArr.map(revItem => {
-                  return <RevPostTagItem key={revItem.toString()} />;
+                  return <RevPostTagItem key={revItem + '_revPostTagsArr'} />;
                 })}
               </View>
             </View>
             <View style={styles.chatMsgContentTxtContainer}>
-              {chatMessageText(chatMsg)}
+              {chatMessageText(revKiwiTxtVal)}
             </View>
 
-            {RevMedia(revEntityGUID)}
+            <View
+              style={[
+                RevImagesMediaView || RevVideoPlayerView
+                  ? styles.revImagesMediaViewContainer
+                  : null,
+              ]}>
+              {RevImagesMediaView}
+              {RevVideoPlayerView}
+            </View>
 
             <View style={styles.revLikesArea}>
               <RevLikes />
             </View>
 
             <View
-              style={[styles.revFlexContainer, styles.revCommentsContainer]}>
+              style={[
+                revSiteStyles.revFlexContainer,
+                styles.revCommentsContainer,
+              ]}>
               <TouchableOpacity>
                 <Text style={styles.revPostCommentTab}>your comment</Text>
               </TouchableOpacity>
@@ -303,17 +450,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'flex-start',
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: '100%',
-  },
   revFlexWrapperTouchable: {
     display: 'flex',
     flexDirection: 'row',
@@ -517,20 +653,32 @@ const styles = StyleSheet.create({
     color: '#444',
     fontSize: 9,
   },
-  profileImagesScroller: {
+  revImagesMediaViewContainer: {
+    flex: 1,
+    marginTop: 7,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  revProfileImagesScroller: {
+    backgroundColor: '#444',
     flexGrow: 0,
-    marginTop: 4,
+    marginBottom: 1,
   },
   revProfileMediaWrapper: {
     alignItems: 'center',
   },
   revImageTouchableOpacity: {
     backgroundColor: '#444',
-    marginRight: 1,
+    borderStyle: 'solid',
+    borderRightColor: '#FFFFFF',
+    borderRightWidth: 1,
   },
   revEntityImageStyle: {
     width: 75,
     height: 45,
     verticalAlign: 'middle',
+  },
+  revVideoPlayerContainer: {
+    height: 'auto',
   },
 });

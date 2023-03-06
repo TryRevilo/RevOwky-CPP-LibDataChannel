@@ -69,28 +69,28 @@ include CMakeFiles/rev_db_init.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/rev_db_init.dir/flags.make
 
-CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o: CMakeFiles/rev_db_init.dir/flags.make
-CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c
-CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o: CMakeFiles/rev_db_init.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o -MF CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o.d -o CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o -c /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c
+CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o: CMakeFiles/rev_db_init.dir/flags.make
+CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o: src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c
+CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o: CMakeFiles/rev_db_init.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o -MF CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o.d -o CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o -c /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c
 
-CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c > CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.i
+CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c > CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.i
 
-CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c -o CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.s
+CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c -o CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.s
 
 # Object files for target rev_db_init
 rev_db_init_OBJECTS = \
-"CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o"
+"CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o"
 
 # External object files for target rev_db_init
 rev_db_init_EXTERNAL_OBJECTS =
 
-librev_db_init.so: CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o
+librev_db_init.so: CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o
 librev_db_init.so: CMakeFiles/rev_db_init.dir/build.make
 librev_db_init.so: librev_pers_lib_includes.so
 librev_db_init.so: librev_list.so

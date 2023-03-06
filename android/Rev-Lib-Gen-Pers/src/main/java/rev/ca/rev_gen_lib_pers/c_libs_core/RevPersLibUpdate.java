@@ -32,13 +32,13 @@ public class RevPersLibUpdate {
      * START REV ENTITY METADATA
      **/
 
-    public native int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long revMetadatrevPersGetRevEntityByGUIDaId);
+    public native int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long revMetadataId);
 
     public native int setRemoteRevEntityMetadataId(long revMetadataId, long remoteRevMetadataId);
 
     public native int setMetadataResolveStatus_BY_MetadataName_RevEntityGUID(String revMetadataName, long revEntityGUID, int revResolveStatus);
 
-    public native int setMetadataValue_BY_MetadataId_RevEntityGUID(long revMetadataId, String revMetadataValue);
+    public native int setMetadataValue_BY_MetadataId(long revMetadataId, String revMetadataValue);
 
     /** END REV ENTITY METADATA **/
 

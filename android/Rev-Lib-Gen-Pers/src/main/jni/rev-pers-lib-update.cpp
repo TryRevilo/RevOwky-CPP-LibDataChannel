@@ -5,6 +5,7 @@
 #include <jni.h>
 
 #include <malloc.h>
+#include <stdlib.h>
 #include<string>
 #include<vector>
 #include <string.h>
@@ -14,16 +15,16 @@
 #include "rev_pers_jni_structs.h"
 
 #include "rev-pers-lib-read.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
 
 extern "C" {
-#include <cJSON.h>
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.h"
+#include "../../../libs/cJSON/cJSON.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.h"
+#include "../cpp/rev_gen_functions/rev_gen_functions.h"
+#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.h"
 }
 
 
@@ -153,10 +154,10 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolv
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataValue_1BY_1MetadataId_1RevEntityGUID(JNIEnv *env, jobject instance, jlong revMetadataId, jstring revMetadataValue_) {
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataValue_1BY_1MetadataId(JNIEnv *env, jobject instance, jlong revMetadataId, jstring revMetadataValue_) {
     const char *revMetadataValue = env->GetStringUTFChars(revMetadataValue_, 0);
 
-    int revUpdateStatus = setMetadataValue_BY_MetadataId_RevEntityGUID((long) revMetadataId, strdup(revMetadataValue));
+    int revUpdateStatus = setMetadataValue_BY_MetadataId((long) revMetadataId, strdup(revMetadataValue));
 
     env->ReleaseStringUTFChars(revMetadataValue_, revMetadataValue);
 
@@ -224,11 +225,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetRemoteR
 extern "C"
 JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateSetRemoteRelationshipRemoteId_1By_1RevRelType_1RemoteSubjectGUID_1RemoteTarhetGUID(
-JNIEnv *env, jobject instance, jstring revEntityrelationship_, jlong revRemoteSubjectGUID, jlong revRemoteTargetGUID, jlong revRemoteRelId) {
+        JNIEnv *env, jobject instance, jstring revEntityrelationship_, jlong revRemoteSubjectGUID, jlong revRemoteTargetGUID, jlong revRemoteRelId) {
     const char *revEntityrelationship = env->GetStringUTFChars(revEntityrelationship_, 0);
 
     int revUpdateRetStatus = revPersUpdateSetRemoteRelationshipRemoteId_By_RevRelType_RemoteSubjectGUID_RemoteTarhetGUID(
-        strdup(revEntityrelationship), (long) revRemoteSubjectGUID, (long) revRemoteTargetGUID, (long) revRemoteRelId);
+            strdup(revEntityrelationship), (long) revRemoteSubjectGUID, (long) revRemoteTargetGUID, (long) revRemoteRelId);
 
     env->ReleaseStringUTFChars(revEntityrelationship_, revEntityrelationship);
 

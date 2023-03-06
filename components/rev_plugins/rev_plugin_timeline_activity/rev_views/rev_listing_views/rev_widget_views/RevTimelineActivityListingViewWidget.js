@@ -1,11 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, NativeModules} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
-import {revGetServerData_JSON_Async} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
+import RevNullMessagesView from '../../../../../rev_views/RevNullMessagesView';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {revGetServerData_JSON} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
 
 export const RevTimelineActivityListingViewWidget = () => {
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
+  const {REV_SITE_BODY, SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
+    useContext(ReViewsContext);
 
   const revPostsStateTxt = revTxt => {
     return (
@@ -26,32 +35,53 @@ export const RevTimelineActivityListingViewWidget = () => {
   );
 
   useEffect(() => {
-    (async function revGetServerData() {
+    let revErrTxt = '';
+
+    let revGetServerData = async () => {
       try {
         let revURL =
           REV_ROOT_URL +
           '/rev_api?' +
           'rev_logged_in_entity_guid=' +
-          1 +
+          REV_LOGGED_IN_ENTITY_GUID +
           '&rev_entity_guid=' +
-          1 +
-          '&revPluginHookContextsRemoteArr=revHookRemoteReadTimelineEntities';
+          -1 +
+          '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
 
-        let revData = await revGetServerData_JSON_Async(revURL);
+        revGetServerData_JSON(revURL, revRetData => {
+          if (
+            revRetData.hasOwnProperty('revError') ||
+            revRetData.hasOwnProperty('revServerStatus') ||
+            revRetData.revServerStatus == 'Network Request Failed'
+          ) {
+            revErrTxt = JSON.stringify(revRetData);
+            revSetActivityContentCount(revPostsStateTxt(revErrTxt));
 
-        if (revData && revData.hasOwnProperty('revTimelineEntities')) {
-          revSetActivityContentCount(
-            revPostsStateTxt('Posts    -' + revData.revTimelineEntities.length),
-          );
-        } else {
-          revSetActivityContentCount(
-            revPostsStateTxt('Error connecting to Owki !'),
-          );
-        }
+            return;
+          }
+
+          if (revRetData && revRetData.hasOwnProperty('revTimelineEntities')) {
+            let RevTaggedPostsListing = revPluginsLoader({
+              revPluginName: 'rev_plugin_tagged_posts',
+              revViewName: 'RevTaggedPostsListing',
+              revVarArgs: revRetData,
+            });
+
+            SET_REV_SITE_BODY(RevTaggedPostsListing);
+          }
+        });
       } catch (error) {
-        console.log('>>> error ' + error);
+        let revErrTxt = 'Error connecting to Owki ! - ';
+
+        if (error) {
+          revErrTxt = revErrTxt + JSON.stringify(error);
+        }
+
+        revSetActivityContentCount(revPostsStateTxt(revErrTxt));
       }
-    })();
+    };
+
+    revGetServerData();
   }, []);
 
   return (

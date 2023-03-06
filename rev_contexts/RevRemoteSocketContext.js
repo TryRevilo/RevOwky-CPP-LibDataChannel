@@ -4,11 +4,12 @@ var RNFS = require('react-native-fs');
 
 import {RevSendFile} from '../rev_function_libs/RevSendFile';
 
-const AppFolder = 'Owki';
-const DirectoryPath = '/storage/emulated/0/Documents/' + AppFolder;
-RNFS.mkdir(DirectoryPath);
+const revSettings = require('../rev_res/rev_settings.json');
 
-var path = DirectoryPath + '/rev_test.txt';
+const revAppRootDir = revSettings.revAppRootDir;
+RNFS.mkdir(revAppRootDir);
+
+var path = revAppRootDir + '/rev_test.txt';
 
 // write the file
 RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
@@ -22,8 +23,8 @@ RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
 const RevRemoteSocketContext = createContext();
 
 const RevRemoteSocketContextProvider = ({children}) => {
-  const [REV_PORT, setREV_PORT] = useState(4000);
-  const [REV_IP, setREV_IP] = useState('192.168.0.13');
+  const [REV_PORT, setREV_PORT] = useState(revSettings.revPort);
+  const [REV_IP, setREV_IP] = useState(revSettings.revIP);
   const [REV_ROOT_URL, setREV_ROOT_URL] = useState(
     'http://' + REV_IP + ':' + REV_PORT,
   );

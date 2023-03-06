@@ -52,12 +52,27 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
+    public int revPersSetRemoteRelationshipRemoteId(Integer revEntityRelationshipId, Integer revEntityRemoteRelationshipId) {
+        return revPersLibUpdate.revPersSetRemoteRelationshipRemoteId((int) revEntityRelationshipId, (int) revEntityRemoteRelationshipId);
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public int revPersUpdateRelResStatus_By_RelId(Integer revEntityRelationshipId, Integer resolveStatus) {
+        return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) resolveStatus);
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public int setRemoteRevEntityMetadataId(Integer revMetadataId, Integer remoteRevMetadataId) {
         return revPersLibUpdate.setRemoteRevEntityMetadataId((long) revMetadataId, (long) remoteRevMetadataId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setMetadataResolveStatus_BY_METADATA_ID(Integer revResolveStatus, Integer revMetadatrevPersGetRevEntityByGUIDaId) {
-        return revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) revMetadatrevPersGetRevEntityByGUIDaId);
+    public int setMetadataResolveStatus_BY_METADATA_ID(Integer revResolveStatus, Integer revMetadataId) {
+        return revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) revMetadataId);
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public int setMetadataValue_BY_MetadataId(Integer revMetadataId, String revMetadataValue) {
+        return revPersLibUpdate.setMetadataValue_BY_MetadataId((long) revMetadataId, revMetadataValue);
     }
 }

@@ -4,23 +4,33 @@ const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
 
 import {REV_ENTITY_STRUCT} from '../rev_db_struct_models/revEntity';
 
-export const revGetSiteEntity = () => {
+export const revGetSiteEntity = revLoggedInEntityGUID => {
   let revEntitiesStr =
-    RevPersLibRead_React.revPersGetALLRevEntity_By_SubType('rev_site');
-  let revEntitiesArr = JSON.parse(revEntitiesStr);
+    RevPersLibRead_React.getRevEntityByRevEntityOwnerGUID_Subtype(
+      revLoggedInEntityGUID,
+      'rev_site',
+    );
 
-  return revEntitiesArr.length > 0 ? revEntitiesArr[0] : null;
+  return JSON.parse(revEntitiesStr);
 };
 
-export const revCreateSiteEntity = (revOwnerEntityGUID = -1) => {
-  let revPersEntity = REV_ENTITY_STRUCT();
-  revPersEntity._revEntityType = 'rev_entity';
-  revPersEntity._revEntitySubType = 'rev_site';
-  revPersEntity._revEntityOwnerGUID = revOwnerEntityGUID;
+export const useRevCreateSiteEntity = () => {
+  const revCreateSiteEntity = revOwnerEntityGUID => {
+    if (revOwnerEntityGUID < 1) {
+      return null;
+    }
 
-  let revEntityGUID = RevPersLibCreate_React.revPersInitJSON(
-    JSON.stringify(revPersEntity),
-  );
+    let revPersEntity = REV_ENTITY_STRUCT();
+    revPersEntity._revEntityType = 'rev_entity';
+    revPersEntity._revEntitySubType = 'rev_site';
+    revPersEntity._revEntityOwnerGUID = revOwnerEntityGUID;
 
-  return revEntityGUID;
+    let revEntityGUID = RevPersLibCreate_React.revPersInitJSON(
+      JSON.stringify(revPersEntity),
+    );
+
+    return revEntityGUID;
+  };
+
+  return {revCreateSiteEntity};
 };

@@ -2,14 +2,15 @@
 // Created by home on 2019-08-17.
 //
 
+#include "rev_pers_object_init.h"
+
 #include <jni.h>
 #include <string.h>
 #include <android/log.h>
-#include "rev_pers_object_init.h"
-#include "../../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
+#include "../../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 
 extern "C" {
-#include <rev_linked_list.h>
+#include "../../../../libs/rev_list/rev_linked_list.h"
 };
 
 void revPersSetRevObjectEntityBaseMetadata(JNIEnv *env, jobject revEntity, RevEntity *c_revEntity) {

@@ -35,6 +35,12 @@ var REV_PLUGINS = {
       import(`./rev_plugins/rev_plugin_user_settings/RevStart`),
     ),
   },
+  rev_plugin_user_profile: {
+    revPluginName: 'rev_plugin_user_profile',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_user_profile/RevStart`),
+    ),
+  },
   rev_plugin_ads: {
     revPluginName: 'rev_plugin_ads',
     revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_ads/RevStart`)),
@@ -49,6 +55,12 @@ var REV_PLUGINS = {
     revPluginName: 'rev_plugin_timeline_activity',
     revPlugin: loadable(() =>
       import(`./rev_plugins/rev_plugin_timeline_activity/RevStart`),
+    ),
+  },
+  rev_plugin_video: {
+    revPluginName: 'rev_plugin_video',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_video/RevStart`),
     ),
   },
 };

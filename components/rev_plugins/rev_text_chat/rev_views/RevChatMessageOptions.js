@@ -16,7 +16,7 @@ import {
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {revGetMetadataValue} from '../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {revGetMetadataValue} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 import {revPluginsLoader} from '../../../rev_plugins_loader';
 

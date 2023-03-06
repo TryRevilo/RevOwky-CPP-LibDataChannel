@@ -1,8 +1,8 @@
+#include "rev_linked_list.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
-#include "rev_linked_list.h"
 
 void list_new(list *list, int elementSize, freeFunction freeFn)
 {

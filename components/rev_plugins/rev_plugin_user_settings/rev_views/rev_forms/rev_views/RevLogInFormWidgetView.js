@@ -10,20 +10,38 @@ import React, {useContext, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {revLogin} from '../../../rev_actions/rev_log_in_action';
+import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {revGetServerData} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
+
+import {useRevLogin} from '../../../rev_actions/rev_log_in_action';
 
 export const RevLogInFormWidgetView = () => {
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
+  const {revLogin} = useRevLogin();
 
   const revHandleTermsTabPress = () => {};
 
-  const revHandleLogInTabPress = (revUserId, revPassword) => {
+  const revHandleLogInTabPress = async (revUserId, revPassword) => {
     let revLoggedInEntityGUID = revLogin(revUserId.trim(), revPassword.trim());
 
     if (revLoggedInEntityGUID > 0) {
+      console.log('>>> revLoggedInEntityGUID ' + revLoggedInEntityGUID);
       SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
+    } else {
+      let revLogInURL =
+        REV_ROOT_URL +
+        '/rev_api?' +
+        'rev_entity_unique_id=' +
+        revUserId +
+        '&revPluginHookContextsRemoteArr=revHookRemoteHandlerLogIn,revHookRemoteSendLoggedInPresenceToConnections,revHookRemoteHandlerProfile,revHookRemoteHandlerProfileStats';
+
+      let revData = await revGetServerData(revLogInURL);
+      console.log('>>> revData ' + JSON.stringify(revData));
     }
   };
 

@@ -46,4 +46,4 @@ CMakeFiles/rev_list.dir/libs/rev_list/rev_linked_list.c.o: \
  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/assert.h \
- /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/libs/rev_list/rev_linked_list.h
+ /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Persrev_linked_list

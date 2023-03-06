@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c" "CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o" "gcc" "CMakeFiles/rev_db_init.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.c.o.d"
+  "/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c" "CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o" "gcc" "CMakeFiles/rev_db_init.dir/src/main/cpp/rev_pers_lib/rev_db_init/rev_db_init.c.o.d"
   )
 
 # Targets to which this target links.

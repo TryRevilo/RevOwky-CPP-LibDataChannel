@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  NativeModules,
 } from 'react-native';
 
 import DocumentPicker, {
@@ -20,27 +21,86 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {revCreateSitePostAction} from '../../../rev_actions/rev_create_site_post_action';
+import {useRevCreateSitePostAction} from '../../../rev_actions/rev_create_site_post_action';
 
-export default RevSitePublisherFormWidget = () => {
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
+
+const {RevPersLibRead_React} = NativeModules;
+
+export const RevSitePublisherFormWidget = ({revVarArgs}) => {
+  let revEntityGUID = -1;
+  let revKiwiTxtVal = '';
+
+  var handleRevSitePublisherCancelTab = () => {
+    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+  };
+
+  if (
+    !revIsEmptyJSONObject(revVarArgs) &&
+    revVarArgs.hasOwnProperty('revVarArgs')
+  ) {
+    revVarArgs = revVarArgs.revVarArgs;
+
+    revEntityGUID = revVarArgs._revEntityGUID;
+
+    let revInfoEntityGUIDArrStr =
+      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        'rev_entity_info',
+        revEntityGUID,
+      );
+
+    let revInfoEntityGUIDArr = JSON.parse(revInfoEntityGUIDArrStr);
+
+    if (
+      !Array.isArray(revInfoEntityGUIDArr) ||
+      revInfoEntityGUIDArr.length < 1
+    ) {
+      return null;
+    }
+
+    let revInfoEntityGUID = revInfoEntityGUIDArr[0];
+
+    let revInfoEntityStr =
+      RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
+
+    let revInfoEntity = JSON.parse(revInfoEntityStr);
+
+    revKiwiTxtVal = revGetMetadataValue(
+      revInfoEntity._revEntityMetadataList,
+      'revPostText',
+    );
+
+    if (revVarArgs.hasOwnProperty('revHideKiwiPublisherForm')) {
+      handleRevSitePublisherCancelTab = revVarArgs.revHideKiwiPublisherForm;
+    }
+  }
+
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} = useContext(ReViewsContext);
 
   const [revTagText, setRevTagText] = useState('');
-  const [revSitePostText, setRevSitePostText] = useState('');
+  const [revSitePostText, setRevSitePostText] = useState(revKiwiTxtVal);
 
   const [revSelectedMedia, setRevSelectedMedia] = useState(null);
 
-  const revHandleCreateSitePostTab = async () => {
+  const {revCreateSitePostAction} = useRevCreateSitePostAction();
+
+  const revHandleCreateSitePostTab = () => {
     let revVaArgs = {
-      revSitePostText: revSitePostText,
+      _revEntityGUID: revEntityGUID,
       _revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revSitePostText: revSitePostText,
       revSelectedMedia: revSelectedMedia,
     };
 
-    revCreateSitePostAction(revVaArgs, revPersEntityGUID => {
-      if (revPersEntityGUID > 0) {
+    console.log('>>> revSelectedMedia ' + JSON.stringify(revSelectedMedia));
+
+    revCreateSitePostAction(revVaArgs, revRetData => {
+      console.log('>>> revCreateSitePostAction ' + JSON.stringify(revRetData));
+      if (revRetData) {
         setRevSitePostText('');
+        handleRevSitePublisherCancelTab();
       }
     });
   };
@@ -60,6 +120,7 @@ export default RevSitePublisherFormWidget = () => {
   const revHandleOnMediaSelectTab = useCallback(async () => {
     try {
       const response = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
         presentationStyle: 'fullScreen',
         allowMultiSelection: true,
       });
@@ -70,9 +131,7 @@ export default RevSitePublisherFormWidget = () => {
     }
   }, [revSelectedMedia]);
 
-  const handleRevSitePublisherCancelTab = () => {
-    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
-  };
+  let revBtnTxt = revEntityGUID < 0 ? 'Publish' : 'Update';
 
   return (
     <View style={[styles.revFlexContainer, styles.revSitePublisherContainer]}>
@@ -114,7 +173,7 @@ export default RevSitePublisherFormWidget = () => {
                 styles.revSiteTxtSmall,
                 styles.revSitePublisherSubmitTab,
               ]}>
-              Publish
+              {revBtnTxt}
             </Text>
           </TouchableOpacity>
         </View>
@@ -293,6 +352,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     paddingHorizontal: 12,
     paddingVertical: 3,
+    borderRadius: 32,
   },
   revSitePublisherUpload: {
     paddingHorizontal: 8,

@@ -67,7 +67,7 @@ public class RevSaveRevEntityRelationshipToServerResolver extends AsyncTask<Void
 
             Long remoteSubjectGUID = revEntityRelationship.get_remoteRevEntitySubjectGUID();
             if (remoteSubjectGUID < 1) {
-                remoteSubjectGUID = revPersLibRead.getRemoteRevEntityGUID(revEntityRelationship.get_revEntitySubjectGUID());
+                remoteSubjectGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revEntityRelationship.get_revEntitySubjectGUID());
                 if (remoteSubjectGUID < 1) {
                     revPersLibUpdate.revPersUpdateRelResStatus_By_RelId(revEntityRelationship.get_revEntityRelationshipId(), -107);
                     continue;
@@ -79,7 +79,7 @@ public class RevSaveRevEntityRelationshipToServerResolver extends AsyncTask<Void
 
             Long remoteTargetGUID = revEntityRelationship.get_remoteRevEntityTargetGUID();
             if (remoteTargetGUID < 1) {
-                remoteTargetGUID = revPersLibRead.getRemoteRevEntityGUID(revEntityRelationship.get_revEntityTargetGUID());
+                remoteTargetGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revEntityRelationship.get_revEntityTargetGUID());
                 if (remoteTargetGUID < 1) {
                     revPersLibUpdate.revPersUpdateRelResStatus_By_RelId(revEntityRelationship.get_revEntityRelationshipId(), -107);
                     continue;

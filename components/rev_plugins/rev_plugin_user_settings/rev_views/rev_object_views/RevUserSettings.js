@@ -14,9 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
 import {revPluginsLoader} from '../../../../rev_plugins_loader';
-const {RevPersLibUpdate_React} = NativeModules;
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
-import {revGetSiteEntity} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 
 export const RevUserSettings = () => {
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
@@ -50,12 +48,6 @@ export const RevUserSettings = () => {
   };
 
   const revHandleOnLogOutTabPressed = () => {
-    let revSiteEntity = revGetSiteEntity();
-
-    RevPersLibUpdate_React.resetRevEntityOwnerGUID(
-      revSiteEntity._revEntityGUID,
-      -1,
-    );
     SET_REV_LOGGED_IN_ENTITY_GUID(-1);
   };
 

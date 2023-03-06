@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
-import {RevFooter1Left} from './rev_views/rev_footer_views/RevFooter1Left';
-import {RevFooter2} from './rev_views/rev_footer_views/RevFooter2';
-import {RevFooter3} from './rev_views/rev_footer_views/RevFooter3';
+import {RevFooter1Left} from '../../rev_views/rev_site_footer_views/RevFooter1Left';
+import {RevFooter2} from '../../rev_views/rev_site_footer_views/RevFooter2';
+import {RevFooter3} from '../../rev_views/rev_site_footer_views/RevFooter3';
 import {RevChatMessageNotificationsListing} from './rev_views/rev_listing_views/RevChatMessageNotificationsListing';
 
 export default function RevStart({revVarArgs}) {

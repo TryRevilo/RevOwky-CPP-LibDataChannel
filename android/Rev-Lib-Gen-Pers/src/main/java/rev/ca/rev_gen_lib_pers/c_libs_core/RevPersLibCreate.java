@@ -1,5 +1,6 @@
 package rev.ca.rev_gen_lib_pers.c_libs_core;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntity;
@@ -32,5 +33,17 @@ public class RevPersLibCreate {
     public native List<RevEntityMetadata> revSaveRevEntityMetadataList(List<RevEntityMetadata> revEntityMetadataList);
 
     public native long revSaveRevEntityMetadata(RevEntityMetadata revEntityMetadata);
+
+    public native void revCURLFileUpload(String revURL, String revFiles, String revData);
+
+    public native int revCopyFile(String revSourcePath, String revDestPath);
+
+    public native int revCopyFileAsync(String revSourcePath, String revDestPath);
+
+    public native int revCopyFile_MemoryMapped(String revSourcePath, String revDestPath);
+
+    public native int revCopyFileCURL(String revSourcePath, String revDestPath);
+
+    public native byte[] revReadResizedFileBytes(String revPath);
 
 }

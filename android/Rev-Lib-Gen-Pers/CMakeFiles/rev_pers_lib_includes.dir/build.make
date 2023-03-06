@@ -69,28 +69,28 @@ include CMakeFiles/rev_pers_lib_includes.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/rev_pers_lib_includes.dir/flags.make
 
-CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: CMakeFiles/rev_pers_lib_includes.dir/flags.make
-CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c
-CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: CMakeFiles/rev_pers_lib_includes.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o -MF CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o.d -o CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o -c /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c
+CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: CMakeFiles/rev_pers_lib_includes.dir/flags.make
+CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c
+CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o: CMakeFiles/rev_pers_lib_includes.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o -MF CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o.d -o CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o -c /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c
 
-CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c > CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
+CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c > CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.i
 
-CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c -o CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
+CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/rev/Downloads/rev_wip/rev_android/rev_react_native/Owki/android/Rev-Lib-Gen-Pers/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c -o CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.s
 
 # Object files for target rev_pers_lib_includes
 rev_pers_lib_includes_OBJECTS = \
-"CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o"
+"CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o"
 
 # External object files for target rev_pers_lib_includes
 rev_pers_lib_includes_EXTERNAL_OBJECTS =
 
-librev_pers_lib_includes.so: CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
+librev_pers_lib_includes.so: CMakeFiles/rev_pers_lib_includes.dir/src/main/cpp/rev_pers_lib/rev_clib_sqlite_pers/rev_pers_libs_ext/libs_cust_rev/rev_gen_functions.c.o
 librev_pers_lib_includes.so: CMakeFiles/rev_pers_lib_includes.dir/build.make
 librev_pers_lib_includes.so: librev_list.so
 librev_pers_lib_includes.so: librev_c_json.so

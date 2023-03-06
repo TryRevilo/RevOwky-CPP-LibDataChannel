@@ -5,6 +5,7 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.owki.rev_react_modules.rev_gen_function_libs.RevGenLibs_Server_React;
+import com.owki.rev_react_modules.rev_gen_function_libs.RevReactNativeEvents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class RevGenFunctionLibs implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
 
         modules.add(new RevGenLibs_Server_React(reactApplicationContext));
+        modules.add(new RevReactNativeEvents(reactApplicationContext));
 
         return modules;
     }

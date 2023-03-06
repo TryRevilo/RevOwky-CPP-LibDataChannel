@@ -145,7 +145,7 @@ public class RevMultiDownloadFileFromURL extends AsyncTask<String, Integer, Void
 
                         RevEntityRelationship revInfoPicAlbumRel = new RevEntityRelationship("rev_picture_of", aLong, revPicsAlbumGUID);
                         revInfoPicAlbumRel.set_revResolveStatus(0);
-                        revInfoPicAlbumRel.set_remoteRevEntitySubjectGUID(revPersLibRead.getRemoteRevEntityGUID(aLong));
+                        revInfoPicAlbumRel.set_remoteRevEntitySubjectGUID(revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(aLong));
                         revInfoPicAlbumRel.set_remoteRevEntityTargetGUID(revPicsAlbumGUID);
                         revPersJava.saveRevEntity_NO_REMOTE_SYNC(revInfoPicAlbumRel);
                     } catch (FileNotFoundException e) {

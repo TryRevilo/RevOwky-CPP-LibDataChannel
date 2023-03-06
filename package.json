@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@loadable/component": "^5.15.2",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "events": "^3.3.0",
     "expo-modules-core": "^1.0.3",
     "lorem-ipsum": "^2.0.8",
@@ -24,6 +25,7 @@
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-modal": "^13.0.1",
+    "react-native-paper": "^5.2.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^6.0.0-alpha.3",
     "simple-peer": "^9.11.1",

@@ -2,41 +2,61 @@
 // Created by rev on 5/16/18.
 //
 
-#include <jni.h>
+#include "rev-pers-lib-create.hpp"
 
+#include <jni.h>
 #include <android/log.h>
 
-#include <malloc.h>
-#include <string>
+#include <string.h>
 #include <vector>
+#include <memory>
 
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
+#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.h"
 #include "rev_pers_jni_structs.h"
 #include "rev_metadata_jni_loader.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_db_models/rev_entity_annotation.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_db_models/rev_entity_annotation.h"
+#include "rev_init_jni_lib.hpp"
+#include "rev_pers_react_native_events.hpp"
+
+using namespace std;
 
 extern "C"
 {
-#include <rev_linked_list.h>
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_db_init/rev_db_init.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
-#include "../cpp/rev_clib_sqlite_pers/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.h"
+#include "../../../libs/rev_list/rev_linked_list.h"
+#include "../cpp/rev_pers_lib/rev_db_init/rev_db_init.h"
+#include "../cpp/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.h"
+#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.h"
+#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.h"
+#include "../cpp/rev_files/rev_curl_upload_file.h"
+#include "../cpp/rev_gen_functions/rev_gen_functions.h"
+#include "../cpp/rev_files/rev_gen_file_functions.h"
 }
 
-#include <nlohmann/json.hpp>
+JavaVM *gJvm = nullptr;
+static jobject gClassLoader;
+static jmethodID gFindClassMethod;
 
-#include <iostream>
+using namespace std;
 
-extern "C" JNIEXPORT void JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_initRevDb(JNIEnv *env,
-                                                                         jobject instance,
-                                                                         jstring dirPath_) {
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *pjvm, void *reserved) {
+    __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> Rev-Pers-Lib-Create >>> JNI_OnLoad <<<");
+
+    gJvm = pjvm;  // cache the JavaVM pointer
+
+    return JNI_VERSION_1_6;
+}
+
+JavaVM *revGetJVM() {
+    return gJvm;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_initRevDb(JNIEnv *env, jobject instance, jstring dirPath_) {
     const char *dirPath = env->GetStringUTFChars(dirPath_, 0);
 
     initRevDb(strdup(dirPath));
@@ -224,7 +244,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInit(JNIEn
     jobject revEntitySiteGUID_JOB = env->CallObjectMethod(revEntity, get_revEntitySiteGUID_MID);
     long revEntitySiteGUID = (env)->CallLongMethod(revEntitySiteGUID_JOB, longGetLongValue);
 
-    c_revEntity._revSiteEntityGUID = revEntitySiteGUID;
+    c_revEntity._revEntitySiteGUID = revEntitySiteGUID;
 
     /** SET REV ACCESS PERMISSION **/
     jmethodID get_revEntityAccessPermission_MID = env->GetMethodID(revEntityClazz, "get_revEntityAccessPermission", "()I");
@@ -429,8 +449,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
     list_for_each(&list, revPersGetRevEntityMetadata);
 
     for (size_t i = 0; i < searchRecordResultRevEntityMetadata.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityMetadataJniPosRec->cls, revEntityMetadataJniPosRec->constructortor_ID);
-        FillDataRecValuesToRevMetadataJni(env, jPosRec, searchRecordResultRevEntityMetadata[i]);
+        jobject jPosRec = revGetFilledRevMetadataJniObject(env, searchRecordResultRevEntityMetadata[i]);
         env->CallBooleanMethod(retRevJObjectArrayList, addMethod, jPosRec);
         env->DeleteLocalRef(jPosRec);
     }
@@ -796,10 +815,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityAnnotationWithValues(
-        JNIEnv *env, jobject instance, jstring _revAnnotationName_, jstring _revAnnotationValue_,
-        jlong _revEntityGUID, jlong _ownerEntityGUID) {
-
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityAnnotationWithValues(JNIEnv *env, jobject instance, jstring _revAnnotationName_, jstring _revAnnotationValue_, jlong _revEntityGUID, jlong _ownerEntityGUID) {
     const char *_revAnnotationName = env->GetStringUTFChars(_revAnnotationName_, 0);
     const char *_revAnnotationValue = env->GetStringUTFChars(_revAnnotationValue_, 0);
 
@@ -809,4 +825,118 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
     env->ReleaseStringUTFChars(_revAnnotationValue_, _revAnnotationValue);
 
     return revAnnotationId;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCopyFile(JNIEnv *env, jobject thiz, jstring rev_source_path, jstring rev_dest_path) {
+    const char *revSourcePath = env->GetStringUTFChars(rev_source_path, NULL);
+    const char *revDestPath = env->GetStringUTFChars(rev_dest_path, NULL);
+
+    int revRetVal = revCopyFile(revSourcePath, revDestPath);
+
+    env->ReleaseStringUTFChars(rev_source_path, revSourcePath);
+    env->ReleaseStringUTFChars(rev_dest_path, revDestPath);
+
+    return revRetVal;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCopyFileAsync(JNIEnv *env, jobject thiz, jstring rev_source_path, jstring rev_dest_path) {
+    const char *revSourcePath = env->GetStringUTFChars(rev_source_path, NULL);
+    const char *revDestPath = env->GetStringUTFChars(rev_dest_path, NULL);
+
+    revCopyFileAsync(revSourcePath, revDestPath);
+
+    env->ReleaseStringUTFChars(rev_source_path, revSourcePath);
+    env->ReleaseStringUTFChars(rev_dest_path, revDestPath);
+
+    return 0;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCopyFile_1MemoryMapped(JNIEnv *env, jobject thiz, jstring rev_source_path, jstring rev_dest_path) {
+    const char *revSourcePath = env->GetStringUTFChars(rev_source_path, NULL);
+    const char *revDestPath = env->GetStringUTFChars(rev_dest_path, NULL);
+
+    int revRetVal = revCopyFile_MemoryMapped(revSourcePath, revDestPath);
+
+    env->ReleaseStringUTFChars(rev_source_path, revSourcePath);
+    env->ReleaseStringUTFChars(rev_dest_path, revDestPath);
+
+    return revRetVal;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCopyFileCURL(JNIEnv *env, jobject thiz, jstring rev_source_path, jstring rev_dest_path) {
+    const char *revSourcePath = env->GetStringUTFChars(rev_source_path, NULL);
+    const char *revDestPath = env->GetStringUTFChars(rev_dest_path, NULL);
+
+    int revRetVal = revCopyFileCURL(revSourcePath, revDestPath);
+
+    env->ReleaseStringUTFChars(rev_source_path, revSourcePath);
+    env->ReleaseStringUTFChars(rev_dest_path, revDestPath);
+
+    return revRetVal;
+}
+
+extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revReadResizedFileBytes(JNIEnv *env, jobject thiz, jstring rev_path) {
+    const char *revPath = env->GetStringUTFChars(rev_path, NULL);
+
+    // Open the file and read its contents into a buffer
+    size_t size;
+    char *buffer = revReadFileBytes(revPath, &size);
+
+    // Release the string object to avoid memory leaks
+    env->ReleaseStringUTFChars(rev_path, revPath);
+
+    // Check if read_file() was successful
+    if (buffer == NULL) {
+        return NULL;
+    }
+
+    // Create a new byte array in Java
+    jbyteArray result = env->NewByteArray(size);
+    if (result == NULL) {
+        return NULL;
+    }
+
+    // Copy the contents of the buffer to the byte array
+    env->SetByteArrayRegion(result, 0, size, (jbyte *) buffer);
+
+    // Free the buffer
+    free(buffer);
+
+    // Return the byte array to Java
+    return result;
+}
+
+void revCURLReturnDataCB(void *revData) {
+    __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> CB -revData : %s", (char *) revData);
+
+    JNIEnv *env = revGetEnv(revGetJVM());
+
+    std::string revEventName = "rev_curl_file_upload_ret_data";
+    const char *revClsPath = "com/owki/rev_react_modules/rev_gen_function_libs/RevReactNativeEvents";
+    jclass RevReactNativeEvents = revFindClass(env, revClsPath);
+    revPersInitReactNativeEvent(env, revEventName, (char *) revData);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCURLFileUpload(JNIEnv *env, jobject thiz, jstring rev_url, jstring rev_files, jstring rev_data) {
+    const char *revURL = env->GetStringUTFChars(rev_url, 0);
+    const char *revFiles = env->GetStringUTFChars(rev_files, 0);
+    const char *revData = env->GetStringUTFChars(rev_data, 0);
+
+    revCURLFileUpload(strdup(revURL), strdup(revFiles), strdup(revData), revCURLReturnDataCB);
+
+    env->ReleaseStringUTFChars(rev_url, revURL);
+    env->ReleaseStringUTFChars(rev_files, revFiles);
+    env->ReleaseStringUTFChars(rev_data, revData);
 }

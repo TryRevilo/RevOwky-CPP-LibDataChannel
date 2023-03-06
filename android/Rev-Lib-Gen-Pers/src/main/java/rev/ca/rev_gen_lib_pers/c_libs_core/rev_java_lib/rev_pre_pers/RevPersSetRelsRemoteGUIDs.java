@@ -18,14 +18,14 @@ public class RevPersSetRelsRemoteGUIDs {
 
     private void setRemoteSubjectGUIDs() {
         for (long revRelId : revPersLibRead.revPersGetUnresolvedRemoteSubjectGUIDSRelIds()) {
-            long revRemoteEntityGUID = revPersLibRead.getRemoteRevEntityGUID(revPersLibRead.getRevRelationshipSubjectGUID_By_RelId(revRelId));
+            long revRemoteEntityGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revPersLibRead.getRevRelationshipSubjectGUID_By_RelId(revRelId));
             revPersLibUpdate.revPersUpdateSetRemoteSubjectGUID_By_RelId(revRelId, revRemoteEntityGUID);
         }
     }
 
     private void setRemotetargetGUIDs() {
         for (long revRelId : revPersLibRead.revPersGetUnresolvedRemoteTargetGUIDSRelIds()) {
-            long revRemoteEntityGUID = revPersLibRead.getRemoteRevEntityGUID(revPersLibRead.getRevRelationshipTargetGUID_By_RelationshipId(revRelId));
+            long revRemoteEntityGUID = revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revPersLibRead.getRevRelationshipTargetGUID_By_RelationshipId(revRelId));
             revPersLibUpdate.revPersUpdateSetRemoteTarget_By_RelId(revRelId, revRemoteEntityGUID);
         }
     }
