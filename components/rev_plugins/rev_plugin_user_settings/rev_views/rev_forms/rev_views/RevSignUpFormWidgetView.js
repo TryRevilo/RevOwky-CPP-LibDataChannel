@@ -86,7 +86,7 @@ export const RevSignUpFormWidgetView = () => {
 
         <View style={[styles.revFlexWrapper, styles.revLoginFormFooterWrapper]}>
           <TouchableOpacity onPress={revHandleSignUpInTabPress}>
-            <Text style={[styles.revSiteTxtSmall, styles.revLogInTab]}>
+            <Text style={[styles.revSiteTxtSmall, styles.revSignUpTab]}>
               Sign Up
             </Text>
           </TouchableOpacity>
@@ -97,7 +97,7 @@ export const RevSignUpFormWidgetView = () => {
                 styles.revSiteTxtColor,
                 styles.revSiteTxtSmall,
                 styles.revSiteFontBold,
-                styles.revSignUpTab,
+                styles.revFooterOptionsTab,
               ]}>
               <FontAwesome
                 name="dot-circle-o"
@@ -117,7 +117,7 @@ export const RevSignUpFormWidgetView = () => {
                 styles.revSiteTxtColor,
                 styles.revSiteTxtSmall,
                 styles.revSiteFontBold,
-                styles.revSignUpTab,
+                styles.revFooterOptionsTab,
               ]}>
               <FontAwesome
                 name="dot-circle-o"
@@ -244,13 +244,14 @@ const styles = StyleSheet.create({
     marginTop: 22,
     marginLeft: 7,
   },
-  revLogInTab: {
+  revSignUpTab: {
     color: '#F7F7F7',
     backgroundColor: '#444',
     paddingHorizontal: 12,
     paddingVertical: 5,
+    borderRadius: 55,
   },
-  revSignUpTab: {
+  revFooterOptionsTab: {
     alignItems: 'center',
     paddingHorizontal: 8,
   },

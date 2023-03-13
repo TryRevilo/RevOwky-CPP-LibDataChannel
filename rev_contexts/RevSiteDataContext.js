@@ -5,9 +5,12 @@ const {RevPersLibRead_React} = NativeModules;
 
 import {
   useRevCreateSiteEntity,
-  revGetSiteEntity,
+  useRevGetSiteEntity,
 } from '../components/rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
-import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyVar,
+  revIsEmptyJSONObject,
+} from '../rev_function_libs/rev_gen_helper_functions';
 
 const RevSiteDataContext = createContext();
 
@@ -22,10 +25,14 @@ const RevSiteDataContextProvider = ({children}) => {
 
   const [REV_LOGGED_IN_ENTITY, SET_REV_LOGGED_IN_ENTITY] = useState(null);
 
+  const {revGetSiteEntity} = useRevGetSiteEntity();
   const {revCreateSiteEntity} = useRevCreateSiteEntity();
 
   useEffect(() => {
-    if (REV_LOGGED_IN_ENTITY_GUID > 0) {
+    if (
+      !revIsEmptyVar(REV_LOGGED_IN_ENTITY_GUID) &&
+      REV_LOGGED_IN_ENTITY_GUID > 0
+    ) {
       let revSiteEntityGUID = -1;
       let revSiteEntityOwnerGUID = -1;
 
@@ -52,15 +59,6 @@ const RevSiteDataContextProvider = ({children}) => {
 
         revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
       }
-
-      console.log(
-        '>>> REV_LOGGED_IN_ENTITY_GUID ' +
-          REV_LOGGED_IN_ENTITY_GUID +
-          ' >>> revSiteEntityOwnerGUID ' +
-          revSiteEntityOwnerGUID +
-          ' revSiteEntityGUID ' +
-          revSiteEntityGUID,
-      );
 
       if (revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID) {
         SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);

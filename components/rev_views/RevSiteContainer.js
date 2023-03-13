@@ -8,7 +8,13 @@
 
 import React, {useContext} from 'react';
 
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  NativeModules,
+} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -20,8 +26,6 @@ import {revPluginsLoader} from '../rev_plugins_loader';
 import RevFooterArea from './RevFooterArea';
 
 const RevSiteContainer = () => {
-  const {SET_REV_SITE_VAR_ARGS} = useContext(RevSiteDataContext);
-
   const {
     REV_PAGE_HEADER_CONTENT_VIEWER,
     SET_REV_PAGE_HEADER_CONTENT_VIEWER,
@@ -37,10 +41,6 @@ const RevSiteContainer = () => {
     });
 
     SET_REV_SITE_BODY(RevContacts);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
   };
 
   let revHandleOnSearchTabPress = () => {
@@ -51,10 +51,6 @@ const RevSiteContainer = () => {
     });
 
     SET_REV_PAGE_HEADER_CONTENT_VIEWER(RevSearchForm);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
   };
 
   let revHandleMessageNotificationsPress = () => {
@@ -65,10 +61,6 @@ const RevSiteContainer = () => {
     });
 
     SET_REV_SITE_BODY(RevMessageNoticias);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
   };
 
   return (

@@ -318,10 +318,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInitJSON(J
     const char *revJSONEntity = env->GetStringUTFChars(revJSONEntity_, 0);
 
     RevEntity *revEntity = revJSONEntityFiller(revJSONEntity);
-
     long lastDbEntry = revPersInit(revEntity);
-
-    __android_log_print(ANDROID_LOG_FATAL, "MyApp", ">>> lastDbEntry : %ld", lastDbEntry);
 
     return lastDbEntry;
 }

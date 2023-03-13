@@ -1,27 +1,20 @@
+import React from 'react';
+
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity,
   ScrollView,
   Dimensions,
-  NativeModules,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
-import {revPluginsLoader} from '../../../../../rev_plugins_loader';
-import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {revGetSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
-
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-
-const {RevPersLibUpdate_React} = NativeModules;
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   if (
@@ -46,8 +39,6 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   let revUserRegLongDate = revInfoEntity._revTimePublished;
   let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
-
-  const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   let minMessageLen = 10;
   let maxMessageLen = 55;

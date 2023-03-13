@@ -52,7 +52,11 @@ export const revGetPublisherEntity = (revPublishersArr, revEntityGUID) => {
 
     let revPublisherGUID = revGetLocal_OR_RemoteGUID(revPublisher);
 
-    if (revPublisher && revPublisherGUID == revEntityGUID) {
+    if (revIsEmptyJSONObject(revPublisher)) {
+      continue;
+    }
+
+    if (revPublisherGUID == revEntityGUID) {
       if (revPublisher.revEntity) {
         revPublisherEntity = revPublisher.revEntity;
       } else {

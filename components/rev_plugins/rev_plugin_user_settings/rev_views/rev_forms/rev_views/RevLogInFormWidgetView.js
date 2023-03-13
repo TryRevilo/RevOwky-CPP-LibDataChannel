@@ -1,3 +1,5 @@
+import React, {useContext, useState} from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -5,43 +7,67 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  NativeModules,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
-import {revGetServerData} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
 
 import {useRevLogin} from '../../../rev_actions/rev_log_in_action';
 
+import {useRevGetSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+import {useRevPersGetRevEntities_By_ResolveStatus_SubType} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revIsEmptyVar} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
+const {RevPersLibUpdate_React} = NativeModules;
+
 export const RevLogInFormWidgetView = () => {
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
-  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const {revLogin} = useRevLogin();
+  const {revGetSiteEntity} = useRevGetSiteEntity();
+  const {revPersGetRevEntities_By_ResolveStatus_SubType} =
+    useRevPersGetRevEntities_By_ResolveStatus_SubType();
 
   const revHandleTermsTabPress = () => {};
 
   const revHandleLogInTabPress = async (revUserId, revPassword) => {
-    let revLoggedInEntityGUID = revLogin(revUserId.trim(), revPassword.trim());
+    revUserId = revUserId.trim();
+    revPassword = revPassword.trim();
+
+    let revLoggedInEntityGUID = await revLogin(revUserId, revPassword);
 
     if (revLoggedInEntityGUID > 0) {
-      console.log('>>> revLoggedInEntityGUID ' + revLoggedInEntityGUID);
-      SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
-    } else {
-      let revLogInURL =
-        REV_ROOT_URL +
-        '/rev_api?' +
-        'rev_entity_unique_id=' +
-        revUserId +
-        '&revPluginHookContextsRemoteArr=revHookRemoteHandlerLogIn,revHookRemoteSendLoggedInPresenceToConnections,revHookRemoteHandlerProfile,revHookRemoteHandlerProfileStats';
+      let revSiteEntity = revGetSiteEntity(revLoggedInEntityGUID);
+      let revSiteEntityGUID = revSiteEntity._revEntityGUID;
 
-      let revData = await revGetServerData(revLogInURL);
-      console.log('>>> revData ' + JSON.stringify(revData));
+      if (!revIsEmptyVar(revSiteEntityGUID) && revSiteEntityGUID > 0) {
+        let revEntityResolveStatusByRevEntityGUID =
+          RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+            2,
+            revSiteEntityGUID,
+          );
+
+        if (revEntityResolveStatusByRevEntityGUID) {
+          SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
+        }
+      }
+    } else {
+      let revSiteEntitiesArr = revPersGetRevEntities_By_ResolveStatus_SubType(
+        2,
+        'rev_site',
+      );
+      let revSiteEntity = revSiteEntitiesArr[0];
+      let revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
+
+      console.log('>>> revSiteEntityOwnerGUID ' + revSiteEntityOwnerGUID);
+
+      if (revSiteEntityOwnerGUID) {
+        SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);
+      }
     }
   };
 
@@ -87,7 +113,7 @@ export const RevLogInFormWidgetView = () => {
                 styles.revSiteTxtColor,
                 styles.revSiteTxtSmall,
                 styles.revSiteFontBold,
-                styles.revSignUpTab,
+                styles.revFooterOptionsTab,
               ]}>
               <FontAwesome
                 name="dot-circle-o"
@@ -110,7 +136,7 @@ export const RevLogInFormWidgetView = () => {
                 styles.revSiteTxtColor,
                 styles.revSiteTxtSmall,
                 styles.revSiteFontBold,
-                styles.revSignUpTab,
+                styles.revFooterOptionsTab,
               ]}>
               <FontAwesome
                 name="dot-circle-o"
@@ -240,8 +266,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#444',
     paddingHorizontal: 12,
     paddingVertical: 5,
+    borderRadius: 55,
   },
-  revSignUpTab: {
+  revFooterOptionsTab: {
     alignItems: 'center',
     paddingHorizontal: 8,
   },

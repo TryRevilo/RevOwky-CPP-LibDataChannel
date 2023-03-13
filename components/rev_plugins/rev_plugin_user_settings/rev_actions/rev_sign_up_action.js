@@ -66,6 +66,7 @@ export const revRegisterUserEntity = revVarArgs => {
   revPersUserEntitySettings._revEntityType = 'rev_object';
   revPersUserEntitySettings._revEntitySubType = 'rev_settings_entity';
   revPersUserEntitySettings._revEntityOwnerGUID = revPersUserEntityGUID;
+  revPersUserEntitySettings._revEntityContainerGUID = revPersUserEntityGUID;
 
   let revPersUserEntitySettingsGUID = RevPersLibCreate_React.revPersInitJSON(
     JSON.stringify(revPersUserEntitySettings),
@@ -91,7 +92,7 @@ export const revRegisterUserEntity = revVarArgs => {
   } else {
     let revPersEntitySettingsInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
     revPersEntitySettingsInfoRel._revEntityRelationshipType = 'rev_entity_info';
-    revPersEntitySettingsInfoRel._revOwnerGUID = revPersUserEntitySettingsGUID;
+    revPersEntitySettingsInfoRel._revOwnerGUID = revPersUserEntityGUID;
     revPersEntitySettingsInfoRel._revEntityTargetGUID =
       revPersUserEntitySettingsGUID;
     revPersEntitySettingsInfoRel._revEntitySubjectGUID =

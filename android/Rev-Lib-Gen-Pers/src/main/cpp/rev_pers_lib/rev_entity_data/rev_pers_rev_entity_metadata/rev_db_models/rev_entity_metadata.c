@@ -41,14 +41,27 @@ list *revJSONMetadataFiller(const char *const revJSONStringMetadata) {
                 revEntityMetadata->_metadataValue = _metadataValueVal;
             }
 
-            // _metadataOwnerGUID
-            revEntityMetadata->_resolveStatus = -1;
+            // _resolveStatus
+            const cJSON *_resolveStatus = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_resolveStatus");
+
+            if (cJSON_IsNumber(_resolveStatus)) {
+                int _resolveStatusVal = _resolveStatus->valueint;
+                revEntityMetadata->_resolveStatus = _resolveStatusVal;
+            }
 
             // _metadataOwnerGUID
             revEntityMetadata->_metadataOwnerGUID = -1;
 
             // _remoteRevMetadataId
-            revEntityMetadata->_remoteRevMetadataId = -1l;
+            const cJSON *_remoteRevMetadataId = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_remoteRevMetadataId");
+
+            long _remoteRevMetadataIdVal = -1l;
+
+            if (cJSON_IsNumber(_remoteRevMetadataId) && (_remoteRevMetadataId->valueint != NULL)) {
+                _remoteRevMetadataIdVal = _remoteRevMetadataId->valueint;
+            }
+
+            revEntityMetadata->_remoteRevMetadataId = _remoteRevMetadataIdVal;
 
             // _revTimePublished
             revEntityMetadata->_revTimePublished = revCurrentTimestampMillSecs();

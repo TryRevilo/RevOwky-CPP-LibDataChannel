@@ -12,21 +12,29 @@ import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../rev_db_struct_models/revEnti
 
 import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataComponent';
 
-import {revGetFileObjectSubType} from '../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetFileObjectSubType,
+  revIsEmptyJSONObject,
+} from '../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
   revIsEmptyVar,
   revGetFileType,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 
-const {RevPersLibCreate_React} = NativeModules;
+const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
 
-const useRevCreateNewEntity = () => {
+export const useRevCreateNewEntity = () => {
   const {REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} =
     useContext(RevSiteDataContext);
 
   const revCreateNewEntity = revPersData => {
-    if (REV_LOGGED_IN_ENTITY_GUID < 1 || REV_SITE_ENTITY_GUID < 1) {
+    let revEntityType = revPersData._revEntityType;
+
+    if (
+      revEntityType !== 'rev_user_entity' &&
+      (REV_LOGGED_IN_ENTITY_GUID < 1 || REV_SITE_ENTITY_GUID < 1)
+    ) {
       return -1;
     }
 
@@ -66,7 +74,9 @@ var usRevSetNewRemoteFile = () => {
 
     let revNewFileNameConst = REV_LOGGED_IN_ENTITY_GUID + '_' + revCurrTime;
 
-    if (revSeedId) revNewFileNameConst = revNewFileNameConst + '_' + revSeedId;
+    if (revSeedId >= 0) {
+      revNewFileNameConst = revSeedId + '_' + revNewFileNameConst;
+    }
 
     let revFileType = revGetFileType(revLocalFile);
     let revNewFileName = revNewFileNameConst + '.' + revFileType;
@@ -86,10 +96,9 @@ export const useRevSetFileObject = () => {
     revFileName,
   ) => {
     let revFileEntity = REV_ENTITY_STRUCT();
-    revFileEntity._revEntityResolveStatus = 0;
+    revFileEntity._revEntityResolveStatus = -1;
     revFileEntity._revEntityType = 'rev_object';
     revFileEntity._revEntitySubType = revEntitySubType;
-    revFileEntity._revRemoteEntityGUID = -1;
     revFileEntity._revEntityOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
     revFileEntity._revEntityContainerGUID = revEntityContainerGUID;
     revFileEntity._revTimeCreated = new Date().getTime();
@@ -161,7 +170,7 @@ export const useRevCreateMediaAlbum = () => {
 
   const revCreateMediaAlbum = (revEntityContainerGUID, revFileObjectsArr) => {
     let revPicAlbumObject = REV_ENTITY_STRUCT();
-    revPicAlbumObject._revEntityResolveStatus = 0;
+    revPicAlbumObject._revEntityResolveStatus = -1;
     revPicAlbumObject._revEntityChildableStatus = 301;
     revPicAlbumObject._revEntityType = 'rev_object';
     revPicAlbumObject._revEntitySubType = 'rev_pics_album';
@@ -231,6 +240,28 @@ export const useRevCreateMediaAlbum = () => {
   };
 
   return {revCreateMediaAlbum};
+};
+
+export const useRevSetRemoteRelGUID = () => {
+  const revSetRemoteRelGUID = (revEntityGUID, remoteRevEntityGUID) => {
+    let revUpdateSetRemoteSubjectGUID =
+      RevPersLibUpdate_React.revPersUpdateSetRemoteSubjectGUID(
+        revEntityGUID,
+        remoteRevEntityGUID,
+      );
+
+    let revUpdateSetRemoteTargetGUID =
+      RevPersLibUpdate_React.revPersUpdateSetRemoteTargetGUID(
+        revEntityGUID,
+        remoteRevEntityGUID,
+      );
+
+    return revUpdateSetRemoteSubjectGUID && revUpdateSetRemoteTargetGUID
+      ? 1
+      : -1;
+  };
+
+  return {revSetRemoteRelGUID};
 };
 
 export const useRevSaveNewEntity = () => {
@@ -307,4 +338,154 @@ export const useRevSaveNewEntity = () => {
   };
 
   return {revSaveNewEntity};
+};
+
+export const useRevCreateNewUserEntity = () => {
+  const {revSetRemoteRelGUID} = useRevSetRemoteRelGUID();
+
+  const revCreateNewUserEntity = revUserEntity => {
+    if (revIsEmptyJSONObject(revUserEntity)) {
+      return -1;
+    }
+
+    if (
+      revUserEntity.hasOwnProperty('_remoteRevEntityGUID') &&
+      revUserEntity._remoteRevEntityGUID
+    ) {
+      revUserEntity['_revEntityResolveStatus'] = 0;
+    }
+
+    if (
+      !revUserEntity.hasOwnProperty('_revInfoEntity') ||
+      revIsEmptyJSONObject(revUserEntity._revInfoEntity)
+    ) {
+      return -1;
+    }
+
+    let revUserEntityInfo = JSON.parse(
+      JSON.stringify(revUserEntity._revInfoEntity),
+    );
+    delete revUserEntity['_revInfoEntity'];
+
+    let revUserEntityGUID = RevPersLibCreate_React.revPersInitJSON(
+      JSON.stringify(revUserEntity),
+    );
+
+    if (revUserEntityGUID < 1) {
+      return -1;
+    }
+
+    /** START SAVE INFO */
+    revUserEntityInfo['_revEntityOwnerGUID'] = revUserEntityGUID;
+    revUserEntityInfo['_revEntityResolveStatus'] = 0;
+
+    let revUserEntityInfoMetadataList =
+      revUserEntityInfo._revEntityMetadataList;
+
+    for (let i = 0; i < revUserEntityInfoMetadataList.length; i++) {
+      revUserEntityInfoMetadataList[i]['_resolveStatus'] = 0;
+    }
+
+    let revUserEntityInfoGUID = RevPersLibCreate_React.revPersInitJSON(
+      JSON.stringify(revUserEntityInfo),
+    );
+    /** END SAVE INFO */
+
+    if (revUserEntityInfoGUID < 0) {
+      return -1;
+    }
+
+    let revPersUserEntityInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+    revPersUserEntityInfoRel._revEntityRelationshipType = 'rev_entity_info';
+    revPersUserEntityInfoRel._revOwnerGUID = revUserEntityGUID;
+    revPersUserEntityInfoRel._revEntityTargetGUID = revUserEntityGUID;
+    revPersUserEntityInfoRel._revEntitySubjectGUID = revUserEntityInfoGUID;
+
+    let revPersUserEntityInfoRel_Id =
+      RevPersLibCreate_React.revPersRelationshipJSON(
+        JSON.stringify(revPersUserEntityInfoRel),
+      );
+
+    if (revPersUserEntityInfoRel_Id < 1) {
+      return -1;
+    }
+
+    let revUserEntitySettings = revUserEntity._revEntitySettings;
+
+    revUserEntitySettings['_revEntityOwnerGUID'] = revUserEntityGUID;
+    revUserEntitySettings._revEntityContainerGUID = revUserEntityGUID;
+    revUserEntitySettings['_revEntityResolveStatus'] = 0;
+
+    let revUserEntitySettingsInfo = JSON.parse(
+      JSON.stringify(revUserEntitySettings._revInfoEntity),
+    );
+    delete revUserEntitySettings['_revInfoEntity'];
+
+    let revUserEntitySettingsGUID = RevPersLibCreate_React.revPersInitJSON(
+      JSON.stringify(revUserEntitySettings),
+    );
+
+    revUserEntitySettingsInfo['_revEntityOwnerGUID'] = revUserEntityGUID;
+    revUserEntitySettingsInfo['_revEntityResolveStatus'] = 0;
+
+    let revUserEntitySettingsMetadataList =
+      revUserEntitySettingsInfo._revEntityMetadataList;
+
+    for (let i = 0; i < revUserEntitySettingsMetadataList.length; i++) {
+      revUserEntitySettingsMetadataList[i]['_resolveStatus'] = 0;
+    }
+
+    let revUserEntitySettingsInfoGUID = RevPersLibCreate_React.revPersInitJSON(
+      JSON.stringify(revUserEntitySettingsInfo),
+    );
+
+    if (revUserEntitySettingsInfoGUID < 0) {
+      return -1;
+    } else {
+      let revPersEntitySettingsInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+      revPersEntitySettingsInfoRel._revEntityRelationshipType =
+        'rev_entity_info';
+      revPersEntitySettingsInfoRel._revOwnerGUID = revUserEntityGUID;
+      revPersEntitySettingsInfoRel._revEntityTargetGUID =
+        revUserEntitySettingsGUID;
+      revPersEntitySettingsInfoRel._revEntitySubjectGUID =
+        revUserEntitySettingsInfoGUID;
+
+      let revPersEntitySettingsInfoRel_Id =
+        RevPersLibCreate_React.revPersRelationshipJSON(
+          JSON.stringify(revPersEntitySettingsInfoRel),
+        );
+
+      if (revPersEntitySettingsInfoRel_Id < 1) {
+        return -1;
+      }
+    }
+
+    /** START SET REMOTE REL GUID */
+    // Set remote user rel subject and target GUIDS
+    revSetRemoteRelGUID(revUserEntityGUID, revUserEntity._remoteRevEntityGUID);
+
+    // Set remote user info rel subject and target GUIDS
+    revSetRemoteRelGUID(
+      revUserEntityInfoGUID,
+      revUserEntityInfo._remoteRevEntityGUID,
+    );
+
+    // Set remote user settings rel subject and target GUIDS
+    revSetRemoteRelGUID(
+      revUserEntitySettingsGUID,
+      revUserEntitySettings._remoteRevEntityGUID,
+    );
+
+    // Set remote user settings info rel subject and target GUIDS
+    revSetRemoteRelGUID(
+      revUserEntitySettingsInfoGUID,
+      revUserEntitySettingsInfo._remoteRevEntityGUID,
+    );
+    /** END SET REMOTE REL GUID */
+
+    return revUserEntityGUID;
+  };
+
+  return {revCreateNewUserEntity};
 };

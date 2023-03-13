@@ -12,21 +12,18 @@ import {
 } from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
 
-var RNFS = require('react-native-fs');
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
-import {revGetSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 import {revIsEmptyVar} from '../../rev_function_libs/rev_gen_helper_functions';
 
 import RevSiteContainer from './RevSiteContainer';
 
-const {RevPersLibCreate_React, RevWebRTCReactModule} = NativeModules;
+const {RevWebRTCReactModule} = NativeModules;
 
 const RevWalledGarden = () => {
   const {
@@ -38,7 +35,11 @@ const RevWalledGarden = () => {
   const {REV_IP} = useContext(RevRemoteSocketContext);
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
-  const [RevLogInForm, setRevLogInForm] = useState(null);
+  const RevLogInForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_user_settings',
+    revViewName: 'RevLogInForm',
+    revData: 'Hello World!',
+  });
 
   DeviceEventEmitter.addListener('rev_c_sever_ping', event => {
     console.log('>>> Event - rev_c_sever_ping : ' + event.eventProperty);
@@ -124,30 +125,10 @@ const RevWalledGarden = () => {
     }
   });
 
-  useEffect(() => {
-    const DirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media';
-    RNFS.mkdir(DirectoryPath);
-
-    let revDbPath = RNFS.DownloadDirectoryPath;
-    let dbLong = RevPersLibCreate_React.revPersInitReact(revDbPath);
-
-    let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
-
-    if (!revIsEmptyVar(revSiteEntity)) {
-      SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntity._revEntityOwnerGUID);
-    }
-
-    const RevView = revPluginsLoader({
-      revPluginName: 'rev_plugin_user_settings',
-      revViewName: 'RevLogInForm',
-      revData: 'Hello World!',
-    });
-
-    setRevLogInForm(RevView);
-  }, []);
-
   revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-    console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
+    console.log(
+      '>>> LOG IN <<< revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
+    );
   });
 
   const RevWalledGarden = () => {

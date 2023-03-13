@@ -144,6 +144,8 @@ function RevFooterArea() {
         };
       }
 
+      console.log('>>> revRetData ' + JSON.stringify(revRetData));
+
       let RevTaggedPostsListing = revPluginsLoader({
         revPluginName: 'rev_plugin_tagged_posts',
         revViewName: 'RevTaggedPostsListing',

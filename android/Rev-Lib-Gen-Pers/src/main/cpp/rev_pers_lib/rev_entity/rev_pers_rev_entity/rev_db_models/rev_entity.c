@@ -46,12 +46,6 @@ RevEntity *revInitializedEntity() {
     return revEntity;
 }
 
-RevEntity *revGetJSONInfoEntity() {
-    RevEntity *revEntity = revInitializedEntity();
-
-    return revEntity;
-}
-
 RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     RevEntity *revEntity = revInitializedEntity();
 
@@ -82,7 +76,7 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     // _revEntityResolveStatus
     const cJSON *_revEntityResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityResolveStatus");
 
-    if (cJSON_IsNumber(_revEntityResolveStatus) && (_revEntityResolveStatus->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityResolveStatus)) {
         int _revEntityResolveStatusVal = _revEntityResolveStatus->valueint;
         revEntity->_revEntityResolveStatus = _revEntityResolveStatusVal;
     }
@@ -90,7 +84,7 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     // _revEntityChildableStatus
     const cJSON *_revEntityChildableStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityChildableStatus");
 
-    if (cJSON_IsNumber(_revEntityChildableStatus) && (_revEntityChildableStatus->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityChildableStatus)) {
         int _revEntityChildableStatusVal = _revEntityChildableStatus->valueint;
         revEntity->_revEntityChildableStatus = _revEntityChildableStatusVal;
     }
@@ -98,7 +92,7 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     // _revEntityAccessPermission
     const cJSON *_revEntityAccessPermission = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityAccessPermission");
 
-    if (cJSON_IsNumber(_revEntityAccessPermission) && (_revEntityAccessPermission->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityAccessPermission)) {
         int _revEntityAccessPermissionVal = _revEntityAccessPermission->valueint;
         revEntity->_revEntityAccessPermission = _revEntityAccessPermissionVal;
     }

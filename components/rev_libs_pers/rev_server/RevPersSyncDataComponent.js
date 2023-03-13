@@ -11,13 +11,11 @@ const {
 
 import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
-import {
-  revPostServerData,
-  revPostServerData_Chunks,
-} from './rev_pers_lib_create';
+import {revPostServerData} from './rev_pers_lib_create';
 
 import {revPersGetALLRevEntityGUIDs_By_ResStatus} from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevSetMetadataArrayRemoteID} from '../rev_pers_metadata/rev_update/RevPersUpdateMetadataCustomHooks';
+import {useRevSetRemoteRelGUID} from '../rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
 import {REV_CREATE_NEW_REV_ENTITY_URL} from './rev_pers_urls';
 
@@ -48,6 +46,12 @@ export function useRevPersSyncDataComponent() {
     }
 
     let revFilesArr = JSON.parse(revFilesStr);
+
+    if (!revFilesArr.length) {
+      return;
+    }
+
+    console.log('>>> Uploading ' + revFilesArr.length + ' files');
 
     for (let i = 0; i < revFilesArr.length; i++) {
       let revCurrFile = revFilesArr[i];
@@ -161,6 +165,8 @@ export function useRevPersSyncDataComponent() {
       revSyncRels();
     }
 
+    const {revSetRemoteRelGUID} = useRevSetRemoteRelGUID();
+
     revPostServerData(
       revURL,
       {filter: revUnresolvedEntitiesArr},
@@ -264,17 +270,19 @@ export function useRevPersSyncDataComponent() {
             );
 
             /** START INFO RELATIONSHIPS */
-            let revSetInfoRemoteSubjectGUIDStatus =
-              RevPersLibUpdate_React.revPersUpdateSetRemoteSubjectGUID(
+            if (revInfoRemoteRevEntityGUID) {
+              revSetRemoteRelGUID(
                 revInfoEntityGUID,
                 revInfoRemoteRevEntityGUID,
               );
+            }
 
-            let revSetInfoRemoteTargetGUIDStatus =
-              RevPersLibUpdate_React.revPersUpdateSetRemoteTargetGUID(
+            if (revInfoRemoteRevEntityGUID) {
+              revSetRemoteRelGUID(
                 revInfoEntityGUID,
                 revInfoRemoteRevEntityGUID,
               );
+            }
             /** END INFO RELATIONSHIPS */
 
             if (
@@ -295,21 +303,6 @@ export function useRevPersSyncDataComponent() {
           /** END SAVE INFO */
 
           revGUIDsArr.push(revEntityGUID);
-        }
-
-        let revMetadataStr =
-          RevPersLibRead_React.revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(
-            0,
-            'rev_file_uri',
-          );
-
-        let revMetadataArr = JSON.parse(revMetadataStr);
-
-        for (let i = 0; i < revMetadataArr.length; i++) {
-          let revCurrMetadata = revMetadataArr[i];
-
-          let revMetadataVal = revCurrMetadata._metadataValue;
-          let revRemoteRevMetadataId = revCurrMetadata.remoteRevMetadataId;
         }
 
         let revUnresolvedEntitiesArr =
@@ -357,13 +350,12 @@ export function useRevPersSyncDataComponent() {
         let revIsSiteEntity =
           revCurrUpdateEntity._revEntitySubType === 'rev_site';
 
-        console.log('>>> revSiteRemoteEntityGUID ' + revSiteRemoteEntityGUID);
-
         // Prevent conflict trying to set the site's remote entity guid before remote push
         if (!revIsUser && !revIsSiteEntity && revSiteRemoteEntityGUID < 1) {
           continue;
         }
 
+        // Make sure that all entities have an owner except if user
         let revEntityOwnerGUID = revCurrUpdateEntity._revEntityOwnerGUID;
 
         if (!revIsUser && revEntityOwnerGUID < 1) {
@@ -409,13 +401,27 @@ export function useRevPersSyncDataComponent() {
             revSiteRemoteEntityGUID;
         }
 
+        // If has container GUID set remote container GUID
+        let revCurrContainerGUID = revCurrUpdateEntity._revEntityContainerGUID;
+        if (revCurrContainerGUID && revCurrContainerGUID > 0) {
+          let revCurrRemoteContainerGUID =
+            RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
+              revCurrContainerGUID,
+            );
+
+          if (revCurrRemoteContainerGUID < 1) {
+            continue;
+          }
+
+          revCurrUpdateEntity['_revEntityContainerGUID'] =
+            revCurrRemoteContainerGUID;
+        }
+
         // Finaly set the Site's REMOTE GUID
         revCurrUpdateEntity['_revEntitySiteGUID'] = revSiteRemoteEntityGUID;
 
         revUploadEntitiesArr.push(revCurrUpdateEntity);
       }
-
-      console.log(JSON.stringify(revUploadEntitiesArr));
 
       /**
        * {"result":{"revPersOptions":{"revPersType":"rev_create"},"filter":[{"_remoteRevEntityGUID":534,"_revEntityMetadataList":[{"localMetadataId":794,"metadataId":794}]}]}}

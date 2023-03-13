@@ -59,19 +59,23 @@ export function revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus) {
   );
 }
 
-export function useRevPersGetRevEntities_By_ResolveStatus_SubType(
-  revResStatus,
-  revEntitySubType,
-) {
-  let revUnresolvedEntityGUIDsStr =
-    RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(
-      revResStatus,
-      revEntitySubType,
-    );
+export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
+  const revPersGetRevEntities_By_ResolveStatus_SubType = (
+    revResStatus,
+    revEntitySubType,
+  ) => {
+    let revUnresolvedEntityGUIDsStr =
+      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(
+        revResStatus,
+        revEntitySubType,
+      );
 
-  return useRevPersGetRevEntities_By_EntityGUIDsArr(
-    JSON.parse(revUnresolvedEntityGUIDsStr),
-  );
+    return useRevPersGetRevEntities_By_EntityGUIDsArr(
+      JSON.parse(revUnresolvedEntityGUIDsStr),
+    );
+  };
+
+  return {revPersGetRevEntities_By_ResolveStatus_SubType};
 }
 
 export function useRevGetEntityInfo(revEntityGUID) {

@@ -15,9 +15,15 @@ import {LoremIpsum} from 'lorem-ipsum';
 
 import {revPluginsLoader} from '../../../../rev_plugins_loader';
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
+import {useRevGetLoggedInSiteEntity} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+
+const {RevPersLibUpdate_React} = NativeModules;
 
 export const RevUserSettings = () => {
-  const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID, SET_REV_LOGGED_IN_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
+
+  const {revGetLoggedInSiteEntity} = useRevGetLoggedInSiteEntity();
 
   const [revIsEditView, setRevIsEditView] = useState(false);
 
@@ -48,7 +54,16 @@ export const RevUserSettings = () => {
   };
 
   const revHandleOnLogOutTabPressed = () => {
-    SET_REV_LOGGED_IN_ENTITY_GUID(-1);
+    let revSiteEntity = revGetLoggedInSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
+    let revEntityResolveStatusByRevEntityGUID =
+      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+        0,
+        revSiteEntity._revEntityGUID,
+      );
+
+    if (revEntityResolveStatusByRevEntityGUID) {
+      SET_REV_LOGGED_IN_ENTITY_GUID(-1);
+    }
   };
 
   let RevHeader = () => {
