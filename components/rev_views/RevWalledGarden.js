@@ -1,16 +1,15 @@
+import React, {useContext} from 'react';
+
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
-  TouchableOpacity,
   SafeAreaView,
   Dimensions,
   StatusBar,
   NativeModules,
   DeviceEventEmitter,
 } from 'react-native';
-import React, {useContext, useState, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -53,33 +52,6 @@ const RevWalledGarden = () => {
       );
 
       console.log('>>> revInitWSStatus ' + revInitWSStatus);
-    }
-  });
-
-  DeviceEventEmitter.addListener('rev_curl_file_uoad_retdata', event => {
-    let revRetDataStr = event.eventProperty;
-
-    if (revIsEmptyVar(revRetDataStr)) {
-      return;
-    }
-
-    try {
-      let revRetData = JSON.parse(revRetDataStr);
-
-      if (!revRetData.hasOwnProperty('revFilterSuccess')) {
-        console.log('>>> revRetDataStr ' + revRetDataStr);
-        return;
-      }
-
-      let revFilterSuccess = revRetData.revFilterSuccess;
-      let revFilterFail = revRetData.revFilterFail;
-
-      for (let i = 0; i < revFilterSuccess.length; i++) {
-        let revCurrFile = revFilterSuccess[i];
-        console.log('>>> FILE : ' + revCurrFile);
-      }
-    } catch (error) {
-      console.log('>>> ' + error);
     }
   });
 

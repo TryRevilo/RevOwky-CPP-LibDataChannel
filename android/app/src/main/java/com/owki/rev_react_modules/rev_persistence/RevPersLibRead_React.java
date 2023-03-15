@@ -179,6 +179,14 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
      * START REV READ METADATA
      **/
     @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetRevEntityMetadata_By_MetadataName_MetadataValue(String revMetadataName, String revMetadataValue) {
+        RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_MetadataName_MetadataValue(revMetadataName, revMetadataValue);
+        String revEntityMetadataStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityMetadata);
+
+        return revEntityMetadataStr;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public String revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(String revMetadataName, String revMetadataValue, Integer revEntityGUID) {
         RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(revMetadataName, revMetadataValue, (long) revEntityGUID);
         String revEntityMetadataStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityMetadata);

@@ -61,6 +61,8 @@ function RevFooterArea() {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   const revGetLocalData = () => {
+    console.log('>>> revGetLocalData <<<');
+
     let revPassVarArgs = {
       revSelect: [
         '_revEntityGUID',
@@ -132,19 +134,13 @@ function RevFooterArea() {
       '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
 
     revGetServerData_JSON(revURL, revRetData => {
-      if (
-        revRetData.hasOwnProperty('revError') ||
-        revRetData.hasOwnProperty('revServerStatus') ||
-        revRetData.revServerStatus == 'Network Request Failed'
-      ) {
+      if (revRetData.hasOwnProperty('revError')) {
         revRetData = revGetLocalData();
         revRetData = {
           revTimelineEntities: revRetData,
           revEntityPublishersArr: [],
         };
       }
-
-      console.log('>>> revRetData ' + JSON.stringify(revRetData));
 
       let RevTaggedPostsListing = revPluginsLoader({
         revPluginName: 'rev_plugin_tagged_posts',
@@ -195,10 +191,30 @@ function RevFooterArea() {
     //   );
     // });
 
-    revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-      console.log(
-        '>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
-      );
+    // revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+    //   console.log(
+    //     '>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
+    //   );
+    // });
+
+    /**** */
+    let revURL =
+      REV_ROOT_URL +
+      '/rev_api?' +
+      'rev_logged_in_entity_guid=' +
+      REV_LOGGED_IN_ENTITY_GUID +
+      '&rev_entity_guid=' +
+      -1 +
+      '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyUserMembersEntities';
+
+    revGetServerData_JSON(revURL, revRetData => {
+      let RevMembersEntitiesListing = revPluginsLoader({
+        revPluginName: 'rev_plugin_members',
+        revViewName: 'RevMembersEntitiesListing',
+        revVarArgs: revRetData,
+      });
+
+      SET_REV_SITE_BODY(RevMembersEntitiesListing);
     });
   };
 

@@ -1,13 +1,8 @@
-import {View, Text, DeviceEventEmitter, NativeModules} from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import {DeviceEventEmitter, NativeModules} from 'react-native';
+import {useContext} from 'react';
 
-const {
-  RevPersLibCreate_React,
-  RevPersLibRead_React,
-  RevPersLibUpdate_React,
-  RevWebRTCReactModule,
-  RevGenLibs_Server_React,
-} = NativeModules;
+const {RevPersLibCreate_React, RevPersLibRead_React, RevPersLibUpdate_React} =
+  NativeModules;
 
 import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
@@ -34,7 +29,77 @@ export function useRevPersSyncDataComponent() {
     useContext(RevSiteDataContext);
   const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
-  const revUploadFiles = () => {
+  DeviceEventEmitter.addListener(
+    'rev_curl_file_upload_ret_data_event',
+    event => {
+      let revRetDataStr = event.eventProperty;
+
+      if (revIsEmptyVar(revRetDataStr)) {
+        return;
+      }
+
+      try {
+        let revRetData = JSON.parse(revRetDataStr);
+
+        if (!revRetData.hasOwnProperty('revFilterSuccess')) {
+          console.log(
+            '>>> rev_curl_file_upload_ret_data_event <<< revRetDataStr ' +
+              revRetDataStr,
+          );
+          return;
+        }
+
+        let revFilterSuccess = revRetData.revFilterSuccess;
+        let revFilterFail = revRetData.revFilterFail;
+
+        for (let i = 0; i < revFilterSuccess.length; i++) {
+          let revCurrFile = revFilterSuccess[i];
+
+          let revMetadataStr =
+            RevPersLibRead_React.revGetRevEntityMetadata_By_MetadataName_MetadataValue(
+              'rev_remote_file_name',
+              revCurrFile,
+            );
+
+          let revMetadata = JSON.parse(revMetadataStr);
+
+          let revMetadataId = revMetadata.revMetadataId;
+
+          if (revMetadataId > 0) {
+            RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+              2,
+              revMetadataId,
+            );
+          }
+        }
+
+        for (let i = 0; i < revFilterFail.length; i++) {
+          let revCurrFile = revFilterFail[i];
+
+          let revMetadata =
+            RevPersLibRead_React.revGetRevEntityMetadata_By_MetadataName_MetadataValue(
+              'rev_remote_file_name',
+              revCurrFile,
+            );
+          let revMetadataId = revMetadata._metadataId;
+
+          z;
+          if (revMetadataId > 0) {
+            RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+              0,
+              revMetadataId,
+            );
+          }
+        }
+
+        revCURLFileUploadSync();
+      } catch (error) {
+        console.log('>>> ' + error);
+      }
+    },
+  );
+
+  const revCURLFileUploadSync = () => {
     let revFilesStr =
       RevPersLibRead_React.revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(
         0,
@@ -68,7 +133,7 @@ export function useRevPersSyncDataComponent() {
       revFilesArr[i] = revFileURI;
 
       RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
-        2,
+        -2,
         revCurrFile.revMetadataId,
       );
     }
@@ -87,7 +152,7 @@ export function useRevPersSyncDataComponent() {
     let revEntityRelationshipsArr = JSON.parse(revEntityRelationshipsStr);
 
     if (!revEntityRelationshipsArr.length) {
-      revUploadFiles();
+      revCURLFileUploadSync();
       return;
     }
 
@@ -97,11 +162,18 @@ export function useRevPersSyncDataComponent() {
     let revPersRelsArr = [];
 
     for (let i = 0; i < revEntityRelationshipsArr.length; i++) {
-      if (i >= 10) {
+      if (i >= 9) {
         break;
       }
 
       let revCurrRel = revEntityRelationshipsArr[i];
+
+      let remoteRevEntitySubjectGUID = revCurrRel._remoteRevEntitySubjectGUID;
+      let remoteRevEntityTargetGUID = revCurrRel._remoteRevEntityTargetGUID;
+
+      if (remoteRevEntitySubjectGUID < 1 || remoteRevEntityTargetGUID < 1) {
+        continue;
+      }
 
       revCurrRel['_revOwnerGUID'] = revLoggedInRemoteRevEntityGUID;
 

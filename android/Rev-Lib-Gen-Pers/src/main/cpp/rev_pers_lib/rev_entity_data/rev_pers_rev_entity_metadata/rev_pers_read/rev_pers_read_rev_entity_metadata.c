@@ -383,6 +383,43 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveSt
     return &list;
 }
 
+RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue) {
+    __android_log_print(ANDROID_LOG_WARN, "MyApp", "revMetadataName %s -revMetadataValue %s", revMetadataName, revMetadataValue);
+
+    RevEntityMetadata revEntityMetadata = *revInitializedMetadata();
+
+    sqlite3 *db = revDb();
+
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "METADATA_ID "
+                "FROM REV_ENTITY_METADATA_TABLE "
+                "WHERE METADATA_NAME = ? AND METADATA_VALUE = ? LIMIT 1";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_text(stmt, 1, (const char *) revMetadataName, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revMetadataValue, -1, SQLITE_STATIC);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_MetadataName_MetadataValue %s", sqlite3_errmsg(db));
+    } else if (sqlite3_step(stmt) == SQLITE_ROW) {
+        long metadataId = sqlite3_column_int64(stmt, 0);
+
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> metadataId %ld", metadataId);
+
+        revEntityMetadata._metadataId = metadataId;
+        revEntityMetadata._metadataName = revMetadataName;
+        revEntityMetadata._metadataValue = revMetadataValue;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return revEntityMetadata;
+}
+
 RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID) {
     __android_log_print(ANDROID_LOG_WARN, "MyApp", "revEntityGUID = %ld : revMetadataName %s -revMetadataValue %s", revEntityGUID, revMetadataName, revMetadataValue);
 

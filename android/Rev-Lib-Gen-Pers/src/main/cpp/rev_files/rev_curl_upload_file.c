@@ -106,11 +106,11 @@ void revCURLFileUpload(char *revURL, char *revFiles, char *revData, void (*_rev_
             strcat(revKey, revI);
             strcat(revVal, revI);
 
-            // curl_formadd(&revFormPost, &last, CURLFORM_COPYNAME, "files", CURLFORM_COPYCONTENTS, revVal, CURLFORM_END);
+            curl_formadd(&revFormPost, &last, CURLFORM_COPYNAME, "rev_files", CURLFORM_COPYCONTENTS, revVal, CURLFORM_END);
 
             /* add the file to the POST request */
             curl_formadd(&revFormPost, &last,
-                         CURLFORM_COPYNAME, "files",
+                         CURLFORM_COPYNAME, "rev_files",
                          CURLFORM_FILE, item_value,
                          CURLFORM_END);
         }

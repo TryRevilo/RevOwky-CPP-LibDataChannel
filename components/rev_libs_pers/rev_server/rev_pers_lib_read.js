@@ -8,8 +8,6 @@ export const revGetServerData_Async = async revURL => {
   try {
     revResponse = await fetch(revURL);
   } catch (err) {
-    console.log('>>> revGetServerData_Async err ::: ' + err);
-
     revResponse = JSON.stringify({revError: err});
   }
 
@@ -26,8 +24,6 @@ export const revGetServerData = async revURL => {
       revResponseData = await revResponse.json();
     }
   } catch (error) {
-    console.log('>>> revGetServerData_JSON_Async error ::: ' + error);
-
     revResponseData = {revError: error};
   }
 

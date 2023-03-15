@@ -47,25 +47,27 @@ const RevSiteLoading = () => {
   );
 
   useEffect(() => {
-    let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
-
-    if (!revIsEmptyJSONObject(revLoggedInSiteEntity)) {
-      let revLoggedInEntityGUID = revLoggedInSiteEntity._revEntityOwnerGUID;
-
-      if (revLoggedInEntityGUID > 0) {
-        SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
-      }
-    }
+    StatusBar.setBarStyle('light-content');
 
     setTimeout(() => {
+      let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
+
+      if (!revIsEmptyJSONObject(revLoggedInSiteEntity)) {
+        let revLoggedInEntityGUID = revLoggedInSiteEntity._revEntityOwnerGUID;
+
+        if (revLoggedInEntityGUID > 0) {
+          SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
+        }
+      }
+
       SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
       setIsLoading(false);
-    }, 3000);
+    }, 6000);
   }, [revPageReady]);
 
   setTimeout(() => {
     setRevPageReady(true);
-  }, 2000);
+  }, 1000);
 
   return REV_SITE_INIT_VIEW;
 };
@@ -76,14 +78,13 @@ const styles = StyleSheet.create({
   revSiteLoadingContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   revSiteLoadingTxt: {
-    color: 'grey',
+    color: '#777',
     fontSize: 12,
     fontWeight: 'bold',
+    marginTop: '25%',
     textAlign: 'center',
+    alignSelf: 'center',
   },
 });

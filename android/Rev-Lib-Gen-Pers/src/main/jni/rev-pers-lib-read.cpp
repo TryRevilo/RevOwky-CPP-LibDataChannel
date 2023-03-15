@@ -2219,6 +2219,23 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
 
 extern "C"
 JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRevEntityMetadata_1By_1MetadataName_1MetadataValue(JNIEnv *env, jobject thiz, jstring rev_metadata_name, jstring rev_metadata_value) {
+    const char *revMetadataName = env->GetStringUTFChars(rev_metadata_name, 0);
+    const char *revMetadataValue = env->GetStringUTFChars(rev_metadata_value, 0);
+
+    RevEntityMetadata revEntityMetadata = revGetRevEntityMetadata_By_MetadataName_MetadataValue(strdup(revMetadataName), strdup(revMetadataValue));
+
+    if (revEntityMetadata._metadataId > 0) {
+        jobject jPosRec = revGetFilledRevMetadataJniObject(env, revEntityMetadata);
+
+        return jPosRec;
+    }
+
+    return NULL;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRevEntityMetadata_1By_1MetadataName_1MetadataValue_1EntityGUID(JNIEnv *env, jobject thiz, jstring rev_metadata_name, jstring rev_metadata_value, jlong rev_entity_guid) {
     const char *revMetadataName = env->GetStringUTFChars(rev_metadata_name, 0);
     const char *revMetadataValue = env->GetStringUTFChars(rev_metadata_value, 0);

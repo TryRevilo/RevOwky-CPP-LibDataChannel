@@ -41,6 +41,12 @@ var REV_PLUGINS = {
       import(`./rev_plugins/rev_plugin_user_profile/RevStart`),
     ),
   },
+  rev_plugin_members: {
+    revPluginName: 'rev_plugin_members',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_members/RevStart`),
+    ),
+  },
   rev_plugin_ads: {
     revPluginName: 'rev_plugin_ads',
     revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_ads/RevStart`)),

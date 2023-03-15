@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
@@ -24,7 +25,23 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     return null;
   }
 
-  let revInfoEntity = revVarArgs.revVarArgs;
+  let revOwkiMemberEntity = revVarArgs.revVarArgs;
+
+  if (revIsEmptyJSONObject(revOwkiMemberEntity)) {
+    return null;
+  }
+
+  let revEntityGUID = revGetLocal_OR_RemoteGUID(revOwkiMemberEntity);
+
+  if (revEntityGUID < 1) {
+    return null;
+  }
+
+  if (!revOwkiMemberEntity.hasOwnProperty('_revInfoEntity')) {
+    return null;
+  }
+
+  let revInfoEntity = revOwkiMemberEntity._revInfoEntity;
   if (
     !revInfoEntity.hasOwnProperty('_remoteRevEntityGUID') ||
     revInfoEntity._remoteRevEntityGUID < 0
@@ -34,7 +51,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   let revPublisherEntityNames = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
-    'rev_entity_full_names_value',
+    'rev_full_names',
   );
 
   let revUserRegLongDate = revInfoEntity._revTimePublished;
@@ -62,7 +79,9 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   const RevDrawUserInfo = ({revLabel, revVal}) => {
     return (
-      <View style={[styles.revFlexWrapper, styles.revUserInfoWrapper]}>
+      <View
+        key={'RevUserInfo_Widget_' + revEntityGUID}
+        style={[styles.revFlexWrapper, styles.revUserInfoWrapper]}>
         <Text
           style={[
             styles.revSiteTxtColorLight,

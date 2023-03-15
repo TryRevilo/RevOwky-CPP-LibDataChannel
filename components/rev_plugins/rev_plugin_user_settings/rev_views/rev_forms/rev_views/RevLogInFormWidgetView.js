@@ -18,16 +18,23 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {useRevLogin} from '../../../rev_actions/rev_log_in_action';
 
-import {useRevGetSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+import {
+  useRevCreateSiteEntity,
+  useRevGetSiteEntity,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 import {useRevPersGetRevEntities_By_ResolveStatus_SubType} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
-import {revIsEmptyVar} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyVar,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
-const {RevPersLibUpdate_React} = NativeModules;
+const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
 
 export const RevLogInFormWidgetView = () => {
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const {revLogin} = useRevLogin();
+  const {revCreateSiteEntity} = useRevCreateSiteEntity();
   const {revGetSiteEntity} = useRevGetSiteEntity();
   const {revPersGetRevEntities_By_ResolveStatus_SubType} =
     useRevPersGetRevEntities_By_ResolveStatus_SubType();
@@ -42,12 +49,32 @@ export const RevLogInFormWidgetView = () => {
 
     if (revLoggedInEntityGUID > 0) {
       let revSiteEntity = revGetSiteEntity(revLoggedInEntityGUID);
-      let revSiteEntityGUID = revSiteEntity._revEntityGUID;
 
-      if (!revIsEmptyVar(revSiteEntityGUID) && revSiteEntityGUID > 0) {
+      let revSiteEntityGUID = -1;
+
+      if (revIsEmptyJSONObject(revSiteEntity)) {
+        revSiteEntityGUID = revCreateSiteEntity(revLoggedInEntityGUID);
+      } else {
+        revSiteEntityGUID = revSiteEntity._revEntityGUID;
+      }
+
+      if (revSiteEntityGUID > 0) {
+        let revRemoteSiteEntityGUID =
+          RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
+            revSiteEntityGUID,
+          );
+
+        let revSiteEntityResStatus = -1;
+
+        console.log('>>> revRemoteSiteEntityGUID ' + revRemoteSiteEntityGUID);
+
+        if (revRemoteSiteEntityGUID > 0) {
+          revSiteEntityResStatus = 2;
+        }
+
         let revEntityResolveStatusByRevEntityGUID =
           RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
-            2,
+            revSiteEntityResStatus,
             revSiteEntityGUID,
           );
 

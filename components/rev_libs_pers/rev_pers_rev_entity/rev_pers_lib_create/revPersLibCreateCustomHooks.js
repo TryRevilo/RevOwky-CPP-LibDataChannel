@@ -180,6 +180,12 @@ export const useRevCreateMediaAlbum = () => {
 
     let revPicAlbumEntityGUID = revCreateNewEntity(revPicAlbumObject);
 
+    console.log('>>> revPicAlbumEntityGUID ' + revPicAlbumEntityGUID);
+
+    if (revPicAlbumEntityGUID < 1) {
+      return;
+    }
+
     /** START CREATE PICS ALBUM REL */
     let revPicsAlbumRel = REV_ENTITY_RELATIONSHIP_STRUCT();
     revPicsAlbumRel._revEntityRelationshipType = 'rev_pics_album_of';
@@ -189,10 +195,15 @@ export const useRevCreateMediaAlbum = () => {
     let revPicsAlbumRelId = RevPersLibCreate_React.revPersRelationshipJSON(
       JSON.stringify(revPicsAlbumRel),
     );
+
+    console.log('>>> revPicsAlbumRelId ' + revPicsAlbumRelId);
+
+    if (revPicsAlbumRelId < 1) {
+      return;
+    }
     /** END CREATE PICS ALBUM REL */
 
     /** START SET OBJECT */
-    let revFilesPersArr = [];
     let revEntityGUIDs = [];
 
     for (let i = 0; i < revFileObjectsArr.length; i++) {

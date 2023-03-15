@@ -918,7 +918,7 @@ void revCURLReturnDataCB(void *revData) {
 
     JNIEnv *env = revGetEnv(revGetJVM());
 
-    std::string revEventName = "rev_curl_file_upload_ret_data";
+    std::string revEventName = "rev_curl_file_upload_ret_data_event";
     const char *revClsPath = "com/owki/rev_react_modules/rev_gen_function_libs/RevReactNativeEvents";
     jclass RevReactNativeEvents = revFindClass(env, revClsPath);
     revPersInitReactNativeEvent(env, revEventName, (char *) revData);

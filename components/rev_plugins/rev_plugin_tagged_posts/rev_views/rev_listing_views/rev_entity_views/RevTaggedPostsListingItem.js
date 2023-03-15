@@ -48,7 +48,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
-
+  RevTaggedPostsListingItem;
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
   if (revEntityGUID < 1) {
@@ -70,7 +70,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let revPublisherEntityNames = revGetMetadataValue(
     revPublisherEntity._revInfoEntity._revEntityMetadataList,
-    'rev_entity_full_names_value',
+    'rev_full_names',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
     revPublisherEntityNames,
@@ -120,7 +120,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let chatMessageText = (_revKiwiTxtVal, revTxtStyle = {}) => {
     let chatMessageView = (
       <Text
-        key={revGetRandInteger(100, 1000)}
+        key={'chatMessageText_' + revGetRandInteger(100, 1000)}
         style={[styles.chatMsgContentTxt, revTxtStyle]}>
         {_revKiwiTxtVal.length > maxMessageLen
           ? _revKiwiTxtVal.substring(0, maxMessageLen) + ' . . .'
@@ -130,7 +130,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
     return (
       <View
-        key={revEntityGUID + '_' + revGetRandInteger()}
+        key={'chatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
         style={styles.chatMsgContentTxtContainer}>
         {chatMessageView}
         {revKiwiTxtVal.length > maxMessageLen ? (
@@ -144,7 +144,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let RevPostTagItem = () => {
     return (
-      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
+      <TouchableOpacity key={'RevPostTagItem_' + revGetRandInteger(10, 1000)}>
         <Text style={styles.revPostTagsListItem}>hello_world</Text>
       </TouchableOpacity>
     );
@@ -153,7 +153,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let RevCommentItem = () => {
     return (
       <TouchableOpacity
-        key={revGetRandInteger(100, 1000).toString()}
+        key={'RevCommentItem_' + revGetRandInteger(100, 1000)}
         style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
         <TouchableOpacity>
           <View style={styles.revCommentMsgUserIcon}>
@@ -223,9 +223,13 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
             }
           : null;
 
+      let revImageEntityGUID = revGetLocal_OR_RemoteGUID(revPic);
+
       let RevImage = (
         <TouchableOpacity
-          key={revPic._revEntityGUID + '_' + revGetRandInteger(100, 1000)}
+          key={
+            'RevImage_' + revImageEntityGUID + '_' + revGetRandInteger(10, 1000)
+          }
           style={[styles.revImageTouchableOpacity, revLastImageStyle]}>
           <Image
             style={styles.revEntityImageStyle}
@@ -307,7 +311,11 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     return (
       <View>
         {revCommentsArr.map(revItem => {
-          return <RevCommentItem key={revItem} />;
+          return (
+            <RevCommentItem
+              key={'RevGenComments_' + revItem + revGetRandInteger(10, 1000)}
+            />
+          );
         })}
       </View>
     );
@@ -315,7 +323,9 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let RevLikes = () => {
     return (
-      <View style={[revSiteStyles.revFlexWrapper, styles.revLikesTabsWrapper]}>
+      <View
+        key={'RevLikes_' + revGetRandInteger(10, 1000)}
+        style={[revSiteStyles.revFlexWrapper, styles.revLikesTabsWrapper]}>
         <TouchableOpacity>
           <FontAwesome name="arrow-up" style={styles.revLikesTab} />
         </TouchableOpacity>
@@ -353,7 +363,12 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   return (
     <TouchableOpacity
-      key={revEntityGUID.toString()}
+      key={
+        'RevTaggedPostsListingItem_' +
+        revEntityGUID +
+        '_' +
+        revGetRandInteger(10, 1000)
+      }
       onLongPress={() => {
         handleRevTaggedPostLongPressed(revVarArgs);
       }}>

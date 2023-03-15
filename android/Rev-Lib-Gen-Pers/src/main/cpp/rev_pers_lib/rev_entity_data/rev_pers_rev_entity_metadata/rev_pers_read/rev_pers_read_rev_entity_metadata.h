@@ -32,6 +32,8 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus);
 
 list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID);
 
+RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue);
+
 RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID);
 
 list *revPersGetALLRevEntityMetadataUnsynched();

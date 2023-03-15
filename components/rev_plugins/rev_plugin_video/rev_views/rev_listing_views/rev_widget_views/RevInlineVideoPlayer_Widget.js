@@ -130,7 +130,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   };
 
   return (
-    <View style={styles.revVideoContainer}>
+    <View key={revGetRandInteger(100, 1000)} style={styles.revVideoContainer}>
       <TouchableWithoutFeedback onPress={revHandleTogglePlayback}>
         <View style={{flex: 1}}>
           <Video

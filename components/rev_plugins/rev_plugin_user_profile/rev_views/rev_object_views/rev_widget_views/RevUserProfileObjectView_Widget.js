@@ -44,8 +44,6 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   });
 
   const handleRevConnectTabPressed = revVarArgs => {
-    console.log('>>> revVarArgs ' + JSON.stringify(revVarArgs));
-
     let revRemoteGUID = revVarArgs._remoteRevEntityGUID;
 
     let revTargetEntityStr =
