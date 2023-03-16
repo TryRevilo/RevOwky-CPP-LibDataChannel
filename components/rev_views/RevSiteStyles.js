@@ -51,6 +51,12 @@ export const useRevSiteStyles = () => {
       display: 'flex',
       flexDirection: 'column',
     },
+    revFlexPageContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: 'auto',
+      marginTop: 5,
+    },
     revFlexWrapperTouchable: {
       display: 'flex',
       flexDirection: 'row',

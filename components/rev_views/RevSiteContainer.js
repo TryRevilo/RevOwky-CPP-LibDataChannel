@@ -25,7 +25,7 @@ import {revPluginsLoader} from '../rev_plugins_loader';
 
 import RevFooterArea from './RevFooterArea';
 
-import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
+import {useRevGetConnectionRequests} from '../rev_plugins/rev_plugin_member_connections/rev_actions/rev_get_connection_requests';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
@@ -35,8 +35,6 @@ const RevSiteContainer = () => {
   const [isRevNoticiasAlert, setIsRevNoticiasAlert] = useState(false);
   const [revNoticiasAlertsCount, setRevNoticiasAlertsCount] = useState(0);
 
-  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
-
   const {
     REV_PAGE_HEADER_CONTENT_VIEWER,
     SET_REV_PAGE_HEADER_CONTENT_VIEWER,
@@ -44,49 +42,37 @@ const RevSiteContainer = () => {
     SET_REV_SITE_BODY,
   } = useContext(ReViewsContext);
 
-  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
-    useContext(RevSiteDataContext);
-
-  useEffect(() => {}, []);
+  const {revGetConnectionRequests} = useRevGetConnectionRequests();
 
   let revHandleAllTabPress = () => {
-    const revGetConnReqs = () => {
-      let revLoggedInRemoteEntityGUID =
-        REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
+    revGetConnectionRequests(revRetData => {
+      let revNoticiasArrFilter = revRetData.filter;
 
-      let revURL = `${REV_ROOT_URL}/rev_api?rev_logged_in_entity_guid=${revLoggedInRemoteEntityGUID}&revPluginHookContextsRemoteArr=revHookRemoteHandlerOwky_GetConnRequestEntities`;
+      if (revNoticiasArrFilter.length) {
+        setIsRevNoticiasAlert(true);
+        setRevNoticiasAlertsCount(revNoticiasArrFilter.length);
 
-      revGetServerData_JSON(revURL, revRetData => {
-        if (revRetData.hasOwnProperty('revError')) {
-          revRetData = revGetLocalData();
-          revRetData = {
-            revTimelineEntities: revRetData,
-            revEntityPublishersArr: [],
-          };
-        }
+        const showToast = () => {
+          ToastAndroid.showWithGravity(
+            'New connection request',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+        };
 
-        let revNoticiasArrFilter = revRetData.filter;
+        showToast();
+      } else {
+        setIsRevNoticiasAlert(false);
+      }
 
-        if (revNoticiasArrFilter.length) {
-          setIsRevNoticiasAlert(true);
-          setRevNoticiasAlertsCount(revNoticiasArrFilter.length);
-
-          const showToast = () => {
-            ToastAndroid.showWithGravity(
-              'New connection request',
-              ToastAndroid.SHORT,
-              ToastAndroid.BOTTOM,
-            );
-          };
-
-          showToast();
-        } else {
-          setIsRevNoticiasAlert(false);
-        }
+      let RevNoticias = revPluginsLoader({
+        revPluginName: 'rev_plugin_noticias',
+        revViewName: 'RevNoticias',
+        revVarArgs: revNoticiasArrFilter,
       });
-    };
 
-    revGetConnReqs();
+      SET_REV_SITE_BODY(RevNoticias);
+    });
   };
 
   let revHandleContactsPress = () => {

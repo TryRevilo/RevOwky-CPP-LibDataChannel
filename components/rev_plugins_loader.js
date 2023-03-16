@@ -47,6 +47,18 @@ var REV_PLUGINS = {
       import(`./rev_plugins/rev_plugin_members/RevStart`),
     ),
   },
+  rev_plugin_member_connections: {
+    revPluginName: 'rev_plugin_member_connections',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_member_connections/RevStart`),
+    ),
+  },
+  rev_plugin_noticias: {
+    revPluginName: 'rev_plugin_noticias',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_noticias/RevStart`),
+    ),
+  },
   rev_plugin_ads: {
     revPluginName: 'rev_plugin_ads',
     revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_ads/RevStart`)),
