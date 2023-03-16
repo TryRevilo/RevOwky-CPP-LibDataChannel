@@ -12,19 +12,19 @@ export default function RevStart({revVarArgs}) {
 
   switch (revViewName) {
     case 'RevEditUserInfoForm':
-      RevView = <RevEditUserInfoForm />;
+      RevView = <RevEditUserInfoForm revVarArgs={revVarArgs} />;
       break;
 
     case 'RevUserSettings':
-      RevView = <RevUserSettings />;
+      RevView = <RevUserSettings revVarArgs={revVarArgs} />;
       break;
 
     case 'RevSignUpForm':
-      RevView = <RevSignUpForm />;
+      RevView = <RevSignUpForm revVarArgs={revVarArgs} />;
       break;
 
     case 'RevLogInForm':
-      RevView = <RevLogInForm />;
+      RevView = <RevLogInForm revVarArgs={revVarArgs} />;
       break;
 
     default:

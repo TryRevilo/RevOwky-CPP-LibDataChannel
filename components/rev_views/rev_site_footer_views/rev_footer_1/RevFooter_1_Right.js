@@ -17,7 +17,7 @@ const RevFooter_1_Right = () => {
     let RevUserSettings = revPluginsLoader({
       revPluginName: 'rev_plugin_user_settings',
       revViewName: 'RevUserSettings',
-      revData: null,
+      revData: {},
     });
 
     SET_REV_SITE_BODY(RevUserSettings);

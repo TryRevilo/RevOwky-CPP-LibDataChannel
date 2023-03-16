@@ -9,7 +9,11 @@ import RevNullMessagesView from '../../../../../rev_views/RevNullMessagesView';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {revGetServerData_JSON} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevTimelineActivityListingViewWidget = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
@@ -20,9 +24,9 @@ export const RevTimelineActivityListingViewWidget = () => {
     return (
       <Text
         style={[
-          styles.revSiteTxtColorLight,
-          styles.revSiteTxtSmall,
-          styles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtSmall,
+          revSiteStyles.revSiteTxtBold,
           styles.revActivityContentCountTxt,
         ]}>
         {revTxt}
@@ -85,64 +89,13 @@ export const RevTimelineActivityListingViewWidget = () => {
   }, []);
 
   return (
-    <View style={[styles.revFlexContainer]}>{revActivityContentCount}</View>
+    <View style={[revSiteStyles.revFlexContainer]}>
+      {revActivityContentCount}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtNormal: {
-    fontSize: 11,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revSiteTxtLarge: {
-    fontSize: 14,
-  },
-  revSiteTxtBold: {
-    fontWeight: 'bold',
-  },
-  revSiteTxtWeightNormal: {
-    fontWeight: '100',
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  revPageHeaderAreaWrapper: {
-    alignItems: 'center',
-    width: '100%',
-    borderBottomColor: '#CCC',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
-  },
-  revHeaderTextLink: {
-    marginLeft: 4,
-  },
-  revContentBodyTtlTellTxt: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
-    paddingHorizontal: 2,
-    paddingTop: 8,
-    paddingRight: 12,
-    marginBottom: 5,
-    paddingLeft: 8,
-  },
   revActivityContentCountTxt: {
     paddingHorizontal: 12,
     paddingVertical: 8,

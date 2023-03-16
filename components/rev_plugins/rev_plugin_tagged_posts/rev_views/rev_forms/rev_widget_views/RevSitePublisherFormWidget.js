@@ -9,12 +9,7 @@ import {
   NativeModules,
 } from 'react-native';
 
-import DocumentPicker, {
-  DirectoryPickerResponse,
-  DocumentPickerResponse,
-  isInProgress,
-  types,
-} from 'react-native-document-picker';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -94,10 +89,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
       revSelectedMedia: revSelectedMedia,
     };
 
-    console.log('>>> revSelectedMedia ' + JSON.stringify(revSelectedMedia));
-
     revCreateSitePostAction(revVaArgs, revRetData => {
-      console.log('>>> revCreateSitePostAction ' + JSON.stringify(revRetData));
       if (revRetData) {
         setRevSitePostText('');
         handleRevSitePublisherCancelTab();

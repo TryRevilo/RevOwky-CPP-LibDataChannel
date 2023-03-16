@@ -2,6 +2,12 @@ import {StyleSheet} from 'react-native';
 
 export const useRevSiteStyles = () => {
   const revSiteStyles = StyleSheet.create({
+    revSiteTxtAlertDangerColor: {
+      color: 'red',
+    },
+    revSiteTxtAlertSafe: {
+      color: 'green',
+    },
     revSiteTxtColor: {
       color: '#757575',
     },
@@ -10,6 +16,9 @@ export const useRevSiteStyles = () => {
     },
     revSiteTxtColorWhite: {
       color: '#FFF',
+    },
+    revSiteTxtTiny: {
+      fontSize: 9,
     },
     revSiteTxtSmall: {
       fontSize: 10,

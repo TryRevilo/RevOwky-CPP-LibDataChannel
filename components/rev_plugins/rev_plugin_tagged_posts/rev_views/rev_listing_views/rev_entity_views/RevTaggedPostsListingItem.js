@@ -18,17 +18,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {LoremIpsum} from 'lorem-ipsum';
 import Video from 'react-native-video';
 
-const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
-
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
-import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
-
 import {
   revIsEmptyJSONObject,
-  revIsLocalFilePathOrUrl,
   revGetRandInteger,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -40,15 +34,10 @@ import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_
 
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-import {useRevGetRemoteEntity_By_RemoteEntityGUID} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
 
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevTaggedPostsListingItem = ({revVarArgs}) => {
-  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
-    useContext(RevSiteDataContext);
-  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
-  RevTaggedPostsListingItem;
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
   if (revEntityGUID < 1) {

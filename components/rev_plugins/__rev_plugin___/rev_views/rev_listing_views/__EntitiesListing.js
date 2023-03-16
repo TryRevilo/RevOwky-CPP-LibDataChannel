@@ -9,45 +9,12 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import RevPageContentHeader from '../../../../rev_views/RevPageContentHeader';
+
 export const RevSearchEntitiesListing = () => {
-  let RevHeaderLink = ({revLinkText}) => {
-    return (
-      <TouchableOpacity>
-        <Text style={styles.revHeaderTextLink}>
-          / {'   '}
-          {revLinkText}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  let RevHeaderLinks = () => {
-    return (
-      <View style={styles.revFlexWrapper}>
-        <RevHeaderLink revLinkText={'mine'} />
-        <RevHeaderLink revLinkText={'contacts'} />
-        <RevHeaderLink revLinkText={'all'} />
-      </View>
-    );
-  };
-
-  let RevHeader = () => {
-    return (
-      <View style={[styles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
-        <Text style={styles.revContentBodyTtlTellTxt}>
-          <FontAwesome name="dot-circle-o" />
-          <FontAwesome name="long-arrow-right" /> Find
-        </Text>
-        <View>
-          <RevHeaderLinks />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <View style={[styles.revFlexContainer]}>
-      <RevHeader />
+      <RevPageContentHeader />
       <View style={[styles.revFlexContainer, styles.revSearchResultsContainer]}>
         <Text style={[styles.revSiteTxtColor, styles.revSiteTxtSmall]}>
           RevSearchEntitiesListing

@@ -15,7 +15,6 @@ import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext'
 import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
-import {REV_GET_REV_ENTITIES_BY_SUBTYPE_URL} from '../rev_libs_pers/rev_server/rev_pers_urls';
 import {
   revPersGetALLRevEntity_By_SubType_RevVarArgs,
   revPersGetFilledRevEntity_By_GUID,
@@ -26,43 +25,28 @@ import RevVideoCallModal from '../rev_video_call/RevVideoCallModal';
 
 import ChatMessageInputComposer from '../rev_plugins/rev_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
 
-import {useRev_Server_UpdateMetadata} from '../rev_libs_pers/rev_server/rev_pers_lib_update';
 import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/rev_server/rev_pers_lib_delete';
-import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
 
-import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
-
-const {
-  RevPersLibCreate_React,
-  RevWebRTCReactModule,
-  RevPersLibRead_React,
-  RevGenLibs_Server_React,
-} = NativeModules;
+const {RevPersLibRead_React} = NativeModules;
 
 const handleEndVideoCall = () => {
   // RevWebRTCReactModule.revSetTestStr('my_key', 'My Value');
 };
 
 function RevFooterArea() {
-  const {REV_SITE_VAR_ARGS, REV_LOGGED_IN_ENTITY_GUID} =
-    useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const {REV_SITE_BODY, SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
+  const {SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
 
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const [revChatStatus, setRevChatStatus] = useState(false);
 
-  const {rev_Server_UpdateMetadata} = useRev_Server_UpdateMetadata();
   const {rev_Server_DeleteEntities_By_entityGUIDsArr} =
     useRev_Server_DeleteEntities_By_entityGUIDsArr();
 
-  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
-
   const revGetLocalData = () => {
-    console.log('>>> revGetLocalData <<<');
-
     let revPassVarArgs = {
       revSelect: [
         '_revEntityGUID',
@@ -286,19 +270,19 @@ function RevFooterArea() {
   let RevFooter1 = revPluginsLoader({
     revPluginName: 'rev_text_chat',
     revViewName: 'RevFooter1Left',
-    revData: 'Hello World!',
+    revData: {},
   });
 
   let RevFooter2 = revPluginsLoader({
     revPluginName: 'rev_text_chat',
     revViewName: 'RevFooter2',
-    revData: 'Hello World!',
+    revData: {},
   });
 
   let RevFooter3 = revPluginsLoader({
     revPluginName: 'rev_text_chat',
     revViewName: 'RevFooter3',
-    revData: 'Hello World!',
+    revData: {},
   });
 
   return (

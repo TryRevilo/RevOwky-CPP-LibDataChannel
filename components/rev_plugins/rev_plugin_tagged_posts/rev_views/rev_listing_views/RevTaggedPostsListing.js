@@ -20,6 +20,8 @@ import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_hel
 import {revGetLocal_OR_RemoteGUID} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetPublisherEntity} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export const RevTaggedPostsListing = ({revVarArgs}) => {
   if (
     revIsEmptyJSONObject(revVarArgs) ||
@@ -29,6 +31,8 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
   }
 
   revVarArgs = revVarArgs.revVarArgs;
+
+  const {revSiteStyles} = useRevSiteStyles();
 
   if (
     revIsEmptyJSONObject(revVarArgs) ||
@@ -106,6 +110,7 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
+        style={styles.revSitePostsListingContainer}
       />
     ) : (
       <Text style={styles.revNullNoticias}>
@@ -127,5 +132,8 @@ const styles = StyleSheet.create({
     color: '#90a4ae',
     fontSize: 10,
     alignSelf: 'flex-start',
+  },
+  revSitePostsListingContainer: {
+    marginTop: 5,
   },
 });

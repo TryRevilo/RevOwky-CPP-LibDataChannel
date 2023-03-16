@@ -20,8 +20,7 @@ import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_
 
 import {useRevConnectUser_Action} from '../../../rev_actions/rev_connect_user_action';
 
-const {RevPersLibCreate_React, RevPersLibRead_React, RevGenLibs_Server_React} =
-  NativeModules;
+const {RevPersLibRead_React} = NativeModules;
 
 export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   let revUserEntity = revVarArgs.revVarArgs;
@@ -50,10 +49,6 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
       RevPersLibRead_React.revPersGetRevEntity_By_RemoteRevEntityGUID(
         revRemoteGUID,
       );
-
-    console.log(
-      revRemoteGUID + ' >>> revTargetEntityStr ' + revTargetEntityStr,
-    );
 
     let revConnectUser = JSON.parse(revTargetEntityStr);
 

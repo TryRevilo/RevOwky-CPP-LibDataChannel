@@ -6,26 +6,37 @@
  * @flow strict-local
  */
 
-import React, {useContext} from 'react';
-
+import React, {useContext, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  NativeModules,
+  ToastAndroid,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
-import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 
+import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 
 import RevFooterArea from './RevFooterArea';
 
+import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
+
+import {useRevSiteStyles} from './RevSiteStyles';
+
 const RevSiteContainer = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [isRevNoticiasAlert, setIsRevNoticiasAlert] = useState(false);
+  const [revNoticiasAlertsCount, setRevNoticiasAlertsCount] = useState(0);
+
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+
   const {
     REV_PAGE_HEADER_CONTENT_VIEWER,
     SET_REV_PAGE_HEADER_CONTENT_VIEWER,
@@ -33,11 +44,56 @@ const RevSiteContainer = () => {
     SET_REV_SITE_BODY,
   } = useContext(ReViewsContext);
 
+  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
+    useContext(RevSiteDataContext);
+
+  useEffect(() => {}, []);
+
+  let revHandleAllTabPress = () => {
+    const revGetConnReqs = () => {
+      let revLoggedInRemoteEntityGUID =
+        REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
+
+      let revURL = `${REV_ROOT_URL}/rev_api?rev_logged_in_entity_guid=${revLoggedInRemoteEntityGUID}&revPluginHookContextsRemoteArr=revHookRemoteHandlerOwky_GetConnRequestEntities`;
+
+      revGetServerData_JSON(revURL, revRetData => {
+        if (revRetData.hasOwnProperty('revError')) {
+          revRetData = revGetLocalData();
+          revRetData = {
+            revTimelineEntities: revRetData,
+            revEntityPublishersArr: [],
+          };
+        }
+
+        let revNoticiasArrFilter = revRetData.filter;
+
+        if (revNoticiasArrFilter.length) {
+          setIsRevNoticiasAlert(true);
+          setRevNoticiasAlertsCount(revNoticiasArrFilter.length);
+
+          const showToast = () => {
+            ToastAndroid.showWithGravity(
+              'New connection request',
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
+          };
+
+          showToast();
+        } else {
+          setIsRevNoticiasAlert(false);
+        }
+      });
+    };
+
+    revGetConnReqs();
+  };
+
   let revHandleContactsPress = () => {
     let RevContacts = revPluginsLoader({
       revPluginName: 'rev_contacts',
       revViewName: 'RevContacts',
-      revData: 'Hello World!',
+      revData: {},
     });
 
     SET_REV_SITE_BODY(RevContacts);
@@ -47,7 +103,7 @@ const RevSiteContainer = () => {
     let RevSearchForm = revPluginsLoader({
       revPluginName: 'rev_plugin_search',
       revViewName: 'RevSearchForm',
-      revData: 'Hello World!',
+      revData: {},
     });
 
     SET_REV_PAGE_HEADER_CONTENT_VIEWER(RevSearchForm);
@@ -57,7 +113,7 @@ const RevSiteContainer = () => {
     let RevMessageNoticias = revPluginsLoader({
       revPluginName: 'rev_text_chat',
       revViewName: 'RevChatMessageNotificationsListing',
-      revData: 'Hello World!',
+      revData: {},
     });
 
     SET_REV_SITE_BODY(RevMessageNoticias);
@@ -66,63 +122,91 @@ const RevSiteContainer = () => {
   return (
     <View style={styles.revSiteContainer}>
       <View style={styles.pageContainer}>
-        <View style={[styles.revFlexWrapper]}>
-          <View style={[styles.revFlexContainer, styles.revHeaderContainer]}>
-            <View style={[styles.revFlexWrapper, styles.revSiteLogoWrapper]}>
+        <View style={[revSiteStyles.revFlexWrapper]}>
+          <View
+            style={[revSiteStyles.revFlexContainer, styles.revHeaderContainer]}>
+            <View
+              style={[revSiteStyles.revFlexWrapper, styles.revSiteLogoWrapper]}>
               <Text style={styles.revSiteLogoTxt}>Owki</Text>
               <Text
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteFontBold,
-                  styles.revSiteTxtSmall,
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteFontBold,
+                  revSiteStyles.revSiteTxtSmall,
                   styles.revSiteVersion,
                 ]}>
                 {'  '}
                 <FontAwesome
                   name="dot-circle-o"
-                  style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtTiny,
+                  ]}
                 />
                 <FontAwesome
                   name="long-arrow-right"
-                  style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtTiny,
+                  ]}
                 />{' '}
                 Version{' : '}
               </Text>
               <Text
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny,
                   styles.revSiteVersion,
                 ]}>
                 natalie-1.0.0{' '}
                 <FontAwesome
                   name="copyright"
-                  style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtTiny,
+                  ]}
                 />{' '}
                 2023
               </Text>
             </View>
-            <Text style={[styles.revSiteTxtTiny, styles.revSiteTellTxt]}>
+            <Text style={[revSiteStyles.revSiteTxtTiny, styles.revSiteTellTxt]}>
               Chat with people from around the world !
             </Text>
           </View>
           <View
             style={[
-              styles.revFlexWrapper,
+              revSiteStyles.revFlexWrapper,
               styles.siteHeaderOptionsTabsWrapper,
             ]}>
             <TouchableOpacity
               onPress={() => {
-                revHandleContactsPress();
+                revHandleAllTabPress();
               }}>
-              <FontAwesome
-                name="exclamation"
+              <View
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtMedium,
+                  revSiteStyles.revFlexWrapper,
+                  styles.siteHeaderOptionItemTabWrapper,
                   styles.revHeaderOptionTab,
-                ]}
-              />
+                ]}>
+                {isRevNoticiasAlert ? (
+                  <Text
+                    style={[
+                      revSiteStyles.revSiteTxtAlertDangerColor,
+                      revSiteStyles.revSiteTxtTiny,
+                      revSiteStyles.revSiteTxtBold,
+                      styles.siteHeaderOptionItemTabTxt,
+                    ]}>
+                    {revNoticiasAlertsCount}
+                  </Text>
+                ) : null}
+                <FontAwesome
+                  name="exclamation"
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtMedium,
+                  ]}
+                />
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -131,8 +215,8 @@ const RevSiteContainer = () => {
               <FontAwesome
                 name="group"
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtMedium,
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtMedium,
                   styles.revHeaderOptionTab,
                 ]}
               />
@@ -144,8 +228,8 @@ const RevSiteContainer = () => {
               <FontAwesome
                 name="quote-right"
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtMedium,
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtMedium,
                   styles.revHeaderOptionTab,
                 ]}
               />
@@ -157,8 +241,8 @@ const RevSiteContainer = () => {
               <FontAwesome
                 name="search"
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtMedium,
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtMedium,
                   styles.revHeaderOptionTab,
                 ]}
               />
@@ -168,7 +252,11 @@ const RevSiteContainer = () => {
 
         {REV_PAGE_HEADER_CONTENT_VIEWER}
 
-        <View style={[styles.revFlexContainer, styles.revSiteContentContainer]}>
+        <View
+          style={[
+            revSiteStyles.revFlexContainer,
+            styles.revSiteContentContainer,
+          ]}>
           {REV_SITE_BODY}
         </View>
 
@@ -179,24 +267,6 @@ const RevSiteContainer = () => {
 };
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
   revFlexWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -240,6 +310,13 @@ const styles = StyleSheet.create({
     width: 'auto',
     marginLeft: 'auto',
     marginRight: 12,
+  },
+  siteHeaderOptionItemTabWrapper: {
+    alignItems: 'baseline',
+    width: 'auto',
+  },
+  siteHeaderOptionItemTabTxt: {
+    paddingRight: 1,
   },
   revHeaderOptionTab: {
     paddingHorizontal: 10,

@@ -12,7 +12,7 @@ import {
   revGetRemoteEntityGUID,
 } from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
-const {RevPersLibRead_React} = NativeModules;
+const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
 
 export const useRevConnectUser_Action = () => {
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
@@ -23,13 +23,22 @@ export const useRevConnectUser_Action = () => {
       return revCallBack(-1);
     }
 
+    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
+
+    if (revLoggedInRemoteEntityGUID < 1) {
+      return revCallBack(-1);
+    }
+
     // Start - return if revEntityType !== 'rev_user_entity'
     // Start - get local entity GUID
     // Start - save user locally if entityGUID < 0
     // Start - save relationship locally if entityGUID >= 0
     let revTargetRemoteEntityGUID = revGetRemoteEntityGUID(revVarArgs);
 
-    console.log('>>> revTargetRemoteEntityGUID ' + revTargetRemoteEntityGUID);
+    // If you're trying to connect with yourself - FAIL
+    if (revLoggedInRemoteEntityGUID == revTargetRemoteEntityGUID) {
+      return revCallBack(-1);
+    }
 
     if (revTargetRemoteEntityGUID < 0) {
       // START save user to local DB
@@ -42,8 +51,6 @@ export const useRevConnectUser_Action = () => {
         revTargetRemoteEntityGUID,
       );
 
-    console.log('>>> revTargetEntityStr ' + revTargetEntityStr);
-
     let revTargetEntity = JSON.parse(revTargetEntityStr);
 
     let revTargetEntityGUID = revTargetEntity._revEntityGUID;
@@ -54,15 +61,13 @@ export const useRevConnectUser_Action = () => {
     revConnectUserRel._revEntityTargetGUID = revTargetEntityGUID;
     revConnectUserRel._remoteRevEntityTargetGUID = revTargetRemoteEntityGUID;
     revConnectUserRel._revEntitySubjectGUID = REV_LOGGED_IN_ENTITY_GUID;
-    revConnectUserRel._remoteRevEntitySubjectGUID = REV_LOGGED_IN_ENTITY_GUID;
+    revConnectUserRel._remoteRevEntitySubjectGUID = revLoggedInRemoteEntityGUID;
 
-    console.log('>>> revConnectUserRel ' + JSON.stringify(revConnectUserRel));
+    let revConnectUserRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+      JSON.stringify(revConnectUserRel),
+    );
 
-    //   let revConnectUserRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-    //     JSON.stringify(revConnectUserRel),
-    //   );
-
-    revCallBack(123);
+    revCallBack(revConnectUserRelId);
   };
 
   return {revConnectUser_Action};

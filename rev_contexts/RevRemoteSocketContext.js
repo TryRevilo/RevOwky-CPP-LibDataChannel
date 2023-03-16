@@ -25,9 +25,7 @@ const RevRemoteSocketContext = createContext();
 const RevRemoteSocketContextProvider = ({children}) => {
   const [REV_PORT, setREV_PORT] = useState(revSettings.revPort);
   const [REV_IP, setREV_IP] = useState(revSettings.revIP);
-  const [REV_ROOT_URL, setREV_ROOT_URL] = useState(
-    'http://' + REV_IP + ':' + REV_PORT,
-  );
+  const [REV_ROOT_URL, setREV_ROOT_URL] = useState(revSettings.revSiteURL);
 
   const constraints = {
     offerToReceiveAudio: 1,

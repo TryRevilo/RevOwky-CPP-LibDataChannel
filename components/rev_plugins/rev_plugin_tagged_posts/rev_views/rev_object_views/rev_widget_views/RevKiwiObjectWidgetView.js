@@ -23,19 +23,45 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {revGetEntityChildren_By_Subtype} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 const {RevPersLibRead_React} = NativeModules;
+
+const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
   revVarArgs = revVarArgs.revVarArgs;
 
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
-  if (revEntityGUID < 0) {
+  if (revEntityGUID < 1) {
     return null;
   }
+
+  if (
+    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_full_names',
+  );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    22,
+  );
 
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -117,7 +143,9 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
         </TouchableOpacity>
         <View style={styles.revChatMsgCommentContentContainer}>
           <View style={styles.chatMsgHeaderWrapper}>
-            <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
+            <Text style={styles.chatMsgOwnerTxt}>
+              {revPublisherEntityNames_Trunc}
+            </Text>
             <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
             <View style={styles.chatMsgOptionsWrapper}>
               <Text style={styles.chatMsgOptions}>
@@ -145,40 +173,45 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     );
   };
 
-  const RevMedia = revEntityGUID => {
-    if (revEntityGUID < 1) {
-      return null;
-    }
-
-    let revRelSubGUIDs =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_file_of',
-        revEntityGUID,
-      );
-
-    let revRelSubGUIDsArr = JSON.parse(revRelSubGUIDs);
-
+  const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
 
-    for (let i = 0; i < revRelSubGUIDsArr.length; i++) {
-      let revRelSubGUID = revRelSubGUIDsArr[i];
+    let revPicsArr = revPicsAlbum._revEntityChildrenList;
 
-      let revEntityStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revRelSubGUID);
-
-      console.log('>>> revEntityStr ' + revEntityStr);
-
-      let revEntity = JSON.parse(revEntityStr);
+    for (let i = 0; i < revPicsArr.length; i++) {
+      let revPic = revPicsArr[i];
 
       let revEntityImageURI = revGetMetadataValue(
-        revEntity._revEntityMetadataList,
+        revPic._revEntityMetadataList,
         'rev_remote_file_name',
       );
 
+      if (!revVarArgs._fromRemote) {
+        revEntityImageURI =
+          'file:///' +
+          revSettings.revPublishedMediaDir +
+          '/' +
+          revEntityImageURI;
+      } else {
+        revEntityImageURI =
+          revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
+      }
+
+      let revLastImageStyle =
+        i == revPicsArr.length - 1
+          ? {
+              borderRightWidth: 0,
+            }
+          : null;
+
+      let revImageEntityGUID = revGetLocal_OR_RemoteGUID(revPic);
+
       let RevImage = (
         <TouchableOpacity
-          key={revGetRandInteger(100, 1000)}
-          style={styles.revImageTouchableOpacity}>
+          key={
+            'RevImage_' + revImageEntityGUID + '_' + revGetRandInteger(10, 1000)
+          }
+          style={[styles.revImageTouchableOpacity, revLastImageStyle]}>
           <Image
             style={styles.revEntityImageStyle}
             source={{
@@ -191,20 +224,62 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
       revImagesViews.push(RevImage);
     }
 
-    return (
-      <ScrollView
-        horizontal
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.profileImagesScroller}>
-        <View style={[revSiteStyles.revFlexWrapper]}>
-          {revImagesViews.map(RevImage => {
-            return RevImage;
-          })}
-        </View>
-      </ScrollView>
-    );
+    let RevRetView =
+      revImagesViews.length < 1 ? null : (
+        <ScrollView
+          horizontal
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          style={styles.revProfileImagesScroller}>
+          <View style={[revSiteStyles.revFlexWrapper]}>
+            {revImagesViews.map(RevImage => {
+              return RevImage;
+            })}
+          </View>
+        </ScrollView>
+      );
+
+    return RevRetView;
   };
+
+  let RevImagesMediaView = null;
+
+  if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
+    let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
+      revVarArgs._revEntityChildrenList,
+      'rev_pics_album',
+    );
+
+    if (revPicsAlbumArr && revPicsAlbumArr.length) {
+      RevImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
+    }
+  }
+
+  const RevVideoPlayer = () => {
+    let revVidPathsArr = [
+      'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/1.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/2.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/3.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/4.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/5.mp4',
+      '/storage/emulated/0/Documents/Owki/rev_sample_media/6.mp4',
+    ];
+    const randomIndex = Math.floor(Math.random() * revVidPathsArr.length);
+    const randomElement = revVidPathsArr[randomIndex];
+
+    let RevInlineVideoPlayer = revPluginsLoader({
+      revPluginName: 'rev_plugin_video',
+      revViewName: 'RevInlineVideoPlayer',
+      revVarArgs: {
+        revURL: randomElement,
+      },
+    });
+
+    return RevInlineVideoPlayer;
+  };
+
+  let RevVideoPlayerView = RevVideoPlayer();
 
   let RevGenComments = () => {
     let revCommentsArr = [];
@@ -268,7 +343,9 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
           <View style={styles.chatMsgContentWrapper}>
             <View style={styles.chatMsgContentContainer}>
               <View style={styles.chatMsgHeaderWrapper}>
-                <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
+                <Text style={styles.chatMsgOwnerTxt}>
+                  {revPublisherEntityNames_Trunc}
+                </Text>
                 <Text style={styles.chatMsgSendTime}>{timeCreated}</Text>
                 <View style={styles.chatMsgOptionsWrapper}>
                   <Text style={styles.chatMsgOptions}>
@@ -304,7 +381,15 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
                 {chatMessageText(chatMsg)}
               </View>
 
-              {RevMedia(revEntityGUID)}
+              <View
+                style={[
+                  RevImagesMediaView || RevVideoPlayerView
+                    ? styles.revImagesMediaViewContainer
+                    : null,
+                ]}>
+                {RevImagesMediaView}
+                {RevVideoPlayerView}
+              </View>
 
               <View style={revSiteStyles.revFlexWrapper_WidthAuto}>
                 <RevLikes />
@@ -484,6 +569,34 @@ const styles = StyleSheet.create({
     fontSize: 9,
     width: 'auto',
     paddingTop: 5,
+  },
+  revImagesMediaViewContainer: {
+    flex: 1,
+    marginTop: 7,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  revProfileImagesScroller: {
+    backgroundColor: '#444',
+    flexGrow: 0,
+    marginBottom: 1,
+  },
+  revProfileMediaWrapper: {
+    alignItems: 'center',
+  },
+  revImageTouchableOpacity: {
+    backgroundColor: '#444',
+    borderStyle: 'solid',
+    borderRightColor: '#FFFFFF',
+    borderRightWidth: 1,
+  },
+  revEntityImageStyle: {
+    width: 75,
+    height: 45,
+    verticalAlign: 'middle',
+  },
+  revVideoPlayerContainer: {
+    height: 'auto',
   },
   revLikesTabsWrapper: {
     alignItems: 'center',

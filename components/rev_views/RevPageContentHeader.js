@@ -61,6 +61,29 @@ const RevPageContentHeader = ({revVarArgs}) => {
         <View>
           <RevHeaderLinks />
         </View>
+
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revHeaderOnlineStateWrapper,
+          ]}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtAlertSafe,
+              revSiteStyles.revSiteTxtSmall,
+              styles.revHeaderTextLink,
+            ]}
+            name="dot-circle-o"
+          />
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtAlertSafe,
+              revSiteStyles.revSiteTxtSmall,
+              styles.revHeaderOnlineStateTextLink,
+            ]}>
+            onLiNE
+          </Text>
+        </View>
       </View>
     );
   };
@@ -100,5 +123,14 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     marginBottom: 5,
     paddingLeft: 4,
+  },
+  revHeaderOnlineStateWrapper: {
+    alignItems: 'center',
+    width: 'auto',
+    marginRight: 17,
+    marginLeft: 'auto',
+  },
+  revHeaderOnlineStateTextLink: {
+    marginLeft: 2,
   },
 });

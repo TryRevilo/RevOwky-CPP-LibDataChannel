@@ -1,61 +1,114 @@
-import React from 'react';
-
 import {
   StyleSheet,
   Text,
   View,
   Image,
+  TouchableOpacity,
   ScrollView,
   Dimensions,
+  NativeModules,
 } from 'react-native';
+import React, {useState, useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
-import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+import {useRevGetLoggedInSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
-export const RevUserInfo_Widget = ({revVarArgs}) => {
+const {RevPersLibUpdate_React} = NativeModules;
+
+export const RevUserSettingsWidget = ({revVarArgs}) => {
+  const {
+    REV_LOGGED_IN_ENTITY_GUID,
+    REV_LOGGED_IN_ENTITY,
+    SET_REV_LOGGED_IN_ENTITY_GUID,
+  } = useContext(RevSiteDataContext);
+
   if (
-    revIsEmptyJSONObject(revVarArgs) ||
-    !revVarArgs.hasOwnProperty('revVarArgs')
+    revIsEmptyJSONObject(REV_LOGGED_IN_ENTITY) ||
+    !REV_LOGGED_IN_ENTITY.hasOwnProperty('_revInfoEntity')
   ) {
     return null;
   }
 
-  let revOwkiMemberEntity = revVarArgs.revVarArgs;
-
-  if (revIsEmptyJSONObject(revOwkiMemberEntity)) {
+  if (REV_LOGGED_IN_ENTITY_GUID < 1) {
     return null;
   }
 
-  let revEntityGUID = revGetLocal_OR_RemoteGUID(revOwkiMemberEntity);
-
-  if (revEntityGUID < 1) {
-    return null;
-  }
-
-  if (!revOwkiMemberEntity.hasOwnProperty('_revInfoEntity')) {
-    return null;
-  }
-
-  let revInfoEntity = revOwkiMemberEntity._revInfoEntity;
-  if (
-    !revInfoEntity.hasOwnProperty('_remoteRevEntityGUID') ||
-    revInfoEntity._remoteRevEntityGUID < 0
-  ) {
-    return null;
-  }
+  let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
 
   let revPublisherEntityNames = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
     'rev_full_names',
   );
 
-  let revUserRegLongDate = revOwkiMemberEntity._revTimePublished;
+  let revUserRegLongDate = REV_LOGGED_IN_ENTITY._revTimePublished;
   let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
+
+  const {revGetLoggedInSiteEntity} = useRevGetLoggedInSiteEntity();
+
+  const [revIsEditView, setRevIsEditView] = useState(false);
+
+  let RevHeaderLink = ({revLinkText}) => {
+    return (
+      <TouchableOpacity>
+        <Text
+          style={[
+            styles.revSiteTxtColorLight,
+            styles.revSiteTxtSmall,
+            styles.revHeaderTextLink,
+          ]}>
+          / {'  '}
+          {revLinkText}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  let RevHeaderLinks = () => {
+    return (
+      <View style={styles.revFlexWrapper}>
+        <RevHeaderLink revLinkText={'info'} />
+        <RevHeaderLink revLinkText={'account'} />
+        <RevHeaderLink revLinkText={<FontAwesome name="shopping-bag" />} />
+      </View>
+    );
+  };
+
+  const revHandleOnLogOutTabPressed = () => {
+    let revSiteEntity = revGetLoggedInSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
+    let revEntityResolveStatusByRevEntityGUID =
+      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+        0,
+        revSiteEntity._revEntityGUID,
+      );
+
+    if (revEntityResolveStatusByRevEntityGUID) {
+      SET_REV_LOGGED_IN_ENTITY_GUID(-1);
+    }
+  };
+
+  let RevHeader = () => {
+    return (
+      <View style={[styles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
+        <TouchableOpacity onPress={revHandleOnLogOutTabPressed}>
+          <Text style={styles.revContentBodyTtlTellTxt}>
+            <FontAwesome name="dot-circle-o" />
+            <FontAwesome name="long-arrow-right" /> Log out
+          </Text>
+        </TouchableOpacity>
+        <View>
+          <RevHeaderLinks />
+        </View>
+      </View>
+    );
+  };
 
   let minMessageLen = 10;
   let maxMessageLen = 55;
@@ -66,8 +119,8 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
-      max: 1,
-      min: 1,
+      max: 8,
+      min: 4,
     },
     wordsPerSentence: {
       max: getRndInteger(minMessageLen, maxMessageLen),
@@ -75,13 +128,11 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     },
   });
 
-  let revUserInfoDescTxt = lorem.generateSentences(getRndInteger(1, 1));
+  let chatMsg = lorem.generateSentences(getRndInteger(1, 5));
 
   const RevDrawUserInfo = ({revLabel, revVal}) => {
     return (
-      <View
-        key={'RevUserInfo_Widget_' + revEntityGUID}
-        style={[styles.revFlexWrapper, styles.revUserInfoWrapper]}>
+      <View style={[styles.revFlexWrapper, styles.revUserInfoWrapper]}>
         <Text
           style={[
             styles.revSiteTxtColorLight,
@@ -177,7 +228,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
             revLabel={'Full names'}
             revVal={revPublisherEntityNames}
           />
-          <RevDrawUserInfo revLabel={'About'} revVal={revUserInfoDescTxt} />
+          <RevDrawUserInfo revLabel={'About'} revVal={chatMsg} />
           <RevDrawUserInfo
             revLabel={'member since'}
             revVal={revFormattedLongDate}
@@ -189,7 +240,69 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     );
   };
 
-  return <RevInfoSettings />;
+  const [RevSettingsBody, setRevSettingsBody] = useState(<RevInfoSettings />);
+
+  const revHandleEditInfoTabPressed = () => {
+    let RevEditUserInfoForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_user_settings',
+      revViewName: 'RevEditUserInfoForm',
+      revData: {},
+    });
+
+    setRevIsEditView(!revIsEditView);
+
+    if (!revIsEditView) {
+      setRevSettingsBody(RevEditUserInfoForm);
+    } else {
+      setRevSettingsBody(<RevInfoSettings />);
+    }
+  };
+
+  const RevGetEditTab = () => {
+    return (
+      <TouchableOpacity onPress={revHandleEditInfoTabPressed}>
+        <Text
+          style={[
+            styles.revSiteTxtColor,
+            styles.revSiteTxtSmall,
+            styles.revEditTab,
+          ]}>
+          <FontAwesome name="edit" style={styles.revSiteTxtSmall} /> - Edit
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const RevGetBackTab = () => {
+    return (
+      <TouchableOpacity onPress={revHandleEditInfoTabPressed}>
+        <Text
+          style={[
+            styles.revSiteTxtColorLight,
+            styles.revSiteTxtSmall,
+            styles.revEditTab,
+          ]}>
+          <FontAwesome
+            name="long-arrow-left"
+            style={[styles.revSiteTxtSmall, styles.revSiteTxtWeightNormal]}
+          />
+          <FontAwesome
+            name="dot-circle-o"
+            style={[styles.revSiteTxtSmall, styles.revSiteTxtWeightNormal]}
+          />{' '}
+          BacK
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={[styles.revFlexContainer, styles.revSearchResultsContainer]}>
+      <RevHeader />
+      {revIsEditView ? <RevGetBackTab /> : <RevGetEditTab />}
+      <View style={[styles.revFlexContainer]}>{RevSettingsBody}</View>
+    </View>
+  );
 };
 
 var pageWidth = Dimensions.get('window').width - 12;

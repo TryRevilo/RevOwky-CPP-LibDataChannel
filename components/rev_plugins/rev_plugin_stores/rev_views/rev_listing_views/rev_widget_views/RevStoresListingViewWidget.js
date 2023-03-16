@@ -3,6 +3,8 @@ import React, {useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
+
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
@@ -77,48 +79,9 @@ export const RevStoresListingViewWidget = () => {
     );
   };
 
-  let RevHeaderLink = ({revLinkText}) => {
-    return (
-      <TouchableOpacity>
-        <Text
-          style={[
-            styles.revSiteTxtColorLight,
-            styles.revSiteTxtSmall,
-            styles.revHeaderTextLink,
-          ]}>
-          / {'   '}
-          {revLinkText}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  let RevHeaderLinks = () => {
-    return (
-      <View style={styles.revFlexWrapper}>
-        <RevHeaderLink revLinkText={'My Stores'} />
-        <RevHeaderLink revLinkText={'Products'} />
-      </View>
-    );
-  };
-
-  let RevHeader = () => {
-    return (
-      <View style={[styles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
-        <Text style={styles.revContentBodyTtlTellTxt}>
-          <FontAwesome name="dot-circle-o" />
-          <FontAwesome name="long-arrow-right" /> All
-        </Text>
-        <View>
-          <RevHeaderLinks />
-        </View>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.revFlexContainer}>
-      <RevHeader />
+      <RevPageContentHeader />
       <RevDisplay />
     </View>
   );
