@@ -9,9 +9,11 @@ var REV_PLUGINS = {
     revPluginName: 'rev_flag',
     revPlugin: loadable(() => import(`./rev_plugins/rev_flag/RevStart`)),
   },
-  rev_text_chat: {
-    revPluginName: 'rev_text_chat',
-    revPlugin: loadable(() => import(`./rev_plugins/rev_text_chat/RevStart`)),
+  rev_plugin_text_chat: {
+    revPluginName: 'rev_plugin_text_chat',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_text_chat/RevStart`),
+    ),
   },
   rev_plugin_site_messages: {
     revPluginName: 'rev_plugin_site_messages',

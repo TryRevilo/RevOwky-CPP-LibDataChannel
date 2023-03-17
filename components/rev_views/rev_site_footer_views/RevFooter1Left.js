@@ -8,7 +8,7 @@ import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
 
 import RevFooter_1_Right from './rev_footer_1/RevFooter_1_Right';
 
-import RevNextStrangerChatTab from '../../rev_plugins/rev_text_chat/rev_views/rev_menu_areas/RevNextStrangerChatTab';
+import RevNextStrangerChatTab from '../../rev_plugins/rev_plugin_text_chat/rev_views/rev_menu_areas/RevNextStrangerChatTab';
 
 export function RevFooter1Left() {
   const {revSiteStyles} = useRevSiteStyles();

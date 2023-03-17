@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 
 import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 
-import RevNextStrangerChatTab from '../../rev_plugins/rev_text_chat/rev_views/rev_menu_areas/RevNextStrangerChatTab';
+import RevNextStrangerChatTab from '../../rev_plugins/rev_plugin_text_chat/rev_views/rev_menu_areas/RevNextStrangerChatTab';
 
 export function RevFooter3() {
   const {REV_SITE_VAR_ARGS, SET_REV_SITE_VAR_ARGS} =

@@ -66,7 +66,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   let revInfoEntity = revVarArgs._revInfoEntity;
-  let timeCreated = revVarArgs._timeCreated;
+  let revTimeCreated = revVarArgs._timeCreated;
 
   const {
     REV_PAGE_HEADER_CONTENT_VIEWER,
@@ -346,7 +346,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
                 <Text style={styles.chatMsgOwnerTxt}>
                   {revPublisherEntityNames_Trunc}
                 </Text>
-                <Text style={styles.chatMsgSendTime}>{timeCreated}</Text>
+                <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
                 <View style={styles.chatMsgOptionsWrapper}>
                   <Text style={styles.chatMsgOptions}>
                     <FontAwesome name="reply" />

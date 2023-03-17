@@ -23,7 +23,7 @@ import {
 
 import RevVideoCallModal from '../rev_video_call/RevVideoCallModal';
 
-import ChatMessageInputComposer from '../rev_plugins/rev_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
+import ChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
 
 import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/rev_server/rev_pers_lib_delete';
 
@@ -268,19 +268,19 @@ function RevFooterArea() {
   };
 
   let RevFooter1 = revPluginsLoader({
-    revPluginName: 'rev_text_chat',
+    revPluginName: 'rev_plugin_text_chat',
     revViewName: 'RevFooter1Left',
     revData: {},
   });
 
   let RevFooter2 = revPluginsLoader({
-    revPluginName: 'rev_text_chat',
+    revPluginName: 'rev_plugin_text_chat',
     revViewName: 'RevFooter2',
     revData: {},
   });
 
   let RevFooter3 = revPluginsLoader({
-    revPluginName: 'rev_text_chat',
+    revPluginName: 'rev_plugin_text_chat',
     revViewName: 'RevFooter3',
     revData: {},
   });

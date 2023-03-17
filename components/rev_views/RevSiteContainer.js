@@ -97,7 +97,7 @@ const RevSiteContainer = () => {
 
   let revHandleMessageNotificationsPress = () => {
     let RevMessageNoticias = revPluginsLoader({
-      revPluginName: 'rev_text_chat',
+      revPluginName: 'rev_plugin_text_chat',
       revViewName: 'RevChatMessageNotificationsListing',
       revData: {},
     });

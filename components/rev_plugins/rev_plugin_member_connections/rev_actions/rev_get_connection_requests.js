@@ -20,11 +20,7 @@ export const useRevGetConnectionRequests = () => {
 
     revGetServerData_JSON(revURL, revRetData => {
       if (revRetData.hasOwnProperty('revError')) {
-        revRetData = revGetLocalData();
-        revRetData = {
-          revTimelineEntities: revRetData,
-          revEntityPublishersArr: [],
-        };
+        console.log('>>> revRetData ' + JSON.stringify(revRetData));
       }
 
       return revCallBack(revRetData);

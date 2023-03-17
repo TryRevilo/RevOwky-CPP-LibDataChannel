@@ -24,10 +24,11 @@ import {RevFooter1} from '../../rev_flag/rev_views/RevFooter1';
 
 export default function RevChatMessageOptions({revData, revCallback}) {
   let revEntityGUID = revData._revEntityGUID;
+  let revMsgInfoEntity = revData._revInfoEntity;
 
-  let chatMsg = revGetMetadataValue(
-    revData._revEntityMetadataList,
-    'rev_chat_message_html_value',
+  let revChatMsgStr = revGetMetadataValue(
+    revMsgInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
   );
 
   const [isModalVisible, setModalVisible] = useState(true);
@@ -59,9 +60,9 @@ export default function RevChatMessageOptions({revData, revCallback}) {
   let chatMessageText = _chatMsg => {
     let chatMessageView = (
       <Text style={styles.chatMsgContentTxt}>
-        {chatMsg.length > maxMessageLen
-          ? chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : chatMsg}
+        {revChatMsgStr.length > maxMessageLen
+          ? revChatMsgStr.substring(0, maxMessageLen) + ' . . .'
+          : revChatMsgStr}
       </Text>
     );
 
@@ -74,7 +75,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
     return (
       <View key={revEntityGUID} style={styles.chatMsgContentTxtContainer}>
         {chatMessageView}
-        {chatMsg.length > maxMessageLen ? (
+        {revChatMsgStr.length > maxMessageLen ? (
           <Text style={styles.readMoreTextTab}>Read more</Text>
         ) : null}
         {RevFooter1}
@@ -124,7 +125,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
                 </View>
               </View>
               <View style={styles.chatMsgContentTxtContainer}>
-                {chatMessageText(chatMsg)}
+                {chatMessageText(revChatMsgStr)}
                 <RevImages />
               </View>
             </View>

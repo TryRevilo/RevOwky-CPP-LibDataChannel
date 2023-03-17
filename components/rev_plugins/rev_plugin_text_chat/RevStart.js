@@ -4,6 +4,7 @@ import {RevFooter1Left} from '../../rev_views/rev_site_footer_views/RevFooter1Le
 import {RevFooter2} from '../../rev_views/rev_site_footer_views/RevFooter2';
 import {RevFooter3} from '../../rev_views/rev_site_footer_views/RevFooter3';
 import {RevChatMessageNotificationsListing} from './rev_views/rev_listing_views/RevChatMessageNotificationsListing';
+import {RevChatMessageNotificationsListingItem} from './rev_views/rev_listing_views/rev_entity_views/RevChatMessageNotificationsListingItem';
 
 export default function RevStart({revVarArgs}) {
   let RevView = null;

@@ -56,6 +56,13 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
+    public Integer revGetLocalEntityGUID_BY_RemoteEntityGUID(Integer revRemoteRevEntityGUID) {
+        long revEntityGUID = (revPersLibRead.getLocalRevEntityGUID_By_RemoteRevEntityGUID(revRemoteRevEntityGUID));
+
+        return (int) revEntityGUID;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revGetRemoteEntityGUID_BY_LocalEntityGUID(Integer revLocalEntityGUID) {
         long revEntityGUID = (revPersLibRead.revGetRemoteEntityGUID_BY_LocalEntityGUID(revLocalEntityGUID));
 

@@ -34,21 +34,21 @@ export const useRevCreateCommentAction = () => {
     let revPersEntityGUID = -1;
 
     if (!revIsCommentUpdate) {
-      revVarArgs['revEntitySubType'] = 'rev_comment';
+      revVarArgs['revEntitySubType'] = 'rev_message';
 
       let revPersEntityInfoMetadataList = [
-        REV_METADATA_FILLER('rev_comment_value', revVarArgs.revCommentText),
+        REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),
       ];
 
       revVarArgs['revPersEntityInfoMetadataList'] =
         revPersEntityInfoMetadataList;
 
       let revCommentRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revCommentRel._revEntityRelationshipType = 'rev_comment';
-      revCommentRel._revEntityTargetGUID = revCommentContainerGUID;
-      revCommentRel._revEntitySubjectGUID = -1;
+      revCommentRel._revEntityRelationshipType = 'rev_msg_recipient_of';
+      revCommentRel._revEntityTargetGUID = -1;
+      revCommentRel._revEntitySubjectGUID = revCommentContainerGUID;
 
-      revVarArgs['revSubjectRelsArr'] = [revCommentRel];
+      revVarArgs['revTargetRelsArr'] = [revCommentRel];
 
       revPersEntityGUID = await revSaveNewEntity(revVarArgs);
       revRetData['revNewEntityGUID'] = revPersEntityGUID;
@@ -59,7 +59,7 @@ export const useRevCreateCommentAction = () => {
         revPersGetFilledRevEntity_By_GUID(revPersEntityGUID);
       let revCurrMetadata = revGetMetadataContainingMetadataName(
         revFilledEntity._revInfoEntity._revEntityMetadataList,
-        'rev_comment_value',
+        'rev_entity_desc_val',
       );
 
       let revMetadataId = revCurrMetadata.revMetadataId;

@@ -307,7 +307,7 @@ export const useRevSaveNewEntity = () => {
       return -1;
     }
 
-    /** START SAVE TARGET RELS */
+    /** START SAVE SUBJECT RELS */
     if (revVarArgs.hasOwnProperty('revSubjectRelsArr')) {
       let revSubjectRelsArr = revVarArgs.revSubjectRelsArr;
 
@@ -317,6 +317,21 @@ export const useRevSaveNewEntity = () => {
 
         let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
           JSON.stringify(revSubjectRel),
+        );
+      }
+    }
+    /** END SAVE SUBJECT RELS */
+
+    /** START SAVE TARGET RELS */
+    if (revVarArgs.hasOwnProperty('revTargetRelsArr')) {
+      let revTargetRelsArr = revVarArgs.revTargetRelsArr;
+
+      for (let i = 0; i < revTargetRelsArr.length; i++) {
+        let revTargetRel = revTargetRelsArr[i];
+        revTargetRel._revEntityTargetGUID = revPersEntityGUID;
+
+        let revTargetRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+          JSON.stringify(revTargetRel),
         );
       }
     }

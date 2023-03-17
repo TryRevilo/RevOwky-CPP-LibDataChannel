@@ -31,7 +31,7 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     revIsCommentUpdate = revVarArgs.revIsCommentUpdate;
   }
 
-  let revCommentTxtVal = '';
+  let revEntityDescInputTextVal = '';
 
   let revCancelFunc;
 
@@ -43,8 +43,21 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     return null;
   }
 
-  let revCommentContainerEntity = revVarArgs.revEntity;
-  let revCommentContainerEntityGUID = revCommentContainerEntity._revEntityGUID;
+  let revContainerEntity = revVarArgs.revEntity;
+  let revContainerRemoteEntityGUID = revContainerEntity._remoteRevEntityGUID;
+
+  if (revContainerRemoteEntityGUID < 1) {
+    return null;
+  }
+
+  let revContainerLocalEntityGUID =
+    RevPersLibRead_React.revGetLocalEntityGUID_BY_RemoteEntityGUID(
+      revContainerRemoteEntityGUID,
+    );
+
+  if (revContainerLocalEntityGUID < 1) {
+    return null;
+  }
 
   revCancelFunc = revVarArgs.revCancel;
 
@@ -60,7 +73,7 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     let revInfoEntityGUIDArrStr =
       RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
-        revCommentContainerEntityGUID,
+        revContainerLocalEntityGUID,
       );
 
     let revInfoEntityGUIDArr = JSON.parse(revInfoEntityGUIDArrStr);
@@ -79,15 +92,17 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
 
     let revInfoEntity = JSON.parse(revInfoEntityStr);
 
-    revCommentTxtVal = revGetMetadataValue(
+    revEntityDescInputTextVal = revGetMetadataValue(
       revInfoEntity._revEntityMetadataList,
-      'revPostText',
+      'rev_entity_desc_val',
     );
   }
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const [revCommentText, setRevCommentText] = useState(revCommentTxtVal);
+  const [revEntityDescValText, setRevEntityDescValText] = useState(
+    revEntityDescInputTextVal,
+  );
 
   const [revSelectedMedia, setRevSelectedMedia] = useState(null);
 
@@ -95,16 +110,16 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
 
   const revHandleCreateCommentTab = () => {
     let revPassVaArgs = {
-      revCommentContainerGUID: revCommentContainerEntityGUID,
+      revCommentContainerGUID: revContainerLocalEntityGUID,
       revIsCommentUpdate: revIsCommentUpdate,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revCommentText: revCommentText,
+      revEntityDescVal: revEntityDescValText,
       revSelectedMedia: revSelectedMedia,
     };
 
     revCreateCommentAction(revPassVaArgs, revRetData => {
       if (revRetData) {
-        setRevCommentText('');
+        setRevEntityDescValText('');
         handleRevSitePublisherCancelTab();
       }
     });
@@ -141,15 +156,15 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
   return (
     <View style={[styles.revFlexContainer, styles.revSitePublisherContainer]}>
       <TextInput
-        style={styles.revCommentTextInput}
+        style={styles.revEntityDescValTextInput}
         placeholder=" Your message"
         placeholderTextColor="#999"
         multiline={true}
         numberOfLines={3}
         onChangeText={revNewText => {
-          setRevCommentText(revNewText);
+          setRevEntityDescValText(revNewText);
         }}
-        defaultValue={revCommentText}
+        defaultValue={revEntityDescValText}
       />
 
       <View
@@ -306,7 +321,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     padding: 0,
   },
-  revCommentTextInput: {
+  revEntityDescValTextInput: {
     color: '#444',
     fontSize: 10,
     backgroundColor: '#FFFFFF',

@@ -31,6 +31,8 @@ int revPersGetRelId(char *revEntityrelationship) {
         revRelId = 7;
     } else if (strcmp(revEntityrelationship, strdup("rev_file_of")) == 0) {
         revRelId = 8;
+    } else if (strcmp(revEntityrelationship, strdup("rev_msg_recipient_of")) == 0) {
+        revRelId = 9;
     } else {
         revRelId = -1;
     }
@@ -69,6 +71,9 @@ char *getRevEntityRelValue(int relTypeValId) {
             break;
         case 8:
             relTypeVal = "rev_file_of";
+            break;
+        case 9:
+            relTypeVal = "rev_msg_recipient_of";
             break;
         default:
             relTypeVal = "-1";

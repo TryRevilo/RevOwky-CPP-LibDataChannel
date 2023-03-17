@@ -17,17 +17,53 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revRemoveLinebreaks} from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const [revIsChatOptionsModalVissible, setRevIsChatOptionsModalVissible] =
     useState(false);
 
   let revEntityGUID = revVarArgs._revEntityGUID;
-  let revChatMsgStr = revGetMetadataValue(
-    revVarArgs._revEntityMetadataList,
-    'rev_chat_message_html_value',
+
+  /** START GET PUBLISHER */
+  if (
+    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_full_names',
   );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    22,
+  );
+  /** END GET PUBLISHER */
+
+  let revMsgInfoEntity = revVarArgs._revInfoEntity;
+
+  let revChatMsgStr = revGetMetadataValue(
+    revMsgInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  let revTimeCreated = revVarArgs._timeCreated;
 
   let minMessageLen = 1;
   let maxMessageLen = 100;
@@ -35,7 +71,7 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
   let revChatOptions = () => {
     return revIsChatOptionsModalVissible ? (
       <RevChatMessageOptions
-        revData={revData}
+        revData={revVarArgs}
         revCallback={() => setRevIsChatOptionsModalVissible(false)}
       />
     ) : null;
@@ -67,7 +103,7 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
         setRevIsChatOptionsModalVissible(true);
       }}
       style={styles.chatMsgWrapperTouchable}>
-      <View style={styles.chatMsgWrapper}>
+      <View style={revSiteStyles.revFlexWrapper}>
         <View style={styles.chatMsgUserIcon}>
           <FontAwesome name="user" style={styles.availableChatPeopleNonIcon} />
         </View>
@@ -80,8 +116,10 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
           </View>
           <View style={styles.chatMsgContentContainer}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
-              <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
+              <Text style={styles.chatMsgOwnerTxt}>
+                {revPublisherEntityNames_Trunc}
+              </Text>
+              <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
@@ -117,11 +155,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     width: 'auto',
-  },
-  chatMsgWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
   },
   chatMsgUserIcon: {
     width: 22,
