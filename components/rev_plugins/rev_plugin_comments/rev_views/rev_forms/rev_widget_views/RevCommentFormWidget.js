@@ -14,35 +14,53 @@ import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {useRevCreateSitePostAction} from '../../../rev_actions/rev_create_site_post_action';
+import {useRevCreateCommentAction} from '../../../rev_actions/rev_create_comment_action';
 
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 const {RevPersLibRead_React} = NativeModules;
 
-export const RevSitePublisherFormWidget = ({revVarArgs}) => {
-  let revEntityGUID = -1;
-  let revKiwiTxtVal = '';
+export const RevCommentFormWidget = ({revVarArgs}) => {
+  revVarArgs = revVarArgs.revVarArgs;
+
+  let revIsCommentUpdate = false;
+
+  if (revVarArgs.hasOwnProperty('revIsCommentUpdate')) {
+    revIsCommentUpdate = revVarArgs.revIsCommentUpdate;
+  }
+
+  let revCommentTxtVal = '';
+
+  let revCancelFunc;
+
+  if (!revVarArgs.hasOwnProperty('revCancel')) {
+    return null;
+  }
+
+  if (!revVarArgs.hasOwnProperty('revEntity')) {
+    return null;
+  }
+
+  let revCommentContainerEntity = revVarArgs.revEntity;
+  let revCommentContainerEntityGUID = revCommentContainerEntity._revEntityGUID;
+
+  revCancelFunc = revVarArgs.revCancel;
 
   var handleRevSitePublisherCancelTab = () => {
-    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+    revCancelFunc();
   };
 
   if (
     !revIsEmptyJSONObject(revVarArgs) &&
-    revVarArgs.hasOwnProperty('revVarArgs')
+    revVarArgs.hasOwnProperty('revEntity') &&
+    revIsCommentUpdate
   ) {
-    revVarArgs = revVarArgs.revVarArgs;
-
-    revEntityGUID = revVarArgs._revEntityGUID;
-
     let revInfoEntityGUIDArrStr =
       RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
-        revEntityGUID,
+        revCommentContainerEntityGUID,
       );
 
     let revInfoEntityGUIDArr = JSON.parse(revInfoEntityGUIDArrStr);
@@ -61,37 +79,32 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
 
     let revInfoEntity = JSON.parse(revInfoEntityStr);
 
-    revKiwiTxtVal = revGetMetadataValue(
+    revCommentTxtVal = revGetMetadataValue(
       revInfoEntity._revEntityMetadataList,
       'revPostText',
     );
-
-    if (revVarArgs.hasOwnProperty('revHideKiwiPublisherForm')) {
-      handleRevSitePublisherCancelTab = revVarArgs.revHideKiwiPublisherForm;
-    }
   }
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
-  const {SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} = useContext(ReViewsContext);
 
-  const [revTagText, setRevTagText] = useState('');
-  const [revSitePostText, setRevSitePostText] = useState(revKiwiTxtVal);
+  const [revCommentText, setRevCommentText] = useState(revCommentTxtVal);
 
   const [revSelectedMedia, setRevSelectedMedia] = useState(null);
 
-  const {revCreateSitePostAction} = useRevCreateSitePostAction();
+  const {revCreateCommentAction} = useRevCreateCommentAction();
 
-  const revHandleCreateSitePostTab = () => {
-    let revVaArgs = {
-      _revEntityGUID: revEntityGUID,
+  const revHandleCreateCommentTab = () => {
+    let revPassVaArgs = {
+      revCommentContainerGUID: revCommentContainerEntityGUID,
+      revIsCommentUpdate: revIsCommentUpdate,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revSitePostText: revSitePostText,
+      revCommentText: revCommentText,
       revSelectedMedia: revSelectedMedia,
     };
 
-    revCreateSitePostAction(revVaArgs, revRetData => {
+    revCreateCommentAction(revPassVaArgs, revRetData => {
       if (revRetData) {
-        setRevSitePostText('');
+        setRevCommentText('');
         handleRevSitePublisherCancelTab();
       }
     });
@@ -123,30 +136,20 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
     }
   }, [revSelectedMedia]);
 
-  let revBtnTxt = revEntityGUID < 0 ? 'Publish' : 'Update';
+  let revBtnTxt = revIsCommentUpdate ? 'Update' : 'Publish';
 
   return (
     <View style={[styles.revFlexContainer, styles.revSitePublisherContainer]}>
       <TextInput
-        style={styles.revSitePublisherTagsInput}
-        placeholder=" #tags"
-        placeholderTextColor="#999"
-        onChangeText={newText => {
-          setRevTagText(newText);
-        }}
-        defaultValue={revTagText}
-      />
-
-      <TextInput
-        style={styles.revSitePostTextInput}
-        placeholder=" What's on your mind . . ."
+        style={styles.revCommentTextInput}
+        placeholder=" . . ."
         placeholderTextColor="#999"
         multiline={true}
-        numberOfLines={5}
-        onChangeText={newText => {
-          setRevSitePostText(newText);
+        numberOfLines={3}
+        onChangeText={revNewText => {
+          setRevCommentText(revNewText);
         }}
-        defaultValue={revSitePostText}
+        defaultValue={revCommentText}
       />
 
       <View
@@ -158,7 +161,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
           ]}>
           <TouchableOpacity
             onPress={() => {
-              revHandleCreateSitePostTab();
+              revHandleCreateCommentTab();
             }}>
             <Text
               style={[
@@ -179,19 +182,6 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
             style={[
               styles.revSiteTxtColor,
               styles.revSiteTxtMedium,
-              styles.revSitePublisherUpload,
-            ]}></FontAwesome>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            revHandleOnMediaSelectTab();
-          }}>
-          <FontAwesome
-            name="flag-o"
-            style={[
-              styles.revSiteTxtColor,
-              styles.revSiteTxtSmall,
               styles.revSitePublisherUpload,
             ]}></FontAwesome>
         </TouchableOpacity>
@@ -306,7 +296,7 @@ const styles = StyleSheet.create({
     paddingBottom: 1,
   },
   revSitePublisherContainer: {
-    borderColor: '#F7F7F7',
+    borderColor: '#EEE',
     borderWidth: 1,
     marginTop: 4,
     marginHorizontal: 4,
@@ -317,19 +307,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     padding: 0,
   },
-  revSitePostTextInput: {
+  revCommentTextInput: {
     color: '#444',
-    fontSize: 11,
+    fontSize: 10,
+    backgroundColor: '#FFFFFF',
     textAlignVertical: 'top',
     paddingHorizontal: 5,
     paddingTop: 7,
     paddingBottom: 12,
-    borderTopColor: '#F7F7F7',
-    borderTopWidth: 1,
   },
   revSitePublisherFooterWrapper: {
     alignItems: 'center',
-    borderTopColor: '#F7F7F7',
+    borderTopColor: '#EEE',
     borderTopWidth: 1,
     paddingTop: 8,
     paddingLeft: 4,

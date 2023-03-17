@@ -13,6 +13,12 @@ var REV_PLUGINS = {
     revPluginName: 'rev_text_chat',
     revPlugin: loadable(() => import(`./rev_plugins/rev_text_chat/RevStart`)),
   },
+  rev_plugin_site_messages: {
+    revPluginName: 'rev_plugin_site_messages',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_site_messages/RevStart`),
+    ),
+  },
   rev_contacts: {
     revPluginName: 'rev_contacts',
     revPlugin: loadable(() => import(`./rev_plugins/rev_contacts/RevStart`)),
@@ -21,6 +27,12 @@ var REV_PLUGINS = {
     revPluginName: 'rev_plugin_tagged_posts',
     revPlugin: loadable(() =>
       import(`./rev_plugins/rev_plugin_tagged_posts/RevStart`),
+    ),
+  },
+  rev_plugin_comments: {
+    revPluginName: 'rev_plugin_comments',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_comments/RevStart`),
     ),
   },
   rev_plugin_search: {

@@ -15,9 +15,6 @@ import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataCompo
 import {
   revGetFileObjectSubType,
   revIsEmptyJSONObject,
-} from '../../../../rev_function_libs/rev_gen_helper_functions';
-
-import {
   revIsEmptyVar,
   revGetFileType,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
@@ -281,12 +278,27 @@ export const useRevSaveNewEntity = () => {
   const {revCreateMediaAlbum} = useRevCreateMediaAlbum();
 
   const revSaveNewEntity = async revVarArgs => {
-    let revEntityOwnerGUID = revVarArgs._revEntityOwnerGUID;
-    let revPostText = revVarArgs.revSitePostText;
+    if (
+      !revVarArgs.hasOwnProperty(
+        'revEntityOwnerGUID' || revVarArgs.revEntityOwnerGUID < 1,
+      )
+    ) {
+      return -1;
+    }
+
+    if (
+      !revVarArgs.hasOwnProperty(
+        'revEntitySubType' || revIsEmptyVar(revVarArgs._revEntitySubType),
+      )
+    ) {
+      return -1;
+    }
+
+    let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
 
     let revPersEntityData = REV_ENTITY_STRUCT();
     revPersEntityData._revEntityType = 'rev_object';
-    revPersEntityData._revEntitySubType = 'rev_kiwi';
+    revPersEntityData._revEntitySubType = revVarArgs.revEntitySubType;
     revPersEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
 
     let revPersEntityGUID = revCreateNewEntity(revPersEntityData);
@@ -295,18 +307,29 @@ export const useRevSaveNewEntity = () => {
       return -1;
     }
 
-    /** START REV INFO */
-    let revPersEntityInfoMetadataList = [
-      REV_METADATA_FILLER('revPostText', revPostText),
-    ];
+    /** START SAVE TARGET RELS */
+    if (revVarArgs.hasOwnProperty('revSubjectRelsArr')) {
+      let revSubjectRelsArr = revVarArgs.revSubjectRelsArr;
 
+      for (let i = 0; i < revSubjectRelsArr.length; i++) {
+        let revSubjectRel = revSubjectRelsArr[i];
+        revSubjectRel._revEntitySubjectGUID = revPersEntityGUID;
+
+        let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+          JSON.stringify(revSubjectRel),
+        );
+      }
+    }
+    /** END SAVE TARGET RELS */
+
+    /** START REV INFO */
     let revPersInfoEntityData = REV_ENTITY_STRUCT();
     revPersInfoEntityData._revEntityType = 'rev_object';
     revPersInfoEntityData._revEntitySubType = 'rev_entity_info';
     revPersInfoEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
     revPersInfoEntityData._revEntityContainerGUID = revPersEntityGUID;
     revPersInfoEntityData._revEntityMetadataList =
-      revPersEntityInfoMetadataList;
+      revVarArgs.revPersEntityInfoMetadataList;
 
     let resEntityInfoGUID = revCreateNewEntity(revPersInfoEntityData);
 

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 
 import {
   StyleSheet,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {LoremIpsum} from 'lorem-ipsum';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
@@ -43,6 +44,8 @@ export const RevMemberConnectionRequestItemWidget = ({revVarArgs}) => {
   if (!revOwkiMemberEntity.hasOwnProperty('_revInfoEntity')) {
     return null;
   }
+
+  const [revIsSiteMessageForm, setRevIsSiteMessageForm] = useState(false);
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
@@ -80,6 +83,47 @@ export const RevMemberConnectionRequestItemWidget = ({revVarArgs}) => {
     SET_REV_SITE_BODY(RevUserProfileObjectView);
   };
 
+  let minMessageLen = 10;
+  let maxMessageLen = 55;
+
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+      max: 2,
+      min: 1,
+    },
+    wordsPerSentence: {
+      max: getRndInteger(minMessageLen, maxMessageLen),
+      min: getRndInteger(1, 2),
+    },
+  });
+
+  let revUserInfoDescTxt = lorem.generateSentences(getRndInteger(1, 2));
+  let revUserInfoDescTxt_Trunc = revTruncateString(revUserInfoDescTxt, 140);
+
+  const RevCreateSiteMessageForm = () => {
+    let RevCreateSiteMessageFormView = revPluginsLoader({
+      revPluginName: 'rev_plugin_site_messages',
+      revViewName: 'RevCreateSiteMessageForm',
+      revVarArgs: {
+        revEntity: revOwkiMemberEntity,
+        revIsCommentUpdate: false,
+        revCancel: () => {
+          setRevIsSiteMessageForm(false);
+        },
+      },
+    });
+
+    return RevCreateSiteMessageFormView;
+  };
+
+  const handleCreateSiteMessagePress = () => {
+    setRevIsSiteMessageForm(true);
+  };
+
   return (
     <View
       key={
@@ -106,17 +150,20 @@ export const RevMemberConnectionRequestItemWidget = ({revVarArgs}) => {
             <Text style={styles.chatMsgOwnerTxt}>
               {revUserEntityNames_Trunc}
             </Text>
-            <Text style={styles.chatMsgSendTime}>
-              {'joined ' + revUserTimeCreated}
-            </Text>
+            <Text style={styles.chatMsgSendTime}>{revUserTimeCreated}</Text>
             <View style={styles.chatMsgOptionsWrapper}>
               <Text style={styles.chatMsgOptions}>
                 <FontAwesome name="plus" />
               </Text>
 
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="envelope-o" />
-              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  handleCreateSiteMessagePress();
+                }}>
+                <Text style={styles.chatMsgOptions}>
+                  <FontAwesome name="envelope-o" />
+                </Text>
+              </TouchableOpacity>
 
               <Text
                 style={[
@@ -127,24 +174,17 @@ export const RevMemberConnectionRequestItemWidget = ({revVarArgs}) => {
               </Text>
             </View>
           </View>
-          <View
+
+          <Text
             style={[
-              revSiteStyles.revFlexWrapper,
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtTiny,
               styles.revPostTagsListWrapper,
             ]}>
-            <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
-            <View style={[revSiteStyles.revFlexWrapper]}>
-              {revPostTagsArr.map(revItem => {
-                let revKey =
-                  'RevPostTagItem_' +
-                  revItem +
-                  '_' +
-                  revGetRandInteger(10, 1000);
+            {revUserInfoDescTxt_Trunc}
+          </Text>
 
-                return <RevPostTagItem key={revKey} />;
-              })}
-            </View>
-          </View>
+          {revIsSiteMessageForm ? RevCreateSiteMessageForm() : null}
         </View>
       </View>
     </View>
@@ -252,7 +292,7 @@ const styles = StyleSheet.create({
   },
   revPostTagsListWrapper: {
     alignItems: 'flex-end',
-    paddingVertical: 5,
+    paddingVertical: 4,
   },
   revPostTagsListIcon: {
     color: '#999',

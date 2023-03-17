@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState, useRef} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {
   StyleSheet,
@@ -8,14 +8,11 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   NativeModules,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {LoremIpsum} from 'lorem-ipsum';
 import Video from 'react-native-video';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
@@ -23,6 +20,7 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {
   revIsEmptyJSONObject,
+  revIsEmptyVar,
   revGetRandInteger,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -32,12 +30,17 @@ import {
 } from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
+const {RevPersLibRead_React} = NativeModules;
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevTaggedPostsListingItem = ({revVarArgs}) => {
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
+
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
   if (revEntityGUID < 1) {
@@ -67,10 +70,10 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   );
 
   const {revSiteStyles} = useRevSiteStyles();
-  const {revDeleteEntity} = useRevDeleteEntity();
 
-  let revInfoEntity = revVarArgs._revInfoEntity;
-  let timeCreated = revVarArgs._timeCreated;
+  const [revIsCommetForm, setRevIsCommetForm] = useState(false);
+
+  const {revDeleteEntity} = useRevDeleteEntity();
 
   if (
     !revVarArgs.hasOwnProperty('_revInfoEntity') ||
@@ -81,21 +84,12 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     return null;
   }
 
+  let revInfoEntity = revVarArgs._revInfoEntity;
+  let timeCreated = revVarArgs._timeCreated;
+
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  let minMessageLen = 1;
   let maxMessageLen = 200;
-
-  const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-      max: 8,
-      min: 4,
-    },
-    wordsPerSentence: {
-      max: revGetRandInteger(minMessageLen, maxMessageLen),
-      min: revGetRandInteger(1, 2),
-    },
-  });
 
   let revKiwiTxtVal = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
@@ -139,7 +133,47 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
-  let RevCommentItem = () => {
+  let RevCommentItem = ({revVarArgs}) => {
+    if (
+      !revVarArgs.hasOwnProperty('_revInfoEntity') ||
+      revIsEmptyJSONObject(revVarArgs._revInfoEntity)
+    ) {
+      return null;
+    }
+
+    let revCommentInfoEntity = revVarArgs._revInfoEntity;
+
+    let revCommentTxtVal = revGetMetadataValue(
+      revCommentInfoEntity._revEntityMetadataList,
+      'rev_comment_value',
+    );
+
+    if (revIsEmptyVar(revCommentTxtVal)) {
+      return null;
+    }
+
+    if (
+      !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+      revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+    ) {
+      return null;
+    }
+
+    let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+    if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+      return null;
+    }
+
+    let revPublisherEntityNames = revGetMetadataValue(
+      revPublisherEntity._revInfoEntity._revEntityMetadataList,
+      'rev_full_names',
+    );
+    let revPublisherEntityNames_Trunc = revTruncateString(
+      revPublisherEntityNames,
+      8,
+    );
+
     return (
       <TouchableOpacity
         key={'RevCommentItem_' + revGetRandInteger(100, 1000)}
@@ -172,7 +206,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
           </View>
           <View style={styles.revChatMsgCommentContentTxtContainer}>
             {chatMessageText(
-              lorem.generateSentences(revGetRandInteger(1, 5)),
+              revCommentTxtVal,
               styles.revChatMsgCommentContentTxt,
             )}
           </View>
@@ -291,19 +325,44 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   let RevGenComments = () => {
     let revCommentsArr = [];
-    let revRand = revGetRandInteger(0, 4);
 
-    for (let i = 0; i < revRand; i++) {
-      revCommentsArr.push(i);
+    let revCommentGUIDsArrStr =
+      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        'rev_comment',
+        revEntityGUID,
+      );
+
+    let revCommentGUIDsArr = JSON.parse(revCommentGUIDsArrStr);
+
+    for (let i = 0; i < revCommentGUIDsArr.length; i++) {
+      let revCurrCommentGUID = revCommentGUIDsArr[i];
+
+      let revCurrCommentStr =
+        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrCommentGUID);
+      let revCurrComment = JSON.parse(revCurrCommentStr);
+
+      let revCommentPublisher = revPersGetRevEnty_By_EntityGUID(
+        revCurrComment._revEntityOwnerGUID,
+      );
+      revCurrComment['_revPublisherEntity'] = revCommentPublisher;
+
+      let revCommentView = <RevCommentItem revVarArgs={revCurrComment} />;
+
+      if (revCommentView == null) {
+        continue;
+      }
+
+      revCommentsArr.push(revCommentView);
     }
 
     return (
       <View>
         {revCommentsArr.map(revItem => {
           return (
-            <RevCommentItem
-              key={'RevGenComments_' + revItem + revGetRandInteger(10, 1000)}
-            />
+            <View
+              key={'RevGenComments_' + revItem + revGetRandInteger(10, 1000)}>
+              {revItem}
+            </View>
           );
         })}
       </View>
@@ -348,6 +407,26 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     } else {
       console.log('Error openning object');
     }
+  };
+
+  const handleRevCommentFormPressed = () => {
+    setRevIsCommetForm(true);
+  };
+
+  const revGetCommentForm = () => {
+    let RevKiwiObjectView = revPluginsLoader({
+      revPluginName: 'rev_plugin_comments',
+      revViewName: 'RevCommentForm',
+      revVarArgs: {
+        revEntity: revVarArgs,
+        revIsCommentUpdate: false,
+        revCancel: () => {
+          setRevIsCommetForm(false);
+        },
+      },
+    });
+
+    return RevKiwiObjectView;
   };
 
   return (
@@ -436,9 +515,17 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                 revSiteStyles.revFlexContainer,
                 styles.revCommentsContainer,
               ]}>
-              <TouchableOpacity>
-                <Text style={styles.revPostCommentTab}>your comment</Text>
-              </TouchableOpacity>
+              {revIsCommetForm ? (
+                revGetCommentForm()
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    handleRevCommentFormPressed();
+                  }}>
+                  <Text style={styles.revPostCommentTab}>your comment</Text>
+                </TouchableOpacity>
+              )}
+
               <RevGenComments />
             </View>
           </View>

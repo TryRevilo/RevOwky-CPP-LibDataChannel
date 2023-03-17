@@ -11,8 +11,14 @@ const {
   RevGenLibs_Server_React,
 } = NativeModules;
 
-export function useRevPersGetRevEnty_By_EntityGUID(revEntityGUID) {
-  return RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityGUID);
+export function useRevPersGetRevEnty_By_EntityGUID() {
+  const revPersGetRevEnty_By_EntityGUID = revEntityGUID => {
+    let revEntityStr =
+      RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityGUID);
+    return JSON.parse(revEntityStr);
+  };
+
+  return {revPersGetRevEnty_By_EntityGUID};
 }
 
 export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
