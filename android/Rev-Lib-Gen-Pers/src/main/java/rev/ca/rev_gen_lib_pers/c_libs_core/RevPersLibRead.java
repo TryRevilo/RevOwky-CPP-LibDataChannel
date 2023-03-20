@@ -20,6 +20,10 @@ public class RevPersLibRead {
 
     public native long revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
 
+    public native RevEntity[] revPersGet_ALL_RevEntity_By_SiteGUID_SubType(long revSiteEntityGUID, String revEntitySubType);
+
+    public native List<Long> revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, long revSiteEntityGUID, String revEntitySubType);
+
     public native long revGetPublicationDate(long localRevEntityGUID);
 
     public native RevEntity[] revPersGetALLRevEntityTYPE(String revEntityType);

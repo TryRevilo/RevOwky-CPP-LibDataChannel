@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chatMsgContentCarret: {
-    color: '#CCC',
+    color: '#EEE',
     textAlign: 'center',
     fontSize: 15,
   },

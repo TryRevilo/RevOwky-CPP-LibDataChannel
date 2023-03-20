@@ -21,6 +21,40 @@ export function useRevPersGetRevEnty_By_EntityGUID() {
   return {revPersGetRevEnty_By_EntityGUID};
 }
 
+export function useRevPersGet_ALL_RevEntity_By_SiteGUID_SubType() {
+  const revPersGet_ALL_RevEntity_By_SiteGUID_SubType = (
+    revSiteEntityGUID,
+    revEntitySubType,
+  ) => {
+    let revEntitiesStr =
+      RevPersLibRead_React.revPersGet_ALL_RevEntity_By_SiteGUID_SubType(
+        revSiteEntityGUID,
+        revEntitySubType,
+      );
+    return JSON.parse(revEntitiesStr);
+  };
+
+  return {revPersGet_ALL_RevEntity_By_SiteGUID_SubType};
+}
+
+export function useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE() {
+  const revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE = (
+    revDBTableFieldName,
+    revSiteEntityGUID,
+    revEntitySubType,
+  ) => {
+    let revEntitiesStr =
+      RevPersLibRead_React.revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(
+        revDBTableFieldName,
+        revSiteEntityGUID,
+        revEntitySubType,
+      );
+    return JSON.parse(revEntitiesStr);
+  };
+
+  return {revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE};
+}
+
 export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
   let revEntities = [];
 
@@ -131,20 +165,24 @@ export function useRevPersGetALLFilledRevEntity_By_SubType(revEntitySubType) {
   return revEntitiesArr;
 }
 
-export function revPersGetALLRevEntity_By_SubType_RevVarArgs(revVarArgs) {
-  let revEntitiesStr =
-    RevPersLibRead_React.revPersGetALLRevEntity_By_SubType_RevVarArgs(
-      revVarArgs,
-    );
+export function useRevPersGetALLRevEntity_By_SubType_RevVarArgs() {
+  const revPersGetALLRevEntity_By_SubType_RevVarArgs = revVarArgs => {
+    let revEntitiesStr =
+      RevPersLibRead_React.revPersGetALLRevEntity_By_SubType_RevVarArgs(
+        revVarArgs,
+      );
 
-  let revEntitiesArr = JSON.parse(revEntitiesStr);
+    let revEntitiesArr = JSON.parse(revEntitiesStr);
 
-  for (let i = 0; i < revEntitiesArr.length; i++) {
-    let revCurrEntity = revEntitiesArr[i];
-    let revEntityGUID = revCurrEntity._revEntityGUID;
+    for (let i = 0; i < revEntitiesArr.length; i++) {
+      let revCurrEntity = revEntitiesArr[i];
+      let revEntityGUID = revCurrEntity._revEntityGUID;
 
-    revEntitiesArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
-  }
+      revEntitiesArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+    }
 
-  return revEntitiesArr;
+    return revEntitiesArr;
+  };
+
+  return {revPersGetALLRevEntity_By_SubType_RevVarArgs};
 }

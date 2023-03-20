@@ -8,10 +8,22 @@ import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader'
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {
+  useRevPersGetALLRevEntity_By_SubType_RevVarArgs,
+  useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
 export const RevChatMessageNotificationsListingWidget = () => {
   [revPastChatMessagesData, setRevPastChatMessagesData] = useState(null);
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_SITE_ENTITY_GUID, REV_LOGGED_IN_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
+
+  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
+    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
+
+  const {revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE} =
+    useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE();
 
   useEffect(() => {
     new Promise((res, rej) => {
@@ -24,31 +36,41 @@ export const RevChatMessageNotificationsListingWidget = () => {
   }, []);
 
   let revPastChatConversations = () => {
-    let revInboxMsgsGUIDsArrStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(
-        'rev_msg_recipient_of',
-        REV_LOGGED_IN_ENTITY_GUID,
-      );
+    console.log('>>> REV_SITE_ENTITY_GUID ' + REV_SITE_ENTITY_GUID);
 
-    let revInboxMsgsGUIDsArr = JSON.parse(revInboxMsgsGUIDsArrStr);
+    let revPassVarArgs = {
+      revSelect: [
+        '_revEntityType',
+        '_revEntitySubType',
+        '_revEntityGUID',
+        '_revOwnerEntityGUID',
+        '_revContainerEntityGUID',
+        '_revEntitySiteGUID',
+        '_revEntityAccessPermission',
+        '_revTimeCreated',
+      ],
+      revWhere: {
+        _revEntityType: 'rev_object',
+        _revEntitySubType: 'rev_message',
+        _revEntityResolveStatus: [0, -1, -101],
+        _revEntitySiteGUID: REV_SITE_ENTITY_GUID,
+      },
+      revLimit: 22,
+    };
 
-    let revChatMessagesArr = [];
+    let revVarArgsEntitiesArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+      JSON.stringify(revPassVarArgs),
+    );
 
-    for (let i = 0; i < revInboxMsgsGUIDsArr.length; i++) {
-      let revInboxMsgsGUID = revInboxMsgsGUIDsArr[i];
-      let revCurrMsgStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revInboxMsgsGUID);
-      let revCurrMsg = JSON.parse(revCurrMsgStr);
-
+    for (let i = 0; i < revVarArgsEntitiesArr.length; i++) {
+      let revCurrMsg = revVarArgsEntitiesArr[i];
       let revMsgEntityOwnerGUID = revCurrMsg._revEntityOwnerGUID;
 
       revCurrMsg['revMessageType'] =
         revMsgEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID ? 'outbox' : 'inbox';
-
-      revChatMessagesArr.push(revCurrMsg);
     }
 
-    return revChatMessagesArr;
+    return revVarArgsEntitiesArr;
   };
 
   function renderItem({item}) {

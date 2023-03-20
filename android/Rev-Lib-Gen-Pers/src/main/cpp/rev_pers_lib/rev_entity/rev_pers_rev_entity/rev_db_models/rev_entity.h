@@ -1,6 +1,9 @@
 #ifndef REV_ENTITY_H
 #define REV_ENTITY_H
 
+#include <stdio.h>
+#include <string.h>
+
 #include "../../rev_pers_rev_object_entity/rev_db_models/rev_entity_object.h"
 #include "../../rev_pers_rev_group_entity/rev_db_models/rev_entity_group.h"
 #include "../../rev_pers_rev_user_entity/rev_db_models/rev_entity_user.h"
@@ -38,6 +41,13 @@ typedef struct RevEntity {
     list _revEntityMetadataList;
 
 } RevEntity;
+
+typedef struct {
+    char *key;
+    void *value;
+} RevEntityKeyValuePair;
+
+RevEntityKeyValuePair *revGetEntityKeyValuePairMapping(RevEntity *revEntity);
 
 RevEntity *revInitializedEntity();
 

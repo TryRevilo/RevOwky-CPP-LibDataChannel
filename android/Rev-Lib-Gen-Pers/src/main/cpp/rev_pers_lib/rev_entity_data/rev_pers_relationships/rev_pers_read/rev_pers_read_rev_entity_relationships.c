@@ -636,7 +636,6 @@ long revPersGetSubjectGUID_BY_RelStr_TargetGUID(char *revEntityrelationship, lon
 
     if (rc == SQLITE_ROW) {
         revRetEntityGUID = sqlite3_column_int64(stmt, 0);
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revRetEntityGUID %ld", revRetEntityGUID);
     } else if (rc == SQLITE_DONE) {
         // no data found
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> no data found");

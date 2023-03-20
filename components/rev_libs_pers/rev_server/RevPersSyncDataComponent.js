@@ -505,7 +505,7 @@ export function useRevPersSyncDataComponent() {
     };
 
     let revPingVarArgs = {
-      revInterval: 1000,
+      revInterval: 5000,
       revIP: REV_ROOT_URL,
       revCallBack: revPingServerCallBack,
     };

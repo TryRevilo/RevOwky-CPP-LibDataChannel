@@ -13,25 +13,25 @@
 int revPersGetRelId(char *revEntityrelationship) {
     int revRelId = -1;
 
-    if (strcmp(revEntityrelationship, strdup("rev_entity_info")) == 0) {
+    if (strcmp(revEntityrelationship, "rev_entity_info") == 0) {
         revRelId = 0;
-    } else if (strcmp(revEntityrelationship, strdup("rev_timeline_entry")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_timeline_entry") == 0) {
         revRelId = 1;
-    } else if (strcmp(revEntityrelationship, strdup("kiwi_of")) == 0) {
+    } else if (strcmp(revEntityrelationship, "kiwi_of") == 0) {
         revRelId = 2;
-    } else if (strcmp(revEntityrelationship, strdup("rev_pics_album_of")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_pics_album_of") == 0) {
         revRelId = 3;
-    } else if (strcmp(revEntityrelationship, strdup("rev_picture_of")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_picture_of") == 0) {
         revRelId = 4;
-    } else if (strcmp(revEntityrelationship, strdup("rev_entity_connect_members")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_entity_connect_members") == 0) {
         revRelId = 5;
-    } else if (strcmp(revEntityrelationship, strdup("rev_comment")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_comment") == 0) {
         revRelId = 6;
-    } else if (strcmp(revEntityrelationship, strdup("rev_entity_space_member")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_entity_space_member") == 0) {
         revRelId = 7;
-    } else if (strcmp(revEntityrelationship, strdup("rev_file_of")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_file_of") == 0) {
         revRelId = 8;
-    } else if (strcmp(revEntityrelationship, strdup("rev_msg_recipient_of")) == 0) {
+    } else if (strcmp(revEntityrelationship, "rev_msg_recipient_of") == 0) {
         revRelId = 9;
     } else {
         revRelId = -1;

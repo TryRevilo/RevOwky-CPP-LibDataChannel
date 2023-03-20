@@ -16,7 +16,7 @@ import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
 import {
-  revPersGetALLRevEntity_By_SubType_RevVarArgs,
+  useRevPersGetALLRevEntity_By_SubType_RevVarArgs,
   revPersGetFilledRevEntity_By_GUID,
   useRevPersGetRevEntities_By_EntityGUIDsArr,
 } from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
@@ -43,6 +43,8 @@ function RevFooterArea() {
 
   const [revChatStatus, setRevChatStatus] = useState(false);
 
+  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
+    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
   const {rev_Server_DeleteEntities_By_entityGUIDsArr} =
     useRev_Server_DeleteEntities_By_entityGUIDsArr();
 

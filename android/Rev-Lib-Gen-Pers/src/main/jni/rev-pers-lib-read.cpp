@@ -313,28 +313,43 @@ void RevLoadPublisher(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, REV_ENTI
 }
 
 void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, REV_ENTITY_JNI_POSREC *revEntityJniPosRec) {
-    if (((cPosRec->_revEntityType)[0] == '\0') || !cPosRec->_revEntityType) {
+    char revNullStr[] = "NULL";
+
+    if (cPosRec == NULL) {
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> RevEntity *cPosRec - The pointer is null.\n");
+        return;
+    }
+
+    if (cPosRec->_revEntityType == NULL || ((cPosRec->_revEntityType)[0] == '\0')) {
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "cPosRec->_revEntityType NULL FILL");
-        return;
+
+        cPosRec->_revEntityType = strdup((revNullStr));
     }
 
-    const char *value = strdup(cPosRec->_revEntityType);
+    const char *revEntityTypeValue = cPosRec->_revEntityType;
 
-    if (!IsUTF8(value, strlen(value))) {
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "value >>> %s : getRevEntityByRevEntityGUID >>> - NO UTF : %ld", cPosRec->_revEntityGUID);
-        return;
+    if (!IsUTF8(revEntityTypeValue, strlen(revEntityTypeValue))) {
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>>> FillDataRecValuesToJni >>> cPosRec->_revEntityType >>> - NO UTF - value >>> %s : ", cPosRec->_revEntityType);
     }
 
-    jint revEntityChildableStatus = cPosRec->_revEntityChildableStatus;
-    env->SetIntField(jPosRec, revEntityJniPosRec->_revEntityChildableStatus, revEntityChildableStatus);
-
-    jstring revEntityType_Obj = env->NewStringUTF(cPosRec->_revEntityType);
+    jstring revEntityType_Obj = env->NewStringUTF(revEntityTypeValue);
     env->SetObjectField(jPosRec, revEntityJniPosRec->_revEntityType_ID, revEntityType_Obj);
     env->DeleteLocalRef(revEntityType_Obj);
+
+    if (cPosRec->_revEntitySubType == NULL || ((cPosRec->_revEntitySubType)[0] == '\0')) {
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "cPosRec->_revEntitySubType NULL FILL");
+
+        cPosRec->_revEntitySubType = strdup((revNullStr));
+    }
+
+    const char *revEntitySubTypeValue = cPosRec->_revEntitySubType;
 
     jstring revEntitySubType_Obj = env->NewStringUTF(cPosRec->_revEntitySubType);
     env->SetObjectField(jPosRec, revEntityJniPosRec->_revEntitySubType_ID, revEntitySubType_Obj);
     env->DeleteLocalRef(revEntitySubType_Obj);
+
+    jint revEntityChildableStatus = cPosRec->_revEntityChildableStatus;
+    env->SetIntField(jPosRec, revEntityJniPosRec->_revEntityChildableStatus, revEntityChildableStatus);
 
     jclass revJClassLong = (env)->FindClass("java/lang/Long");
     jmethodID const_longMethodId = env->GetMethodID(revJClassLong, "<init>", "(J)V");
@@ -355,7 +370,7 @@ void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, RE
     env->SetObjectField(jPosRec, revEntityJniPosRec->_revEntityContainerGUID_ID, revContainerEntityGUID_Obj);
     env->DeleteLocalRef(revContainerEntityGUID_Obj);
 
-    jstring timeCreated_Obj = env->NewStringUTF(cPosRec->_timeCreated);
+    jstring timeCreated_Obj = env->NewStringUTF(strdup(cPosRec->_timeCreated));
     env->SetObjectField(jPosRec, revEntityJniPosRec->_timeCreated_ID, timeCreated_Obj);
     env->DeleteLocalRef(timeCreated_Obj);
 
@@ -402,6 +417,7 @@ void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, RE
 
     // LOAD REV ENTITY PUBLISHER
     RevLoadPublisher(env, jPosRec, cPosRec, revEntityJniPosRec);
+
 }
 
 /** ######################################################################### **/
@@ -415,7 +431,6 @@ void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, RE
 
 /** REV  ENTITY **/
 
-
 extern "C"
 JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revEntityExistsByRemoteEntityGUID(JNIEnv *env, jobject instance, jlong remoteRevEntityGUID) {
@@ -423,11 +438,81 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revEntityExistsByRe
 }
 
 extern "C"
-JNIEXPORT jint JNICALL
+JNIEXPORT jlong JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetEntityOwnerGUID_1BY_1EntityGUID(JNIEnv *env, jobject thiz, jlong rev_entity_guid) {
     return revGetEntityOwnerGUID_BY_EntityGUID((long) rev_entity_guid);
 }
 
+extern "C"
+JNIEXPORT jobjectArray JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGet_1ALL_1RevEntity_1By_1SiteGUID_1SubType(JNIEnv *env, jobject thiz, jlong rev_site_entity_guid, jstring rev_entity_sub_type) {
+    const char *revEntitySubType = env->GetStringUTFChars(rev_entity_sub_type, 0);
+
+    REV_ENTITY_JNI_POSREC *revEntityJniPosRec = LoadRevEntityJniPosRec(env);
+
+    list revEntityList = *(revPersGet_ALL_RevEntity_By_SiteGUID_SubType((long) rev_site_entity_guid, strdup(revEntitySubType)));
+    list_for_each(&revEntityList, &revPersGetRevEntityDataRevEntity);
+
+    jobjectArray jPosRecArray = env->NewObjectArray(searchRecordResultRevEntity.size(), revEntityJniPosRec->cls, NULL);
+
+    for (size_t i = 0; i < searchRecordResultRevEntity.size(); i++) {
+        if (searchRecordResultRevEntity[i] == NULL || searchRecordResultRevEntity[i]->_revEntityType[0] == '\0') {
+            continue;
+        }
+
+        jobject jPosRec = env->NewObject(revEntityJniPosRec->cls, revEntityJniPosRec->constructortor_ID);
+        FillDataRecValuesToJni(env, jPosRec, searchRecordResultRevEntity[i], revEntityJniPosRec);
+        env->SetObjectArrayElement(jPosRecArray, i, jPosRec);
+    }
+
+    searchRecordResultRevEntity.clear();
+
+    env->ReleaseStringUTFChars(rev_entity_sub_type, revEntitySubType);
+
+    return jPosRecArray;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGet_1ALL_1UNIQUE_1GUIDs_1By_1FieldName_1SiteGUID_1SubTYPE(JNIEnv *env, jobject thiz, jstring rev_dbtable_field_name, jlong rev_site_entity_guid, jstring rev_entity_sub_type) {
+    const char *revDBTableFieldName = env->GetStringUTFChars(rev_dbtable_field_name, 0);
+    const char *revEntitySubType = env->GetStringUTFChars(rev_entity_sub_type, 0);
+
+    list revEntityTypeList = *(revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(revDBTableFieldName, rev_site_entity_guid, revEntitySubType));
+
+    // First, get all the methods we need:
+    jclass arrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
+    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
+
+    jmethodID longConstructor;
+    jclass cls;
+    jobject obj;
+
+    cls = env->FindClass("java/lang/Long");
+    longConstructor = env->GetMethodID(cls, "<init>", "(J)V");
+
+    // The list we're going to return:
+    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
+
+    if (list_size(&revEntityTypeList) < 1)
+        return revRetJObjectArrayList;
+
+    list_for_each(&revEntityTypeList, revPersGetRevEntityDataLong);
+
+    for (size_t i = 0; i < searchRecordResultLong.size(); i++) {
+        // Create a object of type Long.
+        obj = env->NewObject(cls, longConstructor, (jlong) searchRecordResultLong[i]);
+        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, obj);
+    }
+
+    searchRecordResultLong.clear();
+
+    env->ReleaseStringUTFChars(rev_dbtable_field_name, revDBTableFieldName);
+    env->ReleaseStringUTFChars(rev_entity_sub_type, revEntitySubType);
+
+    return revRetJObjectArrayList;
+}
 
 extern "C"
 JNIEXPORT jint JNICALL
@@ -770,8 +855,9 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
 
     jobjectArray jPosRecArray = env->NewObjectArray(searchRecordResultRevEntity.size(), revEntityJniPosRec->cls, NULL);
 
-    if (list_size(&revEntityTypeList) < 1)
+    if (list_size(&revEntityTypeList) < 1) {
         return jPosRecArray;
+    }
 
     list_for_each(&revEntityTypeList, revPersGetRevEntityDataRevEntity);
 

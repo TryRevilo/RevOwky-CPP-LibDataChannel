@@ -12,8 +12,35 @@
 #include "../../../rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 #include "../../../../../../../libs/cJSON/cJSON.h"
 
+RevEntityKeyValuePair *revGetEntityKeyValuePairMapping(RevEntity *revEntity) {
+    RevEntityKeyValuePair *revEntityKeyValuePairMapping[] = {
+            {"_isNull",                       revEntity->_isNull},
+            {"_id",                           revEntity->_id},
+            {"_revEntityType",                revEntity->_revEntityType},
+            {"_revEntitySubType",             revEntity->_revEntitySubType},
+            {"_revEntityResolveStatus",       revEntity->_revEntityResolveStatus},
+            {"_revEntityAccessPermission",    revEntity->_revEntityAccessPermission},
+            {"_revEntityGUID",                revEntity->_revEntityGUID},
+            {"_remoteRevEntityGUID",          revEntity->_remoteRevEntityGUID},
+            {"_revOwnerEntityGUID",           revEntity->_revOwnerEntityGUID},
+            {"_revContainerEntityGUID",       revEntity->_revContainerEntityGUID},
+            {"_remoteRevEntityContainerGUID", revEntity->_remoteRevEntityContainerGUID},
+            {"_revEntitySiteGUID",            revEntity->_revEntitySiteGUID},
+            {"_timeCreated",                  revEntity->_timeCreated},
+            {"_timeUpdated",                  revEntity->_timeUpdated},
+            {"_revTimeCreated",               revEntity->_revTimeCreated},
+            {"_revTimePublished",             revEntity->_revTimePublished},
+            {"_revTimePublishedUpdated",      revEntity->_revTimePublishedUpdated},
+            {"childRevEntity",                revEntity->childRevEntity},
+            {"_revInfoEntity",                revEntity->_revInfoEntity},
+            {NULL, NULL} // Sentinel value to mark the end of the array
+    };
+
+    return revEntityKeyValuePairMapping;
+}
+
 RevEntity *revInitializedEntity() {
-    RevEntity *revEntity = (RevEntity *) malloc(sizeof(RevEntity));
+    RevEntity *revEntity = malloc(sizeof(RevEntity));
 
     revEntity->_isNull = FALSE;
 
@@ -31,6 +58,9 @@ RevEntity *revInitializedEntity() {
     revEntity->_revContainerEntityGUID = -1;
     revEntity->_remoteRevEntityContainerGUID = -1;
     revEntity->_revEntitySiteGUID = -1;
+
+    revEntity->_timeCreated = "";
+    revEntity->_timeUpdated = "";
 
     revEntity->_revTimeCreated = -1;
     revEntity->_revTimePublished = -1;

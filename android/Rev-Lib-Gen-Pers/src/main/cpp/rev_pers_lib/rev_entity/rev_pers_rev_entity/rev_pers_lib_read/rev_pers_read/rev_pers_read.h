@@ -24,7 +24,11 @@ int revEntityExistsByLocalEntityGUID(long remoteRevEntityGUID);
 
 int revEntityExistsByRemoteEntityGUID(long remoteRevEntityGUID);
 
-int revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
+long revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
+
+list *revPersGet_ALL_RevEntity_By_SiteGUID_SubType(long revSiteEntityGUID, char *revEntitySubType);
+
+list *revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(const char *revDBTableFieldName_, long revSiteEntityGUID, const char *revEntitySubType);
 
 long revEntitySubtypeExists_BY_CONTAINER_GUID(int revEntityContainerGUID, char *revEntitySubtype);
 

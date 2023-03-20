@@ -20,11 +20,44 @@ import {revGetMetadataValue} from '../../../../rev_function_libs/rev_entity_libs
 
 import {revPluginsLoader} from '../../../rev_plugins_loader';
 
-import {RevFooter1} from '../../rev_flag/rev_views/RevFooter1';
+import {revIsEmptyJSONObject} from '../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateString} from '../../../../rev_function_libs/rev_string_function_libs';
+
+import {useRevSiteStyles} from '../../../rev_views/RevSiteStyles';
 
 export default function RevChatMessageOptions({revData, revCallback}) {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revIsSiteMessageForm, setRevIsSiteMessageForm] = useState(false);
+
   let revEntityGUID = revData._revEntityGUID;
   let revMsgInfoEntity = revData._revInfoEntity;
+
+  /** START GET PUBLISHER */
+  if (
+    !revData.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revData._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revData._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_full_names',
+  );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    22,
+  );
+  /** END GET PUBLISHER */
+
+  let revTimeCreated = revData._timeCreated;
 
   let revChatMsgStr = revGetMetadataValue(
     revMsgInfoEntity._revEntityMetadataList,
@@ -55,32 +88,24 @@ export default function RevChatMessageOptions({revData, revCallback}) {
     );
   };
 
-  let maxMessageLen = 200;
-
-  let chatMessageText = _chatMsg => {
-    let chatMessageView = (
-      <Text style={styles.chatMsgContentTxt}>
-        {revChatMsgStr.length > maxMessageLen
-          ? revChatMsgStr.substring(0, maxMessageLen) + ' . . .'
-          : revChatMsgStr}
-      </Text>
-    );
-
-    let RevFooter1 = revPluginsLoader({
-      revPluginName: 'rev_flag',
-      revViewName: 'RevFooter1',
-      revData: 'Hello World!',
+  const RevCreateSiteMessageForm = () => {
+    let RevCreateSiteMessageFormView = revPluginsLoader({
+      revPluginName: 'rev_plugin_site_messages',
+      revViewName: 'RevCreateSiteMessageForm',
+      revVarArgs: {
+        revEntity: revPublisherEntity,
+        revIsCommentUpdate: false,
+        revCancel: () => {
+          setRevIsSiteMessageForm(false);
+        },
+      },
     });
 
-    return (
-      <View key={revEntityGUID} style={styles.chatMsgContentTxtContainer}>
-        {chatMessageView}
-        {revChatMsgStr.length > maxMessageLen ? (
-          <Text style={styles.readMoreTextTab}>Read more</Text>
-        ) : null}
-        {RevFooter1}
-      </View>
-    );
+    return RevCreateSiteMessageFormView;
+  };
+
+  const handleCreateSiteMessagePress = () => {
+    setRevIsSiteMessageForm(true);
   };
 
   return (
@@ -110,22 +135,31 @@ export default function RevChatMessageOptions({revData, revCallback}) {
             </View>
             <View style={styles.chatMsgContentContainer}>
               <View style={styles.chatMsgHeaderWrapper}>
-                <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
-                <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
+                <Text style={styles.chatMsgOwnerTxt}>
+                  {revPublisherEntityNames_Trunc}
+                </Text>
+                <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
                 <View style={styles.chatMsgOptionsWrapper}>
-                  <Text style={styles.chatMsgOptions}>
-                    <FontAwesome name="reply" />
-                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleCreateSiteMessagePress();
+                    }}>
+                    <Text style={styles.chatMsgOptions}>
+                      <FontAwesome name="reply" />
+                    </Text>
+                  </TouchableOpacity>
+
                   <Text style={styles.chatMsgOptions}>
                     <FontAwesome name="retweet" />
                   </Text>
+
                   <Text style={styles.chatMsgOptions}>
                     <FontAwesome name="list" />
                   </Text>
                 </View>
               </View>
               <View style={styles.chatMsgContentTxtContainer}>
-                {chatMessageText(revChatMsgStr)}
+                <Text style={styles.chatMsgContentTxt}>{revChatMsgStr}</Text>
                 <RevImages />
               </View>
             </View>
@@ -182,6 +216,16 @@ export default function RevChatMessageOptions({revData, revCallback}) {
             </Text>
           </TouchableOpacity>
         </View>
+
+        {revIsSiteMessageForm ? (
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              styles.revComposeMessageFormContainer,
+            ]}>
+            {RevCreateSiteMessageForm()}
+          </View>
+        ) : null}
       </View>
     </Modal>
   );
@@ -214,17 +258,15 @@ const styles = StyleSheet.create({
   },
   revMsgdetailsModalTab: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: 'bold',
     textAlign: 'center',
     backgroundColor: '#444',
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: '#efebe9',
-    paddingTop: 3,
+    paddingHorizontal: 8,
+    paddingTop: 1,
     paddingBottom: 2,
     marginLeft: 5,
-    borderRadius: 2,
+    borderRadius: 22,
   },
   revMsgdetailsModalTab_Edit: {
     color: '#388e3c',
@@ -316,7 +358,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chatMsgContentCarret: {
-    color: '#c5e1a5',
+    color: '#EEE',
     textAlign: 'center',
     fontSize: 15,
   },
@@ -329,10 +371,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'flex-start',
-    backgroundColor: '#dcedc8',
+    backgroundColor: '#F7F7F7',
     maxWidth: maxChatMessageContainerWidth,
     paddingHorizontal: 5,
     paddingVertical: 4,
+    paddingBottom: 22,
     borderRadius: 2,
   },
   chatMsgInboxBlue: {
@@ -399,5 +442,9 @@ const styles = StyleSheet.create({
     width: 'auto',
     paddingTop: 5,
     marginBottom: 4,
+  },
+  revComposeMessageFormContainer: {
+    width: '100%',
+    marginTop: 8,
   },
 });

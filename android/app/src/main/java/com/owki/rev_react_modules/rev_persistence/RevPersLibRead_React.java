@@ -70,6 +70,25 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGet_ALL_RevEntity_By_SiteGUID_SubType(Integer revSiteEntityGUID, String revEntitySubType) {
+        String revEntitiesStr = "[]";
+
+        RevEntity[] revEntities = revPersLibRead.revPersGet_ALL_RevEntity_By_SiteGUID_SubType(revSiteEntityGUID, revEntitySubType);
+
+        if (revEntities.length > 0)
+            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+
+        return revEntitiesStr;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, Integer revSiteEntityGUID, String revEntitySubType) {
+        List<Long> revEntityGUIDs = revPersLibRead.revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(revDBTableFieldName, revSiteEntityGUID, revEntitySubType);
+
+        return revEntityGUIDs.toString();
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public String revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(Integer revEntityGUID, String revEntitySubType) {
         String revEntitiesStr = "[]";
 
