@@ -3,8 +3,13 @@ import React, {useEffect, useState, useContext} from 'react';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
-import {RevChatMessageNotificationsListingItem} from '../rev_entity_views/RevChatMessageNotificationsListingItem';
+import {RevChatMessageNotificationsListingItem} from './RevChatMessageNotificationsListingItem';
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
+
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revArrIncludesElement} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -21,6 +26,9 @@ export const RevChatMessageNotificationsListingWidget = () => {
 
   const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
     useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
+
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
 
   const {revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE} =
     useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE();
@@ -39,21 +47,13 @@ export const RevChatMessageNotificationsListingWidget = () => {
     console.log('>>> REV_SITE_ENTITY_GUID ' + REV_SITE_ENTITY_GUID);
 
     let revPassVarArgs = {
-      revSelect: [
-        '_revEntityType',
-        '_revEntitySubType',
-        '_revEntityGUID',
-        '_revOwnerEntityGUID',
-        '_revContainerEntityGUID',
-        '_revEntitySiteGUID',
-        '_revEntityAccessPermission',
-        '_revTimeCreated',
-      ],
+      revDistinct: 1,
+      revSelect: ['_revEntityGUID', '_revOwnerEntityGUID'],
       revWhere: {
         _revEntityType: 'rev_object',
         _revEntitySubType: 'rev_message',
         _revEntityResolveStatus: [0, -1, -101],
-        _revEntitySiteGUID: REV_SITE_ENTITY_GUID,
+        _revEntitySiteGUID: [5, REV_SITE_ENTITY_GUID],
       },
       revLimit: 22,
     };
@@ -62,15 +62,27 @@ export const RevChatMessageNotificationsListingWidget = () => {
       JSON.stringify(revPassVarArgs),
     );
 
+    let revMsgsArr = [];
+    let revAddedMsgsGUIDsArr = [];
+
     for (let i = 0; i < revVarArgsEntitiesArr.length; i++) {
       let revCurrMsg = revVarArgsEntitiesArr[i];
-      let revMsgEntityOwnerGUID = revCurrMsg._revEntityOwnerGUID;
+
+      let revMsgEntityOwnerGUID = revCurrMsg._revPublisherEntity._revEntityGUID;
+
+      if (revArrIncludesElement(revAddedMsgsGUIDsArr, revMsgEntityOwnerGUID)) {
+        continue;
+      } else {
+        revAddedMsgsGUIDsArr.push(revMsgEntityOwnerGUID);
+      }
 
       revCurrMsg['revMessageType'] =
         revMsgEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID ? 'outbox' : 'inbox';
+
+      revMsgsArr.push(revCurrMsg);
     }
 
-    return revVarArgsEntitiesArr;
+    return revMsgsArr;
   };
 
   function renderItem({item}) {
@@ -83,7 +95,9 @@ export const RevChatMessageNotificationsListingWidget = () => {
         data={revPastChatMessagesData}
         renderItem={renderItem}
         keyExtractor={item => {
-          return 'RevDisplay_' + item._revEntityGUID;
+          return (
+            'RevDisplay_' + revGetRandInteger() + '_' + item._revEntityGUID
+          );
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

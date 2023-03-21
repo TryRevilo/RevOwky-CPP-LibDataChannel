@@ -871,7 +871,10 @@ list *revPersGetALLRevEntity_By_SubType_RevVarArgs(char *revVarArgs) {
 
     if (cJSON_IsNumber(revSelectDistinct_JSON) && (revSelectDistinct_JSON->valueint != NULL)) {
         long revSelectDistinctVal = revSelectDistinct_JSON->valueint;
-        sql = revConcatStrings(sql, "DISTINCT ");
+
+        if (revSelectDistinctVal == 1) {
+            sql = revConcatStrings(sql, "DISTINCT ");
+        }
     }
 
     const cJSON *revSelect_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelect");

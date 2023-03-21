@@ -116,7 +116,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
       animationOut="slideOutDown"
       animationInTiming={2000}
       animationOutTiming={2000}
-      onSwipeComplete={() => setModalVisible(false)}
+      onSwipeComplete={() => toggleModal()}
       swipeDirection="left">
       <View style={styles.chatMsgContainer}>
         <View style={styles.chatMsgWrapper}>
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
     paddingHorizontal: 8,
     paddingVertical: 12,
-    borderRadius: 2,
+    borderRadius: 8,
   },
   revMsgdetailsModalView: {
     display: 'flex',
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    maxWidth: maxChatMessageContainerWidth,
+    width: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
   },
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    maxWidth: maxChatMessageContainerWidth,
+    width: maxChatMessageContainerWidth,
     marginTop: 2,
   },
   chatMsgContentCarretView: {
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'flex-start',
     backgroundColor: '#F7F7F7',
-    maxWidth: maxChatMessageContainerWidth,
+    width: maxChatMessageContainerWidth,
     paddingHorizontal: 5,
     paddingVertical: 4,
     paddingBottom: 22,

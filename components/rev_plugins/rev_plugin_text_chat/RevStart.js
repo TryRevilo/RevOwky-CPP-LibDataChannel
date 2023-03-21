@@ -5,6 +5,7 @@ import {RevFooter2} from '../../rev_views/rev_site_footer_views/RevFooter2';
 import {RevFooter3} from '../../rev_views/rev_site_footer_views/RevFooter3';
 import {RevChatMessageNotificationsListing} from './rev_views/rev_listing_views/RevChatMessageNotificationsListing';
 import {RevChatMessageNotificationsListingItem} from './rev_views/rev_listing_views/rev_entity_views/RevChatMessageNotificationsListingItem';
+import {RevChatMessagesConversationsListing} from './rev_views/rev_listing_views/RevChatMessagesConversationsListing';
 
 export default function RevStart({revVarArgs}) {
   let RevView = null;
@@ -32,6 +33,10 @@ export default function RevStart({revVarArgs}) {
       RevView = (
         <RevChatMessageNotificationsListingItem revVarArgs={revVarArgs} />
       );
+      break;
+
+    case 'RevChatMessagesConversationsListing':
+      RevView = <RevChatMessagesConversationsListing revVarArgs={revVarArgs} />;
       break;
 
     default:

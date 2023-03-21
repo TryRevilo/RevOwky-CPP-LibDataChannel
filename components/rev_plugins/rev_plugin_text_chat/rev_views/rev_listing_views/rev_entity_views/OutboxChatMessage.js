@@ -14,18 +14,52 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import RevChatMessageOptions from '../../RevChatMessageOptions';
+
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
-export default function OutboxChatMessage({revData}) {
-  if (!revData) {
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
+export default function OutboxChatMessage({revVarArgs}) {
+  if (!revVarArgs) {
     return null;
   }
 
-  let revMessageId = revData._revEntityGUID;
-  let chatMsg = revGetMetadataValue(
-    revData._revEntityMetadataList,
-    'rev_chat_message_html_value',
+  let revEntityGUID = revVarArgs._revEntityGUID;
+
+  /** START GET PUBLISHER */
+  if (
+    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_full_names',
   );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    22,
+  );
+  /** END GET PUBLISHER */
+
+  let revMsgInfoEntity = revVarArgs._revInfoEntity;
+
+  let revChatMsgStr = revGetMetadataValue(
+    revMsgInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  let revTimeCreated = revVarArgs._timeCreated;
 
   let maxMessageLen = 200;
 
@@ -48,15 +82,31 @@ export default function OutboxChatMessage({revData}) {
     );
   };
 
+  const [revIsChatOptionsModalVissible, setRevIsChatOptionsModalVissible] =
+    useState(false);
+
+  let revChatOptions = () => {
+    return revIsChatOptionsModalVissible ? (
+      <RevChatMessageOptions
+        revData={revVarArgs}
+        revCallback={() => setRevIsChatOptionsModalVissible(false)}
+      />
+    ) : null;
+  };
+
   return (
-    <TouchableOpacity onLongPress={() => console.warn('STARTED LONG PRESS')}>
-      <View key={revMessageId} style={styles.inboxChatMsgWrapper}>
+    <TouchableOpacity
+      key={'InboxMessage_' + revEntityGUID}
+      onLongPress={() => {
+        setRevIsChatOptionsModalVissible(true);
+      }}>
+      <View key={revEntityGUID} style={styles.inboxChatMsgWrapper}>
         <View style={styles.chatMsgContentWrapperInbox}>
           <View
             style={[styles.chatMsgContentContainer, styles.chatMsgInboxBlue]}>
             <View style={styles.chatMsgHeaderWrapper}>
               <Text style={styles.chatMsgOwnerTxt}>me</Text>
-              <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
+              <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
@@ -72,12 +122,12 @@ export default function OutboxChatMessage({revData}) {
                 </Text>
               </View>
             </View>
-            {chatMessageText(chatMsg)}
+            {chatMessageText(revChatMsgStr)}
           </View>
           <View style={styles.chatMsgContentCarretView}>
             <FontAwesome
               name="caret-right"
-              style={styles.chatMsgContentCarretInbox}
+              style={styles.chatMsgContentCarret}
             />
           </View>
         </View>
@@ -85,6 +135,8 @@ export default function OutboxChatMessage({revData}) {
           <FontAwesome name="user" style={styles.availableChatPeopleNonIcon} />
         </View>
       </View>
+
+      {revChatOptions()}
     </TouchableOpacity>
   );
 }
@@ -115,7 +167,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 32,
     borderStyle: 'solid',
-    borderColor: '#b2ebf2',
+    borderColor: '#F7F7F7',
     borderWidth: 1,
     borderRadius: 100,
     marginTop: 2,
@@ -124,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   availableChatPeopleNonIcon: {
-    color: '#b2ebf2',
+    color: '#DDD',
     fontSize: 17,
   },
   chatMsgContentWrapper: {
@@ -151,12 +203,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chatMsgContentCarret: {
-    color: '#c5e1a5',
-    textAlign: 'center',
-    fontSize: 15,
-  },
-  chatMsgContentCarretInbox: {
-    color: '#b2ebf2',
+    color: '#DDD',
     textAlign: 'center',
     fontSize: 15,
   },

@@ -10,9 +10,12 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
 import {revRemoveLinebreaks} from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -29,6 +32,8 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
 
   const [revIsChatOptionsModalVissible, setRevIsChatOptionsModalVissible] =
     useState(false);
+
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   let revEntityGUID = revVarArgs._revEntityGUID;
 
@@ -96,11 +101,24 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
     );
   };
 
+  const handleRevChatMessageConversationClicked = () => {
+    let RevChatMessagesConversationsListing = revPluginsLoader({
+      revPluginName: 'rev_plugin_text_chat',
+      revViewName: 'RevChatMessagesConversationsListing',
+      revData: {},
+    });
+
+    SET_REV_SITE_BODY(RevChatMessagesConversationsListing);
+  };
+
   return (
     <TouchableOpacity
       key={Math.abs(revEntityGUID)}
       onLongPress={() => {
         setRevIsChatOptionsModalVissible(true);
+      }}
+      onPress={() => {
+        handleRevChatMessageConversationClicked();
       }}
       style={styles.chatMsgWrapperTouchable}>
       <View style={revSiteStyles.revFlexWrapper}>

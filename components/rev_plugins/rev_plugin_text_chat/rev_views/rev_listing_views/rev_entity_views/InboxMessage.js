@@ -17,16 +17,48 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
-export default function InboxMessage({revData}) {
-  if (!revData) {
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
+export default function InboxMessage({revVarArgs}) {
+  if (!revVarArgs) {
     return null;
   }
 
-  let revMessageId = revData._revEntityGUID;
-  let chatMsg = revGetMetadataValue(
-    revData._revEntityMetadataList,
-    'rev_chat_message_html_value',
+  let revEntityGUID = revVarArgs._revEntityGUID;
+
+  /** START GET PUBLISHER */
+  if (
+    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
+    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+  ) {
+    return null;
+  }
+
+  let revPublisherEntity = revVarArgs._revPublisherEntity;
+
+  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+    return null;
+  }
+
+  let revPublisherEntityNames = revGetMetadataValue(
+    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    'rev_full_names',
   );
+  let revPublisherEntityNames_Trunc = revTruncateString(
+    revPublisherEntityNames,
+    22,
+  );
+  /** END GET PUBLISHER */
+
+  let revMsgInfoEntity = revVarArgs._revInfoEntity;
+
+  let revChatMsgStr = revGetMetadataValue(
+    revMsgInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  let revTimeCreated = revVarArgs._timeCreated;
 
   let minMessageLen = 1;
   let maxMessageLen = 200;
@@ -49,8 +81,8 @@ export default function InboxMessage({revData}) {
   let RevImages = () => {
     let imageBytes = null;
 
-    if (revData.hasOwnProperty('bytesArrayBuffer')) {
-      imageBytes = revData.bytesArrayBuffer;
+    if (revVarArgs.hasOwnProperty('bytesArrayBuffer')) {
+      imageBytes = revVarArgs.bytesArrayBuffer;
     } else return null;
 
     return (
@@ -66,16 +98,18 @@ export default function InboxMessage({revData}) {
   let chatMessageText = _chatMsg => {
     let chatMessageView = (
       <Text style={styles.chatMsgContentTxt}>
-        {chatMsg.length > maxMessageLen
-          ? chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : chatMsg}
+        {_chatMsg.length > maxMessageLen
+          ? _chatMsg.substring(0, maxMessageLen) + ' . . .'
+          : _chatMsg}
       </Text>
     );
 
     return (
-      <View key={revMessageId} style={styles.chatMsgContentTxtContainer}>
+      <View
+        key={'chatMessageText_' + revEntityGUID}
+        style={styles.chatMsgContentTxtContainer}>
         {chatMessageView}
-        {chatMsg.length > maxMessageLen ? (
+        {_chatMsg.length > maxMessageLen ? (
           <Text style={styles.readMoreTextTab}>Read more</Text>
         ) : null}
       </View>
@@ -88,7 +122,7 @@ export default function InboxMessage({revData}) {
   let revChatOptions = () => {
     return revIsChatOptionsModalVissible ? (
       <RevChatMessageOptions
-        revData={revData}
+        revData={revVarArgs}
         revCallback={() => setRevIsChatOptionsModalVissible(false)}
       />
     ) : null;
@@ -96,7 +130,7 @@ export default function InboxMessage({revData}) {
 
   return (
     <TouchableOpacity
-      key={Math.abs(revMessageId)}
+      key={'InboxMessage_' + revEntityGUID}
       onLongPress={() => {
         setRevIsChatOptionsModalVissible(true);
       }}>
@@ -113,8 +147,10 @@ export default function InboxMessage({revData}) {
           </View>
           <View style={styles.chatMsgContentContainer}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>Oliver Muchai</Text>
-              <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
+              <Text style={styles.chatMsgOwnerTxt}>
+                {revPublisherEntityNames_Trunc}
+              </Text>
+              <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
@@ -128,7 +164,7 @@ export default function InboxMessage({revData}) {
               </View>
             </View>
             <View style={styles.chatMsgContentTxtContainer}>
-              {chatMessageText(chatMsg)}
+              {chatMessageText(revChatMsgStr)}
               <RevImages />
             </View>
           </View>
