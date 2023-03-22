@@ -30,6 +30,8 @@ RevEntityRelationship revPersGetRevEntityRelById(long revEntityRelationshipId);
 
 list *revPersGetRevEntityRels_By_ResStatus(int revResStatus);
 
+list *revPersGetRevEntityRels_By_ResStatus_RelType(int revResStatus, char *revEntityRelationship);
+
 list *revPersGetALLRevEntityRelValIds_By_RevResStatus(int revResolveStatus);
 
 list *revPersGetALLRevEntityRelationshipsAcceptedUnSyched(long revEntityTargetGUID, int revRelResolveStatus);

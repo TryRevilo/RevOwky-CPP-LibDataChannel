@@ -199,6 +199,18 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         return revEntityRelationshipsStr;
     }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGetRevEntityRels_By_ResStatus_RelType(Integer revResStatus, String revEntityRelationship) {
+        String revEntityRelationshipsStr = "[]";
+
+        List<RevEntityRelationship> revEntityRelationships = revPersLibRead.revPersGetRevEntityRels_By_ResStatus_RelType(revResStatus, revEntityRelationship);
+
+        if (revEntityRelationships.size() > 0)
+            revEntityRelationshipsStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityRelationships);
+
+        return revEntityRelationshipsStr;
+    }
     /** END RELS **/
 
     /**

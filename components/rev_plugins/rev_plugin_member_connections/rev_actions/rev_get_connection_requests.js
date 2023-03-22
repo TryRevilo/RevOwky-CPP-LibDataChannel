@@ -12,6 +12,10 @@ export const useRevGetConnectionRequests = () => {
   const revGetConnectionRequests = revCallBack => {
     let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
 
+    console.log(
+      '>>> revLoggedInRemoteEntityGUID ' + revLoggedInRemoteEntityGUID,
+    );
+
     if (revLoggedInRemoteEntityGUID < 1) {
       return revCallBack(null);
     }
@@ -20,8 +24,16 @@ export const useRevGetConnectionRequests = () => {
 
     revGetServerData_JSON(revURL, revRetData => {
       if (revRetData.hasOwnProperty('revError')) {
-        console.log('>>> revRetData ' + JSON.stringify(revRetData));
+        console.log(
+          '>>> revRetData <<< : revGetConnectionRequests : ' +
+            JSON.stringify(revRetData),
+        );
       }
+
+      console.log(
+        '>>> revRetData <<< : revGetConnectionRequests : ' +
+          JSON.stringify(revRetData),
+      );
 
       return revCallBack(revRetData);
     });

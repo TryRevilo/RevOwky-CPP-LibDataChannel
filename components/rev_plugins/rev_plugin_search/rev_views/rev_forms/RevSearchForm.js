@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     marginLeft: 5,
+    borderRadius: 22,
   },
   revCancelTab: {
     fontWeight: 'bold',

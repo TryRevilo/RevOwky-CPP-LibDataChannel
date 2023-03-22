@@ -44,8 +44,6 @@ export const RevChatMessageNotificationsListingWidget = () => {
   }, []);
 
   let revPastChatConversations = () => {
-    console.log('>>> REV_SITE_ENTITY_GUID ' + REV_SITE_ENTITY_GUID);
-
     let revPassVarArgs = {
       revDistinct: 1,
       revSelect: ['_revEntityGUID', '_revOwnerEntityGUID'],
@@ -53,7 +51,7 @@ export const RevChatMessageNotificationsListingWidget = () => {
         _revEntityType: 'rev_object',
         _revEntitySubType: 'rev_message',
         _revEntityResolveStatus: [0, -1, -101],
-        _revEntitySiteGUID: [5, REV_SITE_ENTITY_GUID],
+        _revEntitySiteGUID: [5, 10],
       },
       revLimit: 22,
     };

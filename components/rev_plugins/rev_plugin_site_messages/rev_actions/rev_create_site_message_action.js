@@ -43,12 +43,12 @@ export const useRevCreateCommentAction = () => {
       revVarArgs['revPersEntityInfoMetadataList'] =
         revPersEntityInfoMetadataList;
 
-      let revCommentRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revCommentRel._revEntityRelationshipType = 'rev_msg_recipient_of';
-      revCommentRel._revEntityTargetGUID = -1;
-      revCommentRel._revEntitySubjectGUID = revCommentContainerGUID;
+      let revMsgRecipientOfRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+      revMsgRecipientOfRel._revEntityRelationshipType = 'rev_msg_recipient_of';
+      revMsgRecipientOfRel._revEntityTargetGUID = -1;
+      revMsgRecipientOfRel._revEntitySubjectGUID = revCommentContainerGUID;
 
-      revVarArgs['revTargetRelsArr'] = [revCommentRel];
+      revVarArgs['revTargetRelsArr'] = [revMsgRecipientOfRel];
 
       revPersEntityGUID = await revSaveNewEntity(revVarArgs);
       revRetData['revNewEntityGUID'] = revPersEntityGUID;

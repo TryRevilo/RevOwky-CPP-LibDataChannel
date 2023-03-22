@@ -17,6 +17,8 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {useRevGetLoggedInSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -25,6 +27,7 @@ const {RevPersLibUpdate_React} = NativeModules;
 
 export const RevUserSettingsWidget = ({revVarArgs}) => {
   const {
+    REV_SITE_ENTITY_GUID,
     REV_LOGGED_IN_ENTITY_GUID,
     REV_LOGGED_IN_ENTITY,
     SET_REV_LOGGED_IN_ENTITY_GUID,
@@ -40,6 +43,9 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
   if (REV_LOGGED_IN_ENTITY_GUID < 1) {
     return null;
   }
+
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
 
   let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
 
@@ -82,14 +88,14 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
   };
 
   const revHandleOnLogOutTabPressed = () => {
-    let revSiteEntity = revGetLoggedInSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
-    let revEntityResolveStatusByRevEntityGUID =
+    let revSiteEntity = revPersGetRevEnty_By_EntityGUID(REV_SITE_ENTITY_GUID);
+
+    if (revSiteEntity && revSiteEntity._revEntityResolveStatus > -1) {
       RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
         0,
         revSiteEntity._revEntityGUID,
       );
 
-    if (revEntityResolveStatusByRevEntityGUID) {
       SET_REV_LOGGED_IN_ENTITY_GUID(-1);
     }
   };

@@ -435,7 +435,7 @@ RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
 
     char *sql = "SELECT "
                 "REV_CHILDABLE_STATUS, "
-                "REV_ENTITY_GUID, "
+                "REV_RESOLVE_STATUS, "
                 "REMOTE_REV_ENTITY_GUID, "
                 "REV_ENTITY_OWNER_GUID, "
                 "REV_ENTITY_CONTAINER_GUID, "
@@ -460,8 +460,8 @@ RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "NULLABLE >>> %s ", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
-        long _revEntityChildableStatus = sqlite3_column_int64(stmt, 0);
-        revEntityGUID = sqlite3_column_int(stmt, 1);
+        long revEntityChildableStatus = sqlite3_column_int64(stmt, 0);
+        long revEntityResolveStatus = sqlite3_column_int64(stmt, 1);
         long remoteRevEntityGUID = sqlite3_column_int64(stmt, 2);
         long revOwnerEntityGUID = sqlite3_column_int64(stmt, 3);
         long revContainerEntityGUID = sqlite3_column_int64(stmt, 4);
@@ -471,11 +471,12 @@ RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 7));
         char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 8));
 
-        long _revTimeCreated = sqlite3_column_int64(stmt, 9);
+        long revTimeCreated = sqlite3_column_int64(stmt, 9);
         char *timeUpdated = strdup((const char *) sqlite3_column_text(stmt, 10));
 
         revEntity._isNull = FALSE;
-        revEntity._revEntityChildableStatus = _revEntityChildableStatus;
+        revEntity._revEntityChildableStatus = revEntityChildableStatus;
+        revEntity._revEntityResolveStatus = revEntityResolveStatus;
         revEntity._revEntityGUID = revEntityGUID;
         revEntity._remoteRevEntityGUID = remoteRevEntityGUID;
         revEntity._revOwnerEntityGUID = revOwnerEntityGUID;
@@ -484,8 +485,8 @@ RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
         revEntity._revEntityAccessPermission = revEntityAccessPermission;
         revEntity._revEntityType = revEntityType;
         revEntity._revEntitySubType = revEntitySubType;
-        revEntity._revTimeCreated = _revTimeCreated;
-        revEntity._timeCreated = strdup(revLocalTimer(_revTimeCreated));
+        revEntity._revTimeCreated = revTimeCreated;
+        revEntity._timeCreated = strdup(revLocalTimer(revTimeCreated));
         revEntity._timeUpdated = timeUpdated;
     }
 

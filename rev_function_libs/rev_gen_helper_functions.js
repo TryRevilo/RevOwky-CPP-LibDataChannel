@@ -1,3 +1,5 @@
+import {revGetServerData_JSON} from '../components/rev_libs_pers/rev_server/rev_pers_lib_read';
+
 export function revGetRandInteger(min = 1, max = 1000) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -368,30 +370,27 @@ export const revPingServer = revVarArgs => {
   const maxPings = 1; // Change this to the number of pings you want to make
 
   const pingServer = () => {
-    fetch(revIP)
-      .then(response => {
-        if (response.status === 200) {
-          console.log('>>> Server is up');
-          clearInterval(intervalId);
-          return revCallBack({revServerStatus: 200});
-        } else {
-          console.log('>>> Server is down');
-          counter++;
+    revGetServerData_JSON(revIP, revRetData => {
+      console.log('>>> revRetData ' + JSON.stringify(revRetData));
 
-          if (counter === maxPings) {
-            clearInterval(intervalId);
-            revCallBack({revServerStatus: 504});
-          }
-        }
-      })
-      .catch(error => {
-        console.log('>>> Server is down');
-        counter++;
-        if (counter === maxPings) {
-          clearInterval(intervalId);
-          revCallBack({revServerStatus: 'Network Request Failed'});
-        }
-      });
+      if (
+        !revIsEmptyJSONObject(revRetData) &&
+        !revIsEmptyVar(revRetData.revData)
+      ) {
+        console.log('>>> Server is up !');
+        clearInterval(intervalId);
+        return revCallBack({revServerStatus: 200});
+      }
+
+      if (counter === maxPings) {
+        console.log('>>> Server is DOWN !');
+
+        clearInterval(intervalId);
+        revCallBack({revServerStatus: 'Network Request Failed'});
+      }
+
+      counter = counter + 1;
+    });
   };
 
   // Ping the server every 5 seconds

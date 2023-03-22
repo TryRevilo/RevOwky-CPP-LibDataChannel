@@ -186,9 +186,9 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
         'rev_remote_file_name',
       );
 
-      if (!revVarArgs._fromRemote) {
+      if (revVarArgs.hasOwnProperty('_fromRemote')) {
         revEntityImageURI =
-          'file:///' +
+          'file://' +
           revSettings.revPublishedMediaDir +
           '/' +
           revEntityImageURI;

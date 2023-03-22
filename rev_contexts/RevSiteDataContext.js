@@ -1,7 +1,7 @@
 import React, {createContext, useState, useEffect} from 'react';
 import {NativeModules} from 'react-native';
 
-const {RevPersLibRead_React} = NativeModules;
+const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
 
 import {
   useRevCreateSiteEntity,
@@ -60,9 +60,18 @@ const RevSiteDataContextProvider = ({children}) => {
         revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
       }
 
-      if (revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID) {
-        SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
+      if (
+        revSiteEntityGUID._resolveStatus > -1 &&
+        revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID
+      ) {
+        let revEntityResolveStatusByRevEntityGUID =
+          RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+            2,
+            revSiteEntityGUID,
+          );
       }
+
+      SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
       /** END SET UP SITE */
     }
   }, [REV_LOGGED_IN_ENTITY_GUID]);

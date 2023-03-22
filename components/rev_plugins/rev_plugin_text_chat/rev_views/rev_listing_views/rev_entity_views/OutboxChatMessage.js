@@ -59,7 +59,7 @@ export default function OutboxChatMessage({revVarArgs}) {
     'rev_entity_desc_val',
   );
 
-  let revTimeCreated = revVarArgs._timeCreated;
+  let revTimeCreated = revVarArgs._revInfoEntity._timeCreated;
 
   let maxMessageLen = 200;
 

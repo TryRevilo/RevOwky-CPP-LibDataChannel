@@ -15,6 +15,8 @@
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 
+int revLimit = 10;
+
 long revGetLastRelSubjectGUID_By_CreatedDate_RelType(char *revRelType) {
     long revRetVal = -1;
 
@@ -794,6 +796,84 @@ list *revPersGetRevEntityRels_By_ResStatus(int revResStatus) {
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int(stmt, 1, revResStatus);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revPersGetALLRevEntityRelationshipsUnSyched %s", sqlite3_errmsg(db));
+    } else {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            long _revResolveStatus = sqlite3_column_int64(stmt, 0);
+
+            int relValueId = sqlite3_column_int(stmt, 1);
+            char *dbRevEntityRelationship = strdup(getRevEntityRelValue(relValueId));
+
+            long _revEntityRelationshipId = sqlite3_column_int64(stmt, 2);
+            long _remoteRevEntityRelationshipId = sqlite3_column_int64(stmt, 3);
+
+            long _revEntitySubjectGUID = sqlite3_column_int64(stmt, 4);
+            long _remoteRevevEntitySubjectGUID = sqlite3_column_int64(stmt, 5);
+
+            long _revEntityTargetGUID = sqlite3_column_int64(stmt, 6);
+            long _remoteRevEntityTargetGUID = sqlite3_column_int64(stmt, 7);
+
+            char *timeCreated = strdup((const char *) sqlite3_column_text(stmt, 8));
+            char *timeUpdated = strdup((const char *) sqlite3_column_text(stmt, 9));
+
+            RevEntityRelationship revEntityRelationship;
+
+            revEntityRelationship._revResolveStatus = _revResolveStatus;
+            revEntityRelationship._revEntityRelationshipTypeValueId = relValueId;
+            revEntityRelationship._revEntityRelationshipType = dbRevEntityRelationship;
+            revEntityRelationship._revEntityRelationshipId = _revEntityRelationshipId;
+            revEntityRelationship._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+
+            revEntityRelationship._revEntitySubjectGUID = _revEntitySubjectGUID;
+            revEntityRelationship._remoteRevEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
+
+            revEntityRelationship._revEntityTargetGUID = _revEntityTargetGUID;
+            revEntityRelationship._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+
+            revEntityRelationship._timeCreated = timeCreated;
+            revEntityRelationship._timeUpdated = timeUpdated;
+
+            list_append(&revEntityRelationshipList, &revEntityRelationship);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return &revEntityRelationshipList;
+}
+
+list *revPersGetRevEntityRels_By_ResStatus_RelType(int revResStatus, char *revEntityRelationship) {
+    list revEntityRelationshipList;
+    list_new(&revEntityRelationshipList, sizeof(RevEntityRelationship), NULL);
+
+    sqlite3 *db = revDb();
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "REV_RESOLVE_STATUS, "
+                "REV_RELATIONSHIP_TYPE_VALUE_ID, "
+                "REV_RELATIONSHIP_ID, "
+                "REMOTE_RELATIONSHIP_ID, "
+                "REV_SUBJECT_GUID, "
+                "REV_REMOTE_SUBJECT_GUID, "
+                "REV_TARGET_GUID, "
+                "REV_REMOTE_TARGET_GUID, "
+                "REV_CREATED_DATE, "
+                "REV_UPDATED_DATE "
+                "FROM REV_ENTITY_RELATIONSHIPS_TABLE "
+                "WHERE REV_RESOLVE_STATUS = ? AND REV_RELATIONSHIP_TYPE_VALUE_ID = ? LIMIT ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, revResStatus);
+
+    int revRelValueId = revPersGetRelId(strdup(revEntityRelationship));
+    sqlite3_bind_int(stmt, 2, revRelValueId);
+
+    sqlite3_bind_int(stmt, 3, revLimit);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: revPersGetALLRevEntityRelationshipsUnSyched %s", sqlite3_errmsg(db));

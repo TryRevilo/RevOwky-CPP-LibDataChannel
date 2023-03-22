@@ -26,6 +26,7 @@ import {revPluginsLoader} from '../rev_plugins_loader';
 import RevFooterArea from './RevFooterArea';
 
 import {useRevGetConnectionRequests} from '../rev_plugins/rev_plugin_member_connections/rev_actions/rev_get_connection_requests';
+import {useRevUpdateConnectionRequestStatus} from '../rev_plugins/rev_plugin_member_connections/rev_remote_update_actions/rev_update_connection_request_status';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
@@ -43,6 +44,8 @@ const RevSiteContainer = () => {
   } = useContext(ReViewsContext);
 
   const {revGetConnectionRequests} = useRevGetConnectionRequests();
+  const {revUpdateConnectionRequestStatus} =
+    useRevUpdateConnectionRequestStatus();
 
   let revHandleAllTabPress = () => {
     revGetConnectionRequests(revRetData => {
@@ -51,16 +54,6 @@ const RevSiteContainer = () => {
       if (revNoticiasArrFilter.length) {
         setIsRevNoticiasAlert(true);
         setRevNoticiasAlertsCount(revNoticiasArrFilter.length);
-
-        const showToast = () => {
-          ToastAndroid.showWithGravity(
-            'New connection request',
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-          );
-        };
-
-        showToast();
       } else {
         setIsRevNoticiasAlert(false);
       }
@@ -72,6 +65,10 @@ const RevSiteContainer = () => {
       });
 
       SET_REV_SITE_BODY(RevNoticias);
+
+      revUpdateConnectionRequestStatus(revRetData => {
+        console.log('>>> revRetData ' + JSON.stringify(revRetData));
+      });
     });
   };
 

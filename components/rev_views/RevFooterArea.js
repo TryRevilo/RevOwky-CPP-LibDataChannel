@@ -223,7 +223,15 @@ function RevFooterArea() {
     let revDeleEntityGUIDsStr =
       RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(-3);
 
-    let revDeleEntityGUIDsArr = JSON.parse(revDeleEntityGUIDsStr);
+    console.log('>>> revDeleEntityGUIDsStr ' + revDeleEntityGUIDsStr);
+
+    let revDeleEntityGUIDsArr = [];
+
+    try {
+      revDeleEntityGUIDsArr = JSON.parse(revDeleEntityGUIDsStr);
+    } catch (error) {
+      console.log('>>> error ' + error);
+    }
 
     let revPostDelEntityGUIDsArr = [];
 

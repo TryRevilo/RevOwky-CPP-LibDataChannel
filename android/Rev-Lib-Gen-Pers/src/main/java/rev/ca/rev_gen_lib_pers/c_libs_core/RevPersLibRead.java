@@ -96,6 +96,8 @@ public class RevPersLibRead {
 
     public native List<RevEntityRelationship> revPersGetRevEntityRels_By_ResStatus(int revResStatus);
 
+    public native List<RevEntityRelationship> revPersGetRevEntityRels_By_ResStatus_RelType(int revResStatus, String revEntityRelationship);
+
     public native List<List> revPersGetRemoteRelsGUIDs_By_RelTypeValueId_RevEntityGUID_ResolveStatus(int relTypeValueId, long revEntityGUID, int revEntityResolveStatus);
 
     public native List<RevEntityRelationship> revPersGetRevEntityRelsSubjects_By_RelTypeValueId_TargetGUID_ResolveStatus(int relTypeValueId, long revEntityTargetGUID, int revEntityResolveStatus);

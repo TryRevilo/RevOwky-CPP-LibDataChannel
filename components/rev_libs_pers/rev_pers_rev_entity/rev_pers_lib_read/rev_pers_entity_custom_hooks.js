@@ -56,6 +56,9 @@ export function useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE() {
 }
 
 export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
+
   let revEntities = [];
 
   for (let i = 0; i < revEntityGUIDsArr.length; i++) {
@@ -78,10 +81,11 @@ export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
       Array.isArray(revCurrInfoEntityGUIDsArr) &&
       revCurrInfoEntityGUIDsArr.length > 0
     ) {
-      let revCurrInfoEntity = useRevPersGetRevEnty_By_EntityGUID(
+      let revCurrInfoEntity = revPersGetRevEnty_By_EntityGUID(
         revCurrInfoEntityGUIDsArr[0],
       );
-      revCurrEntity._revInfoEntity = JSON.parse(revCurrInfoEntity);
+
+      revCurrEntity._revInfoEntity = revCurrInfoEntity;
     }
 
     revEntities.push(revCurrEntity);
@@ -94,9 +98,19 @@ export function revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus) {
   let revUnresolvedEntityGUIDsStr =
     RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus);
 
-  return useRevPersGetRevEntities_By_EntityGUIDsArr(
-    JSON.parse(revUnresolvedEntityGUIDsStr),
+  let revUnresolvedEntityGUIDs;
+
+  try {
+    revUnresolvedEntityGUIDs = JSON.parse(revUnresolvedEntityGUIDsStr);
+  } catch (error) {
+    console.log('>>> error ' + error);
+  }
+
+  let revRetEntitiesArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+    revUnresolvedEntityGUIDs,
   );
+
+  return revRetEntitiesArr;
 }
 
 export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {

@@ -348,8 +348,11 @@ void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, RE
     env->SetObjectField(jPosRec, revEntityJniPosRec->_revEntitySubType_ID, revEntitySubType_Obj);
     env->DeleteLocalRef(revEntitySubType_Obj);
 
-    jint revEntityChildableStatus = cPosRec->_revEntityChildableStatus;
+    jint revEntityChildableStatus = (int) cPosRec->_revEntityChildableStatus;
     env->SetIntField(jPosRec, revEntityJniPosRec->_revEntityChildableStatus, revEntityChildableStatus);
+
+    jint revEntityResolveStatus_Obj = (int) cPosRec->_revEntityResolveStatus;
+    env->SetIntField(jPosRec, revEntityJniPosRec->_revEntityResolveStatus, revEntityResolveStatus_Obj);
 
     jclass revJClassLong = (env)->FindClass("java/lang/Long");
     jmethodID const_longMethodId = env->GetMethodID(revJClassLong, "<init>", "(J)V");
@@ -1407,6 +1410,45 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
     jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
 
     list revItemsList_C = *(revPersGetRevEntityRels_By_ResStatus((int) revResStatus));
+    int revItemsListSize = list_size(&revItemsList_C);
+
+    if (revItemsListSize == 0) return revRetJObjectArrayList;
+
+    list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
+
+    revEntityRelationshipJniPosrec = NULL;
+    LoadRevEntityRelationshipJniPosRec(env);
+
+    for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
+        if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
+            revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
+            continue;
+        }
+
+        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
+        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
+    }
+
+    searchRecordResultRevEntityRelationship.clear();
+
+    return revRetJObjectArrayList;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntityRels_1By_1ResStatus_1RelType(JNIEnv *env, jobject thiz, jint rev_res_status, jstring rev_entity_relationship) {
+    char *revEntityRelationship = strdup(env->GetStringUTFChars(rev_entity_relationship, 0));
+
+    // First, get all the methods we need:
+    jclass arrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
+    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
+
+    // The list we're going to return:
+    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
+
+    list revItemsList_C = *(revPersGetRevEntityRels_By_ResStatus_RelType((int) rev_res_status, revEntityRelationship));
     int revItemsListSize = list_size(&revItemsList_C);
 
     if (revItemsListSize == 0) return revRetJObjectArrayList;
