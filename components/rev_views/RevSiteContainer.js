@@ -6,19 +6,10 @@
  * @flow strict-local
  */
 
-import React, {useContext, useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ToastAndroid,
-} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
-import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
 
 import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';

@@ -300,12 +300,12 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   const RevVideoPlayer = () => {
     let revVidPathsArr = [
       'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/1.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/2.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/3.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/4.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/5.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/6.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/1.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/2.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/3.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/4.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/5.mp4',
+      // '/storage/emulated/0/Documents/Owki/rev_sample_media/6.mp4',
     ];
     const randomIndex = Math.floor(Math.random() * revVidPathsArr.length);
     const randomElement = revVidPathsArr[randomIndex];
@@ -767,7 +767,8 @@ const styles = StyleSheet.create({
   revEntityImageStyle: {
     width: 75,
     height: 45,
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   revVideoPlayerContainer: {
     height: 'auto',

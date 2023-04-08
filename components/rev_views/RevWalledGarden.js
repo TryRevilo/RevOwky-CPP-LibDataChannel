@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Dimensions,
   StatusBar,
-  NativeModules,
   DeviceEventEmitter,
 } from 'react-native';
 
@@ -18,11 +17,12 @@ import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext'
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
-import {revIsEmptyVar} from '../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyVar,
+  revPingServer,
+} from '../../rev_function_libs/rev_gen_helper_functions';
 
 import RevSiteContainer from './RevSiteContainer';
-
-const {RevWebRTCReactModule} = NativeModules;
 
 const RevWalledGarden = () => {
   const {
@@ -31,7 +31,7 @@ const RevWalledGarden = () => {
     REV_LOGGED_IN_ENTITY,
   } = useContext(RevSiteDataContext);
 
-  const {REV_IP} = useContext(RevRemoteSocketContext);
+  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   const RevLogInForm = revPluginsLoader({
@@ -40,61 +40,24 @@ const RevWalledGarden = () => {
     revData: 'Hello World!',
   });
 
-  DeviceEventEmitter.addListener('rev_c_sever_ping', event => {
-    console.log('>>> Event - rev_c_sever_ping : ' + event.eventProperty);
+  let revPingVarArgs = {
+    revInterval: 5000,
+    revIP: REV_ROOT_URL,
+    revCallBack: revRetDada => {
+      let revServerStatus = revRetDada.revServerStatus;
 
-    let revPingStatus = event.eventProperty;
+      console.log('>>> revServerStatus ' + JSON.stringify(revServerStatus));
 
-    if (revPingStatus > 0) {
-      let revInitWSStatus = RevWebRTCReactModule.revInitWS(
-        REV_IP,
-        REV_LOGGED_IN_ENTITY_GUID.toString(),
-      );
+      if (revServerStatus !== 200) {
+        return;
+      }
+    },
+  };
 
-      console.log('>>> revInitWSStatus ' + revInitWSStatus);
-    }
-  });
-
-  let revLoggedInState = 0;
+  revPingServer(revPingVarArgs);
 
   DeviceEventEmitter.addListener('revWebServerConnected', event => {
-    if (revLoggedInState !== 0) {
-      console.log('>>> Already Logged In !');
-
-      return;
-    }
-
-    if (REV_LOGGED_IN_ENTITY_GUID > 0 && !revIsEmptyVar(REV_LOGGED_IN_ENTITY)) {
-      console.log(
-        '>>> Event - revWebServerConnected - STR ' + event.eventProperty,
-      );
-
-      let revData;
-
-      try {
-        revData = JSON.parse(event.eventProperty);
-
-        console.log(
-          '>>> Event - revWebServerConnected - JSON ' + JSON.stringify(revData),
-        );
-      } catch (error) {
-        let revMessage = {
-          type: 'login',
-          id: REV_LOGGED_IN_ENTITY_GUID + '',
-          foo: 'bar',
-          revEntity: {
-            _remoteRevEntityGUID: REV_LOGGED_IN_ENTITY._revEntityGUID,
-          },
-        };
-
-        let revLoggedInState = RevWebRTCReactModule.revWebRTCLogIn(
-          REV_LOGGED_IN_ENTITY_GUID.toString(),
-          JSON.stringify(revMessage),
-        );
-
-        console.log('>>> revWebRTCLogIn : revMsgStatus ' + revLoggedInState);
-      }
-    }
+    // console.log('>>> revWebServerConnected ' + event.eventProperty);
   });
 
   revPersSyncDataComponent(-1, revSynchedGUIDsArr => {

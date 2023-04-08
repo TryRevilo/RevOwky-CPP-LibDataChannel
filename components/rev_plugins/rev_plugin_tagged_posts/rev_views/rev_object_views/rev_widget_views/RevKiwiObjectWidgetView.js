@@ -593,7 +593,8 @@ const styles = StyleSheet.create({
   revEntityImageStyle: {
     width: 75,
     height: 45,
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   revVideoPlayerContainer: {
     height: 'auto',
@@ -683,6 +684,7 @@ const styles = StyleSheet.create({
   revEntityImageStyle: {
     width: 75,
     height: 45,
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -42,7 +42,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *pjvm, void *reserved) {
     auto env = getEnv();
 
     //replace with one of your classes in the line below
-    auto randomClass = env->FindClass("rev/ca/rev_lib_webrtc/RevReactJNIData");
+    auto randomClass = env->FindClass("com/owki/RevRandomClass");
 
     jclass classClass = env->GetObjectClass(randomClass);
 

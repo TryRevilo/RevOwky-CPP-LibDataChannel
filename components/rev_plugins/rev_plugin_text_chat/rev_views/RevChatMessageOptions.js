@@ -294,7 +294,8 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: '100%',
     height: '100%',
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 3,
   },
   chatMsgWrapper: {

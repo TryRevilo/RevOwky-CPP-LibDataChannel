@@ -29,12 +29,9 @@ import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/r
 
 const {RevPersLibRead_React} = NativeModules;
 
-const handleEndVideoCall = () => {
-  // RevWebRTCReactModule.revSetTestStr('my_key', 'My Value');
-};
-
 function RevFooterArea() {
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
+    useContext(RevSiteDataContext);
 
   const {SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
@@ -106,6 +103,28 @@ function RevFooterArea() {
     }
 
     return revEntitiesArr;
+  };
+
+  const handleEndVideoCall = () => {
+    let revTargetEntityGUID =
+      REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
+
+    console.log('>>> revTargetEntityGUID ' + revTargetEntityGUID);
+
+    let revDataUserEntityStr =
+      RevPersLibRead_React.revPersGetRevEntity_By_RemoteRevEntityGUID(
+        revTargetEntityGUID,
+      );
+
+    let revDataUserEntity = JSON.parse(revDataUserEntityStr);
+    delete revDataUserEntity['_revInfoEntity'];
+
+    console.log('>>> revDataUserEntity ' + JSON.stringify(revDataUserEntity));
+
+    let revData = {
+      revTargetEntityGUID: revTargetEntityGUID,
+      revMsg: 'My AWESOME MESSAGE ! ! !',
+    };
   };
 
   let revHandleTaggedPostsTabPress = () => {

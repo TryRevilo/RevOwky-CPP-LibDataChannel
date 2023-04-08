@@ -27,7 +27,7 @@ jclass revGetClass(JNIEnv *env, char *revClassPath) {
 
 jclass revGetRandClass(JNIEnv *env) {
     //replace with one of your classes in the line below
-    auto randomClass = revGetClass(env, "rev/ca/rev_lib_webrtc/RevReactJNIData");
+    auto randomClass = revGetClass(env, "com/owki/RevRandomClass");
 
     jclass classClass = env->GetObjectClass(randomClass);
 
@@ -54,7 +54,7 @@ jmethodID revGetClassLoaderMethod(JNIEnv *env) {
 
 jobject revGetClassLoader(JNIEnv *env) {
     //replace with one of your classes in the line below
-    auto randomClass = revGetClass(env, "rev/ca/rev_lib_webrtc/RevReactJNIData");
+    auto randomClass = revGetClass(env, "com/owki/RevRandomClass");
     jclass classClass = revGetRandClass(env);
 
     if (classClass == nullptr) {

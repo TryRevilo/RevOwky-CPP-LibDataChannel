@@ -12,10 +12,6 @@ export const useRevGetConnectionRequests = () => {
   const revGetConnectionRequests = revCallBack => {
     let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
 
-    console.log(
-      '>>> revLoggedInRemoteEntityGUID ' + revLoggedInRemoteEntityGUID,
-    );
-
     if (revLoggedInRemoteEntityGUID < 1) {
       return revCallBack(null);
     }

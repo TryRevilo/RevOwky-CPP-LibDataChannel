@@ -9,5 +9,11 @@
 
 # Add any project specific keep options here:
 
+## REV START
+
+## REV WEB RTC
+-keep class org.webrtc.** { *; }
+
+## REV CONTACTS
 -keep class com.rt2zz.reactnativecontacts.** {*;}
 -keepclassmembers class com.rt2zz.reactnativecontacts.** {*;}

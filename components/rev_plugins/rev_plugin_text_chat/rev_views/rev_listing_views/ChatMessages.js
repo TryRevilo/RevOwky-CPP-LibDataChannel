@@ -2,8 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 
 import {ScrollView, StyleSheet, Text, View, NativeModules} from 'react-native';
 
-const {RevPersLibCreate_React, RevPersLibRead_React, RevWebRTCReactModule} =
-  NativeModules;
+const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

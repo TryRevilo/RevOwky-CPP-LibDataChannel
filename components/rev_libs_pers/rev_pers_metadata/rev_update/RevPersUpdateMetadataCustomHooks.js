@@ -4,7 +4,6 @@ const {
   RevPersLibCreate_React,
   RevPersLibRead_React,
   RevPersLibUpdate_React,
-  RevWebRTCReactModule,
   RevGenLibs_Server_React,
 } = NativeModules;
 

@@ -17,7 +17,7 @@ import {
 
 import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityRelationship';
 
-const {RevPersLibCreate_React, RevWebRTCReactModule} = NativeModules;
+const {RevPersLibCreate_React} = NativeModules;
 
 import {RevRemoteSocketContext} from '../../../../../rev_contexts/RevRemoteSocketContext';
 
@@ -54,13 +54,6 @@ var revHandleSendMsg = (revTargetId, revMsg, revCallBack) => {
   );
 
   console.log('>>> revSaveMessageStatus : ' + revSaveMessageStatus);
-
-  let revSendMessageStatus = RevWebRTCReactModule.revSendMessage(
-    revTargetId,
-    JSON.stringify(revPersEntity),
-  );
-
-  revCallBack(revSendMessageStatus);
 };
 
 export function RevSubmitChatTab({revTargetId, revMsg, revInputFieldCallback}) {

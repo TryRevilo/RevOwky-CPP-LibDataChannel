@@ -288,7 +288,8 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: '100%',
     height: '100%',
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 15,
   },
   profileVideoContainer: {
@@ -302,7 +303,8 @@ const styles = StyleSheet.create({
   profileVideoStyle: {
     width: '100%',
     height: '100%',
-    verticalAlign: 'middle',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 15,
     position: 'absolute',
     top: 0,

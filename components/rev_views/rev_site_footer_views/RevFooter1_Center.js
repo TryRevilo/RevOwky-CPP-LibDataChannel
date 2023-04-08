@@ -4,15 +4,24 @@ import React, {useContext} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
+import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
 
 import {useRevSiteStyles} from '../RevSiteStyles';
 import {revPluginsLoader} from '../../rev_plugins_loader';
+
+import {useRevWebSocket} from '../../../rev_webrtc_libs/rev_local_web_rtc_server';
 
 const RevFooter1_Center = () => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
+
+  const {REV_PORT, REV_IP} = useContext(RevRemoteSocketContext);
+
+  const {webSocket, messages, error, sendMessage} = useRevWebSocket(
+    'ws://' + REV_IP + ':' + REV_PORT,
+  );
 
   const RevSitePublisher = () => {
     let RevSitePublisherForm = revPluginsLoader({
