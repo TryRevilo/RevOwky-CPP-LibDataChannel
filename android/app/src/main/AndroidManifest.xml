@@ -38,6 +38,10 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <!-- REV END FILE SYSTEM -->
 
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="false"

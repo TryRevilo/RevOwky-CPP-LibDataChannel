@@ -1,5 +1,12 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {StatusBar, StyleSheet, Text, View, NativeModules} from 'react-native';
+import {
+  StatusBar,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  NativeModules,
+} from 'react-native';
 
 var RNFS = require('react-native-fs');
 
@@ -14,6 +21,8 @@ import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_funct
 
 const {RevPersLibCreate_React} = NativeModules;
 
+const revSettings = require('../../rev_res/rev_settings.json');
+
 const RevSiteLoading = () => {
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -22,11 +31,11 @@ const RevSiteLoading = () => {
 
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const DirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media';
+  let revAppRootDir = revSettings.revAppRootDir;
+  const DirectoryPath = revAppRootDir + '/rev_media';
   RNFS.mkdir(DirectoryPath);
 
-  let revDbPath = RNFS.DownloadDirectoryPath;
-  let dbLong = RevPersLibCreate_React.revPersInitReact(revDbPath);
+  let dbLong = RevPersLibCreate_React.revPersInitReact(revAppRootDir);
 
   if (dbLong < 1) {
     return (
@@ -41,13 +50,15 @@ const RevSiteLoading = () => {
 
   const [REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW] = useState(
     <View style={styles.revSiteLoadingContainer}>
-      {isLoading && <StatusBar backgroundColor="#F7F7F7" />}
       <Text style={styles.revSiteLoadingTxt}>Owki Loading . . .</Text>
     </View>,
   );
 
   useEffect(() => {
-    StatusBar.setBarStyle('light-content');
+    if (Platform.OS === 'android') {
+      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBackgroundColor('#F7F7F7');
+    }
 
     setTimeout(() => {
       let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
@@ -62,7 +73,7 @@ const RevSiteLoading = () => {
 
       SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
       setIsLoading(false);
-    }, 6000);
+    }, 1000);
   }, [revPageReady]);
 
   setTimeout(() => {

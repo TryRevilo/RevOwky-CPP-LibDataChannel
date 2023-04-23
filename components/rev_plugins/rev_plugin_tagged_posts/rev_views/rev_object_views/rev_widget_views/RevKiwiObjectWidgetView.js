@@ -373,7 +373,12 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
                 />
                 <View style={[revSiteStyles.revFlexWrapper]}>
                   {revPostTagsArr.map(revItem => {
-                    return <RevPostTagItem key={revItem.toString()} />;
+                    let revKey =
+                      'RevPostTagItem_' +
+                      revItem +
+                      '_' +
+                      revGetRandInteger(10, 1000);
+                    return <RevPostTagItem key={revKey} />;
                   })}
                 </View>
               </View>

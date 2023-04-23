@@ -105,7 +105,12 @@ export const RevAdEntityListingView = () => {
             <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
             <View style={[styles.revFlexWrapper]}>
               {revPostTagsArr.map(revItem => {
-                return <RevPostTagItem key={revItem.toString()} />;
+                let revKey =
+                  'RevPostTagItem_' +
+                  revItem +
+                  '_' +
+                  revGetRandInteger(10, 1000);
+                return <RevPostTagItem key={revKey} />;
               })}
             </View>
           </View>

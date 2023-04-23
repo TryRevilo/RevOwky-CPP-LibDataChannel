@@ -10,18 +10,21 @@ import React from 'react';
 import {RevRemoteSocketContextProvider} from './rev_contexts/RevRemoteSocketContext';
 import {RevSiteDataContextProvider} from './rev_contexts/RevSiteDataContext';
 import {ReViewsContextProvider} from './rev_contexts/ReViewsContext';
+import { RevWebRTCContextProvider } from './rev_contexts/RevWebRTCContext';
 
 import RevSiteLoading from './components/rev_views/RevSiteLoading';
 
 function App(): JSX.Element {
   return (
-    <RevRemoteSocketContextProvider>
-      <RevSiteDataContextProvider>
-        <ReViewsContextProvider>
-          <RevSiteLoading />
-        </ReViewsContextProvider>
-      </RevSiteDataContextProvider>
-    </RevRemoteSocketContextProvider>
+    <RevSiteDataContextProvider>
+        <RevRemoteSocketContextProvider>
+            <RevWebRTCContextProvider>
+                <ReViewsContextProvider>
+                    <RevSiteLoading />
+                </ReViewsContextProvider>
+            </RevWebRTCContextProvider>
+        </RevRemoteSocketContextProvider>
+    </RevSiteDataContextProvider>
   );
 }
 

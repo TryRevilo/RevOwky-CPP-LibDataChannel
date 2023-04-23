@@ -7,31 +7,19 @@ import {
   SafeAreaView,
   Dimensions,
   StatusBar,
-  DeviceEventEmitter,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
-import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
-
-import {
-  revIsEmptyVar,
-  revPingServer,
-} from '../../rev_function_libs/rev_gen_helper_functions';
 
 import RevSiteContainer from './RevSiteContainer';
 
 const RevWalledGarden = () => {
-  const {
-    REV_LOGGED_IN_ENTITY_GUID,
-    SET_REV_LOGGED_IN_ENTITY_GUID,
-    REV_LOGGED_IN_ENTITY,
-  } = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   const RevLogInForm = revPluginsLoader({
@@ -40,33 +28,11 @@ const RevWalledGarden = () => {
     revData: 'Hello World!',
   });
 
-  let revPingVarArgs = {
-    revInterval: 5000,
-    revIP: REV_ROOT_URL,
-    revCallBack: revRetDada => {
-      let revServerStatus = revRetDada.revServerStatus;
+  //   revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+  //     console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
+  //   });
 
-      console.log('>>> revServerStatus ' + JSON.stringify(revServerStatus));
-
-      if (revServerStatus !== 200) {
-        return;
-      }
-    },
-  };
-
-  revPingServer(revPingVarArgs);
-
-  DeviceEventEmitter.addListener('revWebServerConnected', event => {
-    // console.log('>>> revWebServerConnected ' + event.eventProperty);
-  });
-
-  revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-    console.log(
-      '>>> LOG IN <<< revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
-    );
-  });
-
-  const RevWalledGarden = () => {
+  const RevLogInPage = () => {
     return (
       <View style={[styles.revFlexContainer, styles.revlogInContainer]}>
         <View style={[styles.revFlexContainer, styles.revHeaderContainer]}>
@@ -118,13 +84,8 @@ const RevWalledGarden = () => {
 
   return (
     <SafeAreaView style={[styles.revFlexContainer, styles.revSiteContainer]}>
-      <StatusBar backgroundColor="#00796b" />
       <StatusBar backgroundColor="#F7F7F7" barStyle={'dark-content'} />
-      {REV_LOGGED_IN_ENTITY_GUID < 1 ? (
-        <RevWalledGarden />
-      ) : (
-        <RevSiteContainer />
-      )}
+      {REV_LOGGED_IN_ENTITY_GUID < 1 ? <RevLogInPage /> : <RevSiteContainer />}
     </SafeAreaView>
   );
 };

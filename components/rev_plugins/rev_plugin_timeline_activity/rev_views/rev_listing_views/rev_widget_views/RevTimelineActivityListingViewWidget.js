@@ -85,7 +85,7 @@ export const RevTimelineActivityListingViewWidget = () => {
       }
     };
 
-    revGetServerData();
+    // revGetServerData();
   }, []);
 
   return (

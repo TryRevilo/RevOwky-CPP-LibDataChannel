@@ -8,8 +8,9 @@
 #include "../../../jni/rev_init_jni_lib.hpp"
 #include "../../../../../libs/sqlite3/include/sqlite3.h"
 
-void initRevDb(char *dirPath)
-{
+#include "../../../../../libs/cJSON/cJSON.h"
+
+void initRevDb(char *dirPath) {
     sqlite3 *db;
     int rc;
 
@@ -24,43 +25,34 @@ void initRevDb(char *dirPath)
 
     rc = sqlite3_open(revDbPath, &db);
 
-    if (rc)
-    {
+    if (rc) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Can't open database: %s\n", sqlite3_errmsg(db));
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "Opened database successfully\n");
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Opened database successfully\n");
     }
 }
 
-sqlite3 *revDb()
-{
+sqlite3 *revDb() {
     sqlite3 *db;
     int rc;
 
     rc = sqlite3_open("/storage/emulated/0/Documents/Owki/rev_lite.db", &db);
 
-    if (rc)
-    {
+    if (rc) {
         fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
         return (0);
-    }
-    else
-    {
+    } else {
         fprintf(stderr, "Opened database successfully\n");
     }
 
     return db;
 }
 
-int callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
+int callback(void *NotUsed, int argc, char **argv, char **azColName) {
     int i;
-    for (i = 0; i < argc; i++)
-    {
+    for (i = 0; i < argc; i++) {
         printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
     }
     printf("\n");
