@@ -5,7 +5,7 @@ export function revGetRandInteger(min = 1, max = 1000) {
 }
 
 export function revIsEmptyJSONObject(obj) {
-  if (obj == undefined) {
+  if (obj == undefined || obj == null || typeof obj !== 'object') {
     return true;
   }
 

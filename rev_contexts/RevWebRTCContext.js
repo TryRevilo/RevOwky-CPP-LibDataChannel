@@ -1,4 +1,10 @@
-import React, {useContext, createContext, useState, useEffect} from 'react';
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 
 import {
   RTCPeerConnection,
@@ -10,14 +16,26 @@ import {
 import {RevSiteDataContext} from './RevSiteDataContext';
 import {RevRemoteSocketContext} from './RevRemoteSocketContext';
 
+import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
+
 import DeviceInfo from 'react-native-device-info';
 
 // create the context
 const RevWebRTCContext = createContext();
 
 const config = {
-  iceCandidatePoolSize: 10,
-  iceServers: [{urls: 'stun:stun.l.google.com:19302'}],
+  iceCandidatePoolSize: 5,
+  iceServers: [
+    {
+      urls: 'turn:192.168.54.220:3478',
+      username: 'rev',
+      credential: '123',
+      credentialType: 'password',
+      realm: 'myrealm',
+      credentialLifetime: 3600,
+      maxRateKbps: 1000,
+    },
+  ],
 };
 
 const sessionConstraints = {
@@ -36,7 +54,7 @@ const mediaConstraints = {
 const channelConfig = {
   ordered: true, // data packets are sent in order
   maxPacketLifeTime: 10000, // packets will expire after 10 seconds
-  maxRetransmits: 3, // the sender will retransmit a packet up to 3 times if it doesn't receive an ACK from the receiver
+  maxRetransmits: 10, // the sender will retransmit a packet up to 3 times if it doesn't receive an ACK from the receiver
   label: 'my-channel', // a name for the channel
 };
 
@@ -45,6 +63,8 @@ const RevWebRTCContextProvider = ({children}) => {
 
   // initialize state variable
   const [connections, setConnections] = useState([]);
+  const latestConnections = useRef(connections);
+
   const [revQuedMessages, setRevQuedMessages] = useState([]);
   const [revWebServerOpen, setRevWebServerOpen] = useState(true);
 
@@ -80,7 +100,7 @@ const RevWebRTCContextProvider = ({children}) => {
           await handleCandidate(message);
           break;
         default:
-          console.warn(`Received unknown message: ${message}`);
+          console.warn(`Received unknown message: ${JSON.stringify(message)}`);
       }
     };
   };
@@ -115,7 +135,7 @@ const RevWebRTCContextProvider = ({children}) => {
   };
 
   const getDataChannel = peerId => {
-    const connection = connections.find(c => c.peerId === peerId);
+    const connection = latestConnections.current.find(c => c.peerId === peerId);
     if (connection && connection.dataChannel) {
       return connection.dataChannel;
     }
@@ -123,7 +143,7 @@ const RevWebRTCContextProvider = ({children}) => {
   };
 
   const getPeerConnection = peerId => {
-    const connection = connections.find(c => c.peerId === peerId);
+    const connection = latestConnections.current.find(c => c.peerId === peerId);
     if (connection) {
       return connection.pc;
     }
@@ -131,21 +151,46 @@ const RevWebRTCContextProvider = ({children}) => {
   };
 
   const createDataChannel = (pc, peerId, channelName) => {
-    const dataChannel = pc.createDataChannel(channelName, {ordered: true});
+    console.log(deviceModel, '>>> createDataChannel <<<');
+
+    const dataChannel = pc.createDataChannel(channelName, {
+      ordered: true,
+      maxPacketLifeTime: 500,
+      maxRetransmits: 10,
+      protocol: 'udp',
+      negotiated: true,
+      id: 1,
+    });
+
+    console.log(deviceModel, '+++ dataChannel created');
 
     // set up event listeners for data channel
-    dataChannel.onopen = () => {
-      console.log('Data channel opened');
+    dataChannel.onopen = async () => {
+      console.log(deviceModel, '! ! ! Data channel opened');
+
+      try {
+        await revInitSendMsgs();
+      } catch (error) {
+        console.log(deviceModel, '*** dataChannel.onopen', error);
+      }
+
+      console.log(deviceModel, '>>> ++ MSG SENT ++ <<<');
     };
     dataChannel.onclose = () => {
-      console.log('Data channel closed');
+      console.log(deviceModel, 'Data channel closed');
     };
     dataChannel.onerror = error => {
-      console.error(`Data channel error: ${error}`);
+      console.error(deviceModel, `Data channel error: ${error}`);
     };
     dataChannel.onmessage = event => {
-      console.log(`Received message from data channel: ${event.data}`);
+      console.log(deviceModel, `! ! ! Received msg: ${event.data}`);
     };
+
+    dataChannel.onstatechange = function (event) {
+      console.log(deviceModel, '--- DC state changed', dataChannel.readyState);
+    };
+
+    console.log(deviceModel, '+++ dataChannel events added');
 
     setConnections(prevState => {
       const updatedConnections = [...prevState];
@@ -153,13 +198,27 @@ const RevWebRTCContextProvider = ({children}) => {
       if (index !== -1) {
         updatedConnections[index].dataChannel = dataChannel;
       }
+
+      latestConnections.current = updatedConnections;
+
       return updatedConnections;
     });
+
+    console.log(deviceModel, '+++ dataChannel pushed into list');
+
+    return dataChannel;
   };
 
   // function to create peer connection and add to state JSON object
   const createPeerConnection = async peerId => {
     const pc = new RTCPeerConnection(config);
+
+    let revLatestConns = [...connections, {peerId, pc}];
+    latestConnections.current = revLatestConns;
+    setConnections(revLatestConns);
+
+    // create data channel
+    let dataChannel = createDataChannel(pc, peerId, 'my_channel');
 
     // add the local stream to the PeerConnection (if using audio/video)
     let localMediaStream = await mediaDevices.getUserMedia(mediaConstraints);
@@ -183,16 +242,16 @@ const RevWebRTCContextProvider = ({children}) => {
       console.log(deviceModel, '--- pc.iceCon.State', pc.iceConnectionState);
 
       if (pc.iceConnectionState === 'connected') {
-        console.log('Peer connection established');
+        console.log('! ! ! Peer connection established');
+      } else if (pc.iceConnectionState === 'failed') {
+        console.log(deviceModel, '*** Connection failed, retrying...');
+        pc.close(); // close the previous PeerConnection object
 
-        // create data channel
-        createDataChannel(pc, peerId, 'my_channel');
+        createPeerConnection(peerId); // create a new PeerConnection object
       }
     };
 
-    setConnections(prevState => [...prevState, {peerId, pc}]);
-
-    return {pc};
+    return {pc, dataChannel};
   };
 
   const sendMessage = async (peerId, message) => {
@@ -258,7 +317,7 @@ const RevWebRTCContextProvider = ({children}) => {
 
     try {
       await pc.setRemoteDescription(new RTCSessionDescription(answer));
-      console.log(deviceModel, '>>> R-Desc -ANS- SUCCESSSFUL ! ! !');
+      console.log(deviceModel, '>>> Received -ANS.Desc- SUCCESSSFUL ! ! !');
     } catch (e) {
       console.log(deviceModel, '*** handleAnswer', e);
 
@@ -346,7 +405,6 @@ const RevWebRTCContextProvider = ({children}) => {
   }, [REV_WEB_SOCKET_SERVER, revWebServerOpen]);
 
   const revCreateOffer = async (peerId, pc) => {
-    console.log(deviceModel, '--- START WAIT ----');
     try {
       let revOfferDescription = await pc.createOffer(sessionConstraints);
       await pc.setLocalDescription(revOfferDescription);
@@ -360,18 +418,19 @@ const RevWebRTCContextProvider = ({children}) => {
 
       revSendWebServerMessage(revOfferMsgData);
 
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      console.log(deviceModel, '+++ Offer created Successfully ! ! !');
     } catch (error) {
-      console.log(deviceModel, '*** +++ Offer', error);
+      console.log(deviceModel, '*** ERROR -Offer', error);
     }
-
-    console.log(deviceModel, '--- END WAIT ----');
   };
 
   const revInitSendMsgs = async () => {
     let revQuedMessagesLen = revQuedMessages.length;
 
-    if (revQuedMessagesLen < 1) {
+    if (
+      revQuedMessagesLen < 1 ||
+      (revQuedMessagesLen == 1 && revIsEmptyJSONObject(revQuedMessages[0]))
+    ) {
       return;
     }
 
@@ -380,6 +439,10 @@ const RevWebRTCContextProvider = ({children}) => {
     let revNewMsgsQueArr = [];
 
     for (let i = 0; i < revQuedMessagesLen; i++) {
+      if (revIsEmptyJSONObject(revQuedMessages[i])) {
+        continue;
+      }
+
       const {revPeerId} = revQuedMessages[i];
 
       let revPeer = getPeerConnection(revPeerId);
@@ -387,37 +450,33 @@ const RevWebRTCContextProvider = ({children}) => {
 
       try {
         if (!revPeer) {
-          await createPeerConnection(revPeerId);
-          // await new Promise(resolve => setTimeout(resolve, 1000));
+          const {pc, dataChannel} = await createPeerConnection(revPeerId);
 
-          revNewMsgsQueArr.push(revQuedMessages[i]);
+          revPeer = pc;
+          revDataChannel = dataChannel;
+        }
+
+        if (revIsEmptyJSONObject(revPeer.localDescription)) {
+          await revCreateOffer(revPeerId, revPeer);
+        }
+
+        if (revDataChannel && revDataChannel.readyState === 'open') {
+          revDataChannel.send(JSON.stringify(revQuedMessages[i].revMessage));
 
           continue;
         }
 
-        if (
-          !revPeer.localDescription ||
-          ('type' in revPeer.localDescription &&
-            revPeer.localDescription.type !== 'offer')
-        ) {
-          await revCreateOffer(revPeerId, revPeer);
-        } else {
-          if (revDataChannel && revDataChannel.readyState === 'open') {
-            console.log(deviceModel, '>>> dc', revDataChannel.readyState);
+        let revSendTryCount = revQuedMessages[i][revSendTryCount];
+        revSendTryCount = revSendTryCount ? revSendTryCount : 0;
+        revQuedMessages[i][revSendTryCount] = revSendTryCount + 1;
 
-            revDataChannel.send(JSON.stringify(revQuedMessages[i].revMessage));
-
-            continue;
-          }
-
-          revNewMsgsQueArr.push(revQuedMessages[i]);
-        }
+        revNewMsgsQueArr.push(revQuedMessages[i]);
       } catch (error) {
         console.log(deviceModel, '*** revInitSendMsgs', error);
       }
     }
 
-    // await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     setRevQuedMessages(revNewMsgsQueArr);
   };
