@@ -6,6 +6,7 @@
 
 #include "../../../../../../../libs/cJSON/cJSON.h"
 
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <android/log.h>
@@ -20,6 +21,9 @@ RevEntityRelationship *revInitializedEntityRelationship() {
 
     revEntityRelationship->_revEntityRelationshipId = -1;
     revEntityRelationship->_remoteRevEntityRelationshipId = -1;
+
+    revEntityRelationship->_revEntityGUID = -1;
+    revEntityRelationship->_remoteRevEntityGUID = -1;
 
     revEntityRelationship->_revEntitySubjectGUID = -1;
     revEntityRelationship->_remoteRevEntitySubjectGUID = -1;
@@ -94,6 +98,22 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_remoteRevEntityRelationshipId = _remoteRevEntityRelationshipIdVal;
     }
 
+    // _revEntityGUID
+    const cJSON *_revEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityGUID");
+
+    if (cJSON_IsNumber(_revEntityGUID) && (_revEntityGUID->valueint != NULL)) {
+        long _revEntityGUIDVal = _revEntityGUID->valueint;
+        revEntityRelationship->_revEntityGUID = _revEntityGUIDVal;
+    }
+
+    // _remoteRevEntityGUID
+    const cJSON *_remoteRevEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_remoteRevEntityGUID");
+
+    if (cJSON_IsNumber(_remoteRevEntityGUID) && (_remoteRevEntityGUID->valueint != NULL)) {
+        long _remoteRevEntityGUIDVal = _remoteRevEntityGUID->valueint;
+        revEntityRelationship->_remoteRevEntityGUID = _remoteRevEntityGUIDVal;
+    }
+
     // _revEntitySubjectGUID
     const cJSON *_revEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntitySubjectGUID");
 
@@ -163,7 +183,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
 
     if (cJSON_IsNumber(_revTimePublishedUpdated) && (_revTimePublishedUpdated->valueint != NULL)) {
         long _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
-        revEntityRelationship->_revTimePublishedUpdated = _revTimePublishedUpdated;
+        revEntityRelationship->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
     }
 
     end:

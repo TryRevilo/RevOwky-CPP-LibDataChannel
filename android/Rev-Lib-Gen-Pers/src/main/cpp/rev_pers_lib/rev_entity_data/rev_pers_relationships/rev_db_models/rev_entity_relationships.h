@@ -13,6 +13,9 @@ typedef struct RevEntityRelationship {
     long _revEntityRelationshipId;
     long _remoteRevEntityRelationshipId;
 
+    long _revEntityGUID;
+    long _remoteRevEntityGUID;
+
     long _revEntitySubjectGUID;
     long _remoteRevEntitySubjectGUID;
     long _revEntityTargetGUID;

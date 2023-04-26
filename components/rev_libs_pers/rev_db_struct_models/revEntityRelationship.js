@@ -3,6 +3,8 @@ var REV_ENTITY_RELATIONSHIP_STRUCT = () => {
     _revResolveStatus: -1,
     _revEntityRelationshipTypeValueId: -1,
     _remoteRevEntityRelationshipId: -1,
+    _revEntityGUID: -1,
+    _remoteRevEntityGUID: -1,
     _revOwnerGUID: -1,
     _revEntitySubjectGUID: -1,
     _remoteRevEntitySubjectGUID: -1,

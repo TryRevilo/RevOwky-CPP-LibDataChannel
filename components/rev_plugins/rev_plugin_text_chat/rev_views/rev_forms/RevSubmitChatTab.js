@@ -1,107 +1,36 @@
 import React, {useContext} from 'react';
+import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  NativeModules,
-} from 'react-native';
+import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 
-import {REV_ENTITY_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/revEntity';
+import {useRevHandleSendMsgAction} from '../../rev_actions.js/rev_stranger_chat_submit_actions';
 
-import {
-  REV_ENTITY_METADATA_STRUCT,
-  REV_METADATA_FILLER,
-} from '../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
+export function RevSubmitChatTab({
+  revGetCurrentChatTarget,
+  revGetChatTextImput,
+  revCallback,
+}) {
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {revHandleSendMsgAction} = useRevHandleSendMsgAction();
 
-import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityRelationship';
+  const handleRevSendChatMsg = () => {
+    let revPassVaArgs = {
+      revTargetEntityGUID: revGetCurrentChatTarget(),
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revEntityDescVal: revGetChatTextImput(),
+    };
 
-const {RevPersLibCreate_React} = NativeModules;
+    revHandleSendMsgAction(revPassVaArgs).then(revRetData => {
+      console.log('>>> revRetData', JSON.stringify(revRetData));
 
-import {RevRemoteSocketContext} from '../../../../../rev_contexts/RevRemoteSocketContext';
-
-var revHandleSendMsg = (revTargetId, revMsg, revCallBack) => {
-  if (!revTargetId || !revMsg) {
-    return null;
-  }
-
-  let revPersEntity = REV_ENTITY_STRUCT();
-
-  revPersEntity._revEntityResolveStatus = 0;
-  revPersEntity._revEntityChildableStatus = 301;
-  revPersEntity._revEntityType = 'revObject';
-  revPersEntity._revEntitySubType = 'rev_chat_message';
-  revPersEntity._remoteRevEntityGUID = -1;
-  revPersEntity._revEntityOwnerGUID = 1;
-  revPersEntity._revEntityContainerGUID = 1;
-  revPersEntity._revTimeCreated = new Date().getTime();
-  revPersEntity._revTimePublished = new Date().getTime();
-
-  revPersEntity._revEntityMetadataList.push(
-    REV_METADATA_FILLER('rev_chat_message_html_value', revMsg),
-  );
-
-  let revChatMessageRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-  revChatMessageRel._revEntityRelationshipType = 'rev_chat_message';
-  revChatMessageRel._remoteRevEntityTargetGUID = -1;
-  revChatMessageRel._remoteRevEntitySubjectGUID = -1;
-
-  revPersEntity._revSubjectEntityRelationships.push(revChatMessageRel);
-
-  let revSaveMessageStatus = RevPersLibCreate_React.revPersInitJSON(
-    JSON.stringify(revPersEntity),
-  );
-
-  console.log('>>> revSaveMessageStatus : ' + revSaveMessageStatus);
-};
-
-export function RevSubmitChatTab({revTargetId, revMsg, revInputFieldCallback}) {
-  const {revHandleMsgSentEvent} = useContext(RevRemoteSocketContext);
-
-  let minMessageLen = 1;
-  let maxMessageLen = 200;
-
-  function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-  let rendNu = getRndInteger(minMessageLen, maxMessageLen);
-
-  let revMsgSendCallback = revSendStatus => {
-    if (revSendStatus) {
-      const myPromise = new Promise((resolve, reject) => {
-        let revData = {
-          revMessageId: getRndInteger(minMessageLen, maxMessageLen),
-          revMessageType: 'outbox',
-          revData: revMsg(),
-        };
-
-        revHandleMsgSentEvent(revData);
-
-        revInputFieldCallback();
-
-        setTimeout(() => {
-          resolve('foo');
-        }, 300);
-      });
-
-      myPromise.then(revVal => {
-        let revInBox = {
-          revMessageId: getRndInteger(minMessageLen, maxMessageLen),
-          revMessageType: 'inbox',
-          revData: revMsg(),
-        };
-
-        revHandleMsgSentEvent(revInBox);
-      });
-    }
+      revCallback(revRetData);
+    });
   };
 
   return (
     <TouchableOpacity
       onPress={() => {
-        revHandleSendMsg(revTargetId, revMsg(), revMsgSendCallback);
+        handleRevSendChatMsg();
       }}>
       <View style={styles.revSubmitChatTabWrapper}>
         <Text style={styles.revSubmitChatTab}>Send</Text>

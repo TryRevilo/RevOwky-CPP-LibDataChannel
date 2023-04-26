@@ -28,9 +28,9 @@ const RevWalledGarden = () => {
     revData: 'Hello World!',
   });
 
-  //   revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-  //     console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
-  //   });
+  revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+    console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
+  });
 
   const RevLogInPage = () => {
     return (

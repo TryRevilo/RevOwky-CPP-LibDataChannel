@@ -3,25 +3,24 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
 public class RevEntityRelationship {
 
     private int _revResolveStatus = -1;
-
     private String _revEntityRelationshipType;
     private Long _revEntityRelationshipId;
-
     private Long _remoteRevEntityRelationshipId = -1L;
+    private Long _revEntityGUID = -1L;
+    private Long _remoteRevEntityGUID = -1L;
     private Long _revEntityRelationshipTypeValueId = -1L;
     private Long _revEntitySubjectGUID = -1L;
     private Long _remoteRevEntitySubjectGUID = -1L;
     private Long _revEntityTargetGUID = -1L;
     private Long _remoteRevEntityTargetGUID = -1L;
-
     private String _timeCreated;
     private String _timeUpdated;
-
     private RevEntity _subjectRevEntity, _targetRevEntity;
 
     private long _revTimeCreated = -1;
-    private long _revTimePublished = -1;
-    private long _revTimePublishedUpdated = -1;
+
+    private Long _revTimePublished = -1L;
+    private Long _revTimePublishedUpdated = -1L;
 
     public RevEntityRelationship() {
     }
@@ -60,6 +59,22 @@ public class RevEntityRelationship {
 
     public void set_remoteRevEntityRelationshipId(Long _remoteRevEntityRelationshipId) {
         this._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+    }
+
+    public Long get_revEntityGUID() {
+        return _revEntityGUID;
+    }
+
+    public void set_revEntityGUID(Long _revEntityGUID) {
+        this._revEntityGUID = _revEntityGUID;
+    }
+
+    public Long get_remoteRevEntityGUID() {
+        return _remoteRevEntityGUID;
+    }
+
+    public void set_remoteRevEntityGUID(Long _remoteRevEntityGUID) {
+        this._remoteRevEntityGUID = _remoteRevEntityGUID;
     }
 
     public Long get_revEntityRelationshipTypeValueId() {
@@ -150,19 +165,19 @@ public class RevEntityRelationship {
         this._revTimeCreated = _revTimeCreated;
     }
 
-    public long get_revTimePublished() {
+    public Long get_revTimePublished() {
         return _revTimePublished;
     }
 
-    public void set_revTimePublished(long _revTimePublished) {
+    public void set_revTimePublished(Long _revTimePublished) {
         this._revTimePublished = _revTimePublished;
     }
 
-    public long get_revTimePublishedUpdated() {
+    public Long get_revTimePublishedUpdated() {
         return _revTimePublishedUpdated;
     }
 
-    public void set_revTimePublishedUpdated(long _revTimePublishedUpdated) {
+    public void set_revTimePublishedUpdated(Long _revTimePublishedUpdated) {
         this._revTimePublishedUpdated = _revTimePublishedUpdated;
     }
 }

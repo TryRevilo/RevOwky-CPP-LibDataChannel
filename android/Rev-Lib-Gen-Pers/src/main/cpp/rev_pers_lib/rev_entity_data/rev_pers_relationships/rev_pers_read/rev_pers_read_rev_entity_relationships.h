@@ -70,6 +70,12 @@ list *revPersGetALLRevEntityRelationshipsTargets(char *revEntityrelationship, lo
 
 list *revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(char *revEntityrelationship, long remoteRevEntityGUID);
 
+list *revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
+
+list *revGetRels_By_RelType_LocalGUIDs(const char *revRelType, long revLocalGUID_1, long revLocalGUID_2);
+
+list *revGetRels_By_RelType_RemoteGUIDs(const char *revRelType, long revRemoteSubjectGUID, long revRemoteTargetGuid);
+
 list *revPersGetALLRelSubjectGUIDs_By_TargetGUID(long revTargetGUID);
 
 long revPersGetSubjectGUID_BY_RelStr_TargetGUID(char *revEntityrelationship, long revTargetGUID);

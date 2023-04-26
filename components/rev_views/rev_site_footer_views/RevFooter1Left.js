@@ -18,7 +18,7 @@ export function RevFooter1Left() {
   return (
     <View style={revSiteStyles.revFlexContainer}>
       <View style={[revSiteStyles.revFlexWrapper, styles.revChatFooterWrapper]}>
-        <RevNextStrangerChatTab />
+        <RevNextStrangerChatTab revVarArgs={{_remoteRevEntityGUID: 1055}} />
 
         <View
           style={[

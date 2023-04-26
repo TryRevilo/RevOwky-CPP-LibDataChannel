@@ -110,6 +110,12 @@ public class RevPersLibRead {
 
     public native List<Long> revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(String revEntityrelationship, long revRemoteEntityGUID);
 
+    public native List<RevEntityRelationship> revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(String revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
+
+    public native List<RevEntityRelationship> revGetRels_By_RelType_LocalGUIDs(String revRelType, long revLocalGUID_1, long revLocalGUID_2);
+
+    public native List<RevEntityRelationship> revGetRels_By_RelType_RemoteGUIDs(String revRelType, long revRemoteGUID_1, long revRemoteGUID_2);
+
     public native List<Long> revPersGetALLRevRels_RemoteRelId_By_ResolveStatus(int revRelResolveStatus);
 
     public native List<Long> revPersGetALLRevRels_RemoteRelId_By_ResolveStatus_RemoteTargetGUID(int revRelResolveStatus, long remoteTargetGUID);

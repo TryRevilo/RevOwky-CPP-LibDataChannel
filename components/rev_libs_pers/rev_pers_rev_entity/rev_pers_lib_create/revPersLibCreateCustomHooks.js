@@ -308,11 +308,27 @@ export const useRevSaveNewEntity = () => {
     }
 
     /** START SAVE SUBJECT RELS */
-    if (revVarArgs.hasOwnProperty('revSubjectRelsArr')) {
+    if (
+      revVarArgs.hasOwnProperty('revSubjectRelsArr') &&
+      Array.isArray(revVarArgs.revSubjectRelsArr)
+    ) {
       let revSubjectRelsArr = revVarArgs.revSubjectRelsArr;
 
       for (let i = 0; i < revSubjectRelsArr.length; i++) {
         let revSubjectRel = revSubjectRelsArr[i];
+
+        if (revIsEmptyJSONObject(revSubjectRel)) {
+          continue;
+        }
+
+        if (
+          !revSubjectRel ||
+          !revSubjectRel._revEntityTargetGUID ||
+          revSubjectRel._revEntityTargetGUID < 1
+        ) {
+          continue;
+        }
+
         revSubjectRel._revEntitySubjectGUID = revPersEntityGUID;
 
         let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
@@ -323,11 +339,27 @@ export const useRevSaveNewEntity = () => {
     /** END SAVE SUBJECT RELS */
 
     /** START SAVE TARGET RELS */
-    if (revVarArgs.hasOwnProperty('revTargetRelsArr')) {
+    if (
+      revVarArgs.hasOwnProperty('revTargetRelsArr') &&
+      Array.isArray(revVarArgs.revTargetRelsArr)
+    ) {
       let revTargetRelsArr = revVarArgs.revTargetRelsArr;
 
       for (let i = 0; i < revTargetRelsArr.length; i++) {
         let revTargetRel = revTargetRelsArr[i];
+
+        if (revIsEmptyJSONObject(revTargetRel)) {
+          continue;
+        }
+
+        if (
+          !revTargetRel ||
+          !revTargetRel._revEntitySubjectGUID ||
+          revTargetRel._revEntitySubjectGUID < 1
+        ) {
+          continue;
+        }
+
         revTargetRel._revEntityTargetGUID = revPersEntityGUID;
 
         let revTargetRelId = RevPersLibCreate_React.revPersRelationshipJSON(

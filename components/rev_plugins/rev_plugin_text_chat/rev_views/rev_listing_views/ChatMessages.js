@@ -2,64 +2,73 @@ import React, {useState, useEffect, useContext} from 'react';
 
 import {ScrollView, StyleSheet, Text, View, NativeModules} from 'react-native';
 
-const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 
 import RevNullMessagesView from '../../../../rev_views/RevNullMessagesView';
 import InboxMessage from './rev_entity_views/InboxMessage';
 import OutboxChatMessage from './rev_entity_views/OutboxChatMessage';
 
-import {RevRemoteSocketContext} from '../../../../../rev_contexts/RevRemoteSocketContext';
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-export default function ChatMessages() {
-  const {newPeerDataChannelMessage, setNewPeerDataChannelMessage} = useContext(
-    RevRemoteSocketContext,
-  );
+const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
+
+export default function ChatMessages({revVarArgs}) {
+  if (!'_remoteRevEntityGUID' in revVarArgs) {
+    return;
+  }
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const [newPeerMessages, setNewPeerMessages] = useState([]);
   const [sentMessages, setSentMessages] = useState([]);
 
   const [listedChatMessages, setListedChatMessages] = useState({});
 
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
+
   let revAddedMessageIdsArr = [];
 
   useEffect(() => {
     revAddedMessageIdsArr = [];
+  }, []);
 
-    if (
-      newPeerDataChannelMessage.hasOwnProperty('revMessageId') &&
-      !listedChatMessages.hasOwnProperty(newPeerDataChannelMessage.messageId)
-    ) {
-      newPeerMessages.push(newPeerDataChannelMessage);
+  let revGUID_1 = REV_LOGGED_IN_ENTITY_GUID;
+  let revGUID_2 = REV_LOGGED_IN_ENTITY_GUID == 43 ? 1 : 43;
 
-      listedChatMessages[newPeerDataChannelMessage.revMessageId] =
-        newPeerDataChannelMessage;
+  let revChatRelsStr = RevPersLibRead_React.revGetRels_By_RelType_LocalGUIDs(
+    'rev_stranger_chat_of',
+    revGUID_1,
+    revGUID_2,
+  );
 
-      setListedChatMessages(listedChatMessages);
+  let revChatRelsArr = JSON.parse(revChatRelsStr);
 
-      setNewPeerMessages(newPeerMessages);
+  let revChatMessagesArr = [];
+
+  for (let i = 0; i < revChatRelsArr.length; i++) {
+    let revEntityGUID = revChatRelsArr[i]._revEntityGUID;
+
+    if (revEntityGUID < 1) {
+      continue;
     }
-  }, [newPeerDataChannelMessage]);
+
+    let revChatMsgEntity = revPersGetRevEnty_By_EntityGUID(revEntityGUID);
+
+    let revEntityOwnerGUID = revChatMsgEntity._revEntityOwnerGUID;
+
+    if (revEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID) {
+      revChatMsgEntity['revMessageType'] = 'outbox';
+    } else {
+      revChatMsgEntity['revMessageType'] = 'inbox';
+    }
+
+    revChatMessagesArr.push(revChatMsgEntity);
+  }
+
+  let revChatMessagesArrCount = revChatMessagesArr.length;
 
   let RevPastChatConversations = () => {
-    let revChatMsgs =
-      RevPersLibRead_React.revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(
-        1,
-        'rev_chat_message',
-      );
-
-    let revChatMessagesArr = JSON.parse(revChatMsgs);
-
-    if (Array.isArray(revChatMessagesArr)) {
-      for (let i = 0; i < revChatMessagesArr.length; i++) {
-        let revChatMsg = revChatMessagesArr[i];
-
-        revChatMsg['revMessageType'] =
-          i > 1 && i % 2 == (0 || 1) ? 'outbox' : 'inbox';
-      }
-    }
-
     let revPastChatConversationsArr = (
       <View>
         {revChatMessagesArr.map(chatMsg => {
@@ -72,16 +81,22 @@ export default function ChatMessages() {
           revAddedMessageIdsArr.push(revCurrMsgId);
 
           if (chatMsg.revMessageType.localeCompare('inbox') === 0) {
-            return <InboxMessage key={revCurrMsgId} revData={chatMsg} />;
+            return <InboxMessage key={revCurrMsgId} revVarArgs={chatMsg} />;
           } else {
-            return <OutboxChatMessage key={revCurrMsgId} revData={chatMsg} />;
+            return (
+              <OutboxChatMessage key={revCurrMsgId} revVarArgs={chatMsg} />
+            );
           }
         })}
       </View>
     );
 
-    return revChatMessagesArr.length > 0 ? revPastChatConversationsArr : null;
+    return revChatMessagesArrCount > 0 ? revPastChatConversationsArr : null;
   };
+
+  let revChatMessagesArrCountTxt = revChatMessagesArrCount
+    ? '+' + revChatMessagesArrCount + ' chat mEssaGes'
+    : 'No chats yet';
 
   return (
     <View>
@@ -103,7 +118,7 @@ export default function ChatMessages() {
             About me hello!
           </Text>
         </View>
-        <Text style={styles.messagesNull}>No messages exchanged</Text>
+        <Text style={styles.messagesNull}>{revChatMessagesArrCountTxt}</Text>
         <View style={styles.chatMessagesContainer}>
           <RevPastChatConversations />
 
@@ -155,11 +170,12 @@ const styles = StyleSheet.create({
     color: '#90a4ae',
     fontSize: 10,
     marginTop: 5,
-    marginLeft: 12,
+    marginLeft: 25,
   },
   chatMessagesContainer: {
     display: 'flex',
     flexDirection: 'column',
     marginTop: 3,
+    marginBottom: 55,
   },
 });

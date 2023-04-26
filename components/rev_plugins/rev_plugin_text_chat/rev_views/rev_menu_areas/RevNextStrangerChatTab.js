@@ -12,19 +12,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
 
-import RevNullMessagesView from '../../../../rev_views/RevNullMessagesView';
-import {RevSubmitChatTab} from '../rev_forms/RevSubmitChatTab';
-
 import ChatMessages from '../rev_listing_views/ChatMessages';
-import {ChatMessageInputComposer} from '../rev_forms/ChatMessageInputComposer';
+import {useChatMessageInputComposer} from '../rev_forms/ChatMessageInputComposer';
 
-export default function RevNextStrangerChatTab() {
-  const {
-    REV_SITE_BODY,
-    SET_REV_SITE_BODY,
-    REV_SITE_FOOTER_1_CONTENT_VIEWER,
-    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER,
-  } = useContext(ReViewsContext);
+export default function RevNextStrangerChatTab({revVarArgs}) {
+  const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
+    useContext(ReViewsContext);
 
   const [isRevNextStrangerChatTab, setIsRevNextStrangerChatTab] =
     useState(false);
@@ -34,6 +27,9 @@ export default function RevNextStrangerChatTab() {
     setIsRevComposing(revChatStatus);
     setIsRevNextStrangerChatTab(revChatStatus);
   };
+
+  const {revChatInputArea, revSubmitChatOptionsMenuArea} =
+    useChatMessageInputComposer(revVarArgs);
 
   const RevNextStrangerChatTabArea = () => {
     return (
@@ -60,56 +56,11 @@ export default function RevNextStrangerChatTab() {
     <RevNextStrangerChatTabArea />,
   );
 
-  useEffect(() => {
-    if (isRevNextStrangerChatTab) {
-      SET_REV_SITE_BODY(<ChatMessages />);
-      setRevNextChatTab(<RevChatSubmitOptions />);
-      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(<ChatMessageInputComposer />);
-    }
-
-    if (isRevNextStrangerChatTab && isRevComposing == false) {
-      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
-    }
-
-    if (!isRevNextStrangerChatTab && isRevComposing == false) {
-      setRevNextChatTab(<RevNextStrangerChatTabArea />);
-      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
-    }
-  }, [isRevNextStrangerChatTab, isRevComposing]);
-
-  let revChatMessageTxt = '';
-
-  let revSetChatMessageTxt = revText => {
-    revChatMessageTxt = revText;
-  };
-
-  var revTarget;
-
-  var revSetTargetId = _revTarget => {
-    revTarget = _revTarget;
-  };
-
-  const revHandleHideComposingForm = revComposingStatus => {
-    if (!isRevComposing) {
-      setIsRevNextStrangerChatTab(false);
-    }
-
-    setIsRevComposing(revComposingStatus);
-  };
-
-  let RevChatSubmitOptions = () => {
+  let RevChatSubmitOptions = ({revVarArgs}) => {
     return (
       <View style={styles.footerSubmitOptionsLeftWrapper}>
         {isRevNextStrangerChatTab && isRevComposing ? (
-          <RevSubmitChatTab
-            revTargetId={revTarget}
-            revMsg={() => {
-              return revChatMessageTxt;
-            }}
-            revInputFieldCallback={() => {
-              revSetChatMessageTxt('');
-            }}
-          />
+          revSubmitChatOptionsMenuArea(revVarArgs)
         ) : (
           <TouchableOpacity
             onPress={() => {
@@ -154,6 +105,31 @@ export default function RevNextStrangerChatTab() {
         </TouchableOpacity>
       </View>
     );
+  };
+
+  useEffect(() => {
+    if (isRevNextStrangerChatTab) {
+      SET_REV_SITE_BODY(<ChatMessages revVarArgs={revVarArgs} />);
+      setRevNextChatTab(<RevChatSubmitOptions revVarArgs={revVarArgs} />);
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
+    }
+
+    if (isRevNextStrangerChatTab && !isRevComposing) {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+    }
+
+    if (!isRevNextStrangerChatTab && !isRevComposing) {
+      setRevNextChatTab(<RevNextStrangerChatTabArea />);
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+    }
+  }, [isRevNextStrangerChatTab, isRevComposing]);
+
+  const revHandleHideComposingForm = revComposingStatus => {
+    if (!isRevComposing) {
+      setIsRevNextStrangerChatTab(false);
+    }
+
+    setIsRevComposing(revComposingStatus);
   };
 
   return RevNextChatTab;

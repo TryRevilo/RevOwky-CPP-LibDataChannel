@@ -33,12 +33,13 @@ int revPersGetRelId(char *revEntityrelationship) {
         revRelId = 8;
     } else if (strcmp(revEntityrelationship, "rev_msg_recipient_of") == 0) {
         revRelId = 9;
+    } else if (strcmp(revEntityrelationship, "rev_stranger_chat_of") == 0) {
+        revRelId = 10;
     } else {
         revRelId = -1;
     }
 
     return revRelId;
-
 }
 
 char *getRevEntityRelValue(int relTypeValId) {
@@ -75,6 +76,9 @@ char *getRevEntityRelValue(int relTypeValId) {
         case 9:
             relTypeVal = "rev_msg_recipient_of";
             break;
+        case 10:
+            relTypeVal = "rev_stranger_chat_of";
+            break;
         default:
             relTypeVal = "-1";
     }
@@ -94,6 +98,9 @@ long revPersRelationshipObject(RevEntityRelationship *revEntityRelationship) {
     int _remoteRevEntityRelationshipId = revEntityRelationship->_remoteRevEntityRelationshipId;
 
     char *_revEntityRelationshipType = revEntityRelationship->_revEntityRelationshipType;
+
+    long _revEntityGUID = revEntityRelationship->_revEntityGUID;
+    long _remoteRevEntityGUID = revEntityRelationship->_remoteRevEntityGUID;
 
     long _revEntitySubjectGUID = revEntityRelationship->_revEntitySubjectGUID;
     long _remoteRevevEntitySubjectGUID = revEntityRelationship->_remoteRevEntitySubjectGUID;
@@ -115,6 +122,8 @@ long revPersRelationshipObject(RevEntityRelationship *revEntityRelationship) {
     szSQL = "INSERT INTO REV_ENTITY_RELATIONSHIPS_TABLE ("
             "REV_RESOLVE_STATUS, "
             "REMOTE_RELATIONSHIP_ID, "
+            "REV_ENTITY_GUID, "
+            "REMOTE_REV_ENTITY_GUID, "
             "REV_SUBJECT_GUID, "
             "REV_REMOTE_SUBJECT_GUID, "
             "REV_TARGET_GUID, "
@@ -124,21 +133,25 @@ long revPersRelationshipObject(RevEntityRelationship *revEntityRelationship) {
             "REV_PUBLISHED_DATE, "
             "REV_UPDATED_DATE "
             ") "
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, 0);
 
     if (rc == SQLITE_OK) {
         sqlite3_bind_int(stmt, 1, _revResolveStatus);
         sqlite3_bind_int64(stmt, 2, _remoteRevEntityRelationshipId);
-        sqlite3_bind_int64(stmt, 3, _revEntitySubjectGUID);
-        sqlite3_bind_int64(stmt, 4, _remoteRevevEntitySubjectGUID);
-        sqlite3_bind_int64(stmt, 5, _revEntityTargetGUID);
-        sqlite3_bind_int64(stmt, 6, _remoteRevEntityTargetGUID);
-        sqlite3_bind_int(stmt, 7, revPersGetRelId(_revEntityRelationshipType));
-        sqlite3_bind_int64(stmt, 8, _revTimeCreated);
-        sqlite3_bind_int64(stmt, 9, _revTimePublished);
-        sqlite3_bind_int64(stmt, 10, _revTimePublishedUpdated);
+
+        sqlite3_bind_int64(stmt, 3, _revEntityGUID);
+        sqlite3_bind_int64(stmt, 4, _remoteRevEntityGUID);
+
+        sqlite3_bind_int64(stmt, 5, _revEntitySubjectGUID);
+        sqlite3_bind_int64(stmt, 6, _remoteRevevEntitySubjectGUID);
+        sqlite3_bind_int64(stmt, 7, _revEntityTargetGUID);
+        sqlite3_bind_int64(stmt, 8, _remoteRevEntityTargetGUID);
+        sqlite3_bind_int(stmt, 9, revPersGetRelId(_revEntityRelationshipType));
+        sqlite3_bind_int64(stmt, 10, _revTimeCreated);
+        sqlite3_bind_int64(stmt, 11, _revTimePublished);
+        sqlite3_bind_int64(stmt, 12, _revTimePublishedUpdated);
     }
 
     if (rc != SQLITE_OK) {

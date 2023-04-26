@@ -4,8 +4,9 @@
 
 #include "rev_pers_read_rev_entity_relationships.h"
 
-#include <string.h>
 #include <android/log.h>
+
+#include <string.h>
 
 #include "../rev_pers_lib_create/rev_pers_create/rev_pers_relationships.h"
 #include "../../../rev_db_init/rev_db_init.h"
@@ -514,6 +515,257 @@ list *revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(char *revEnt
     sqlite3_close(db);
 
     return &list;
+}
+
+list *revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2) {
+    list revEntityRelationshipList;
+    list_new(&revEntityRelationshipList, sizeof(RevEntityRelationship), NULL);
+
+    sqlite3 *db = revDb();
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "REV_RESOLVE_STATUS, "
+                "REV_RELATIONSHIP_TYPE_VALUE_ID, "
+                "REV_RELATIONSHIP_ID, "
+                "REV_ENTITY_GUID, "
+                "REMOTE_REV_ENTITY_GUID, "
+                "REMOTE_RELATIONSHIP_ID, "
+                "REV_SUBJECT_GUID, "
+                "REV_REMOTE_SUBJECT_GUID, "
+                "REV_TARGET_GUID, "
+                "REV_REMOTE_TARGET_GUID, "
+                "REV_CREATED_DATE "
+                "FROM REV_ENTITY_RELATIONSHIPS_TABLE "
+                "WHERE REV_RELATIONSHIP_TYPE_VALUE_ID = ? AND REV_ENTITY_GUID = ? AND ((REV_SUBJECT_GUID = ? AND REV_TARGET_GUID = ?) OR (REV_TARGET_GUID = ? AND REV_SUBJECT_GUID = ?)) LIMIT ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, revPersGetRelId(strdup(revRelType)));
+    sqlite3_bind_int64(stmt, 2, revEntityGUID);
+    sqlite3_bind_int64(stmt, 3, revLocalGUID_1);
+    sqlite3_bind_int64(stmt, 4, revLocalGUID_2);
+    sqlite3_bind_int64(stmt, 5, revLocalGUID_1);
+    sqlite3_bind_int64(stmt, 6, revLocalGUID_2);
+
+    sqlite3_bind_int(stmt, 7, revLimit);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revGetRels_By_RelType_LocalGUIDs %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: revGetRels_By_RelType_LocalGUIDs %s", sqlite3_errmsg(db));
+    } else {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            long _revResolveStatus = sqlite3_column_int64(stmt, 0);
+
+            int relValueId = sqlite3_column_int(stmt, 1);
+            char *dbRevEntityRelationship = strdup(getRevEntityRelValue(relValueId));
+
+            long _revEntityRelationshipId = sqlite3_column_int64(stmt, 2);
+            long _remoteRevEntityRelationshipId = sqlite3_column_int64(stmt, 3);
+
+            long _revEntityGUID = sqlite3_column_int64(stmt, 4);
+            long _remoteRevEntityGUID = sqlite3_column_int64(stmt, 5);
+
+            long _revEntitySubjectGUID = sqlite3_column_int64(stmt, 6);
+            long _remoteRevevEntitySubjectGUID = sqlite3_column_int64(stmt, 7);
+
+            long _revEntityTargetGUID = sqlite3_column_int64(stmt, 8);
+            long _remoteRevEntityTargetGUID = sqlite3_column_int64(stmt, 9);
+
+            char *timeCreated = strdup((const char *) sqlite3_column_text(stmt, 10));
+            char *timeUpdated = strdup((const char *) sqlite3_column_text(stmt, 11));
+
+            RevEntityRelationship revEntityRelationship;
+
+            revEntityRelationship._revResolveStatus = _revResolveStatus;
+            revEntityRelationship._revEntityRelationshipTypeValueId = relValueId;
+            revEntityRelationship._revEntityRelationshipType = dbRevEntityRelationship;
+            revEntityRelationship._revEntityRelationshipId = _revEntityRelationshipId;
+            revEntityRelationship._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+
+            revEntityRelationship._revEntityGUID = _revEntityGUID;
+            revEntityRelationship._remoteRevEntityGUID = _remoteRevEntityGUID;
+
+            revEntityRelationship._revEntitySubjectGUID = _revEntitySubjectGUID;
+            revEntityRelationship._remoteRevEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
+
+            revEntityRelationship._revEntityTargetGUID = _revEntityTargetGUID;
+            revEntityRelationship._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+
+            revEntityRelationship._timeCreated = timeCreated;
+            revEntityRelationship._timeUpdated = timeUpdated;
+
+            list_append(&revEntityRelationshipList, &revEntityRelationship);
+        }
+    }
+
+    return &revEntityRelationshipList;
+}
+
+list *revGetRels_By_RelType_LocalGUIDs(const char *revRelType, long revLocalGUID_1, long revLocalGUID_2) {
+    list revEntityRelationshipList;
+    list_new(&revEntityRelationshipList, sizeof(RevEntityRelationship), NULL);
+
+    sqlite3 *db = revDb();
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "REV_RESOLVE_STATUS, "
+                "REV_RELATIONSHIP_TYPE_VALUE_ID, "
+                "REV_RELATIONSHIP_ID, "
+                "REMOTE_RELATIONSHIP_ID, "
+                "REV_ENTITY_GUID, "
+                "REMOTE_REV_ENTITY_GUID, "
+                "REV_SUBJECT_GUID, "
+                "REV_REMOTE_SUBJECT_GUID, "
+                "REV_TARGET_GUID, "
+                "REV_REMOTE_TARGET_GUID, "
+                "REV_CREATED_DATE, "
+                "REV_PUBLISHED_DATE, "
+                "REV_UPDATED_DATE "
+                "FROM REV_ENTITY_RELATIONSHIPS_TABLE "
+                "WHERE REV_RELATIONSHIP_TYPE_VALUE_ID = ? AND ((REV_SUBJECT_GUID = ? AND REV_TARGET_GUID = ?) OR (REV_TARGET_GUID = ? AND REV_SUBJECT_GUID = ?)) LIMIT ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, revPersGetRelId(strdup(revRelType)));
+    sqlite3_bind_int64(stmt, 2, revLocalGUID_1);
+    sqlite3_bind_int64(stmt, 3, revLocalGUID_2);
+    sqlite3_bind_int64(stmt, 4, revLocalGUID_1);
+    sqlite3_bind_int64(stmt, 5, revLocalGUID_2);
+
+    sqlite3_bind_int(stmt, 6, revLimit);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revGetRels_By_RelType_LocalGUIDs %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: revGetRels_By_RelType_LocalGUIDs %s", sqlite3_errmsg(db));
+    } else {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            long _revResolveStatus = sqlite3_column_int64(stmt, 0);
+
+            int relValueId = sqlite3_column_int(stmt, 1);
+            char *dbRevEntityRelationship = strdup(getRevEntityRelValue(relValueId));
+
+            long _revEntityRelationshipId = sqlite3_column_int64(stmt, 2);
+            long _remoteRevEntityRelationshipId = sqlite3_column_int64(stmt, 3);
+
+            long _revEntityGUID = sqlite3_column_int64(stmt, 4);
+            long _remoteRevEntityGUID = sqlite3_column_int64(stmt, 5);
+
+            long _revEntitySubjectGUID = sqlite3_column_int64(stmt, 6);
+            long _remoteRevevEntitySubjectGUID = sqlite3_column_int64(stmt, 7);
+            long _revEntityTargetGUID = sqlite3_column_int64(stmt, 8);
+            long _remoteRevEntityTargetGUID = sqlite3_column_int64(stmt, 9);
+
+            char *timeCreated = strdup((const char *) sqlite3_column_text(stmt, 10));
+
+            long _revTimePublished = sqlite3_column_int64(stmt, 11);
+            long _revTimePublishedUpdated = sqlite3_column_int64(stmt, 12);
+
+            RevEntityRelationship revEntityRelationship;
+
+            revEntityRelationship._revResolveStatus = _revResolveStatus;
+            revEntityRelationship._revEntityRelationshipTypeValueId = relValueId;
+            revEntityRelationship._revEntityRelationshipType = dbRevEntityRelationship;
+
+            revEntityRelationship._revEntityRelationshipId = _revEntityRelationshipId;
+            revEntityRelationship._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+
+            revEntityRelationship._revEntityGUID = _revEntityGUID;
+            revEntityRelationship._remoteRevEntityGUID = _remoteRevEntityGUID;
+
+            revEntityRelationship._revEntitySubjectGUID = _revEntitySubjectGUID;
+            revEntityRelationship._remoteRevEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
+
+            revEntityRelationship._revEntityTargetGUID = _revEntityTargetGUID;
+            revEntityRelationship._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+
+            revEntityRelationship._timeCreated = timeCreated;
+
+            revEntityRelationship._revTimePublished = _revTimePublished;
+            revEntityRelationship._revTimePublishedUpdated = _revTimePublishedUpdated;
+
+            list_append(&revEntityRelationshipList, &revEntityRelationship);
+        }
+    }
+
+    return &revEntityRelationshipList;
+}
+
+list *revGetRels_By_RelType_RemoteGUIDs(const char *revRelType, long revRemoteSubjectGUID, long revRemoteTargetGuid) {
+    list revEntityRelationshipList;
+    list_new(&revEntityRelationshipList, sizeof(RevEntityRelationship), NULL);
+
+    sqlite3 *db = revDb();
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT  "
+                "REV_RESOLVE_STATUS, "
+                "REV_RELATIONSHIP_TYPE_VALUE_ID, "
+                "REV_RELATIONSHIP_ID, "
+                "REMOTE_RELATIONSHIP_ID, "
+                "REV_SUBJECT_GUID, "
+                "REV_REMOTE_SUBJECT_GUID, "
+                "REV_TARGET_GUID, "
+                "REV_REMOTE_TARGET_GUID, "
+                "REV_CREATED_DATE, "
+                "REV_UPDATED_DATE "
+                "FROM REV_ENTITY_RELATIONSHIPS_TABLE "
+                "WHERE AND REV_RELATIONSHIP_TYPE_VALUE_ID = ? AND ((REV_REMOTE_SUBJECT_GUID = ? AND REV_REMOTE_TARGET_GUID = ?) OR (REV_REMOTE_TARGET_GUID = ? AND REV_REMOTE_SUBJECT_GUID = ?)) LIMIT ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, revPersGetRelId(revRelType));
+    sqlite3_bind_int64(stmt, 2, revRemoteSubjectGUID);
+    sqlite3_bind_int64(stmt, 3, revRemoteTargetGuid);
+    sqlite3_bind_int64(stmt, 4, revRemoteSubjectGUID);
+    sqlite3_bind_int64(stmt, 5, revRemoteTargetGuid);
+
+    sqlite3_bind_int(stmt, 6, revLimit);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revGetRels_By_RelType_RemoteGUIDs %s", sqlite3_errmsg(db));
+    } else {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            long _revResolveStatus = sqlite3_column_int64(stmt, 0);
+
+            int relValueId = sqlite3_column_int(stmt, 1);
+            char *dbRevEntityRelationship = strdup(getRevEntityRelValue(relValueId));
+
+            long _revEntityRelationshipId = sqlite3_column_int64(stmt, 2);
+            long _remoteRevEntityRelationshipId = sqlite3_column_int64(stmt, 3);
+
+            long _revEntitySubjectGUID = sqlite3_column_int64(stmt, 4);
+            long _remoteRevevEntitySubjectGUID = sqlite3_column_int64(stmt, 5);
+
+            long _revEntityTargetGUID = sqlite3_column_int64(stmt, 6);
+            long _remoteRevEntityTargetGUID = sqlite3_column_int64(stmt, 7);
+
+            char *timeCreated = strdup((const char *) sqlite3_column_text(stmt, 8));
+            char *timeUpdated = strdup((const char *) sqlite3_column_text(stmt, 9));
+
+            RevEntityRelationship revEntityRelationship;
+
+            revEntityRelationship._revResolveStatus = _revResolveStatus;
+            revEntityRelationship._revEntityRelationshipTypeValueId = relValueId;
+            revEntityRelationship._revEntityRelationshipType = dbRevEntityRelationship;
+            revEntityRelationship._revEntityRelationshipId = _revEntityRelationshipId;
+            revEntityRelationship._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+
+            revEntityRelationship._revEntitySubjectGUID = _revEntitySubjectGUID;
+            revEntityRelationship._remoteRevEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
+
+            revEntityRelationship._revEntityTargetGUID = _revEntityTargetGUID;
+            revEntityRelationship._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+
+            revEntityRelationship._timeCreated = timeCreated;
+            revEntityRelationship._timeUpdated = timeUpdated;
+
+            list_append(&revEntityRelationshipList, &revEntityRelationship);
+        }
+    }
+
+    return &revEntityRelationshipList;
 }
 
 list *revPersGetALLRevEntityRelValIds_By_RevResStatus(int revResolveStatus) {

@@ -40,10 +40,6 @@ extern "C" {
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.h"
 }
 
-REV_ENTITY_JNI_POSREC *revEntityJniPosRec = NULL;
-
-REV_ENTITY_RELATIONSHIP_JNI_POSREC *revEntityRelationshipJniPosrec = NULL;
-
 std::vector<RevEntity *> searchRecordResultRevEntity;
 std::vector<RevEntityMetadata> searchRecordResultRevEntityMetadata;
 std::vector<RevEntityAnnotation> searchRecordResultRevEntityAnnotation;
@@ -138,6 +134,7 @@ REV_ENTITY_JNI_POSREC *LoadRevEntityJniPosRec(JNIEnv *env) {
 
     revEntityJniPosRec->_revEntityGUID_ID = env->GetFieldID(revEntityJniPosRec->cls, "_revEntityGUID", "Ljava/lang/Long;");
     revEntityJniPosRec->_remoteRevEntityGUID_ID = env->GetFieldID(revEntityJniPosRec->cls, "_remoteRevEntityGUID", "Ljava/lang/Long;");
+
     revEntityJniPosRec->_revEntityOwnerGUID_ID = env->GetFieldID(revEntityJniPosRec->cls, "_revEntityOwnerGUID", "Ljava/lang/Long;");
     revEntityJniPosRec->_revEntityContainerGUID_ID = env->GetFieldID(revEntityJniPosRec->cls, "_revEntityContainerGUID", "Ljava/lang/Long;");
     revEntityJniPosRec->_timeCreated_ID = env->GetFieldID(revEntityJniPosRec->cls, "_timeCreated", "Ljava/lang/String;");
@@ -156,11 +153,8 @@ REV_ENTITY_JNI_POSREC *LoadRevEntityJniPosRec(JNIEnv *env) {
     return revEntityJniPosRec;
 }
 
-void LoadRevEntityRelationshipJniPosRec(JNIEnv *env) {
-    if (revEntityRelationshipJniPosrec != NULL)
-        return;
-
-    revEntityRelationshipJniPosrec = new REV_ENTITY_RELATIONSHIP_JNI_POSREC;
+REV_ENTITY_RELATIONSHIP_JNI_POSREC *LoadRevEntityRelationshipJniPosRec(JNIEnv *env) {
+    REV_ENTITY_RELATIONSHIP_JNI_POSREC *revEntityRelationshipJniPosrec = new REV_ENTITY_RELATIONSHIP_JNI_POSREC;
 
     revEntityRelationshipJniPosrec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels/RevEntityRelationship");
 
@@ -184,6 +178,9 @@ void LoadRevEntityRelationshipJniPosRec(JNIEnv *env) {
     revEntityRelationshipJniPosrec->_revEntityRelationshipId_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revEntityRelationshipId", "Ljava/lang/Long;");
     revEntityRelationshipJniPosrec->_remoteRevEntityRelationshipId = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_remoteRevEntityRelationshipId", "Ljava/lang/Long;");
 
+    revEntityRelationshipJniPosrec->_revEntityGUID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revEntityGUID", "Ljava/lang/Long;");
+    revEntityRelationshipJniPosrec->_remoteRevEntityGUID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_remoteRevEntityGUID", "Ljava/lang/Long;");
+
     revEntityRelationshipJniPosrec->_revEntitySubjectGUID_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revEntitySubjectGUID", "Ljava/lang/Long;");
     revEntityRelationshipJniPosrec->_remoteRevevEntitySubjectGUID_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_remoteRevEntitySubjectGUID", "Ljava/lang/Long;");
 
@@ -194,9 +191,17 @@ void LoadRevEntityRelationshipJniPosRec(JNIEnv *env) {
     revEntityRelationshipJniPosrec->_timeUpdated_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_timeUpdated", "Ljava/lang/String;");
     revEntityRelationshipJniPosrec->_revTimeCreated = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revTimeCreated", "J");
 
+    revEntityRelationshipJniPosrec->_revTimePublished_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revTimePublished", "Ljava/lang/Long;");
+    revEntityRelationshipJniPosrec->_revTimePublishedUpdated_ID = env->GetFieldID(revEntityRelationshipJniPosrec->cls, "_revTimePublishedUpdated", "Ljava/lang/Long;");
+
+    return revEntityRelationshipJniPosrec;
 }
 
-void FillDataRecValuesToRevEntityRelationshipJni(JNIEnv *env, jobject jPosRec, RevEntityRelationship revEntityRelationship) {
+jobject FillDataRecValuesToRevEntityRelationshipJni(JNIEnv *env, RevEntityRelationship revEntityRelationship) {
+    REV_ENTITY_RELATIONSHIP_JNI_POSREC *revEntityRelationshipJniPosrec = LoadRevEntityRelationshipJniPosRec(env);
+
+    jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
+
     jint _revResolveStatus = revEntityRelationship._revResolveStatus;
     env->SetIntField(jPosRec, revEntityRelationshipJniPosrec->_revResolveStatus, _revResolveStatus);
 
@@ -218,6 +223,18 @@ void FillDataRecValuesToRevEntityRelationshipJni(JNIEnv *env, jobject jPosRec, R
     jobject _remoteRevEntityRelationshipId_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._remoteRevEntityRelationshipId);
     env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_remoteRevEntityRelationshipId, _remoteRevEntityRelationshipId_Obj);
     env->DeleteLocalRef(_remoteRevEntityRelationshipId_Obj);
+
+    /** START _revEntityGUID **/
+    jobject _revEntityGUID_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._revEntityGUID);
+    env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_revEntityGUID, _revEntityGUID_Obj);
+    env->DeleteLocalRef(_revEntityGUID_Obj);
+    /** END _revEntityGUID **/
+
+    /** START _remoteRevEntityGUID **/
+    jobject _remoteRevEntityGUID_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._remoteRevEntityGUID);
+    env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_remoteRevEntityGUID, _remoteRevEntityGUID_Obj);
+    env->DeleteLocalRef(_remoteRevEntityGUID_Obj);
+    /** END _remoteRevEntityGUID **/
 
     jobject _revEntityRelationshipTypeValueId_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._revEntityRelationshipTypeValueId);
     env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_revEntityRelationshipTypeValueId_ID, _revEntityRelationshipTypeValueId_Obj);
@@ -253,6 +270,18 @@ void FillDataRecValuesToRevEntityRelationshipJni(JNIEnv *env, jobject jPosRec, R
             env->DeleteLocalRef(timeCreated_Obj);
         }
     }
+
+    /** _revTimePublishedUpdated **/
+    jobject _revTimePublished_ID_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._revTimePublished);
+    env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_revTimePublished_ID, _revTimePublished_ID_Obj);
+    env->DeleteLocalRef(_revTimePublished_ID_Obj);
+
+    /** _revTimePublishedUpdated **/
+    jobject _revTimePublishedUpdated_Obj = env->NewObject(revJClassLong, revConstMethodId, revEntityRelationship._revTimePublishedUpdated);
+    env->SetObjectField(jPosRec, revEntityRelationshipJniPosrec->_revTimePublishedUpdated_ID, _revTimePublishedUpdated_Obj);
+    env->DeleteLocalRef(_revTimePublishedUpdated_Obj);
+
+    return jPosRec;
 }
 
 void RevLoadEntityInfo(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, REV_ENTITY_JNI_POSREC *revEntityJniPosRec) {
@@ -1416,17 +1445,13 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
 
     list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
 
-    revEntityRelationshipJniPosrec = NULL;
-    LoadRevEntityRelationshipJniPosRec(env);
-
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
         if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
             revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
             continue;
         }
 
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1455,17 +1480,13 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
 
     list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
 
-    revEntityRelationshipJniPosrec = NULL;
-    LoadRevEntityRelationshipJniPosRec(env);
-
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
         if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
             revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
             continue;
         }
 
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1484,9 +1505,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
 
     list_for_each(revItemsList_C, revPersGetRevEntityRelationship);
 
-    revEntityRelationshipJniPosrec = NULL;
-    LoadRevEntityRelationshipJniPosRec(env);
-
     // First, get all the methods we need:
     jclass arrayListClass = env->FindClass("java/util/ArrayList");
     jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
@@ -1496,8 +1514,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
     jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1520,8 +1537,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
     jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1549,8 +1565,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
     list_for_each(revEntitySubjectsList, revPersGetRevEntityRelationship);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(retJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1580,8 +1595,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
         if (searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId < 1) continue;
 
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1647,8 +1661,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetAllRevEnt
     list_for_each(revEntityRelsList, revPersGetRevEntityRelationship);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(retJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1671,8 +1684,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntity
     jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
     }
 
@@ -1781,6 +1793,116 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
     searchRecordResultLong.clear();
 
     env->ReleaseStringUTFChars(revEntityrelationship_, revEntityrelationship);
+
+    return revRetJObjectArrayList;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRels_1By_1RelType_1RevEntityGUID_1LocalGUIDs(JNIEnv *env, jobject thiz, jstring rev_rel_type, jlong rev_entity_guid, jlong rev_local_guid_1, jlong rev_local_guid_2) {
+    const char *revEntityrelationship = env->GetStringUTFChars(rev_rel_type, 0);
+
+    long revEntityGUID = (long) rev_entity_guid;
+    long revLocalGUID_1 = (long) rev_local_guid_1;
+    long revLocalGUID_2 = (long) rev_local_guid_2;
+
+    jclass arrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
+    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
+
+    // The list we're going to return:
+    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
+
+    list revItemsList_C = *(revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(revEntityrelationship, revEntityGUID, revLocalGUID_1, revLocalGUID_2));
+    int revItemsListSize = list_size(&revItemsList_C);
+
+    if (revItemsListSize == 0) return revRetJObjectArrayList;
+
+    list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
+
+    for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
+        if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
+            revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
+            continue;
+        }
+
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
+        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
+    }
+
+    searchRecordResultRevEntityRelationship.clear();
+
+    return revRetJObjectArrayList;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRels_1By_1RelType_1LocalGUIDs(JNIEnv *env, jobject thiz, jstring rev_rel_type, jlong rev_local_guid_1, jlong rev_local_guid_2) {
+    const char *revEntityrelationship = env->GetStringUTFChars(rev_rel_type, 0);
+    long revLocalGUID_1 = (long) rev_local_guid_1;
+    long revLocalGUID_2 = (long) rev_local_guid_2;
+
+    jclass arrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
+    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
+
+    // The list we're going to return:
+    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
+
+    list revItemsList_C = *(revGetRels_By_RelType_LocalGUIDs(revEntityrelationship, revLocalGUID_1, revLocalGUID_2));
+    int revItemsListSize = list_size(&revItemsList_C);
+
+    if (revItemsListSize == 0) return revRetJObjectArrayList;
+
+    list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
+
+    for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
+        if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
+            revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
+            continue;
+        }
+
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
+        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
+    }
+
+    searchRecordResultRevEntityRelationship.clear();
+
+    return revRetJObjectArrayList;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRels_1By_1RelType_1RemoteGUIDs(JNIEnv *env, jobject thiz, jstring rev_rel_type, jlong rev_remote_guid_1, jlong rev_remote_guid_2) {
+    const char *revEntityrelationship = env->GetStringUTFChars(rev_rel_type, 0);
+    long revRemoteGUID_1 = (long) rev_remote_guid_1;
+    long revRemoteGUID_2 = (long) rev_remote_guid_2;
+
+    jclass arrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
+    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
+
+    // The list we're going to return:
+    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
+
+    list revItemsList_C = *(revGetRels_By_RelType_RemoteGUIDs(revEntityrelationship, revRemoteGUID_1, revRemoteGUID_2));
+    int revItemsListSize = list_size(&revItemsList_C);
+
+    if (revItemsListSize == 0) return revRetJObjectArrayList;
+
+    list_for_each(&revItemsList_C, revPersGetRevEntityRelationship);
+
+    for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
+        if (revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntitySubjectGUID) == -1 || revEntityExistsByLocalEntityGUID(searchRecordResultRevEntityRelationship[i]._revEntityTargetGUID) == -1) {
+            revPersUpdateRelResStatus_By_RelId(searchRecordResultRevEntityRelationship[i]._revEntityRelationshipId, -3);
+            continue;
+        }
+
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
+        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
+    }
+
+    searchRecordResultRevEntityRelationship.clear();
 
     return revRetJObjectArrayList;
 }
@@ -2075,8 +2197,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetUnresolve
     list_for_each(revEntityRelsList, revPersGetRevEntityRelationship);
 
     for (int i = 0; i < searchRecordResultRevEntityRelationship.size(); i++) {
-        jobject jPosRec = env->NewObject(revEntityRelationshipJniPosrec->cls, revEntityRelationshipJniPosrec->constructortor_ID);
-        FillDataRecValuesToRevEntityRelationshipJni(env, jPosRec, searchRecordResultRevEntityRelationship[i]);
+        jobject jPosRec = FillDataRecValuesToRevEntityRelationshipJni(env, searchRecordResultRevEntityRelationship[i]);
         env->CallBooleanMethod(retJObjectArrayList, addMethod, jPosRec);
     }
 

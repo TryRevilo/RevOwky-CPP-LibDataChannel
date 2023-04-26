@@ -91,6 +91,10 @@ typedef struct REV_ENTITY_RELATIONSHIP_JNI_POSREC {
     jfieldID _revResolveStatus;
     jfieldID _revEntityRelationshipId_ID;
     jfieldID _remoteRevEntityRelationshipId;
+
+    jfieldID _revEntityGUID;
+    jfieldID _remoteRevEntityGUID;
+
     jfieldID _revEntityRelationshipType_ID;
     jfieldID _revEntityRelationshipTypeValueId_ID;
     jfieldID _revEntitySubjectGUID_ID;
@@ -102,8 +106,8 @@ typedef struct REV_ENTITY_RELATIONSHIP_JNI_POSREC {
     jfieldID _timeUpdated_ID;
 
     jfieldID _revTimeCreated;
-    jfieldID _revTimePublished;
-    jfieldID _revTimePublishedUpdated;
+    jfieldID _revTimePublished_ID;
+    jfieldID _revTimePublishedUpdated_ID;
 
 } REV_ENTITY_RELATIONSHIP_JNI_POSREC;
 

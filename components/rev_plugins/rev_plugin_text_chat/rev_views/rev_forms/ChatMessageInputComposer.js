@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef, useEffect} from 'react';
 
 import {
   StyleSheet,
@@ -10,20 +10,39 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
 
 import ChatMessages from '../rev_listing_views/ChatMessages';
+import {RevSubmitChatTab} from './RevSubmitChatTab';
 
-export function ChatMessageInputComposer({revSetText}) {
-  const [chatMessage, setChatMessage] = useState('');
+export function useChatMessageInputComposer(revVarArgs) {
+  const [revChatEntityVarArgs, setRevChatEntityVarArgs] = useState(revVarArgs);
+  const revChatEntityVarArgsLatest = useRef(revVarArgs);
 
+  const revChatMessageTxtLatest = useRef('');
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
+  useEffect(() => {
+    SET_REV_SITE_BODY(<ChatMessages revVarArgs={revChatEntityVarArgs} />);
+  }, [revChatEntityVarArgs]);
+
   const revHandleNextStrangerChat = () => {
-    SET_REV_SITE_BODY(<ChatMessages />);
+    SET_REV_SITE_BODY(<ChatMessages revVarArgs={revVarArgs} />);
+
+    setRevChatEntityVarArgs(prevState => {
+      revChatEntityVarArgsLatest.current = {
+        ...prevState,
+        _remoteRevEntityGUID: prevState._remoteRevEntityGUID + 1,
+      };
+
+      return revChatEntityVarArgsLatest.current;
+    });
   };
 
-  const RevNextStrangerChatTabArea = () => {
+  const RevHeaderNextStrangerTab = () => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -44,22 +63,48 @@ export function ChatMessageInputComposer({revSetText}) {
     );
   };
 
-  return (
-    <View style={[styles.revFlexContainer, styles.revChatInputContainer]}>
-      <RevNextStrangerChatTabArea />
-      <TextInput
-        style={styles.chatInput}
-        placeholder=" Chat away !"
-        placeholderTextColor="#999"
-        multiline={true}
-        numberOfLines={5}
-        onChangeText={newText => {
-          setChatMessage(newText);
+  const revChatInputArea = () => {
+    let revChatInputArea = (
+      <View style={[styles.revFlexContainer, styles.revChatInputContainer]}>
+        <RevHeaderNextStrangerTab />
+        <TextInput
+          style={styles.chatInput}
+          placeholder=" Chat away !"
+          placeholderTextColor="#999"
+          multiline={true}
+          numberOfLines={5}
+          onChangeText={newText => {
+            revChatMessageTxtLatest.current = newText;
+          }}
+          defaultValue={revChatMessageTxtLatest.current}
+        />
+      </View>
+    );
+
+    return revChatInputArea;
+  };
+
+  const revSubmitChatOptionsMenuArea = () => {
+    let revTargetEntityGUID = REV_LOGGED_IN_ENTITY_GUID == 43 ? 1 : 43;
+
+    return (
+      <RevSubmitChatTab
+        revGetCurrentChatTarget={() => {
+          return revTargetEntityGUID; // revChatEntityVarArgsLatest.current;
         }}
-        defaultValue={chatMessage}
+        revGetChatTextImput={() => revChatMessageTxtLatest.current}
+        revCallback={revEntity => {
+          console.log(
+            '>>> revSubmitChatOptionsMenuArea -revEntity',
+            JSON.stringify(revEntity),
+          );
+          revChatMessageTxtLatest.current = '';
+        }}
       />
-    </View>
-  );
+    );
+  };
+
+  return {revChatInputArea, revSubmitChatOptionsMenuArea};
 }
 
 const styles = StyleSheet.create({

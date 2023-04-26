@@ -211,6 +211,55 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         return revEntityRelationshipsStr;
     }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(String revEntityrelationship, Integer revRemoteEntityGUID) {
+        String revRelsString = "[]";
+
+        List<Long> revRelsList = revPersLibRead.revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(revEntityrelationship, revRemoteEntityGUID);
+
+        if (revRelsList.size() > 0)
+            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+
+        return revRelsString;
+
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(String revRelType, Integer revEntityGUID, Integer revLocalGUID_1, Integer revLocalGUID_2) {
+        String revRelsString = "[]";
+
+        List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(revRelType, revEntityGUID, revLocalGUID_1, revLocalGUID_2);
+
+        if (revRelsList.size() > 0)
+            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+
+        return revRelsString;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetRels_By_RelType_LocalGUIDs(String revRelType, Integer revLocalGUID_1, Integer revLocalGUID_2) {
+        String revRelsString = "[]";
+
+        List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_LocalGUIDs(revRelType, revLocalGUID_1, revLocalGUID_2);
+
+        if (revRelsList.size() > 0)
+            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+
+        return revRelsString;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetRels_By_RelType_RemoteGUIDs(String revRelType, Integer revRemoteGUID_1, Integer revRemoteGUID_2) {
+        String revRelsString = "[]";
+
+        List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_RemoteGUIDs(revRelType, revRemoteGUID_1, revRemoteGUID_2);
+
+        if (revRelsList.size() > 0)
+            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+
+        return revRelsString;
+    }
     /** END RELS **/
 
     /**
