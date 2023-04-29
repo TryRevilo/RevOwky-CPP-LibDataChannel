@@ -1,6 +1,30 @@
+import {LoremIpsum} from 'lorem-ipsum';
+
+import {revGetRandInteger} from './rev_gen_helper_functions';
+
 export function revRemoveLinebreaks(revStr) {
   return revStr.replace(/(\r\n|\n|\r)/gm, '');
 }
+
+export const revGenLoreumIpsumText = ({
+  revMinWordsPerSentence = 7,
+  revMaxWordsPerSentence = 100,
+  revMinSentences = 1,
+  revMaxSentences = 1,
+}) => {
+  const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+      max: revMaxSentences,
+      min: revMinSentences,
+    },
+    wordsPerSentence: {
+      max: revGetRandInteger(revMinWordsPerSentence, revMaxWordsPerSentence),
+      min: revGetRandInteger(1, revMinWordsPerSentence),
+    },
+  });
+
+  return lorem.generateSentences(revGetRandInteger(1, 5));
+};
 
 export const revGenRandString = revLength => {
   let revResult = '';

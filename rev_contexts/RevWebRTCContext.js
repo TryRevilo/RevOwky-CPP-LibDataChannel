@@ -20,6 +20,8 @@ import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_function
 
 import DeviceInfo from 'react-native-device-info';
 
+import RevVideoCallModal from '../components/rev_plugins/rev_plugin_video_call/rev_views/rev_object_views/rev_wideget_views/RevVideoCallModal';
+
 // create the context
 const RevWebRTCContext = createContext();
 
@@ -66,6 +68,8 @@ const RevWebRTCContextProvider = ({children}) => {
   const latestConnections = useRef(connections);
 
   const [revQuedMessages, setRevQuedMessages] = useState([]);
+  const [revVideoCallAudienceArr, setRevVideoCallAudienceArr] = useState([]);
+
   const [revWebServerOpen, setRevWebServerOpen] = useState(true);
 
   const [revPeerOffer, setRevPeerOffer] = useState(null);
@@ -210,22 +214,42 @@ const RevWebRTCContextProvider = ({children}) => {
   };
 
   // function to create peer connection and add to state JSON object
-  const createPeerConnection = async peerId => {
+  const createPeerConnection = async (peerId, revOnAddRemoteStream) => {
     const pc = new RTCPeerConnection(config);
+
+    // Remote side: Receive and process incoming tracks
+    pc.ontrack = function (event) {
+      console.log(deviceModel, '>>> onaddstream - Remote stream added <<<');
+
+      const remoteStream = event.streams[0];
+      remoteStream.getTracks().forEach(track => {
+        console.log(deviceModel, '--- Received remote track:', track);
+        // Do something with the remote track
+      });
+
+      if (revOnAddRemoteStream) {
+        revOnAddRemoteStream(remoteStream);
+      } else {
+        console.log('>>> PICK UP <<<');
+      }
+    };
 
     let revLatestConns = [...connections, {peerId, pc}];
     latestConnections.current = revLatestConns;
     setConnections(revLatestConns);
 
+    let revLocalMediaStream = await mediaDevices.getUserMedia(mediaConstraints);
+
+    // Local side: Add local tracks to PeerConnection
+    revLocalMediaStream.getTracks().forEach(track => {
+      const sender = pc.addTrack(track, revLocalMediaStream);
+
+      console.log(deviceModel, '>>> revLocalMediaStream.getTracks-sender <<<');
+    });
+
     // create data channel
-    let dataChannel = createDataChannel(pc, peerId, 'my_channel');
-
-    // add the local stream to the PeerConnection (if using audio/video)
-    let localMediaStream = await mediaDevices.getUserMedia(mediaConstraints);
-
-    localMediaStream
-      .getTracks()
-      .forEach(track => pc.addTrack(track, localMediaStream));
+    let dataChannel;
+    // let dataChannel = createDataChannel(pc, peerId, 'my_channel');
 
     pc.onicecandidate = event => {
       if (event.candidate) {
@@ -259,6 +283,57 @@ const RevWebRTCContextProvider = ({children}) => {
       const newData = [...prevState, {revPeerId: peerId, revMessage: message}];
       return newData;
     });
+  };
+
+  const revInitVideoCall = async ({
+    revTargetPeerId,
+    revOnAddLocalStream,
+    revOnAddRemoteStream,
+  }) => {
+    console.log('>>> revTargetPeerId', revTargetPeerId);
+
+    try {
+      const {pc} = await createPeerConnection(
+        revTargetPeerId,
+        revOnAddRemoteStream,
+      );
+      let revPeer = pc;
+
+      let revLocalMediaStream;
+
+      revLocalMediaStream = await mediaDevices.getUserMedia(mediaConstraints);
+
+      revLocalMediaStream
+        .getTracks()
+        .forEach(track => revPeer.addTrack(track, revLocalMediaStream));
+
+      revOnAddLocalStream(revLocalMediaStream);
+
+      if (revIsEmptyJSONObject(revPeer.localDescription)) {
+        await revCreateOffer(revTargetPeerId, revPeer);
+      }
+
+      console.log('>>> revInitVideoCall', 4);
+    } catch (error) {
+      console.log('>>> error -revInitVideoCall', error);
+    }
+  };
+
+  const revEndVideoCall = revPeerId => {
+    let pc = getPeerConnection(revPeerId);
+
+    if (pc) {
+      const localStreams = pc.getLocalStreams();
+
+      // Terminate the call by stopping the tracks and closing the peer connection
+      localStreams.forEach(stream => {
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
+      });
+
+      pc.close();
+    }
   };
 
   // function to send answer message to remote peer
@@ -404,6 +479,8 @@ const RevWebRTCContextProvider = ({children}) => {
     }
   }, [REV_WEB_SOCKET_SERVER, revWebServerOpen]);
 
+  useEffect(() => {}, [revVideoCallAudienceArr]);
+
   const revCreateOffer = async (peerId, pc) => {
     try {
       let revOfferDescription = await pc.createOffer(sessionConstraints);
@@ -490,6 +567,8 @@ const RevWebRTCContextProvider = ({children}) => {
     connections,
     createPeerConnection,
     sendMessage,
+    revInitVideoCall,
+    revEndVideoCall,
   };
 
   useEffect(() => {

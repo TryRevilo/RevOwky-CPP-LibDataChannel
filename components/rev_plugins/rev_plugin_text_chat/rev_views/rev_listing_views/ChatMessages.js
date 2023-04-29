@@ -8,13 +8,20 @@ import InboxMessage from './rev_entity_views/InboxMessage';
 import OutboxChatMessage from './rev_entity_views/OutboxChatMessage';
 import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_messages_helper_functions';
 
-import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 import {
   revGetRandInteger,
   revIsEmptyJSONObject,
 } from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
+import {
+  revGenLoreumIpsumText,
+  revRemoveLineBreaks,
+  revTruncateString,
+} from '../../../../../rev_function_libs/rev_string_function_libs';
+
 import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
 export function useChatMessages() {
   const {revSiteStyles} = useRevSiteStyles();
@@ -87,7 +94,7 @@ export function useChatMessages() {
         onEndReachedThreshold={0.5}
         initialNumToRender={pageSize}
         maxToRenderPerBatch={pageSize}
-        style={styles.chatMsgsVScroller}></FlatList>
+        style={styles.revChatMsgsVScroller}></FlatList>
     );
 
     return revRetView;
@@ -98,16 +105,26 @@ export function useChatMessages() {
       return null;
     }
 
+    let revUseBriefrInfoTxt = revRemoveLineBreaks(
+      revGenLoreumIpsumText({revMaxWordsPerSentence: 8}),
+    );
+    revUseBriefrInfoTxt = revTruncateString(revUseBriefrInfoTxt, 35);
+
     return (
-      <View style={styles.chatMessagesContainer}>
+      <View
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revChatMessagesContainer,
+        ]}>
         <RevNullMessagesView />
-        <View style={[revSiteStyles.revFlexContainer, styles.userInfoWrapper]}>
+        <View
+          style={[revSiteStyles.revFlexContainer, styles.revUserInfoWrapper]}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
               revSiteStyles.revSiteTxtSmall,
             ]}>
-            About me hello!
+            {revUseBriefrInfoTxt}
           </Text>
 
           {revChatMessagesCountView(revMessagesArrLatestRef.current)}
@@ -212,23 +229,23 @@ export function useChatMessages() {
 }
 
 const styles = StyleSheet.create({
-  chatMsgsVScroller: {
+  revChatMsgsVScroller: {
     width: '100%',
     marginTop: 4,
     marginBottom: 50,
   },
-  userInfoWrapper: {
+  revUserInfoWrapper: {
     backgroundColor: '#fffde7',
     paddingHorizontal: 9,
     paddingVertical: 4,
+    marginTop: 3,
     borderRadius: 5,
   },
   revChatMessagesCounterTxt: {
     marginTop: 5,
   },
-  chatMessagesContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+  revChatMessagesContainer: {
     marginTop: 3,
+    marginBottom: 3,
   },
 });
