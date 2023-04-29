@@ -53,12 +53,8 @@ export function RevContacts({revVarArgs}) {
       );
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Contacts permission granted');
-
         return true;
       } else {
-        console.log('Contacts permission denied');
-
         return false;
       }
     } catch (err) {
@@ -74,19 +70,13 @@ export function RevContacts({revVarArgs}) {
       setRevContactsData(contacts);
 
       setRevTotContactsCount(contacts.length);
-
-      console.log('>>> revTotContactsCount ' + revTotContactsCount);
     } catch (err) {
       console.warn(err);
     }
   };
 
   const loadMoreContacts = () => {
-    console.log('Load more contacts!');
-
     if (revContactsData.length > page * pageSize) {
-      console.log('>>> loadMoreContacts ', page + 1);
-
       setPage(page + 1);
     }
   };

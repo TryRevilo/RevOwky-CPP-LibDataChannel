@@ -1,10 +1,9 @@
-import {StyleSheet, Text, View, NativeModules} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState, useContext} from 'react';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {RevRemoteSocketContext} from '../../../../../../rev_contexts/RevRemoteSocketContext';
-import RevNullMessagesView from '../../../../../rev_views/RevNullMessagesView';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {revGetServerData_JSON} from '../../../../../rev_libs_pers/rev_server/rev_pers_lib_read';
@@ -17,8 +16,7 @@ export const RevTimelineActivityListingViewWidget = () => {
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
-  const {REV_SITE_BODY, SET_REV_SITE_BODY, REV_SITE_FOOTER_1_CONTENT_VIEWER} =
-    useContext(ReViewsContext);
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   const revPostsStateTxt = revTxt => {
     return (

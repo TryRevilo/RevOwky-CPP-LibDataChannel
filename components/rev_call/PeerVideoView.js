@@ -1,16 +1,8 @@
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React from 'react';
 
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-
-import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
+import {View, Text, StyleSheet} from 'react-native';
 
 export default function PeerVideoView({revId, revPeerStream}) {
-  const {peerStream} = useContext(RevRemoteSocketContext);
-
-  if (peerStream) {
-    return <TouchableOpacity></TouchableOpacity>;
-  }
-
   return (
     <View style={styles.peerStreamNullContainer}>
       <Text style={styles.peerStreamNull}>!</Text>

@@ -12,33 +12,40 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
+import {RevWebRTCContext} from '../../../../../rev_contexts/RevWebRTCContext';
 
-import ChatMessages from '../rev_listing_views/ChatMessages';
+import {useChatMessages} from '../rev_listing_views/ChatMessages';
 import {RevSubmitChatTab} from './RevSubmitChatTab';
+import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_messages_helper_functions';
+
+import DeviceInfo from 'react-native-device-info';
 
 export function useChatMessageInputComposer(revVarArgs) {
-  const [revChatEntityVarArgs, setRevChatEntityVarArgs] = useState(revVarArgs);
-  const revChatEntityVarArgsLatest = useRef(revVarArgs);
-
   const revChatMessageTxtLatest = useRef('');
+  const revTextInputRef = useRef(null);
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
+    useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  useEffect(() => {
-    SET_REV_SITE_BODY(<ChatMessages revVarArgs={revChatEntityVarArgs} />);
-  }, [revChatEntityVarArgs]);
+  const {sendMessage} = useContext(RevWebRTCContext);
+
+  const {revInitChatMessagesListingArea} = useChatMessages();
+
+  const [revTargetGUID, setRevTargetGUID] = useState(
+    REV_LOGGED_IN_ENTITY_GUID == 1 ? 6 : 1,
+  );
 
   const revHandleNextStrangerChat = () => {
-    SET_REV_SITE_BODY(<ChatMessages revVarArgs={revVarArgs} />);
+    const revOnViewChangeCallBack = revUpdatedView => {
+      console.log('>>> --- revHandleNextStrangerChat <<<');
+      SET_REV_SITE_BODY(revUpdatedView);
+    };
 
-    setRevChatEntityVarArgs(prevState => {
-      revChatEntityVarArgsLatest.current = {
-        ...prevState,
-        _remoteRevEntityGUID: prevState._remoteRevEntityGUID + 1,
-      };
-
-      return revChatEntityVarArgsLatest.current;
+    revInitChatMessagesListingArea({
+      revOnViewChangeCallBack,
+      revTargetGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revSubjectGUID: revTargetGUID,
     });
   };
 
@@ -68,6 +75,7 @@ export function useChatMessageInputComposer(revVarArgs) {
       <View style={[styles.revFlexContainer, styles.revChatInputContainer]}>
         <RevHeaderNextStrangerTab />
         <TextInput
+          ref={revTextInputRef}
           style={styles.chatInput}
           placeholder=" Chat away !"
           placeholderTextColor="#999"
@@ -84,8 +92,8 @@ export function useChatMessageInputComposer(revVarArgs) {
     return revChatInputArea;
   };
 
-  const revSubmitChatOptionsMenuArea = () => {
-    let revTargetEntityGUID = REV_LOGGED_IN_ENTITY_GUID == 43 ? 1 : 43;
+  const revSubmitChatOptionsMenuArea = revCallBackFunc => {
+    let revTargetEntityGUID = REV_LOGGED_IN_ENTITY_GUID == 6 ? 1 : 6;
 
     return (
       <RevSubmitChatTab
@@ -93,12 +101,17 @@ export function useChatMessageInputComposer(revVarArgs) {
           return revTargetEntityGUID; // revChatEntityVarArgsLatest.current;
         }}
         revGetChatTextImput={() => revChatMessageTxtLatest.current}
-        revCallback={revEntity => {
-          console.log(
-            '>>> revSubmitChatOptionsMenuArea -revEntity',
-            JSON.stringify(revEntity),
-          );
+        revCallback={revRetData => {
           revChatMessageTxtLatest.current = '';
+          revTextInputRef.current.clear();
+
+          let revRemoteTargetEntityGUID =
+            REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
+
+          // sendMessage(revRemoteTargetEntityGUID, {revMsg: 'HELLO WORLD ! ! !'});
+          // onDisplayNotification();
+
+          revCallBackFunc(revRetData);
         }}
       />
     );

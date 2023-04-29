@@ -66,8 +66,6 @@ export const RevLogInFormWidgetView = () => {
 
         let revSiteEntityResStatus = -1;
 
-        console.log('>>> revRemoteSiteEntityGUID ' + revRemoteSiteEntityGUID);
-
         if (revRemoteSiteEntityGUID > 0) {
           revSiteEntityResStatus = 2;
         }
@@ -89,8 +87,6 @@ export const RevLogInFormWidgetView = () => {
       );
       let revSiteEntity = revSiteEntitiesArr[0];
       let revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
-
-      console.log('>>> revSiteEntityOwnerGUID ' + revSiteEntityOwnerGUID);
 
       if (revSiteEntityOwnerGUID) {
         SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);

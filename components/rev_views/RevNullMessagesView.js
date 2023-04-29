@@ -13,14 +13,18 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {revPluginsLoader} from '../rev_plugins_loader';
 
+import {useRevSiteStyles} from './RevSiteStyles';
+
 const RevNullMessagesView = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   let RevHeaderLink = ({revLinkText}) => {
     return (
       <TouchableOpacity>
         <Text
           style={[
-            styles.revSiteTxtColorLight,
-            styles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtSmall,
             styles.revHeaderTextLink,
           ]}>
           / {'  '}
@@ -32,7 +36,7 @@ const RevNullMessagesView = () => {
 
   let RevHeaderLinks = () => {
     return (
-      <View style={styles.revFlexWrapper}>
+      <View style={revSiteStyles.revFlexWrapper}>
         <RevHeaderLink revLinkText={'networks'} />
         <RevHeaderLink revLinkText={'posts'} />
         <RevHeaderLink revLinkText={<FontAwesome name="shopping-bag" />} />
@@ -46,7 +50,8 @@ const RevNullMessagesView = () => {
 
   let RevHeader = () => {
     return (
-      <View style={[styles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
         <TouchableOpacity onPress={revHandleOnLogOutTabPressed}>
           <Text style={styles.revContentBodyTtlTellTxt}>
             <FontAwesome name="dot-circle-o" />
@@ -79,7 +84,10 @@ const RevNullMessagesView = () => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         style={styles.profileImagesScroller}>
-        <View style={[[styles.revFlexWrapper, styles.revProfileMediaWrapper]]}>
+        <View
+          style={[
+            [revSiteStyles.revFlexWrapper, styles.revProfileMediaWrapper],
+          ]}>
           <View style={styles.imageContainer}>
             <Image
               style={styles.imageStyle}
@@ -130,8 +138,6 @@ const RevNullMessagesView = () => {
           </View>
         </View>
       </ScrollView>
-
-      <RevTimelineActivityListingView />
     </View>
   );
 };
@@ -144,37 +150,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 65;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtNormal: {
-    fontSize: 11,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
   revPageHeaderAreaWrapper: {
     alignItems: 'center',
     width: maxChatMessageContainerWidth + 55,

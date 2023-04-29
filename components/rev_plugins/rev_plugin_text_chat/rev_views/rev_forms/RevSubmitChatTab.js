@@ -21,8 +21,6 @@ export function RevSubmitChatTab({
     };
 
     revHandleSendMsgAction(revPassVaArgs).then(revRetData => {
-      console.log('>>> revRetData', JSON.stringify(revRetData));
-
       revCallback(revRetData);
     });
   };

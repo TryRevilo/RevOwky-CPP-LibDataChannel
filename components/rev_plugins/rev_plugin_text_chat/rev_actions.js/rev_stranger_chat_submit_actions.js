@@ -1,10 +1,5 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NativeModules} from 'react-native';
-
-import {revPostServerData} from '../../../rev_libs_pers/rev_server/rev_pers_lib_create';
-import {REV_CREATE_NEW_REV_ENTITY_URL} from '../../../rev_libs_pers/rev_server/rev_pers_urls';
-import {revPersGetFilledRevEntity_By_GUID} from '../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
-import {revGetMetadataContainingMetadataName} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 const {RevPersLibCreate_React} = NativeModules;
 
@@ -28,9 +23,7 @@ export const useRevHandleSendMsgAction = () => {
       return {revEntityOwnerGUID: revEntityOwnerGUID};
     }
 
-    let revRetData = {};
-
-    revVarArgs['revEntitySubType'] = 'rev_stranger_chat_message_';
+    revVarArgs['revEntitySubType'] = 'rev_stranger_chat_message';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),
@@ -38,8 +31,10 @@ export const useRevHandleSendMsgAction = () => {
 
     revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
 
-    let revPersEntityGUID = await revSaveNewEntity(revVarArgs);
-    revRetData['revPersEntityGUID'] = revPersEntityGUID;
+    let revRetEntity = await revSaveNewEntity(revVarArgs);
+    let revPersEntityGUID = revRetEntity._revEntityGUID;
+
+    revVarArgs['revEntity'] = revRetEntity;
 
     /** START SET OWNER AS SENDER */
     if (revPersEntityGUID > 0) {
@@ -56,12 +51,12 @@ export const useRevHandleSendMsgAction = () => {
         JSON.stringify(revMsgSenderOfRel),
       );
 
-      revRetData['revMsgRelId'] = revMsgRelId;
+      revVarArgs['revMsgRelId'] = revMsgRelId;
     }
 
     /** END SET OWNER AS SENDER */
 
-    return revRetData;
+    return revVarArgs;
   };
 
   return {revHandleSendMsgAction};

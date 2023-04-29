@@ -1,23 +1,23 @@
 import React, {useContext, useEffect, useState} from 'react';
-
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
+import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 
-import ChatMessages from '../rev_listing_views/ChatMessages';
+import {useChatMessages} from '../rev_listing_views/ChatMessages';
 import {useChatMessageInputComposer} from '../rev_forms/ChatMessageInputComposer';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export default function RevNextStrangerChatTab({revVarArgs}) {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const [isRevNextStrangerChatTab, setIsRevNextStrangerChatTab] =
     useState(false);
@@ -31,11 +31,25 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
   const {revChatInputArea, revSubmitChatOptionsMenuArea} =
     useChatMessageInputComposer(revVarArgs);
 
+  const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
+
   const RevNextStrangerChatTabArea = () => {
     return (
       <TouchableOpacity
         onPress={() => {
+          let revTargetGUID = REV_LOGGED_IN_ENTITY_GUID == 1 ? 6 : 1;
+
           revHandleNextStrangerChat(true);
+
+          const revOnViewChangeCallBack = revUpdatedView => {
+            SET_REV_SITE_BODY(revUpdatedView);
+          };
+
+          revInitChatMessagesListingArea({
+            revOnViewChangeCallBack,
+            revTargetGUID,
+            revSubjectGUID: REV_LOGGED_IN_ENTITY_GUID,
+          });
         }}
         style={styles.recipientNextWrapperTouchable}>
         <View style={styles.recipientNextWrapper}>
@@ -56,11 +70,15 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
     <RevNextStrangerChatTabArea />,
   );
 
-  let RevChatSubmitOptions = ({revVarArgs}) => {
+  let RevChatSubmitOptions = () => {
     return (
       <View style={styles.footerSubmitOptionsLeftWrapper}>
         {isRevNextStrangerChatTab && isRevComposing ? (
-          revSubmitChatOptionsMenuArea(revVarArgs)
+          revSubmitChatOptionsMenuArea(revRetData => {
+            if ('revEntity' in revRetData) {
+              revAddChatMessage(revRetData.revEntity);
+            }
+          })
         ) : (
           <TouchableOpacity
             onPress={() => {
@@ -70,8 +88,8 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
               <FontAwesome
                 name="quote-left"
                 style={[
-                  styles.revSiteTxtColor,
-                  styles.revSiteTxtMedium,
+                  revSiteStyles.revSiteTxtColor,
+                  revSiteStyles.revSiteTxtMedium,
                 ]}></FontAwesome>
             </View>
           </TouchableOpacity>
@@ -85,8 +103,8 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
             <FontAwesome
               name="image"
               style={[
-                styles.revSiteTxtColor,
-                styles.revSiteTxtMedium,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtMedium,
               ]}></FontAwesome>
           </View>
         </TouchableOpacity>
@@ -96,10 +114,12 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
           }}>
           <View style={[styles.cancelComposeChatMsg]}>
             <FontAwesome
-              name="times"
+              name={
+                isRevNextStrangerChatTab && isRevComposing ? 'expand' : 'times'
+              }
               style={[
-                styles.revSiteTxtColor,
-                styles.revSiteTxtMedium,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtMedium,
               ]}></FontAwesome>
           </View>
         </TouchableOpacity>
@@ -109,8 +129,7 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
 
   useEffect(() => {
     if (isRevNextStrangerChatTab) {
-      SET_REV_SITE_BODY(<ChatMessages revVarArgs={revVarArgs} />);
-      setRevNextChatTab(<RevChatSubmitOptions revVarArgs={revVarArgs} />);
+      setRevNextChatTab(<RevChatSubmitOptions />);
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
     }
 
@@ -136,34 +155,6 @@ export default function RevNextStrangerChatTab({revVarArgs}) {
 }
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
   recipientNextWrapperTouchable: {
     display: 'flex',
     marginRight: 22,

@@ -23,8 +23,6 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
     long revEntityContainerGUID = revEntity->_revContainerEntityGUID;
     long revEntitySiteGUID = revEntity->_revEntitySiteGUID;
 
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySiteGUID %ld", revEntitySiteGUID);
-
     int revEntityAccessPermission = revEntity->_revEntityAccessPermission;
 
     char *revEntityType = revEntity->_revEntityType;

@@ -3,7 +3,6 @@ import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Text,
-  Button,
   View,
   Image,
   ScrollView,
@@ -13,7 +12,6 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Video from 'react-native-video';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
@@ -310,15 +308,15 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     const randomIndex = Math.floor(Math.random() * revVidPathsArr.length);
     const randomElement = revVidPathsArr[randomIndex];
 
-    let RevInlineVideoPlayer = revPluginsLoader({
+    let RevCustomVideoPlayer = revPluginsLoader({
       revPluginName: 'rev_plugin_video',
-      revViewName: 'RevInlineVideoPlayer',
+      revViewName: 'RevCustomVideoPlayer',
       revVarArgs: {
         revURL: randomElement,
       },
     });
 
-    return RevInlineVideoPlayer;
+    return null; // RevCustomVideoPlayer;
   };
 
   let RevVideoPlayerView = RevVideoPlayer();

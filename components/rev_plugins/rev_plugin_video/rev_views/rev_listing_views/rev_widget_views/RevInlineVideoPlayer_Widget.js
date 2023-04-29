@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 import {
   StyleSheet,
@@ -10,6 +10,7 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
+import NetInfo from '@react-native-community/netinfo';
 
 import {
   revGetRandInteger,
@@ -17,6 +18,8 @@ import {
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
+import {revPingOnMobile} from '../../../../../../rev_function_libs/rev_network_functions';
 
 export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -47,6 +50,8 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   };
 
   const handleLoad = event => {
+    setIsVideoLoaded(true);
+
     const {naturalSize} = event;
     const {width, height} = naturalSize;
     const videoAspectRatio = width / height;
@@ -129,38 +134,68 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
     );
   };
 
-  return (
-    <View key={revGetRandInteger(100, 1000)} style={styles.revVideoContainer}>
-      <TouchableWithoutFeedback onPress={revHandleTogglePlayback}>
-        <View style={{flex: 1}}>
-          <Video
-            ref={videoRef}
-            source={{
-              uri: revURL,
-            }}
-            paused={paused}
-            style={[styles.revVideo, {aspectRatio}]}
-            onLoad={handleLoad}
-            onProgress={handleProgress}
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isInternetReachable, setIsInternetReachable] = useState(true);
+
+  const handleVideoError = error => {
+    if (error.message.includes('Network request failed')) {
+      setIsInternetReachable(false);
+    }
+  };
+
+  NetInfo.fetch().then(state => {
+    setIsInternetReachable(state.isInternetReachable);
+  });
+
+  const revVideoView = () => {
+    return (
+      <View
+        key={'rev_video_' + revGetRandInteger(100, 1000)}
+        style={styles.revVideoContainer}>
+        <TouchableWithoutFeedback onPress={revHandleTogglePlayback}>
+          <View style={{flex: 1}}>
+            <Video
+              ref={videoRef}
+              source={{
+                uri: revURL,
+              }}
+              paused={paused}
+              style={[styles.revVideo, {aspectRatio}]}
+              onLoad={handleLoad}
+              onProgress={handleProgress}
+              onError={handleVideoError}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.revProgressContainer}>
+          <View
+            ref={videoProgressVall}
+            style={[
+              styles.revProgressBar,
+              {width: `${videoProgressVall.current * 100}%`},
+            ]}
           />
         </View>
-      </TouchableWithoutFeedback>
-      <View style={styles.revProgressContainer}>
-        <View
-          ref={videoProgressVall}
-          style={[
-            styles.revProgressBar,
-            {width: `${videoProgressVall.current * 100}%`},
-          ]}
-        />
-      </View>
 
-      <View style={[revSiteStyles.revFlexWrapper, styles.revVidMoveWrapper]}>
-        <ForwardButton />
-        <RevPauseButton />
-        <RewindButton />
-        <TimeDisplay />
+        <View style={[revSiteStyles.revFlexWrapper, styles.revVidMoveWrapper]}>
+          <ForwardButton />
+          <RevPauseButton />
+          <RewindButton />
+          <TimeDisplay />
+        </View>
       </View>
+    );
+  };
+
+  return (
+    <View style={revSiteStyles.revFlexContainer}>
+      {isInternetReachable && (
+        <>
+          {!isVideoLoaded && <Text>Loading video...</Text>}
+          {revVideoView()}
+        </>
+      )}
+      {!isInternetReachable && <Text>Unable to connect to the server.</Text>}
     </View>
   );
 };

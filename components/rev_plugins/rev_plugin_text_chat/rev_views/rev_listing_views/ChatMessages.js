@@ -1,181 +1,234 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 
-import {ScrollView, StyleSheet, Text, View, NativeModules} from 'react-native';
-
-import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
+import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
 
 import RevNullMessagesView from '../../../../rev_views/RevNullMessagesView';
 import InboxMessage from './rev_entity_views/InboxMessage';
 import OutboxChatMessage from './rev_entity_views/OutboxChatMessage';
+import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_messages_helper_functions';
+
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
+export function useChatMessages() {
+  const {revSiteStyles} = useRevSiteStyles();
 
-export default function ChatMessages({revVarArgs}) {
-  if (!'_remoteRevEntityGUID' in revVarArgs) {
-    return;
-  }
+  const {REV_SITE_BODY} = useContext(ReViewsContext);
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {revGetLocalChatMessages} = useRevChatMessagesHelperFunctions();
 
-  const [newPeerMessages, setNewPeerMessages] = useState([]);
-  const [sentMessages, setSentMessages] = useState([]);
+  const [revMessagesArr, setRevMessagesArr] = useState([]);
 
-  const [listedChatMessages, setListedChatMessages] = useState({});
+  const revDisplayCallBackRef = useRef(null);
+
+  const [revCurrTargetGUID, setRevCurrTargetGUID] = useState(-1);
+  const [revCurrSubjectGUID, setRevCurrSubjectGUID] = useState(-1);
+
+  const revMessagesArrLatestRef = useRef(null);
+
+  const revFlatListRef = useRef(null);
+
+  const {revSetChatMessage} = useRevChatMessagesHelperFunctions();
+
+  let pageSize = 10;
 
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
-  let revAddedMessageIdsArr = [];
+  const revGetMessagesArr = () => revMessagesArr;
 
-  useEffect(() => {
-    revAddedMessageIdsArr = [];
-  }, []);
+  const revRenderItem = ({item}) => {
+    let chatMsg = item;
 
-  let revGUID_1 = REV_LOGGED_IN_ENTITY_GUID;
-  let revGUID_2 = REV_LOGGED_IN_ENTITY_GUID == 43 ? 1 : 43;
+    let revCurrMsgId = chatMsg._revEntityGUID;
 
-  let revChatRelsStr = RevPersLibRead_React.revGetRels_By_RelType_LocalGUIDs(
-    'rev_stranger_chat_of',
-    revGUID_1,
-    revGUID_2,
-  );
+    let revView = null;
 
-  let revChatRelsArr = JSON.parse(revChatRelsStr);
-
-  let revChatMessagesArr = [];
-
-  for (let i = 0; i < revChatRelsArr.length; i++) {
-    let revEntityGUID = revChatRelsArr[i]._revEntityGUID;
-
-    if (revEntityGUID < 1) {
-      continue;
-    }
-
-    let revChatMsgEntity = revPersGetRevEnty_By_EntityGUID(revEntityGUID);
-
-    let revEntityOwnerGUID = revChatMsgEntity._revEntityOwnerGUID;
-
-    if (revEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID) {
-      revChatMsgEntity['revMessageType'] = 'outbox';
+    if (chatMsg.revMessageType.localeCompare('inbox') === 0) {
+      revView = <InboxMessage key={revCurrMsgId} revVarArgs={chatMsg} />;
     } else {
-      revChatMsgEntity['revMessageType'] = 'inbox';
+      revView = <OutboxChatMessage key={revCurrMsgId} revVarArgs={chatMsg} />;
     }
 
-    revChatMessagesArr.push(revChatMsgEntity);
-  }
-
-  let revChatMessagesArrCount = revChatMessagesArr.length;
-
-  let RevPastChatConversations = () => {
     let revPastChatConversationsArr = (
-      <View>
-        {revChatMessagesArr.map(chatMsg => {
-          let revCurrMsgId = chatMsg._revEntityGUID;
-
-          if (revAddedMessageIdsArr.includes(revCurrMsgId)) {
-            return null;
-          }
-
-          revAddedMessageIdsArr.push(revCurrMsgId);
-
-          if (chatMsg.revMessageType.localeCompare('inbox') === 0) {
-            return <InboxMessage key={revCurrMsgId} revVarArgs={chatMsg} />;
-          } else {
-            return (
-              <OutboxChatMessage key={revCurrMsgId} revVarArgs={chatMsg} />
-            );
-          }
-        })}
+      <View
+        key={chatMsg._revEntityGUID + '_revRenderItem_' + revGetRandInteger()}>
+        {revView}
       </View>
     );
 
-    return revChatMessagesArrCount > 0 ? revPastChatConversationsArr : null;
+    return revPastChatConversationsArr;
   };
 
-  let revChatMessagesArrCountTxt = revChatMessagesArrCount
-    ? '+' + revChatMessagesArrCount + ' chat mEssaGes'
-    : 'No chats yet';
+  const revScrollEndReached = () => {
+    console.log('>>> revScrollEndReached <<<');
+  };
 
-  return (
-    <View>
-      <RevNullMessagesView />
-      <ScrollView
-        ref={ref => {
-          this.scrollView = ref;
+  const revInitChatFlatList = (revFlatListData, revFlatListRef) => {
+    let revRetView = (
+      <FlatList
+        ref={revFlatListRef}
+        inverted={true}
+        data={revFlatListData}
+        renderItem={revRenderItem}
+        keyExtractor={item => item._revEntityGUID}
+        onLayout={() => {
+          // revFlatListRef.current.scrollToEnd({animated: true});
         }}
-        onContentSizeChange={() =>
-          this.scrollView.scrollToEnd({animated: true})
-        }
-        vertical
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentOffset={{x: 0, y: 99999}}
-        style={styles.chatMsgsVScroller}>
-        <View style={[styles.revFlexWrapper, styles.userInfoWrapper]}>
-          <Text style={[styles.revSiteTxtColor, styles.userInfoTxt]}>
+        removeClippedSubviews={true}
+        updateCellsBatchingPeriod={50}
+        onEndReached={revScrollEndReached}
+        onEndReachedThreshold={0.5}
+        initialNumToRender={pageSize}
+        maxToRenderPerBatch={pageSize}
+        style={styles.chatMsgsVScroller}></FlatList>
+    );
+
+    return revRetView;
+  };
+
+  const revChatMessagesListingView = revListingView => {
+    if (!revMessagesArr) {
+      return null;
+    }
+
+    return (
+      <View style={styles.chatMessagesContainer}>
+        <RevNullMessagesView />
+        <View style={[revSiteStyles.revFlexContainer, styles.userInfoWrapper]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtSmall,
+            ]}>
             About me hello!
           </Text>
+
+          {revChatMessagesCountView(revMessagesArrLatestRef.current)}
         </View>
-        <Text style={styles.messagesNull}>{revChatMessagesArrCountTxt}</Text>
-        <View style={styles.chatMessagesContainer}>
-          <RevPastChatConversations />
 
-          {newPeerMessages.map(chatMsg => {
-            let revCurrMsgId = chatMsg._revEntityGUID;
+        {revListingView}
+      </View>
+    );
+  };
 
-            if (revAddedMessageIdsArr.includes(revCurrMsgId)) {
-              return null;
-            }
+  const revAddChatMessage = revChatMessage => {
+    revChatMessage = revSetChatMessage(revChatMessage);
 
-            revAddedMessageIdsArr.push(revCurrMsgId);
+    if (revIsEmptyJSONObject(revChatMessage._revPublisherEntity)) {
+      revChatMessage['_revPublisherEntity'] = revPersGetRevEnty_By_EntityGUID(
+        revChatMessage._revEntityOwnerGUID,
+      );
+    }
 
-            if (chatMsg.revMessageType.localeCompare('inbox') === 0) {
-              return <InboxMessage key={revCurrMsgId} revData={chatMsg} />;
-            } else {
-              return <OutboxChatMessage key={revCurrMsgId} revData={revData} />;
-            }
-          })}
-        </View>
-      </ScrollView>
-    </View>
-  );
+    setRevMessagesArr(prevState => {
+      let revLatestData = [...prevState, revChatMessage];
+      return revLatestData;
+    });
+  };
+
+  let revChatMessagesCountView = revTotChatMessagesCount => {
+    if (!revTotChatMessagesCount) {
+      return null;
+    }
+
+    let revMessagesArrCountTxt = revTotChatMessagesCount
+      ? '+' + revTotChatMessagesCount + ' chat mEssaGes'
+      : 'No chats yet';
+
+    return (
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revChatMessagesCounterTxt,
+        ]}>
+        {revMessagesArrCountTxt}
+      </Text>
+    );
+  };
+
+  const revInitChatMessagesListingArea = ({
+    revOnViewChangeCallBack,
+    revTargetGUID,
+    revSubjectGUID,
+  }) => {
+    setRevMessagesArr([]);
+
+    revDisplayCallBackRef.current = revOnViewChangeCallBack;
+
+    setRevCurrTargetGUID(-1);
+    setRevCurrSubjectGUID(-1);
+
+    setTimeout(() => {
+      setRevCurrTargetGUID(revTargetGUID);
+      setRevCurrSubjectGUID(revSubjectGUID);
+    }, 0);
+  };
+
+  useEffect(() => {
+    if (revCurrTargetGUID < 1 || revCurrSubjectGUID < 1) {
+      return;
+    }
+
+    let revPastMessagesArr = revGetLocalChatMessages(
+      revCurrTargetGUID,
+      revCurrSubjectGUID,
+    );
+
+    setRevMessagesArr(revPastMessagesArr);
+  }, [revCurrTargetGUID, revCurrSubjectGUID]);
+
+  useEffect(() => {
+    if (revCurrTargetGUID < 1 || revCurrSubjectGUID < 1) {
+      return;
+    }
+
+    revMessagesArrLatestRef.current = revMessagesArr.length;
+
+    revFlatListRef.current = revInitChatFlatList(
+      revMessagesArr,
+      revFlatListRef,
+    );
+
+    if (revDisplayCallBackRef.current) {
+      let revListingView = revChatMessagesListingView(revFlatListRef.current);
+      revDisplayCallBackRef.current(revListingView);
+    }
+  }, [revMessagesArr]);
+
+  return {
+    revAddChatMessage,
+    revSetChatMessage,
+    revGetMessagesArr,
+    revInitChatMessagesListingArea,
+  };
 }
 
 const styles = StyleSheet.create({
   chatMsgsVScroller: {
     width: '100%',
     marginTop: 4,
-  },
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
+    marginBottom: 50,
   },
   userInfoWrapper: {
     backgroundColor: '#fffde7',
-    paddingHorizontal: 12,
+    paddingHorizontal: 9,
     paddingVertical: 4,
-    marginTop: 8,
     borderRadius: 5,
   },
-  userInfoTxt: {
-    fontSize: 10,
-  },
-  messagesNull: {
-    color: '#90a4ae',
-    fontSize: 10,
+  revChatMessagesCounterTxt: {
     marginTop: 5,
-    marginLeft: 25,
   },
   chatMessagesContainer: {
     display: 'flex',
     flexDirection: 'column',
     marginTop: 3,
-    marginBottom: 55,
   },
 });

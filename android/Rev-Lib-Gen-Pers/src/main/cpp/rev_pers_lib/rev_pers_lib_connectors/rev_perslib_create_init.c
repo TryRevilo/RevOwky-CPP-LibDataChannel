@@ -45,9 +45,13 @@ long revPersInit(RevEntity *revEntity) {
     }
 
     RevEntity *revInfoEntity = revEntity->_revInfoEntity;
+    char *revEntityType = revInfoEntity->_revEntityType;
     char *revInfoEntitySubType = revInfoEntity->_revEntitySubType;
 
-    if (revInfoEntity && (revInfoEntitySubType != NULL) && (revInfoEntitySubType[0] != '\0')) {
+    if (revInfoEntity
+        && (revEntityType != NULL) && (revEntityType[0] != '\0')
+        && (revInfoEntitySubType != NULL) && (revInfoEntitySubType[0] != '\0')) {
+
         long revInfoEntityGUID = revPersInit(revInfoEntity);
 
         RevEntityRelationship *c_RevEntityRelationship = revInitializedEntityRelationship();

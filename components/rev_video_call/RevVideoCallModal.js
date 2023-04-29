@@ -1,40 +1,13 @@
-import React, {useState, useContext} from 'react';
-import {
-  Button,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  PermissionsAndroid,
-  NativeModules,
-  DeviceEventEmitter,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 
 import Modal from 'react-native-modal';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
-
-import MyLocalPortraitVideo from '../rev_call/MyLocalPortraitVideo';
 import PeerVideoView from '../rev_call/PeerVideoView';
 
 function RevVideoCallModal() {
-  const {
-    localPortraitVideos,
-    peerVideos,
-    myConnection,
-    peerConnections,
-    revWebRTCSendFile,
-    handleLeave,
-  } = useContext(RevRemoteSocketContext);
-
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -58,7 +31,7 @@ function RevVideoCallModal() {
     return (
       <View style={styles.modalVideoChatArea}>
         <View style={styles.modalPeerVideoContainer}>
-          {peerVideos.map(peerVideo => (
+          {[].map(peerVideo => (
             <PeerVideoView
               key={peerVideo.revId}
               revId={peerVideo.revId}
@@ -66,15 +39,7 @@ function RevVideoCallModal() {
             />
           ))}
         </View>
-        <View style={styles.myVideoStreamContainer}>
-          {localPortraitVideos.map(localPortraitVideo => (
-            <MyLocalPortraitVideo
-              key={localPortraitVideo.revId}
-              revId={localPortraitVideo.revId}
-              revLocalStream={localPortraitVideo.revLocalStream}
-            />
-          ))}
-        </View>
+        <View style={styles.myVideoStreamContainer}></View>
         <View style={styles.endCallBtnWrapper}>
           <TouchableOpacity onPress={() => toggleModal()}>
             <Text style={styles.endCallBtn}>

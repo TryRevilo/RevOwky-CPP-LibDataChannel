@@ -1,13 +1,5 @@
 import React from 'react';
-
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  NativeModules,
-} from 'react-native';
+import {StyleSheet, Text, View, FlatList, NativeModules} from 'react-native';
 
 import {revPluginsLoader} from '../../../../rev_plugins_loader';
 
@@ -20,8 +12,6 @@ import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_hel
 import {revGetLocal_OR_RemoteGUID} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetPublisherEntity} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
-import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
-
 export const RevTaggedPostsListing = ({revVarArgs}) => {
   if (
     revIsEmptyJSONObject(revVarArgs) ||
@@ -32,8 +22,6 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  const {revSiteStyles} = useRevSiteStyles();
-
   if (
     revIsEmptyJSONObject(revVarArgs) ||
     !revVarArgs.hasOwnProperty('revTimelineEntities') ||
@@ -43,11 +31,12 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
   }
 
   let revEntitiesArr = revVarArgs.revTimelineEntities;
+
   let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
-  let revCounter = 1;
+  let revCounter = 0;
 
-  function renderItem({item}) {
+  function revRenderItem({item}) {
     let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
 
     if (revEntityGUID < 0) {
@@ -66,6 +55,10 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
         RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityOwnerGUID);
       revPublisherEntity = JSON.parse(revPublisherEntityStr);
 
+      if (revIsEmptyJSONObject(revPublisherEntity)) {
+        return null;
+      }
+
       revVarArgs.revEntityPublishersArr.push(revPublisherEntity);
     }
 
@@ -78,35 +71,29 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
       revVarArgs: null,
     });
 
-    let revPrevCounter = revCounter - 1;
-    let revAddAd = revCounter % 2 == 0 && revPrevCounter % 2 !== 0;
+    let revAddAd = revCounter % 2 == 0 && revCounter !== 0;
     let RevView = revAddAd == true ? RevAdEntityListingView : null;
-    revCounter = revCounter + 1;
+    revCounter++;
 
     return (
-      <View
-        key={
-          revEntityGUID.toString() +
-          '_rev_kiwi_list_item_' +
-          revGetRandInteger()
-        }>
+      <View key={revEntityGUID + '_revRenderItem_' + revGetRandInteger()}>
         {RevView}
-        <RevTaggedPostsListingItem
-          key={revEntityGUID.toString()}
-          revVarArgs={item}
-        />
+        <RevTaggedPostsListingItem revVarArgs={item} />
       </View>
     );
   }
 
+  let revDisplayEntitiesArr = revEntitiesArr.slice(0, 5);
+  revDisplayEntitiesArr = JSON.parse(JSON.stringify(revDisplayEntitiesArr));
+
   let RevDisplay = () => {
-    return revEntitiesArr.length > 0 ? (
+    return revDisplayEntitiesArr.length > 0 ? (
       <FlatList
-        data={revEntitiesArr}
-        renderItem={renderItem}
+        data={revDisplayEntitiesArr}
+        renderItem={revRenderItem}
         keyExtractor={item => {
           let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
-          return revEntityGUID.toString() + '_' + revGetRandInteger();
+          return revEntityGUID + '_rev_tagged_post_L' + revGetRandInteger();
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

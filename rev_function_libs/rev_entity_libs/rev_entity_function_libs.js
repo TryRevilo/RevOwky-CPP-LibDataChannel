@@ -9,7 +9,7 @@ export const revGetEntityGUID = revEntity => {
 
   if (
     revEntity.hasOwnProperty('_revEntityGUID') &&
-    revEntity._revEntityGUID >= 0
+    revEntity._revEntityGUID >= -1
   ) {
     revEntityGUID = revEntity._revEntityGUID;
   }
@@ -26,7 +26,7 @@ export const revGetRemoteEntityGUID = revEntity => {
 
   if (
     revEntity.hasOwnProperty('_remoteRevEntityGUID') &&
-    revEntity._remoteRevEntityGUID >= 0
+    revEntity._remoteRevEntityGUID >= -1
   ) {
     revEntityGUID = revEntity._remoteRevEntityGUID;
   }

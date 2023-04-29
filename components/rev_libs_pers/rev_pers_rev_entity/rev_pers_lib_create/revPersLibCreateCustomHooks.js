@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {DeviceEventEmitter, NativeModules} from 'react-native';
+import {NativeModules} from 'react-native';
 
 var RNFS = require('react-native-fs');
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -303,6 +303,8 @@ export const useRevSaveNewEntity = () => {
 
     let revPersEntityGUID = revCreateNewEntity(revPersEntityData);
 
+    revPersEntityData['_revEntityGUID'] = revPersEntityGUID;
+
     if (revPersEntityGUID < 1) {
       return -1;
     }
@@ -380,6 +382,10 @@ export const useRevSaveNewEntity = () => {
 
     let resEntityInfoGUID = revCreateNewEntity(revPersInfoEntityData);
 
+    revPersInfoEntityData['_revEntityGUID'] = resEntityInfoGUID;
+
+    revPersEntityData['_revInfoEntity'] = revPersInfoEntityData;
+
     if (resEntityInfoGUID < 0) {
       return -1;
     }
@@ -415,7 +421,7 @@ export const useRevSaveNewEntity = () => {
       );
     });
 
-    return revPersEntityGUID;
+    return revPersEntityData;
   };
 
   return {revSaveNewEntity};
@@ -500,6 +506,7 @@ export const useRevCreateNewUserEntity = () => {
     let revUserEntitySettingsInfo = JSON.parse(
       JSON.stringify(revUserEntitySettings._revInfoEntity),
     );
+
     delete revUserEntitySettings['_revInfoEntity'];
 
     let revUserEntitySettingsGUID = RevPersLibCreate_React.revPersInitJSON(
@@ -513,6 +520,10 @@ export const useRevCreateNewUserEntity = () => {
       revUserEntitySettingsInfo._revEntityMetadataList;
 
     for (let i = 0; i < revUserEntitySettingsMetadataList.length; i++) {
+      if (!revUserEntitySettingsMetadataList[i]) {
+        continue;
+      }
+
       revUserEntitySettingsMetadataList[i]['_resolveStatus'] = 0;
     }
 
