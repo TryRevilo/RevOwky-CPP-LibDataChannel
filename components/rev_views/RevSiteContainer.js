@@ -32,6 +32,7 @@ const RevSiteContainer = () => {
     SET_REV_PAGE_HEADER_CONTENT_VIEWER,
     REV_SITE_BODY,
     SET_REV_SITE_BODY,
+    REV_SITE_MODAL,
   } = useContext(ReViewsContext);
 
   const {revGetConnectionRequests} = useRevGetConnectionRequests();
@@ -236,6 +237,8 @@ const RevSiteContainer = () => {
 
         <RevFooterArea />
       </View>
+
+      {REV_SITE_MODAL}
     </View>
   );
 };

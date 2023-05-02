@@ -16,15 +16,15 @@ import RevSiteLoading from './components/rev_views/RevSiteLoading';
 
 function App(): JSX.Element {
   return (
-    <RevSiteDataContextProvider>
-        <RevRemoteSocketContextProvider>
-            <RevWebRTCContextProvider>
-                <ReViewsContextProvider>
+    <ReViewsContextProvider>
+        <RevSiteDataContextProvider>
+            <RevRemoteSocketContextProvider>
+                <RevWebRTCContextProvider>
                     <RevSiteLoading />
-                </ReViewsContextProvider>
-            </RevWebRTCContextProvider>
-        </RevRemoteSocketContextProvider>
-    </RevSiteDataContextProvider>
+                </RevWebRTCContextProvider>
+            </RevRemoteSocketContextProvider>
+        </RevSiteDataContextProvider>
+    </ReViewsContextProvider>
   );
 }
 

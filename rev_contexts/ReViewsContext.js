@@ -1,4 +1,7 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
+import {View} from 'react-native';
+
+import Modal from 'react-native-modal';
 
 const ReViewsContext = createContext();
 
@@ -20,6 +23,31 @@ const ReViewsContextProvider = ({children}) => {
     <RevFooter1_Center />,
   );
 
+  const [revIsModalVisible, setRevIsModalVisible] = useState(false);
+  const [revModalContent, setModalContent] = useState(<View />);
+
+  let revSiteModal = (
+    <Modal
+      isVisible={revIsModalVisible}
+      onSwipeComplete={() => setRevIsModalVisible(false)}
+      swipeDirection="left">
+      {revModalContent}
+    </Modal>
+  );
+
+  const revInitSiteModal = revContentView => {
+    setRevIsModalVisible(true);
+    setModalContent(revContentView);
+  };
+
+  const revCloseSiteModal = () => {
+    setRevIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    setModalContent(revModalContent);
+  }, [revIsModalVisible]);
+
   return (
     <ReViewsContext.Provider
       value={{
@@ -31,6 +59,9 @@ const ReViewsContextProvider = ({children}) => {
         SET_REV_SITE_FOOTER_1_CONTENT_VIEWER,
         REV_FOOTER_1_CENTER,
         SET_REV_FOOTER_1_CENTER,
+        REV_SITE_MODAL: revSiteModal,
+        revInitSiteModal,
+        revCloseSiteModal,
       }}>
       {children}
     </ReViewsContext.Provider>

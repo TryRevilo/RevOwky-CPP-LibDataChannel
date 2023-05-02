@@ -44,15 +44,11 @@ const RevNullMessagesView = () => {
     );
   };
 
-  const revHandleOnLogOutTabPressed = () => {
-    SET_REV_LOGGED_IN_ENTITY_GUID(0);
-  };
-
   let RevHeader = () => {
     return (
       <View
         style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
-        <TouchableOpacity onPress={revHandleOnLogOutTabPressed}>
+        <TouchableOpacity>
           <Text style={styles.revContentBodyTtlTellTxt}>
             <FontAwesome name="dot-circle-o" />
             <FontAwesome name="long-arrow-right" /> Info
