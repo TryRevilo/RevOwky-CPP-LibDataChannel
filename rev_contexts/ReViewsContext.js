@@ -1,5 +1,5 @@
-import React, {createContext, useEffect, useState} from 'react';
-import {View} from 'react-native';
+import React, {createContext, useEffect, useState, useRef} from 'react';
+import {View, Animated, PanResponder, StyleSheet} from 'react-native';
 
 import Modal from 'react-native-modal';
 
@@ -26,27 +26,105 @@ const ReViewsContextProvider = ({children}) => {
   const [revIsModalVisible, setRevIsModalVisible] = useState(false);
   const [revModalContent, setModalContent] = useState(<View />);
 
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(-3000));
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // Check if horizontal swipe is more than vertical swipe
+        return (
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy) * 2 &&
+          gestureState.dy < 10
+        );
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        // Set the x-coordinate of the modal to match the gesture
+        Animated.event([null, {dx: fadeAnim}], {
+          useNativeDriver: false,
+        })(evt, gestureState);
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        // If the modal has been swiped more than 50% of the screen width, close it
+        if (
+          Math.abs(gestureState.dx) >
+          Dimensions.get('window').width / 2 - 50
+        ) {
+          closeModal();
+        } else {
+          // Otherwise, animate the modal back to its original position
+          Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: 3000,
+            useNativeDriver: false,
+          }).start();
+        }
+      },
+    }),
+  ).current;
+
+  useEffect(() => {
+    if (revIsModalVisible) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: -3000,
+          duration: 3000,
+          useNativeDriver: true,
+        }),
+      ]).start(() => setRevIsModalVisible(false));
+    }
+  }, [fadeAnim, revIsModalVisible, slideAnim]);
+
   let revSiteModal = (
     <Modal
       isVisible={revIsModalVisible}
+      animationType="none"
+      transparent={true}
       onSwipeComplete={() => setRevIsModalVisible(false)}
+      onRequestClose={revCloseSiteModal}
       swipeDirection="left">
-      {revModalContent}
+      <View style={styles.overlay}>
+        <Animated.View
+          style={[
+            styles.modal,
+            {
+              opacity: fadeAnim,
+              transform: [{translateY: slideAnim}],
+            },
+          ]}
+          {...panResponder.panHandlers}>
+          {revModalContent}
+        </Animated.View>
+      </View>
     </Modal>
   );
-
-  const revInitSiteModal = revContentView => {
-    setRevIsModalVisible(true);
-    setModalContent(revContentView);
-  };
 
   const revCloseSiteModal = () => {
     setRevIsModalVisible(false);
   };
 
-  useEffect(() => {
-    setModalContent(revModalContent);
-  }, [revIsModalVisible]);
+  const revInitSiteModal = revContentView => {
+    setModalContent(revContentView);
+    setRevIsModalVisible(true);
+  };
 
   return (
     <ReViewsContext.Provider
@@ -69,3 +147,19 @@ const ReViewsContextProvider = ({children}) => {
 };
 
 export {ReViewsContextProvider, ReViewsContext};
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

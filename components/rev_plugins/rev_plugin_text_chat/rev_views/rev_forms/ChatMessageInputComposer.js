@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
 import {RevWebRTCContext} from '../../../../../rev_contexts/RevWebRTCContext';
+import {RevRemoteSocketContext} from '../../../../../rev_contexts/RevRemoteSocketContext';
 
 import {useChatMessages} from '../rev_listing_views/ChatMessages';
 import {RevSubmitChatTab} from './RevSubmitChatTab';
@@ -21,17 +22,26 @@ import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_me
 
 import DeviceInfo from 'react-native-device-info';
 
+import {revPostServerData} from '../../../../rev_libs_pers/rev_server/rev_pers_lib_create';
+
+import {revArraysEqual} from '../../../../../rev_function_libs/rev_gen_helper_functions';
+
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
-export function useChatMessageInputComposer(revVarArgs) {
+export function ChatMessageInputComposer({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   const revChatMessageTxtLatest = useRef('');
   const revTextInputRef = useRef(null);
 
+  const [isRevShowComposer, setIsRevShowComposer] = useState(false);
+
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
-  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
+  const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
+    useContext(ReViewsContext);
+
+  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const {sendMessage} = useContext(RevWebRTCContext);
 
@@ -41,21 +51,17 @@ export function useChatMessageInputComposer(revVarArgs) {
     REV_LOGGED_IN_ENTITY_GUID == 1 ? 6 : 1,
   );
 
-  const revHandleNextStrangerChat = () => {
-    const revOnViewChangeCallBack = revUpdatedView => {
-      SET_REV_SITE_BODY(revUpdatedView);
-    };
-
-    revInitChatMessagesListingArea({
-      revOnViewChangeCallBack,
-      revTargetGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revSubjectGUID: revTargetGUID,
-    });
-  };
+  const [revRandLoggedInGUIDs, setRevRandLoggedInGUIDs] = useState([]);
+  const revRandLoggedInGUIDsRef = useRef(revRandLoggedInGUIDs);
+  const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
 
   const revChatUserTab = revId => {
     return (
-      <TouchableOpacity key={revId}>
+      <TouchableOpacity
+        key={revId}
+        onPress={() => {
+          console.log('>>> revId', revId);
+        }}>
         <View style={styles.revChatMsgUserIcon}>
           <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
         </View>
@@ -64,6 +70,41 @@ export function useChatMessageInputComposer(revVarArgs) {
   };
 
   const revUserIcons = Array.from({length: 3}, (_, i) => revChatUserTab(i));
+
+  const revHandleNextStrangerChat = isRevShowComposer => {
+    if (isRevShowComposer) {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
+    } else {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+    }
+
+    const revOnViewChangeCallBack = revUpdatedView => {
+      SET_REV_SITE_BODY(revUpdatedView);
+
+      let revURL = REV_ROOT_URL + '/rev_api/rev_get_rand_logged_in_guids';
+
+      revPostServerData(
+        revURL,
+        {
+          revLoggedInRemoteEntityGUID:
+            REV_LOGGED_IN_ENTITY._remoteRevEntityGUID,
+          filter: [],
+        },
+        revRetPersData => {
+          let revRetLoggedInGUIDsDataFilter = revRetPersData.filter;
+          setRevRandLoggedInGUIDs(revRetLoggedInGUIDsDataFilter);
+        },
+      );
+    };
+
+    revInitChatMessagesListingArea({
+      revOnViewChangeCallBack,
+      revTargetGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revSubjectGUID: revTargetGUID,
+    });
+
+    setRevNextChatTab(<RevChatSubmitOptions />);
+  };
 
   const revCurrChatTarget = () => {
     return (
@@ -88,7 +129,7 @@ export function useChatMessageInputComposer(revVarArgs) {
     return (
       <TouchableOpacity
         onPress={() => {
-          revHandleNextStrangerChat();
+          revHandleNextStrangerChat(isRevShowComposer);
         }}
         style={styles.recipientNextWrapperTouchable}>
         <View style={styles.recipientNextWrapper}>
@@ -128,7 +169,7 @@ export function useChatMessageInputComposer(revVarArgs) {
     );
   };
 
-  const revChatHeaderArea = () => {
+  const RevChatHeaderArea = () => {
     return (
       <View style={styles.revChatHeaderAreaWrapper}>
         <View style={styles.revChatHeaderAreaLeftView}>
@@ -143,13 +184,7 @@ export function useChatMessageInputComposer(revVarArgs) {
         <View style={[styles.revChatHeaderAreaRightView]}>
           <View style={styles.revChatHeaderAreaRightWrapper}>
             {revChatSettingsTab()}
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper_WidthAuto,
-                styles.revChatUserIconTabsWrapper,
-              ]}>
-              {revUserIcons.map(revView => revView)}
-            </View>
+            {revRandLoggedInUserTabs}
             <RevHeaderNextStrangerTab />
           </View>
         </View>
@@ -158,10 +193,10 @@ export function useChatMessageInputComposer(revVarArgs) {
   };
 
   const revChatInputArea = () => {
-    let revChatInputArea = (
+    let revRetView = (
       <View
         style={[revSiteStyles.revFlexContainer, styles.revChatInputContainer]}>
-        {revChatHeaderArea()}
+        <RevChatHeaderArea />
         <TextInput
           ref={revTextInputRef}
           style={styles.revChatInputArea}
@@ -177,7 +212,7 @@ export function useChatMessageInputComposer(revVarArgs) {
       </View>
     );
 
-    return revChatInputArea;
+    return revRetView;
   };
 
   const revSubmitChatOptionsMenuArea = revCallBackFunc => {
@@ -204,8 +239,127 @@ export function useChatMessageInputComposer(revVarArgs) {
       />
     );
   };
+  const revHandleHideComposingForm = revComposingStatus => {
+    console.log('revComposingStatus', revComposingStatus);
 
-  return {revChatInputArea, revSubmitChatOptionsMenuArea};
+    if (!revComposingStatus) {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+      setRevNextChatTab(<RevNextStrangerChatTabArea />);
+    }
+
+    setIsRevShowComposer(!revComposingStatus);
+  };
+
+  let RevChatSubmitOptions = () => {
+    return (
+      <View style={styles.footerSubmitOptionsLeftWrapper}>
+        {!isRevShowComposer ? (
+          revSubmitChatOptionsMenuArea(revRetData => {
+            if ('revEntity' in revRetData) {
+              revAddChatMessage(revRetData.revEntity);
+            }
+          })
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              revHandleNextStrangerChat(true);
+              setIsRevShowComposer(true);
+            }}>
+            <View style={[styles.cancelComposeChatMsg]}>
+              <FontAwesome
+                name="quote-left"
+                style={[
+                  revSiteStyles.revSiteTxtColor,
+                  revSiteStyles.revSiteTxtMedium,
+                ]}></FontAwesome>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity
+          onPress={async () => {
+            revWebRTCSendFile(2);
+          }}>
+          <View style={[styles.cancelComposeChatMsg]}>
+            <FontAwesome
+              name="image"
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtMedium,
+              ]}></FontAwesome>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            revHandleHideComposingForm(isRevShowComposer);
+          }}>
+          <View style={[styles.cancelComposeChatMsg]}>
+            <FontAwesome
+              name={isRevShowComposer ? 'expand' : 'times'}
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtMedium,
+              ]}></FontAwesome>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  useEffect(() => {
+    console.log('>>> ', JSON.stringify(revRandLoggedInGUIDs));
+
+    let revRandLoggedInUserTabsArea = [];
+
+    for (let i = 0; i < revRandLoggedInGUIDs.length; i++) {
+      let revCurrGUID = revRandLoggedInGUIDs[i];
+      revRandLoggedInUserTabsArea.push(revChatUserTab(revCurrGUID));
+    }
+
+    setRevRandLoggedInUserTabs(
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revChatUserIconTabsWrapper,
+        ]}>
+        {revRandLoggedInUserTabsArea.map(revView => revView)}
+      </View>,
+    );
+  }, [revRandLoggedInGUIDs]);
+
+  useEffect(() => {
+    if (isRevShowComposer) {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
+    }
+  }, [revRandLoggedInUserTabs]);
+
+  const RevNextStrangerChatTabArea = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          revHandleNextStrangerChat(true);
+          setIsRevShowComposer(true);
+        }}
+        style={styles.recipientNextWrapperTouchable}>
+        <View style={styles.recipientNextWrapper}>
+          <Text style={styles.recipientNextTxt}>NExT</Text>
+          <View style={styles.recipientNextUserIconWrapper}>
+            <FontAwesome name="user" style={styles.recipientNextUserIcon} />
+          </View>
+          <FontAwesome
+            name="arrow-right"
+            style={styles.recipientNextpointerIcon}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const [RevNextChatTab, setRevNextChatTab] = useState(
+    <RevNextStrangerChatTabArea />,
+  );
+
+  return RevNextChatTab;
 }
 
 const styles = StyleSheet.create({
@@ -256,7 +410,8 @@ const styles = StyleSheet.create({
   },
   revChatSettingsTabWrapper: {
     width: 'auto',
-    paddingHorizontal: 4,
+    paddingTop: 5,
+    paddingHorizontal: 8,
   },
   /** */
 
@@ -288,6 +443,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 4,
   },
   recipientNextTxt: {
     color: '#757575',
@@ -309,5 +465,30 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'center',
     marginTop: 7,
+  },
+
+  /** */
+
+  chatFooterWrapper: {
+    backgroundColor: '#FFF',
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  footerSubmitOptionsLeftWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cancelComposeChatMsg: {
+    fontWeight: 'bold',
+    marginTop: 2,
+    paddingHorizontal: 8,
+  },
+  rightFooterSubmitOptionsWrapper: {
+    alignItems: 'center',
+    width: 'auto',
+    marginRight: 14,
+    marginLeft: 'auto',
   },
 });

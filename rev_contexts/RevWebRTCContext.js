@@ -15,7 +15,6 @@ import {
   RTCIceCandidate,
   mediaDevices,
   RTCView,
-  MediaStreamTrack,
 } from 'react-native-webrtc';
 
 import {KeepAwake} from 'react-native-keep-awake';
@@ -121,6 +120,9 @@ const RevWebRTCContextProvider = ({children}) => {
         case 'candidate':
           await handleCandidate(message);
           break;
+        case 'rev_rand_logged_in_conns':
+          revHandleRandLoggedInConnGUIDs(message);
+          break;
         default:
           console.warn(`Received unknown message: ${JSON.stringify(message)}`);
       }
@@ -141,6 +143,16 @@ const RevWebRTCContextProvider = ({children}) => {
       }
     }
   };
+
+  const revGetRandLoggedInGUIDs = revLoggedInEntityGUID => {
+    let revMessage = {
+      type: 'rev_get_rand_connected_users',
+      revEntityId: revLoggedInEntityGUID,
+    };
+    revSendWebServerMessage(revMessage);
+  };
+
+  const revHandleRandLoggedInConnGUIDs = () => {};
 
   const revHandleWebServerConnection = ws => {
     let revMessage = {type: 'login', revEntityId: revLoggedInEntityGUID};
@@ -784,15 +796,6 @@ const RevWebRTCContextProvider = ({children}) => {
     revInitSendMsgs();
   }, [revQuedMessages]);
 
-  // create context value with state variables and functions
-  const contextValue = {
-    connections,
-    createPeerConnection,
-    sendMessage,
-    revInitVideoCall,
-    revEndVideoCall,
-  };
-
   useEffect(() => {
     handleAnswer(revPeerAnswer);
   }, [revPeerAnswer]);
@@ -823,6 +826,16 @@ const RevWebRTCContextProvider = ({children}) => {
       );
     }
   }, [revLocalVideoStream]);
+
+  // create context value with state variables and functions
+  const contextValue = {
+    connections,
+    createPeerConnection,
+    sendMessage,
+    revInitVideoCall,
+    revEndVideoCall,
+    revGetRandLoggedInGUIDs,
+  };
 
   return (
     <RevWebRTCContext.Provider value={contextValue}>

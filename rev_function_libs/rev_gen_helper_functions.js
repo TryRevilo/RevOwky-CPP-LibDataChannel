@@ -360,6 +360,10 @@ export const revJSONArrContains_NameId = (
   return revInJSONArr;
 };
 
+export const revArraysEqual = (a, b) => {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+};
+
 export const revPingServer = revVarArgs => {
   let revInterval = revVarArgs.revInterval;
   let revIP = revVarArgs.revIP;
