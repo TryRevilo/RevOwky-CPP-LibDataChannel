@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -12,6 +12,9 @@ import {useRevSiteStyles} from '../../../../RevSiteStyles';
 export const RevDialingCallWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  const [currentSequence, setCurrentSequence] = useState([1]);
+  const dotColors = ['#F26871', 'green', 'blue', '#999', '#BF64E8'];
+
   let revLocalVideoStream = revVarArgs.revLocalVideoStream;
   let revCancelCallBackFunc = revVarArgs.revCancelCallBackFunc;
 
@@ -21,6 +24,20 @@ export const RevDialingCallWidget = ({revVarArgs}) => {
     revCancelCallBackFunc();
     revCloseSiteModal();
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSequence(prevSequence => {
+        if (prevSequence[prevSequence.length - 1] === 6) {
+          return [1];
+        } else {
+          return [...prevSequence, prevSequence[prevSequence.length - 1] + 1];
+        }
+      });
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <View
@@ -83,6 +100,28 @@ export const RevDialingCallWidget = ({revVarArgs}) => {
               ]}
             />
           </TouchableOpacity>
+
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper_WidthAuto,
+              styles.revCallDialingDotsTextWrapper,
+            ]}>
+            {currentSequence.map((num, index) => (
+              <React.Fragment key={index}>
+                {index < currentSequence.length - 1 && (
+                  <Text
+                    style={[
+                      revSiteStyles.revSiteTxtLarge,
+                      revSiteStyles.revSiteTxtBold,
+                      {color: dotColors[num - 1]},
+                      styles.revCallDialingDotsText,
+                    ]}>
+                    .
+                  </Text>
+                )}
+              </React.Fragment>
+            ))}
+          </View>
         </View>
       </View>
     </View>
@@ -141,5 +180,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
     borderRadius: 5,
     alignSelf: 'stretch',
+  },
+  revCallDialingDotsTextWrapper: {
+    alignItems: 'center',
+    width: 22,
+    marginLeft: 4,
+  },
+  revCallDialingDotsText: {
+    marginLeft: 2,
   },
 });

@@ -11,6 +11,7 @@ import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_me
 import {
   revGetRandInteger,
   revIsEmptyJSONObject,
+  revIsEmptyVar,
 } from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
@@ -136,12 +137,27 @@ export function useChatMessages() {
   };
 
   const revAddChatMessage = revChatMessage => {
+    if (
+      revIsEmptyJSONObject(revChatMessage) ||
+      '_revEntityOwnerGUID' in revChatMessage ||
+      revIsEmptyVar(revChatMessage._revEntityOwnerGUID) ||
+      revChatMessage._revEntityOwnerGUID < 1
+    ) {
+      return null;
+    }
+
     revChatMessage = revSetChatMessage(revChatMessage);
 
     if (revIsEmptyJSONObject(revChatMessage._revPublisherEntity)) {
-      revChatMessage['_revPublisherEntity'] = revPersGetRevEnty_By_EntityGUID(
+      let revPublisherEntity = revPersGetRevEnty_By_EntityGUID(
         revChatMessage._revEntityOwnerGUID,
       );
+
+      if (revIsEmptyJSONObject(revPublisherEntity)) {
+        return null;
+      }
+
+      revChatMessage['_revPublisherEntity'] = revPublisherEntity;
     }
 
     setRevMessagesArr(prevState => {

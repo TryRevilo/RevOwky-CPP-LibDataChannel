@@ -123,6 +123,9 @@ const RevWebRTCContextProvider = ({children}) => {
         case 'rev_rand_logged_in_conns':
           revHandleRandLoggedInConnGUIDs(message);
           break;
+        case 'rev_unavailable':
+          console.log(deviceModel, message, JSON.stringify(message));
+          break;
         default:
           console.warn(`Received unknown message: ${JSON.stringify(message)}`);
       }
@@ -270,6 +273,8 @@ const RevWebRTCContextProvider = ({children}) => {
 
       setRevRemoteVideoStreamsArr([...revRemoteVideoStreamsArr, remoteStream]);
     };
+
+    console.log('>>> revIsVideoCall', revIsVideoCall);
 
     try {
       if (revIsVideoCall) {
@@ -468,7 +473,9 @@ const RevWebRTCContextProvider = ({children}) => {
 
     try {
       if (revIsEmptyJSONObject(revConnection.localDescription)) {
-        await revCreateOffer(revTargetPeerId, revConnection);
+        await revCreateOffer(revTargetPeerId, revConnection, {
+          revIsVideoCall: true,
+        });
       }
     } catch (error) {
       console.log('*** ERR -revInitVideoCall', error);
@@ -496,7 +503,9 @@ const RevWebRTCContextProvider = ({children}) => {
     let peerId = revData.revEntityId;
     let offer = revData.offer;
 
-    const revIsVideoCall = offer.sdp.includes('m=video');
+    console.log('>>> revIsVideoCall', JSON.stringify(revData.revIsVideoCall));
+
+    const revIsVideoCall = revData.revIsVideoCall;
 
     if (revIsVideoCall) {
       revInitSiteModal(
@@ -577,7 +586,7 @@ const RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  const revCreateOffer = async (peerId, pc) => {
+  const revCreateOffer = async (peerId, pc, {revIsVideoCall = false} = {}) => {
     if (!pc) {
       return;
     }
@@ -599,6 +608,10 @@ const RevWebRTCContextProvider = ({children}) => {
         revEntityId: peerId,
         revOffererEntityId: revLoggedInEntityGUID,
       };
+
+      if (revIsVideoCall) {
+        revOfferMsgData['revIsVideoCall'] = true;
+      }
 
       revSendWebServerMessage(revOfferMsgData);
     } catch (error) {

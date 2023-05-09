@@ -20,11 +20,18 @@ import {useChatMessages} from '../rev_listing_views/ChatMessages';
 import {RevSubmitChatTab} from './RevSubmitChatTab';
 import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_messages_helper_functions';
 
+import {revGetMetadataValue} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+
 import DeviceInfo from 'react-native-device-info';
 
 import {revPostServerData} from '../../../../rev_libs_pers/rev_server/rev_pers_lib_create';
 
-import {revArraysEqual} from '../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revOnDisplayNotification} from '../../../../../rev_function_libs/rev_live_noticias_functions';
+
+import {
+  revArraysEqual,
+  revIsEmptyJSONObject,
+} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
@@ -34,7 +41,15 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const revChatMessageTxtLatest = useRef('');
   const revTextInputRef = useRef(null);
 
+  const [revRandLoggedInEntities, setRevRandLoggedInEntities] = useState([]);
+  const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
+  const [revActivePeerEntity, setRevActivePeerEntity] = useState(null);
+  const [revActivePeerTab, setRevActivePeerTab] = useState(null);
   const [isRevShowComposer, setIsRevShowComposer] = useState(false);
+
+  const [revTargetGUID, setRevTargetGUID] = useState(
+    REV_LOGGED_IN_ENTITY_GUID == 6 ? 1 : 6,
+  );
 
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
@@ -45,22 +60,16 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const {sendMessage} = useContext(RevWebRTCContext);
 
-  const {revInitChatMessagesListingArea} = useChatMessages();
+  const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
 
-  const [revTargetGUID, setRevTargetGUID] = useState(
-    REV_LOGGED_IN_ENTITY_GUID == 1 ? 6 : 1,
-  );
+  const revChatUserTab = revNewActivePeer => {
+    let revNewActivePeerGUID = revNewActivePeer._remoteRevEntityGUID;
 
-  const [revRandLoggedInGUIDs, setRevRandLoggedInGUIDs] = useState([]);
-  const revRandLoggedInGUIDsRef = useRef(revRandLoggedInGUIDs);
-  const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
-
-  const revChatUserTab = revId => {
     return (
       <TouchableOpacity
-        key={revId}
+        key={revNewActivePeerGUID}
         onPress={() => {
-          console.log('>>> revId', revId);
+          setRevActivePeerEntity(revNewActivePeer);
         }}>
         <View style={styles.revChatMsgUserIcon}>
           <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
@@ -91,8 +100,18 @@ export function ChatMessageInputComposer({revVarArgs}) {
           filter: [],
         },
         revRetPersData => {
-          let revRetLoggedInGUIDsDataFilter = revRetPersData.filter;
-          setRevRandLoggedInGUIDs(revRetLoggedInGUIDsDataFilter);
+          if ('revError' in revRetPersData) {
+            setRevRandLoggedInEntities([]);
+          } else if ('filter' in revRetPersData) {
+            let revRetLoggedInEntitiesDataFilter = revRetPersData.filter;
+
+            setRevRandLoggedInEntities(revRetLoggedInEntitiesDataFilter);
+
+            let revNewActivePeerEntity = revRetLoggedInEntitiesDataFilter[0];
+
+            setRevActivePeerEntity(revNewActivePeerEntity);
+            setRevActivePeerTab(revCurrChatTargetTab(revNewActivePeerEntity));
+          }
         },
       );
     };
@@ -106,11 +125,24 @@ export function ChatMessageInputComposer({revVarArgs}) {
     setRevNextChatTab(<RevChatSubmitOptions />);
   };
 
-  const revCurrChatTarget = () => {
+  const revCurrChatTargetTab = revEntity => {
+    if (!revEntity) {
+      return null;
+    }
+
+    let revInfoEntity = revEntity._revInfoEntity;
+    let revFullNames = revGetMetadataValue(
+      revInfoEntity._revEntityMetadataList,
+      'rev_full_names',
+    );
+
     return (
       <TouchableOpacity
-        style={[revSiteStyles.revFlexWrapper, styles.revCurrChatTargetWrapper]}>
-        {revChatUserTab(1)}
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revCurrChatTargetTabWrapper,
+        ]}>
+        {revChatUserTab(revEntity)}
         <View>
           <Text
             style={[
@@ -118,7 +150,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
               revSiteStyles.revSiteTxtSmall,
               revSiteStyles.revSiteTxtBold,
             ]}>
-            Oliver Muchai
+            {revFullNames}
           </Text>
         </View>
       </TouchableOpacity>
@@ -172,9 +204,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const RevChatHeaderArea = () => {
     return (
       <View style={styles.revChatHeaderAreaWrapper}>
-        <View style={styles.revChatHeaderAreaLeftView}>
-          {revCurrChatTarget()}
-        </View>
+        <View style={styles.revChatHeaderAreaLeftView}>{revActivePeerTab}</View>
         <View style={styles.revChatHeaderAreaCenterView}>
           <ScrollView
             contentContainerStyle={
@@ -193,6 +223,16 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revChatInputArea = () => {
+    let revFullNames = '';
+
+    if (revActivePeerEntity) {
+      let revInfoEntity = revActivePeerEntity._revInfoEntity;
+      revFullNames = revGetMetadataValue(
+        revInfoEntity._revEntityMetadataList,
+        'rev_full_names',
+      );
+    }
+
     let revRetView = (
       <View
         style={[revSiteStyles.revFlexContainer, styles.revChatInputContainer]}>
@@ -200,7 +240,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
         <TextInput
           ref={revTextInputRef}
           style={styles.revChatInputArea}
-          placeholder=" Chat away !"
+          placeholder={` Chat away with ${revFullNames} !`}
           placeholderTextColor="#999"
           multiline={true}
           numberOfLines={5}
@@ -229,33 +269,30 @@ export function ChatMessageInputComposer({revVarArgs}) {
           revTextInputRef.current.clear();
 
           let revRemoteTargetEntityGUID =
-            REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
+            revActivePeerEntity._remoteRevEntityGUID;
 
-          // sendMessage(revRemoteTargetEntityGUID, {revMsg: 'HELLO WORLD ! ! !'});
-          // onDisplayNotification();
+          sendMessage(revRemoteTargetEntityGUID, {revMsg: 'HELLO WORLD ! ! !'});
+          revOnDisplayNotification();
 
           revCallBackFunc(revRetData);
         }}
       />
     );
   };
+
   const revHandleHideComposingForm = revComposingStatus => {
-    console.log('revComposingStatus', revComposingStatus);
-
-    if (!revComposingStatus) {
-      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
-      setRevNextChatTab(<RevNextStrangerChatTabArea />);
-    }
-
     setIsRevShowComposer(!revComposingStatus);
   };
 
   let RevChatSubmitOptions = () => {
     return (
       <View style={styles.footerSubmitOptionsLeftWrapper}>
-        {!isRevShowComposer ? (
+        {isRevShowComposer ? (
           revSubmitChatOptionsMenuArea(revRetData => {
-            if ('revEntity' in revRetData) {
+            if (
+              !revIsEmptyJSONObject(revRetData) &&
+              'revEntity' in revRetData
+            ) {
               revAddChatMessage(revRetData.revEntity);
             }
           })
@@ -295,7 +332,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
           }}>
           <View style={[styles.cancelComposeChatMsg]}>
             <FontAwesome
-              name={isRevShowComposer ? 'expand' : 'times'}
+              name={isRevShowComposer ? 'times' : 'expand'}
               style={[
                 revSiteStyles.revSiteTxtColor,
                 revSiteStyles.revSiteTxtMedium,
@@ -307,13 +344,15 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   useEffect(() => {
-    console.log('>>> ', JSON.stringify(revRandLoggedInGUIDs));
+    if (!revRandLoggedInEntities || !Array.isArray(revRandLoggedInEntities)) {
+      return;
+    }
 
     let revRandLoggedInUserTabsArea = [];
 
-    for (let i = 0; i < revRandLoggedInGUIDs.length; i++) {
-      let revCurrGUID = revRandLoggedInGUIDs[i];
-      revRandLoggedInUserTabsArea.push(revChatUserTab(revCurrGUID));
+    for (let i = 0; i < revRandLoggedInEntities.length; i++) {
+      let revRandLoggedInEntity = revRandLoggedInEntities[i];
+      revRandLoggedInUserTabsArea.push(revChatUserTab(revRandLoggedInEntity));
     }
 
     setRevRandLoggedInUserTabs(
@@ -325,20 +364,26 @@ export function ChatMessageInputComposer({revVarArgs}) {
         {revRandLoggedInUserTabsArea.map(revView => revView)}
       </View>,
     );
-  }, [revRandLoggedInGUIDs]);
+
+    setRevActivePeerTab(revCurrChatTargetTab(revActivePeerEntity));
+  }, [revRandLoggedInEntities, revActivePeerEntity]);
 
   useEffect(() => {
     if (isRevShowComposer) {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
+      setRevNextChatTab(<RevChatSubmitOptions />);
+    } else {
+      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
+      setRevNextChatTab(<RevNextStrangerChatTabArea />);
     }
-  }, [revRandLoggedInUserTabs]);
+  }, [revRandLoggedInUserTabs, isRevShowComposer]);
 
   const RevNextStrangerChatTabArea = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          revHandleNextStrangerChat(true);
           setIsRevShowComposer(true);
+          revHandleNextStrangerChat(true);
         }}
         style={styles.recipientNextWrapperTouchable}>
         <View style={styles.recipientNextWrapper}>
@@ -415,7 +460,7 @@ const styles = StyleSheet.create({
   },
   /** */
 
-  revCurrChatTargetWrapper: {
+  revCurrChatTargetTabWrapper: {
     alignItems: 'baseline',
   },
 

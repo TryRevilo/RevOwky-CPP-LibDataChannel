@@ -1,6 +1,6 @@
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
-export const onDisplayNotification = async () => {
+export const revOnDisplayNotification = async () => {
   // Request permissions (required for iOS)
   await notifee.requestPermission();
 

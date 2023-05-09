@@ -82,6 +82,14 @@ export var revPostServerData_Chunks_ = (revURL, revJSONData, callback) => {
 export var revPostServerData = (revURL, revJSONData, callback) => {
   const xhr = new XMLHttpRequest();
 
+  xhr.onerror = function () {
+    console.log('There was an error making the request.');
+
+    return callback({
+      revError: {status: xhr.status, statusText: xhr.statusText},
+    });
+  };
+
   xhr.open('POST', revURL);
   xhr.setRequestHeader('Content-Type', 'application/json');
 

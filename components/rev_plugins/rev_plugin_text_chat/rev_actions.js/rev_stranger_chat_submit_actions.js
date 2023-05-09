@@ -31,7 +31,7 @@ export const useRevHandleSendMsgAction = () => {
 
     revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
 
-    let revRetEntity = await revSaveNewEntity(revVarArgs);
+    let revRetEntity = revVarArgs; // await revSaveNewEntity(revVarArgs);
     let revPersEntityGUID = revRetEntity._revEntityGUID;
 
     revVarArgs['revEntity'] = revRetEntity;
@@ -47,9 +47,11 @@ export const useRevHandleSendMsgAction = () => {
       revMsgSenderOfRel._revEntityTargetGUID = revEntityOwnerGUID;
       revMsgSenderOfRel._revEntitySubjectGUID = revTargetEntityGUID;
 
-      let revMsgRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-        JSON.stringify(revMsgSenderOfRel),
-      );
+      //   let revMsgRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+      //     JSON.stringify(revMsgSenderOfRel),
+      //   );
+
+      let revMsgRelId = -1;
 
       revVarArgs['revMsgRelId'] = revMsgRelId;
     }

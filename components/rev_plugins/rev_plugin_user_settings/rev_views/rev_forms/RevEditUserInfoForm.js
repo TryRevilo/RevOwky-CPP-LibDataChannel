@@ -15,7 +15,11 @@ import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
 
 import {revPluginsLoader} from '../../../../rev_plugins_loader';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export const RevEditUserInfoForm = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {REV_SITE_VAR_ARGS, SET_REV_SITE_VAR_ARGS} =
     useContext(RevSiteDataContext);
 
@@ -60,10 +64,11 @@ export const RevEditUserInfoForm = () => {
   };
 
   return (
-    <View style={[styles.revFlexContainer, styles.revSearchInputContainer]}>
+    <View
+      style={[revSiteStyles.revFlexContainer, styles.revSearchInputContainer]}>
       <View>
         <TextInput
-          style={styles.revSiteSearchInput}
+          style={revSiteStyles.revSiteTextInput}
           placeholder=" Full names . . ."
           placeholderTextColor="#999"
           onChangeText={newText => {
@@ -82,7 +87,8 @@ export const RevEditUserInfoForm = () => {
           }}
           defaultValue={revSearchText}
         />
-        <View style={[styles.revFlexWrapper, styles.revTagsInputWrapper]}>
+        <View
+          style={[revSiteStyles.revFlexWrapper, styles.revTagsInputWrapper]}>
           <TextInput
             style={styles.revSearchTagsInput}
             placeholder=" #tags"
@@ -94,8 +100,8 @@ export const RevEditUserInfoForm = () => {
           />
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
               styles.revEnteredTags,
             ]}>
             # 0 entered
@@ -103,24 +109,36 @@ export const RevEditUserInfoForm = () => {
         </View>
       </View>
 
-      <View style={[styles.revFlexContainer, styles.revAddedMediaContainer]}>
-        <View style={[styles.revFlexWrapper, styles.revAddedMediaTitleWrapper]}>
-          <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}>
+      <View
+        style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaTitleWrapper,
+          ]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}>
             <FontAwesome name="camera" />
             <FontAwesome name="long-arrow-right" /> Profile pics
           </Text>
           <TouchableOpacity style={[styles.revAddMeadiaTab]}>
             <FontAwesome
               name="plus"
-              style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtSmall,
+              ]}
             />
           </TouchableOpacity>
         </View>
         <View>
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
             You have 0 pictures on your profile. You can upload up to 7
@@ -128,24 +146,36 @@ export const RevEditUserInfoForm = () => {
         </View>
       </View>
 
-      <View style={[styles.revFlexContainer, styles.revAddedMediaContainer]}>
-        <View style={[styles.revFlexWrapper, styles.revAddedMediaTitleWrapper]}>
-          <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}>
+      <View
+        style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaTitleWrapper,
+          ]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}>
             <FontAwesome name="dot-circle-o" />
             <FontAwesome name="long-arrow-right" /> Profile Vid{'  '}
           </Text>
           <TouchableOpacity style={[styles.revAddMeadiaTab]}>
             <FontAwesome
               name="plus"
-              style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtSmall,
+              ]}
             />
           </TouchableOpacity>
         </View>
         <View>
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
             You haven't uploaded a profile video
@@ -153,13 +183,14 @@ export const RevEditUserInfoForm = () => {
         </View>
       </View>
 
-      <View style={[styles.revFlexWrapper, styles.revSerachFooterWrapper]}>
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revSerachFooterWrapper]}>
         <TouchableOpacity onPress={revHandleSearchTabPress}>
           <Text
             style={[
-              styles.revSiteTxtColor,
-              styles.revSiteTxtSmall,
-              styles.revSearchTab,
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSaveTab,
             ]}>
             Save
           </Text>
@@ -167,17 +198,23 @@ export const RevEditUserInfoForm = () => {
         <TouchableOpacity onPress={handleRevCancelTabPress}>
           <Text
             style={[
-              styles.revSiteTxtColor,
-              styles.revSiteTxtSmall,
-              styles.revCancelTab,
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
-              style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
             />
             <FontAwesome
               name="long-arrow-right"
-              style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
             />{' '}
             Cancel
           </Text>
@@ -193,30 +230,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 32;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revSearchInputContainer: {
     width: maxChatMessageContainerWidth,
     borderBottomColor: '#F7F7F7',
@@ -246,14 +259,6 @@ const styles = StyleSheet.create({
     flex: 2,
     paddingBottom: 2,
     marginLeft: 4,
-  },
-  revSiteSearchInput: {
-    color: '#444',
-    fontSize: 11,
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
   },
   revAnoutMeContentInput: {
     color: '#444',
@@ -289,17 +294,5 @@ const styles = StyleSheet.create({
   revSerachFooterWrapper: {
     alignItems: 'center',
     marginTop: 22,
-  },
-  revSearchTab: {
-    color: '#F7F7F7',
-    backgroundColor: '#444',
-    width: 'auto',
-    paddingHorizontal: 22,
-    paddingVertical: 3,
-    marginLeft: 5,
-  },
-  revCancelTab: {
-    fontWeight: 'bold',
-    paddingHorizontal: 8,
   },
 });

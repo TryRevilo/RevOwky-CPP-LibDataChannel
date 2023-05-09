@@ -29,6 +29,9 @@ export const useRevSiteStyles = () => {
     revSiteTxtMedium: {
       fontSize: 12,
     },
+    revSiteTxtLarge: {
+      fontSize: 15,
+    },
     revSiteTxtBold: {
       fontWeight: 'bold',
     },
@@ -67,6 +70,31 @@ export const useRevSiteStyles = () => {
       color: '#90a4ae',
       fontSize: 10,
       alignSelf: 'flex-start',
+    },
+
+    /** TABS */
+    revSaveTab: {
+      color: '#F7F7F7',
+      backgroundColor: '#444',
+      width: 'auto',
+      paddingHorizontal: 22,
+      paddingVertical: 3,
+      marginLeft: 5,
+      borderRadius: 100,
+    },
+    revCancelTab: {
+      fontWeight: 'bold',
+      paddingHorizontal: 8,
+    },
+
+    /** REV TEXT INPUT */
+    revSiteTextInput: {
+      color: '#444',
+      fontSize: 11,
+      borderColor: '#F7F7F7',
+      borderWidth: 1,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
     },
   });
 

@@ -12,6 +12,10 @@ const {
 
 export function useRevPersGetRevEnty_By_EntityGUID() {
   const revPersGetRevEnty_By_EntityGUID = revEntityGUID => {
+    if (!revEntityGUID || revEntityGUID < 1) {
+      return null;
+    }
+
     let revEntityStr =
       RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityGUID);
     return JSON.parse(revEntityStr);
