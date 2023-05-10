@@ -6,6 +6,11 @@ export function revRemoveLinebreaks(revStr) {
   return revStr.replace(/(\r\n|\n|\r)/gm, '');
 }
 
+export const revSplitStringToArray = revStr => {
+  revStr = revRemoveLinebreaks(revStr);
+  return revStr.split(/\s+/);
+};
+
 export const revGenLoreumIpsumText = ({
   revMinWordsPerSentence = 7,
   revMaxWordsPerSentence = 100,

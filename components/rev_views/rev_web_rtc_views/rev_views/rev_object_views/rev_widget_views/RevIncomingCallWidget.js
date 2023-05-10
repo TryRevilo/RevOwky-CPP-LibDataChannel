@@ -13,16 +13,16 @@ export const RevIncomingCallWidget = ({revVarArgs}) => {
 
   if (
     revIsEmptyJSONObject(revVarArgs) ||
-    'revLocalVideoStream' in revVarArgs ||
-    revVarArgs.revLocalVideoStream == null
+    !('revAcceptCallBackFunc' in revVarArgs) ||
+    !('revCancelCallBackFunc' in revVarArgs)
   ) {
-    return;
+    return <Text style={revSiteStyles.revSiteTxtColor}>NULL - Incoming</Text>;
   }
 
   const {revCloseSiteModal} = useContext(ReViewsContext);
 
   const [currentSequence, setCurrentSequence] = useState([1]);
-  const dotColors = ['red', 'green', 'blue'];
+  const dotColors = ['#F26871', 'green', 'blue', '#999', '#BF64E8'];
 
   let revCancelCallBackFunc = revVarArgs.revCancelCallBackFunc;
   let revAcceptCallBackFunc = revVarArgs.revAcceptCallBackFunc;
@@ -39,15 +39,13 @@ export const RevIncomingCallWidget = ({revVarArgs}) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSequence(prevSequence => {
-        console.log('>>> prevSequence', JSON.stringify(prevSequence));
-
-        if (prevSequence[prevSequence.length - 1] === 3) {
+        if (prevSequence[prevSequence.length - 1] === 6) {
           return [1];
         } else {
           return [...prevSequence, prevSequence[prevSequence.length - 1] + 1];
         }
       });
-    }, 2000);
+    }, 200);
 
     return () => clearInterval(interval);
   }, []);
@@ -120,24 +118,17 @@ export const RevIncomingCallWidget = ({revVarArgs}) => {
           <View
             style={[
               revSiteStyles.revFlexWrapper_WidthAuto,
-              styles.revCallDialingDotsWrapper,
+              styles.revCallDialingDotsTextWrapper,
             ]}>
             {currentSequence.map((num, index) => (
               <React.Fragment key={index}>
-                <Text
-                  style={[
-                    revSiteStyles.revSiteTxtTiny,
-                    revSiteStyles.revSiteTxtBold,
-                    {color: dotColors[num - 1]},
-                  ]}>
-                  {num}
-                </Text>
                 {index < currentSequence.length - 1 && (
                   <Text
                     style={[
-                      revSiteStyles.revSiteTxtMedium,
+                      revSiteStyles.revSiteTxtLarge,
                       revSiteStyles.revSiteTxtBold,
                       {color: dotColors[num - 1]},
+                      styles.revCallDialingDotsText,
                     ]}>
                     .
                   </Text>
@@ -200,8 +191,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     borderRadius: 22,
   },
-  revCallDialingDotsWrapper: {
+  revCallDialingDotsTextWrapper: {
     alignItems: 'center',
+    width: 22,
     marginLeft: 4,
+  },
+  revCallDialingDotsText: {
+    marginLeft: 2,
   },
 });

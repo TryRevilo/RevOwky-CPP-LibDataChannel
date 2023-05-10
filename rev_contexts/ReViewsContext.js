@@ -1,5 +1,11 @@
 import React, {createContext, useEffect, useState, useRef} from 'react';
-import {View, Animated, PanResponder, StyleSheet} from 'react-native';
+import {
+  View,
+  Animated,
+  PanResponder,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 
 import Modal from 'react-native-modal';
 
@@ -24,7 +30,7 @@ const ReViewsContextProvider = ({children}) => {
   );
 
   const [revIsModalVisible, setRevIsModalVisible] = useState(false);
-  const [revModalContent, setModalContent] = useState(<View />);
+  const [revModalContent, setRevModalContent] = useState(<View />);
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(-3000));
@@ -122,9 +128,18 @@ const ReViewsContextProvider = ({children}) => {
   };
 
   const revInitSiteModal = revContentView => {
-    setModalContent(revContentView);
+    setRevModalContent(revContentView);
     setRevIsModalVisible(true);
   };
+
+  const revToggleSiteModal = (revContentView, revIsVisble) => {
+    setRevModalContent(revContentView);
+    setRevIsModalVisible(revIsVisble);
+  };
+
+  useEffect(() => {
+    revToggleSiteModal(revModalContent, revIsModalVisible);
+  }, [revIsModalVisible, revModalContent]);
 
   return (
     <ReViewsContext.Provider

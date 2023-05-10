@@ -7,10 +7,21 @@ import {RTCView} from 'react-native-webrtc';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
 import {useRevSiteStyles} from '../../../../RevSiteStyles';
 
 export const RevDialingCallWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  if (
+    revIsEmptyJSONObject(revVarArgs) ||
+    !('revCancelCallBackFunc' in revVarArgs)
+  ) {
+    return (
+      <Text style={revSiteStyles.revSiteTxtColor}>NULL - RevDialingCall</Text>
+    );
+  }
 
   const [currentSequence, setCurrentSequence] = useState([1]);
   const dotColors = ['#F26871', 'green', 'blue', '#999', '#BF64E8'];
