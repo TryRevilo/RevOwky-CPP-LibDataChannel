@@ -1,6 +1,11 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 export const useRevSiteStyles = () => {
+  var pageWidth = Dimensions.get('window').width - 12;
+  var height = Dimensions.get('window').height;
+
+  var maxChatMessageContainerWidth = pageWidth - 17;
+
   const revSiteStyles = StyleSheet.create({
     revSiteTxtAlertDangerColor: {
       color: 'red',
@@ -14,8 +19,14 @@ export const useRevSiteStyles = () => {
     revSiteTxtColorLight: {
       color: '#999',
     },
+    revSiteTxtColorDark: {
+      color: '#444',
+    },
     revSiteTxtColorWhite: {
       color: '#FFF',
+    },
+    revSiteTxtColorBlueLink: {
+      color: '#5c6bc0',
     },
     revSiteTxtTiny: {
       fontSize: 9,
@@ -36,7 +47,7 @@ export const useRevSiteStyles = () => {
       fontWeight: 'bold',
     },
     revSiteTxtWeightNormal: {
-      fontWeight: '100',
+      fontWeight: 'normal',
     },
     revFlexWrapper: {
       display: 'flex',
@@ -95,6 +106,100 @@ export const useRevSiteStyles = () => {
       borderWidth: 1,
       paddingHorizontal: 5,
       paddingVertical: 2,
+    },
+    revSiteTextInputNoBorder: {
+      color: '#444',
+      fontSize: 11,
+      borderWidth: 0,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+    },
+
+    revTagsInputWrapper: {
+      alignItems: 'flex-end',
+      marginTop: 8,
+    },
+    revTagsInput: {
+      color: '#444',
+      fontSize: 11,
+      lineHeight: 12,
+      textAlignVertical: 'bottom',
+      flex: 1,
+      borderColor: '#F7F7F7',
+      borderWidth: 1,
+      paddingHorizontal: 5,
+      paddingTop: 2,
+      paddingBottom: 2,
+      height: 22,
+    },
+    revEnteredTags: {
+      flex: 2,
+      paddingBottom: 2,
+      marginLeft: 4,
+    },
+
+    /** Text Input With Count */
+    revTextInputAreaWithCountContainer: {
+      borderColor: '#F7F7F7',
+      borderWidth: 1,
+      borderTopWidth: 0,
+      paddingBottom: 8,
+    },
+    revTextInputCountStyle: {
+      marginLeft: 8,
+    },
+    revTextInputAreaInputWithCount: {
+      color: '#444',
+      fontSize: 11,
+      textAlignVertical: 'top',
+      borderTopColor: '#F7F7F7',
+      borderTopWidth: 1,
+      paddingHorizontal: 5,
+      paddingTop: 7,
+    },
+
+    revFormFooterWrapper: {
+      alignItems: 'center',
+      marginTop: 8,
+    },
+
+    /** REV FORM OUTPUT */
+    revTagsOutputListingWrapper: {
+      alignItems: 'center',
+    },
+    revTagOutputTabWrapper: {
+      alignItems: 'center',
+      backgroundColor: '#F7F7F7',
+      paddingHorizontal: 4,
+      paddingVertical: 2,
+      marginRight: 4,
+      borderRadius: 22,
+    },
+    revDeleteOutputTabItem: {
+      paddingVertical: 4,
+      paddingHorizontal: 4,
+    },
+
+    revInfoArea: {
+      backgroundColor: '#fffde7',
+      paddingHorizontal: 9,
+      paddingVertical: 4,
+      marginTop: 3,
+      borderRadius: 5,
+    },
+
+    /** REV PAGE HEADER */
+    revPageHeaderAreaWrapper: {
+      alignItems: 'center',
+      width: maxChatMessageContainerWidth,
+      borderBottomColor: '#DDD',
+      borderBottomWidth: 1,
+      borderStyle: 'dotted',
+    },
+
+    /** MARGINS */
+    revMarginTopSmall: {
+      marginTop: 4,
     },
   });
 

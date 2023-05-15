@@ -16,6 +16,7 @@ import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGenLoreumIpsumText} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   if (
@@ -54,7 +55,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     'rev_full_names',
   );
 
-  let revUserRegLongDate = revOwkiMemberEntity._revTimePublished;
+  let revUserRegLongDate = revOwkiMemberEntity._revTimeCreated;
   let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
 
   let minMessageLen = 10;
@@ -75,7 +76,11 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     },
   });
 
-  let revUserInfoDescTxt = lorem.generateSentences(getRndInteger(1, 1));
+  let revUserInfoBriefDescTxt = revGenLoreumIpsumText({revMaxCharCount: 55});
+  let revUserInfoAboutDescTxt = revGenLoreumIpsumText({
+    revMaxCharCount: 255,
+    revMaxSentences: 5,
+  });
 
   const RevDrawUserInfo = ({revLabel, revVal}) => {
     return (
@@ -177,7 +182,14 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
             revLabel={'Full names'}
             revVal={revPublisherEntityNames}
           />
-          <RevDrawUserInfo revLabel={'About'} revVal={revUserInfoDescTxt} />
+          <RevDrawUserInfo
+            revLabel={'Brief'}
+            revVal={revUserInfoBriefDescTxt}
+          />
+          <RevDrawUserInfo
+            revLabel={'About'}
+            revVal={revUserInfoAboutDescTxt}
+          />
           <RevDrawUserInfo
             revLabel={'member since'}
             revVal={revFormattedLongDate}

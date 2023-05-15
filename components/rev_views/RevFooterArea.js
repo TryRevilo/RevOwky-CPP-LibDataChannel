@@ -21,6 +21,7 @@ import {
   useRevPersGetRevEntities_By_EntityGUIDsArr,
 } from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
+import {RevScrollView_V} from './rev_output_form_views';
 import RevVideoCallModal from '../rev_plugins/rev_plugin_video_call/rev_views/rev_object_views/rev_wideget_views/RevVideoCallModal';
 
 import ChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
@@ -314,6 +315,16 @@ function RevFooterArea() {
     revData: {},
   });
 
+  const handleRevShowUserAdsTabPress = () => {
+    let revPurchaseReceipt = revPluginsLoader({
+      revPluginName: 'rev_plugin_purchase_receipt',
+      revViewName: 'RevPurchaseReceipt',
+      revVarArgs: {},
+    });
+
+    SET_REV_SITE_BODY(revPurchaseReceipt);
+  };
+
   return (
     <View>
       <View style={styles.chatAreaContainer}>
@@ -371,7 +382,10 @@ function RevFooterArea() {
                 style={styles.channelOptionItem}
               />
               <FontAwesome name="asterisk" style={styles.channelOptionItem} />
-              <Text style={styles.channelOptionItem}>ads</Text>
+
+              <TouchableOpacity onPress={handleRevShowUserAdsTabPress}>
+                <Text style={styles.channelOptionItem}>ads</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

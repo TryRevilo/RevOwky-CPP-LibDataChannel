@@ -12,11 +12,12 @@ export const revSplitStringToArray = revStr => {
 };
 
 export const revGenLoreumIpsumText = ({
+  revMaxCharCount = 100,
   revMinWordsPerSentence = 7,
-  revMaxWordsPerSentence = 100,
+  revMaxWordsPerSentence = 12,
   revMinSentences = 1,
-  revMaxSentences = 1,
-}) => {
+  revMaxSentences = 2,
+} = {}) => {
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
       max: revMaxSentences,
@@ -26,9 +27,21 @@ export const revGenLoreumIpsumText = ({
       max: revGetRandInteger(revMinWordsPerSentence, revMaxWordsPerSentence),
       min: revGetRandInteger(1, revMinWordsPerSentence),
     },
+    maxCharCount: revMaxCharCount,
+
+    // count: 1, // Number of "words", "sentences", or "paragraphs"
+    format: 'plain', // "plain" or "html"
+    // paragraphLowerBound: 3,  // Min. number of sentences per paragraph.
+    // paragraphUpperBound: 7,  // Max. number of sentences per paragarph.
+    // random: Math.random, // A PRNG function
+    // sentenceLowerBound: 5,   // Min. number of words per sentence.
+    // sentenceUpperBound: 15,  // Max. number of words per sentence.
+    // suffix: '\n', // Line ending, defaults to "\n" or "\r\n" (win32)
+    units: 'sentences', // paragraph(s), "sentence(s)", or "word(s)"
+    // words: [], // Array of words to draw from
   });
 
-  return lorem.generateSentences(revGetRandInteger(1, 5));
+  return lorem.generateSentences(revGetRandInteger(1, revMaxSentences));
 };
 
 export const revGenRandString = revLength => {

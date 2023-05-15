@@ -387,7 +387,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     let RevUserProfileObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_user_profile',
       revViewName: 'rev_object_views',
-      revVarArgs: revPublisherEntity,
+      revVarArgs: {revEntity: revPublisherEntity},
     });
 
     SET_REV_SITE_BODY(RevUserProfileObjectView);

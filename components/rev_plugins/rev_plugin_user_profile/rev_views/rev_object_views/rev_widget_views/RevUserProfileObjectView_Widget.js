@@ -23,7 +23,8 @@ import {useRevConnectUser_Action} from '../../../rev_actions/rev_connect_user_ac
 const {RevPersLibRead_React} = NativeModules;
 
 export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
-  let revUserEntity = revVarArgs.revVarArgs;
+  revVarArgs = revVarArgs.revVarArgs;
+  let revUserEntity = revVarArgs.revEntity;
 
   if (
     revIsEmptyJSONObject(revUserEntity) ||
@@ -33,6 +34,15 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   }
 
   const {revSiteStyles} = useRevSiteStyles();
+
+  let revAddPageHeader = true;
+
+  if (
+    'revAddPageHeader' in revVarArgs &&
+    (revVarArgs.revAddPageHeader || !revVarArgs.revAddPageHeader)
+  ) {
+    revAddPageHeader = revVarArgs.revAddPageHeader;
+  }
 
   const {revConnectUser_Action} = useRevConnectUser_Action();
 
@@ -98,7 +108,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
             <Text
               style={[
                 revSiteStyles.revSiteTxtColorWhite,
-                revSiteStyles.revSiteTxtSmall,
+                revSiteStyles.revSiteTxtTiny,
                 revSiteStyles.revSiteTxtBold,
                 styles.revConnectTabButton,
               ]}>
@@ -158,7 +168,9 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
 
   return (
     <View style={revSiteStyles.revFlexContainer}>
-      <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
+      {!revAddPageHeader ? null : (
+        <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
+      )}
       <ScrollView style={revSiteStyles.revFlexContainer}>
         <View style={styles.revPublisherMainNonIconArea}>
           <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
@@ -177,14 +189,11 @@ const styles = StyleSheet.create({
   revPublisherMainNonIconArea: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#444',
+    backgroundColor: '#EEE',
     width: '100%',
     height: 100,
-    borderStyle: 'solid',
-    borderColor: '#F9F9F9',
-    borderWidth: 1,
     marginTop: 1,
-    borderRadius: 2,
+    borderRadius: 8,
   },
   revPublisherMainNonIcon: {
     color: '#CCC',
@@ -207,11 +216,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   revConnectTabButton: {
-    lineHeight: 9,
     backgroundColor: '#444',
     paddingHorizontal: 8,
-    paddingVertical: 5,
-    borderRadius: 2,
+    paddingVertical: 3,
+    borderRadius: 100,
   },
   rev_H_UstoWidthScroller: {
     flexGrow: 0,

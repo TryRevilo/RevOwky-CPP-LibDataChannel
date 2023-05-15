@@ -77,6 +77,12 @@ var REV_PLUGINS = {
     revPluginName: 'rev_plugin_ads',
     revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_ads/RevStart`)),
   },
+  rev_plugin_purchase_receipt: {
+    revPluginName: 'rev_plugin_purchase_receipt',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_purchase_receipt/RevStart`),
+    ),
+  },
   rev_plugin_stores: {
     revPluginName: 'rev_plugin_stores',
     revPlugin: loadable(() =>
