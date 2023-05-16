@@ -11,6 +11,25 @@ export const revSplitStringToArray = revStr => {
   return revStr.split(/\s+/);
 };
 
+export const revConvertNumberToDecimal = num => {
+  const str = num.toString();
+  const length = str.length;
+  let result = '';
+
+  if (length <= 3) {
+    // If the number has 3 digits or less, return the number itself
+    result = str;
+  } else if (length <= 6) {
+    // If the number has 4 to 6 digits, convert it to thousands (K)
+    result = str.substr(0, length - 3) + '.' + str.substr(length - 3, 1) + 'K';
+  } else {
+    // If the number has more than 6 digits, convert it to millions (M)
+    result = str.substr(0, length - 6) + '.' + str.substr(length - 6, 1) + 'M';
+  }
+
+  return result;
+};
+
 export const revGenLoreumIpsumText = ({
   revMaxCharCount = 100,
   revMinWordsPerSentence = 7,

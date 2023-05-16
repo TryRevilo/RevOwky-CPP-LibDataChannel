@@ -1,5 +1,35 @@
 import {revIsEmptyJSONObject} from '../rev_gen_helper_functions';
 
+export const revIsUserEntity_WithInfo = revEntity => {
+  if (revIsEmptyJSONObject(revEntity)) {
+    return false;
+  }
+
+  if (revIsEmptyJSONObject(revEntity)) {
+    return false;
+  }
+
+  let revEntityGUID = revGetLocal_OR_RemoteGUID(revEntity);
+
+  if (revEntityGUID < 1) {
+    return false;
+  }
+
+  if (!revEntity.hasOwnProperty('_revInfoEntity')) {
+    return false;
+  }
+
+  let revInfoEntity = revEntity._revInfoEntity;
+  if (
+    !revInfoEntity.hasOwnProperty('_remoteRevEntityGUID') ||
+    revInfoEntity._remoteRevEntityGUID < 0
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
 export const revGetEntityGUID = revEntity => {
   let revEntityGUID = -1;
 

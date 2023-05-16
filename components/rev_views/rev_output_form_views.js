@@ -74,14 +74,15 @@ export const RevScrollView_H = ({revScrollViewContent}) => {
   );
 };
 
-export const RevScrollView_V = ({revScrollViewContent}) => {
+export const RevScrollView_V = ({revScrollViewContent, revStyles}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{paddingVertical: 0}}>
-      <View style={[revSiteStyles.revFlexContainer, {marginBottom: 25}]}>
+      <View
+        style={[revSiteStyles.revFlexContainer, {marginBottom: 25}, revStyles]}>
         {revScrollViewContent}
       </View>
     </ScrollView>
@@ -110,6 +111,53 @@ export const RevInfoArea = ({revInfoText}) => {
           {revInfoText}
         </Text>
       </Text>
+    </View>
+  );
+};
+
+export const RevTable = ({columns}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [rows, setRows] = useState([]);
+
+  const addRow = () => {
+    const newRow = {};
+    columns.forEach(column => {
+      newRow[column] = '';
+    });
+    setRows([...rows, newRow]);
+  };
+
+  const updateCell = (rowIndex, column, value) => {
+    const updatedRows = [...rows];
+    updatedRows[rowIndex][column] = value;
+    setRows(updatedRows);
+  };
+
+  return (
+    <View style={revSiteStyles.table}>
+      <View style={revSiteStyles.tableRow}>
+        {columns.map(column => (
+          <Text style={revSiteStyles.tableHeader} key={column}>
+            {column}
+          </Text>
+        ))}
+      </View>
+      {rows.map((row, rowIndex) => (
+        <View style={revSiteStyles.tableRow} key={rowIndex}>
+          {columns.map(column => (
+            <TextInput
+              style={revSiteStyles.tableCell}
+              value={row[column]}
+              onChangeText={text => updateCell(rowIndex, column, text)}
+              key={column}
+            />
+          ))}
+        </View>
+      ))}
+      <TouchableOpacity style={revSiteStyles.addButton} onPress={addRow}>
+        <Text style={revSiteStyles.addButtonLabel}>Add Row</Text>
+      </TouchableOpacity>
     </View>
   );
 };

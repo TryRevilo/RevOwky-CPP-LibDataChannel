@@ -10,13 +10,15 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {LoremIpsum} from 'lorem-ipsum';
+
+import {RevScrollView_H} from '../../../../../rev_views/rev_output_form_views';
+
+import {RevEntityInfoDetailsWidget} from './RevEntityInfoDetailsWidget';
 
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
-import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
-import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revGenLoreumIpsumText} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   if (
@@ -28,86 +30,11 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   let revOwkiMemberEntity = revVarArgs.revVarArgs;
 
-  if (revIsEmptyJSONObject(revOwkiMemberEntity)) {
+  if (!revIsUserEntity_WithInfo(revOwkiMemberEntity)) {
     return null;
   }
 
-  let revEntityGUID = revGetLocal_OR_RemoteGUID(revOwkiMemberEntity);
-
-  if (revEntityGUID < 1) {
-    return null;
-  }
-
-  if (!revOwkiMemberEntity.hasOwnProperty('_revInfoEntity')) {
-    return null;
-  }
-
-  let revInfoEntity = revOwkiMemberEntity._revInfoEntity;
-  if (
-    !revInfoEntity.hasOwnProperty('_remoteRevEntityGUID') ||
-    revInfoEntity._remoteRevEntityGUID < 0
-  ) {
-    return null;
-  }
-
-  let revPublisherEntityNames = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
-    'rev_full_names',
-  );
-
-  let revUserRegLongDate = revOwkiMemberEntity._revTimeCreated;
-  let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
-
-  let minMessageLen = 10;
-  let maxMessageLen = 55;
-
-  function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-  const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-      max: 1,
-      min: 1,
-    },
-    wordsPerSentence: {
-      max: getRndInteger(minMessageLen, maxMessageLen),
-      min: getRndInteger(1, 2),
-    },
-  });
-
-  let revUserInfoBriefDescTxt = revGenLoreumIpsumText({revMaxCharCount: 55});
-  let revUserInfoAboutDescTxt = revGenLoreumIpsumText({
-    revMaxCharCount: 255,
-    revMaxSentences: 5,
-  });
-
-  const RevDrawUserInfo = ({revLabel, revVal}) => {
-    return (
-      <View
-        key={'RevUserInfo_Widget_' + revEntityGUID}
-        style={[styles.revFlexWrapper, styles.revUserInfoWrapper]}>
-        <Text
-          style={[
-            styles.revSiteTxtColorLight,
-            styles.revSiteTxtSmall,
-            styles.revSiteTxtBold,
-            styles.revUserInfoLabel,
-          ]}>
-          {revLabel}
-        </Text>
-        <Text
-          style={[
-            styles.revSiteTxtColorLight,
-            styles.revSiteTxtSmall,
-            styles.revFlexWrapper,
-            styles.revUserInfoVal,
-          ]}>
-          {revVal}
-        </Text>
-      </View>
-    );
-  };
+  const {revSiteStyles} = useRevSiteStyles();
 
   const RevUserProfileMedia = () => {
     return (
@@ -115,8 +42,11 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
         horizontal
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        style={styles.profileImagesScroller}>
-        <View style={[[styles.revFlexWrapper, styles.revProfileMediaWrapper]]}>
+        style={styles.revEntityProfileImagesScroller}>
+        <View
+          style={[
+            [revSiteStyles.revFlexWrapper, styles.revProfileMediaWrapper],
+          ]}>
           <View style={styles.imageContainer}>
             <Image
               style={styles.imageStyle}
@@ -170,38 +100,111 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     );
   };
 
-  const RevInfoSettings = () => {
+  const revGetTagTab = revTag => {
     return (
-      <View style={[styles.revFlexContainer]}>
-        <View
-          style={[
-            styles.revFlexContainer,
-            styles.revUserInfoSettingsContainer,
-          ]}>
-          <RevDrawUserInfo
-            revLabel={'Full names'}
-            revVal={revPublisherEntityNames}
-          />
-          <RevDrawUserInfo
-            revLabel={'Brief'}
-            revVal={revUserInfoBriefDescTxt}
-          />
-          <RevDrawUserInfo
-            revLabel={'About'}
-            revVal={revUserInfoAboutDescTxt}
-          />
-          <RevDrawUserInfo
-            revLabel={'member since'}
-            revVal={revFormattedLongDate}
-          />
-        </View>
-
-        <RevUserProfileMedia />
-      </View>
+      <Text
+        key={revTag}
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revTagTab,
+        ]}>
+        <FontAwesome style={revSiteStyles.revSiteTxtTiny} name="hashtag" />
+        {'my_own_tag_' + revTag}
+      </Text>
     );
   };
 
-  return <RevInfoSettings />;
+  let revTags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  let revScrollViewContent = (
+    <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+      {revTags.map(revCurrTag => revGetTagTab(revCurrTag))}
+    </View>
+  );
+
+  let revEntityTagsOutputView = (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        styles.revEntityProfileSectionTitleWrapper,
+      ]}>
+      <RevScrollView_H
+        revScrollViewContent={revScrollViewContent}></RevScrollView_H>
+    </View>
+  );
+
+  let revEntityProfileStoresListing = (
+    <View
+      style={[
+        revSiteStyles.revFlexContainer,
+        styles.revEntityProfileStoresListingContainer,
+      ]}>
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revEntityProfileSectionTitleWrapper,
+          {paddingHorizontal: 10},
+        ]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          Stores
+        </Text>
+      </View>
+
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revEntityProfileStoresScrollWrapper,
+        ]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            styles.revRightBorderedArrowPointerWrapper,
+          ]}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny,
+              {color: '#ede7f6'},
+            ]}
+            name="long-arrow-right"
+          />
+        </View>
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revNoStoresTxt,
+          ]}>
+          no stores published on this profile yet
+        </Text>
+      </View>
+    </View>
+  );
+
+  return (
+    <View style={[revSiteStyles.revFlexContainer]}>
+      <View
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revEntityInfoDetailsWidgetContainer,
+        ]}>
+        <RevEntityInfoDetailsWidget revVarArgs={revOwkiMemberEntity} />
+      </View>
+
+      {revEntityTagsOutputView}
+
+      <RevUserProfileMedia />
+
+      {revEntityProfileStoresListing}
+    </View>
+  );
 };
 
 var pageWidth = Dimensions.get('window').width - 12;
@@ -210,36 +213,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 17;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtNormal: {
-    fontSize: 11,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revSiteTxtBold: {
-    fontWeight: 'bold',
-  },
-  revSiteTxtWeightNormal: {
-    fontWeight: '100',
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revPageHeaderAreaWrapper: {
     alignItems: 'center',
     width: maxChatMessageContainerWidth,
@@ -263,8 +236,8 @@ const styles = StyleSheet.create({
   revSearchResultsContainer: {
     width: maxChatMessageContainerWidth,
   },
-  revUserInfoSettingsContainer: {
-    marginTop: 0,
+  revEntityInfoDetailsWidgetContainer: {
+    paddingHorizontal: 8,
   },
   revEditTab: {
     fontWeight: 'bold',
@@ -275,17 +248,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 4,
   },
-  revUserInfoLabel: {
-    textAlign: 'right',
-    width: 55,
-  },
-  revUserInfoVal: {
-    width: maxChatMessageContainerWidth - 55,
-    marginLeft: 4,
-  },
-  profileImagesScroller: {
+  revEntityProfileImagesScroller: {
     flexGrow: 0,
-    marginTop: 4,
+    marginTop: 12,
   },
   revProfileMediaWrapper: {
     alignItems: 'center',
@@ -329,5 +294,39 @@ const styles = StyleSheet.create({
   profilePlayVideoStyleTxt: {
     color: '#FFF',
     fontSize: 25,
+  },
+
+  /** */
+
+  revEntityProfileSectionTitleWrapper: {
+    alignItems: 'center',
+    backgroundColor: '#ede7f6',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    marginTop: 10,
+  },
+  revTagTab: {
+    paddingHorizontal: 4,
+  },
+
+  /** START STORES */
+  revEntityProfileStoresListingContainer: {
+    marginTop: 8,
+  },
+  revEntityProfileStoresScrollWrapper: {
+    alignItems: 'center',
+    marginLeft: 12,
+  },
+  revNoStoresTxt: {
+    paddingTop: 3,
+    marginLeft: 1,
+  },
+  /** END STORES */
+
+  revRightBorderedArrowPointerWrapper: {
+    alignItems: 'center',
+    borderLeftColor: '#ede7f6',
+    borderLeftWidth: 1,
+    paddingTop: 5,
   },
 });

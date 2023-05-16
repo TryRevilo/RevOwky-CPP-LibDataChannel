@@ -5,14 +5,19 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
+import {revPluginsLoader} from '../../../../rev_plugins_loader';
+import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
+
 import {revGetRandInteger} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 export const RevAdEntityListingView = () => {
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
+
   let minMessageLen = 7;
   let maxMessageLen = 22;
 
@@ -65,13 +70,25 @@ export const RevAdEntityListingView = () => {
     );
   };
 
+  const handleRevCreateNewAdTabPressed = () => {
+    let revCreateNewAdForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_ads',
+      revViewName: 'RevCreateNewAdForm',
+      revVarArgs: {},
+    });
+
+    SET_REV_SITE_BODY(revCreateNewAdForm);
+  };
+
   return (
     <View key={revGetRandInteger(100, 1000)} style={[styles.revFlexContainer]}>
       <View style={[styles.revFlexWrapper, styles.revAdHeaderWrapper]}>
         <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
           Promoted
         </Text>
-        <TouchableOpacity style={[styles.revAddAdTab]}>
+        <TouchableOpacity
+          onPress={handleRevCreateNewAdTabPressed}
+          style={[styles.revAddAdTab]}>
           <FontAwesome
             name="plus"
             style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}

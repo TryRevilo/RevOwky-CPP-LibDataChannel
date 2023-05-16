@@ -115,9 +115,8 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtLarge,
-            styles.revPPalBriefGrossAmt,
           ]}>
-          -$1.35 USD
+          $1.35 USD
         </Text>
       </View>
     </View>
@@ -592,46 +591,9 @@ const styles = StyleSheet.create({
   revPayerDetailsContainer: {
     paddingHorizontal: 10,
   },
-
   revPaymentBriefContainer: {
     marginTop: 5,
   },
-
-  revPPalPaymentBriefLeftContainer: {
-    width: 'auto',
-  },
-
-  revMarginTopText: {
-    marginTop: 4,
-  },
-
-  revPaymentStatusWrapper: {
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  revPPalPaymentBriefPaymentStatus: {
-    borderColor: '#21ce93',
-    borderWidth: 1,
-    paddingHorizontal: 4,
-    marginTop: 2,
-    marginLeft: 2,
-  },
-
-  revPPalPaymentRowWrapper: {
-    alignItems: 'center',
-    marginTop: 4,
-  },
-
-  revRightDetailsTxt: {
-    marginLeft: 2,
-  },
-
-  revPPalGrossAmtContainer: {
-    alignItems: 'flex-end',
-    width: 'auto',
-    marginLeft: 'auto',
-  },
-
   revPPalPaymentAreaUnBordered: {
     borderTopColor: '#cfd8dc',
     borderStyle: 'dotted',
@@ -700,5 +662,31 @@ const styles = StyleSheet.create({
   revLinksFooterTab: {
     paddingHorizontal: 7,
     paddingVertical: 4,
+  },
+
+  /** */
+
+  revPaymentStatusWrapper: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  revPPalPaymentBriefPaymentStatus: {
+    borderColor: '#21ce93',
+    borderWidth: 1,
+    paddingHorizontal: 4,
+    marginTop: 2,
+    marginLeft: 2,
+  },
+  revPPalPaymentRowWrapper: {
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  revRightDetailsTxt: {
+    marginLeft: 2,
+  },
+  revPPalGrossAmtContainer: {
+    alignItems: 'center',
+    width: 'auto',
+    marginLeft: 'auto',
   },
 });

@@ -142,7 +142,6 @@ export const useRevSiteStyles = () => {
     revTextInputAreaWithCountContainer: {
       borderColor: '#F7F7F7',
       borderWidth: 1,
-      borderTopWidth: 0,
       paddingBottom: 8,
     },
     revTextInputCountStyle: {
@@ -152,8 +151,6 @@ export const useRevSiteStyles = () => {
       color: '#444',
       fontSize: 11,
       textAlignVertical: 'top',
-      borderTopColor: '#F7F7F7',
-      borderTopWidth: 1,
       paddingHorizontal: 5,
       paddingTop: 7,
     },
@@ -161,6 +158,18 @@ export const useRevSiteStyles = () => {
     revFormFooterWrapper: {
       alignItems: 'center',
       marginTop: 8,
+    },
+
+    revUserIconSmallCircle: {
+      alignItems: 'center',
+      backgroundColor: '#F7F7F7',
+      width: 32,
+      height: 32,
+      borderColor: '#CCC',
+      borderWidth: 1,
+      paddingHorizontal: 1,
+      paddingVertical: 1,
+      borderRadius: 100,
     },
 
     /** REV FORM OUTPUT */
@@ -201,6 +210,78 @@ export const useRevSiteStyles = () => {
     revMarginTopSmall: {
       marginTop: 4,
     },
+
+    /** START TABLE */
+
+    table: {
+      borderWidth: 1,
+      borderColor: '#000',
+      marginBottom: 10,
+    },
+    tableRow: {
+      flexDirection: 'row',
+    },
+    tableHeader: {
+      flex: 1,
+      padding: 10,
+      fontWeight: 'bold',
+      backgroundColor: '#f2f2f2',
+    },
+    tableCell: {
+      flex: 1,
+      padding: 10,
+    },
+    addButton: {
+      backgroundColor: '#4CAF50',
+      padding: 10,
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    addButtonLabel: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+
+    /** END TABLE */
+
+    /** START TEXT INPUT */
+    revTextInput: {
+      color: '#444',
+      fontSize: 11,
+      borderColor: '#F7F7F7',
+      borderWidth: 1,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+      marginTop: 8,
+    },
+    /** END TEXT INPUT */
+
+    /** START PASSWORD INPUT */
+    revPasswordInputWrapper: {
+      alignItems: 'center',
+      borderColor: '#F7F7F7',
+      borderWidth: 1,
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+      marginTop: 8,
+    },
+    revPasswordInput: {
+      color: '#444',
+      fontSize: 11,
+      flex: 1,
+      paddingVertical: 0,
+    },
+    revToggleButton: {
+      padding: 5,
+    },
+    /** END PASSWORD INPUT */
+
+    /** START DROP-DOWN PICKER */
+    revDropdownListSelectorTab: {
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+    },
+    /** START DROP-DOWN PICKER */
   });
 
   return {revSiteStyles};

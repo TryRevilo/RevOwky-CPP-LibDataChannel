@@ -89,6 +89,12 @@ var REV_PLUGINS = {
       import(`./rev_plugins/rev_plugin_stores/RevStart`),
     ),
   },
+  rev_plugin_organization: {
+    revPluginName: 'rev_plugin_organization',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_organization/RevStart`),
+    ),
+  },
   rev_plugin_timeline_activity: {
     revPluginName: 'rev_plugin_timeline_activity',
     revPlugin: loadable(() =>

@@ -1,15 +1,9 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Picker,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {Picker} from '@react-native-picker/picker';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
@@ -192,21 +186,61 @@ export const RevTextInputAreaWithCount = ({revVarArgs}) => {
   );
 };
 
-export const DropdownListSelector = ({revVarArgs}) => {
-  const [selectedValue, setSelectedValue] = useState('java');
+export const RevDropdownListSelector = ({
+  revFixedSelectedValue,
+  revOptions,
+  revOnSelect,
+} = {}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revSelectedValue, setRevSelectedValue] = useState('');
+  const pickerRef = useRef();
+
+  const handleValueChange = itemValue => {
+    setRevSelectedValue(itemValue);
+    revOnSelect(itemValue);
+  };
+
+  const openPicker = () => {
+    pickerRef.current.focus();
+  };
 
   return (
-    <View>
-      <Text>Select Programming Language</Text>
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="javascript" />
-        <Picker.Item label="Python" value="python" />
-        <Picker.Item label="C++" value="cpp" />
-      </Picker>
-      <Text>You selected: {selectedValue}</Text>
+    <View style={revSiteStyles.revFlexWrapper_WidthAuto}>
+      <Text
+        onPress={openPicker}
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revDropdownListSelectorTab,
+        ]}>
+        {revFixedSelectedValue}{' '}
+        <FontAwesome
+          name="chevron-down"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}
+        />
+      </Text>
+
+      <View style={{height: 0, width: 0}}>
+        <Picker
+          ref={pickerRef}
+          selectedValue={revSelectedValue}
+          onValueChange={handleValueChange}>
+          <Picker.Item label={revFixedSelectedValue} value={null} />
+
+          {revOptions.map(option => (
+            <Picker.Item
+              key={option.key}
+              label={option.value}
+              value={option.value}
+            />
+          ))}
+        </Picker>
+      </View>
     </View>
   );
 };
@@ -253,6 +287,51 @@ export const RevDateTimePicker = ({revVarArgs}) => {
           onChange={handleDateChange}
         />
       )}
+    </View>
+  );
+};
+
+export const RevPasswordInput = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const {revSetPasswordInput} = revVarArgs;
+
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleRevOnPasswordInputChange = password => {
+    setPassword(password);
+    revSetPasswordInput(password);
+  };
+
+  return (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        revSiteStyles.revPasswordInputWrapper,
+      ]}>
+      <TextInput
+        style={[revSiteStyles.revPasswordInput]}
+        secureTextEntry={!showPassword}
+        value={password}
+        onChangeText={handleRevOnPasswordInputChange}
+        placeholder="Password"
+        placeholderTextColor="#999"
+      />
+      <TouchableOpacity onPress={toggleShowPassword}>
+        <FontAwesome
+          name="eye"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtLarge,
+            revSiteStyles.revToggleButton,
+          ]}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

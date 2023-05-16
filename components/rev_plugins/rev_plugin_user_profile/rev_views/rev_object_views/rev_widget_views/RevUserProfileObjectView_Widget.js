@@ -10,6 +10,7 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevScrollView_V} from '../../../../../rev_views/rev_output_form_views';
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -112,7 +113,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
                 revSiteStyles.revSiteTxtBold,
                 styles.revConnectTabButton,
               ]}>
-              Connect
+              connect
             </Text>
             <FontAwesome
               name="long-arrow-right"
@@ -155,8 +156,8 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
           </ScrollView>
           <Text
             style={[
-              revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtColorBlueLink,
+              revSiteStyles.revSiteTxtTiny,
               styles.revConnectionsCountTxt,
             ]}>
             + 122 connections
@@ -166,7 +167,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
     );
   };
 
-  return (
+  let revRetView = (
     <View style={revSiteStyles.revFlexContainer}>
       {!revAddPageHeader ? null : (
         <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
@@ -183,6 +184,8 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
       </ScrollView>
     </View>
   );
+
+  return <RevScrollView_V revScrollViewContent={revRetView} />;
 };
 
 const styles = StyleSheet.create({
@@ -194,6 +197,8 @@ const styles = StyleSheet.create({
     height: 100,
     marginTop: 1,
     borderRadius: 8,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
   },
   revPublisherMainNonIcon: {
     color: '#CCC',
@@ -231,14 +236,13 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   revConnectionProfileTab: {
-    backgroundColor: '#CCC',
+    backgroundColor: '#EEE',
     width: 22,
     height: 22,
     marginRight: 1,
     borderRadius: 2,
   },
   revConnectionsCountTxt: {
-    marginTop: 5,
-    marginLeft: 5,
+    padding: 5,
   },
 });

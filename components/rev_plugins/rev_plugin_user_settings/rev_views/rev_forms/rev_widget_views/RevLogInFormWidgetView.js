@@ -13,8 +13,8 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {RevPasswordInput} from '../../../../../rev_views/rev_input_form_views';
 
 import {useRevLogin} from '../../../rev_actions/rev_log_in_action';
 
@@ -23,14 +23,15 @@ import {
   useRevGetSiteEntity,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 import {useRevPersGetRevEntities_By_ResolveStatus_SubType} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
-import {
-  revIsEmptyVar,
-  revIsEmptyJSONObject,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevLogInFormWidgetView = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const {revLogin} = useRevLogin();
@@ -101,7 +102,7 @@ export const RevLogInFormWidgetView = () => {
     return (
       <View style={[styles.revFlexContainer, styles.revLoginFormContainer]}>
         <TextInput
-          style={styles.revUserIdInput}
+          style={revSiteStyles.revTextInput}
           placeholder=" EMail / Phone #"
           placeholderTextColor="#999"
           onChangeText={newText => {
@@ -110,15 +111,7 @@ export const RevLogInFormWidgetView = () => {
           defaultValue={revUserId}
         />
 
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" Password"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setPassword(newText);
-          }}
-          defaultValue={revPassword}
-        />
+        <RevPasswordInput revVarArgs={{revSetPasswordInput: setPassword}} />
 
         <View style={[styles.revFlexWrapper, styles.revLoginFormFooterWrapper]}>
           <TouchableOpacity
@@ -269,15 +262,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     height: 'auto',
     paddingBottom: 22,
-  },
-  revUserIdInput: {
-    color: '#444',
-    fontSize: 11,
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    marginTop: 8,
   },
   revLoginFormFooterWrapper: {
     alignItems: 'center',
