@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import React from 'react';
 
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
-import {RevScrollView_V} from '../../../../../rev_views/rev_output_form_views';
+import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 

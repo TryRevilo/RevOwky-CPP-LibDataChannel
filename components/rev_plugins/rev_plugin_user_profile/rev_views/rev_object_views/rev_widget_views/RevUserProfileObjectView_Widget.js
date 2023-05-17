@@ -10,9 +10,8 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevScrollView_V} from '../../../../../rev_views/rev_output_form_views';
+import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
-import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
@@ -20,6 +19,8 @@ import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_hel
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevConnectUser_Action} from '../../../rev_actions/rev_connect_user_action';
+
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 const {RevPersLibRead_React} = NativeModules;
 
