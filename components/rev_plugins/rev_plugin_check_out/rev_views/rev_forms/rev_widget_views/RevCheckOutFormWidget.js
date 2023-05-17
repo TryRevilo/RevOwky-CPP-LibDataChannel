@@ -1,42 +1,60 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevCheckOutFormWidget = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const [cardNumber, setCardNumber] = useState('');
   const [cardHolderName, setCardHolderName] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [cvv, setCVV] = useState('');
 
-  const handlePayment = () => {
-    // Perform payment processing logic here
-    console.log('Processing payment...');
-  };
+  let revInfoText =
+    'You will be redirected to set your Ad to Live, after which we will start pushing it to the Owky community';
+  let revStartSTopInfoText =
+    'Please note that you can always Pause the Ad at any time from the Ad Dashboard';
 
   return (
-    <View style={styles.container}>
+    <View style={styles.revCheckoutPayContainer}>
+      <RevInfoArea revInfoText={revInfoText} />
+      <RevInfoArea revInfoText={revStartSTopInfoText} />
       <TextInput
-        style={styles.input}
+        style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+        placeholderTextColor="#999"
         placeholder="Card Number"
         value={cardNumber}
         onChangeText={setCardNumber}
         keyboardType="numeric"
       />
       <TextInput
-        style={styles.input}
+        style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+        placeholderTextColor="#999"
         placeholder="Card Holder Name"
         value={cardHolderName}
         onChangeText={setCardHolderName}
       />
-      <View style={styles.row}>
+      <View style={styles.revRow}>
         <TextInput
-          style={[styles.input, styles.halfInput]}
+          style={[
+            [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+            styles.revHalfInput,
+          ]}
+          placeholderTextColor="#999"
           placeholder="Expiration Date"
           value={expirationDate}
           onChangeText={setExpirationDate}
           keyboardType="numeric"
         />
         <TextInput
-          style={[styles.input, styles.halfInputLast]}
+          style={[
+            [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+            styles.revHalfInputLast,
+          ]}
+          placeholderTextColor="#999"
           placeholder="CVV"
           value={cvv}
           onChangeText={setCVV}
@@ -44,33 +62,52 @@ export const RevCheckOutFormWidget = () => {
           secureTextEntry
         />
       </View>
-      <Button title="Pay Now" onPress={handlePayment} />
+
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revCheckOutFooterWrapper]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorWhite,
+            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtBold,
+            styles.revCheckOutTab,
+          ]}>
+          Pay Now
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+  revCheckoutPayContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#ede7f6',
     borderRadius: 10,
   },
-  input: {
-    height: 40,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-  },
-  row: {
+  revRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  halfInput: {
+  revCheckOutTextInput: {
+    backgroundColor: '#FFF',
+    borderWidth: 0,
+  },
+  revHalfInput: {
     flex: 1,
     marginRight: 5,
   },
-  halfInputLast: {
+  revHalfInputLast: {
     flex: 1,
+  },
+  revCheckOutFooterWrapper: {
+    marginTop: 12,
+  },
+  revCheckOutTab: {
+    backgroundColor: '#444',
+    paddingHorizontal: 22,
+    paddingVertical: 3,
+    borderRadius: 100,
   },
 });

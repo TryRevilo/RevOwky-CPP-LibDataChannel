@@ -26,7 +26,11 @@ import {
   revGetLocal_OR_RemoteGUID,
   revGetEntityChildren_By_Subtype,
 } from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
-import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revTruncateString,
+  revSplitStringToArray,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
@@ -62,10 +66,16 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     revPublisherEntity._revInfoEntity._revEntityMetadataList,
     'rev_full_names',
   );
-  let revPublisherEntityNames_Trunc = revTruncateString(
+  let revPublisherEntityNamesArr = revSplitStringToArray(
     revPublisherEntityNames,
-    8,
   );
+  let revPublisherEntityNamesFirst = revPublisherEntityNamesArr[0];
+  let revPublisherEntityNamesSecondInitial =
+    revPublisherEntityNamesArr[1].split('')[0];
+  let revPublisherEntityNames_Trunc =
+    revTruncateString(revPublisherEntityNamesFirst, 12) +
+    ' .' +
+    revPublisherEntityNamesSecondInitial;
 
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -83,7 +93,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   }
 
   let revInfoEntity = revVarArgs._revInfoEntity;
-  let timeCreated = revVarArgs._timeCreated;
+  let revTimePublished = revFormatLongDate(revVarArgs._revTimePublished);
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
@@ -98,11 +108,15 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     return null;
   }
 
-  let chatMessageText = (_revKiwiTxtVal, revTxtStyle = {}) => {
+  let revChatMessageText = (_revKiwiTxtVal, {revTxtStyle} = {}) => {
     let chatMessageView = (
       <Text
-        key={'chatMessageText_' + revGetRandInteger(100, 1000)}
-        style={[styles.chatMsgContentTxt, revTxtStyle]}>
+        key={'revChatMessageText_' + revGetRandInteger(100, 1000)}
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          revTxtStyle,
+        ]}>
         {_revKiwiTxtVal.length > maxMessageLen
           ? _revKiwiTxtVal.substring(0, maxMessageLen) + ' . . .'
           : _revKiwiTxtVal}
@@ -111,7 +125,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
     return (
       <View
-        key={'chatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
+        key={'revChatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
         style={styles.chatMsgContentTxtContainer}>
         {chatMessageView}
         {revKiwiTxtVal.length > maxMessageLen ? (
@@ -168,8 +182,9 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
       'rev_full_names',
     );
     let revPublisherEntityNames_Trunc = revTruncateString(
-      revPublisherEntityNames,
-      8,
+      revSplitStringToArray(revPublisherEntityNames)[0],
+      4,
+      false,
     );
 
     return (
@@ -183,10 +198,22 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
         </TouchableOpacity>
         <View style={styles.revChatMsgCommentContentContainer}>
           <View style={styles.chatMsgHeaderWrapper}>
-            <Text style={styles.chatMsgOwnerTxt}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorDark,
+                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtBold,
+              ]}>
               {revPublisherEntityNames_Trunc}
             </Text>
-            <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+                styles.revChatMsgSendTime,
+              ]}>
+              10:40 Jun 14, 2022
+            </Text>
             <View style={styles.chatMsgOptionsWrapper}>
               <Text style={styles.chatMsgOptions}>
                 <FontAwesome name="reply" />
@@ -202,11 +229,12 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.revChatMsgCommentContentTxtContainer}>
-            {chatMessageText(
-              revCommentTxtVal,
-              styles.revChatMsgCommentContentTxt,
-            )}
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              styles.revChatMsgCommentContentTxtContainer,
+            ]}>
+            {revChatMessageText(revCommentTxtVal)}
           </View>
         </View>
       </TouchableOpacity>
@@ -443,26 +471,46 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
           onPress={() => {
             handleRevUserProfileClick();
           }}>
-          <View style={styles.chatMsgUserIcon}>
+          <View style={styles.revChatMsgUserIcon}>
             <FontAwesome
               name="user"
-              style={styles.availableChatPeopleNonIcon}
+              style={styles.revAvailableChatPeopleNonIcon}
             />
           </View>
         </TouchableOpacity>
-        <View style={styles.chatMsgContentWrapper}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revChatMsgContentWrapper,
+          ]}>
           <View style={styles.chatMsgContentCarretView}>
             <FontAwesome
               name="caret-left"
-              style={styles.chatMsgContentCarret}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtLarge,
+                styles.chatMsgContentCarret,
+              ]}
             />
           </View>
           <View style={styles.chatMsgContentContainer}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>
-                {revPublisherEntityNames}
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
+                {revPublisherEntityNames_Trunc}
               </Text>
-              <Text style={styles.chatMsgSendTime}>{timeCreated}</Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  styles.revChatMsgSendTime,
+                ]}>
+                {revTimePublished}
+              </Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
@@ -496,7 +544,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
               </View>
             </View>
             <View style={styles.chatMsgContentTxtContainer}>
-              {chatMessageText(revKiwiTxtVal)}
+              {revChatMessageText(revKiwiTxtVal)}
             </View>
 
             <View
@@ -544,13 +592,7 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  revFlexWrapperTouchable: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: 'auto',
-  },
-  chatMsgUserIcon: {
+  revChatMsgUserIcon: {
     width: 22,
     height: 32,
     borderStyle: 'solid',
@@ -561,24 +603,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  availableChatPeopleNonIcon: {
+  revAvailableChatPeopleNonIcon: {
     color: '#c5e1a5',
     fontSize: 17,
   },
-  chatMsgContentWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+  revChatMsgContentWrapper: {
     width: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
-  },
-  chatMsgContentWrapperInbox: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: '100%',
-    marginTop: 2,
   },
   chatMsgContentCarretView: {
     backgroundColor: '#FFF',
@@ -589,9 +621,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chatMsgContentCarret: {
-    color: '#CCC',
     textAlign: 'center',
-    fontSize: 15,
   },
   chatMsgContentContainer: {
     display: 'flex',
@@ -611,16 +641,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  chatMsgOwnerTxt: {
-    color: '#444',
-    fontSize: 10,
-    lineHeight: 10,
-    fontWeight: 'bold',
-  },
-  chatMsgSendTime: {
-    color: '#8d8d8d',
-    fontSize: 9,
-    lineHeight: 9,
+  revChatMsgSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
@@ -661,10 +682,6 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingRight: 5,
     marginTop: 2,
-  },
-  chatMsgContentTxt: {
-    color: '#444',
-    fontSize: 10,
   },
   readMoreTextTab: {
     color: '#009688',
@@ -735,17 +752,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   revChatMsgCommentContentTxtContainer: {
-    color: '#444',
-    fontSize: 8,
-    display: 'flex',
     alignItems: 'flex-start',
-    width: '100%',
     paddingRight: 5,
     marginTop: 2,
-  },
-  revChatMsgCommentContentTxt: {
-    color: '#444',
-    fontSize: 9,
   },
   revImagesMediaViewContainer: {
     flex: 1,

@@ -25,6 +25,7 @@ export const RevSectionPointer = ({revStyles = null}) => {
       style={[
         revSiteStyles.revFlexWrapper_WidthAuto,
         revSiteStyles.revRightBorderedArrowPointerWrapper,
+        {flex: 0},
         revStyles,
       ]}>
       <FontAwesome
@@ -54,7 +55,7 @@ export const RevSectionPointedContent = ({revContent}) => {
       ]}>
       <RevSectionPointer />
 
-      <View style={revSiteStyles.revDescriptiveTitleViewContentNullContent}>
+      <View style={revSiteStyles.revSectionPointedContentContainer}>
         {revContent}
       </View>
     </View>
@@ -88,11 +89,7 @@ export const RevDescriptiveTitleView = ({
   }
 
   let revRetView = (
-    <View
-      style={[
-        revSiteStyles.revFlexContainer,
-        revSiteStyles.revDescriptiveTitleViewContainer,
-      ]}>
+    <View style={[revSiteStyles.revFlexContainer]}>
       <View
         style={[
           revSiteStyles.revFlexWrapper,
@@ -112,9 +109,10 @@ export const RevDescriptiveTitleView = ({
       {revNullContentSection}
 
       {revBodyContentItemsArr.map(revBodyContentItem => (
-        <View key={'revBodyContentItem_' + revGetRandInteger()}>
-          <RevSectionPointedContent revContent={revBodyContentItem} />
-        </View>
+        <RevSectionPointedContent
+          key={'revBodyContentItem_' + revGetRandInteger()}
+          revContent={revBodyContentItem}
+        />
       ))}
     </View>
   );

@@ -81,7 +81,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   };
 
   return (
-    <View key={revGetRandInteger(100, 1000)} style={[styles.revFlexContainer]}>
+    <View style={[styles.revFlexContainer]}>
       <View style={[styles.revFlexWrapper, styles.revAdHeaderWrapper]}>
         <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
           Promoted

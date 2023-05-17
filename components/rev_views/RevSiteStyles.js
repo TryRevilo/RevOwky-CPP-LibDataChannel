@@ -28,6 +28,9 @@ export const useRevSiteStyles = () => {
     revSiteTxtColorBlueLink: {
       color: '#5c6bc0',
     },
+    revSiteTxtTiny_X: {
+      fontSize: 8,
+    },
     revSiteTxtTiny: {
       fontSize: 9,
     },
@@ -235,7 +238,7 @@ export const useRevSiteStyles = () => {
     /** START TEXT INPUT */
     revTextInput: {
       color: '#444',
-      fontSize: 11,
+      fontSize: 9,
       borderColor: '#F7F7F7',
       borderWidth: 1,
       paddingHorizontal: 5,
@@ -272,15 +275,12 @@ export const useRevSiteStyles = () => {
     /** END DROP-DOWN PICKER */
 
     /** START REV PAGE VIEWS */
-    revDescriptiveTitleViewContainer: {
-      marginTop: 8,
-    },
     revDescriptiveTitleViewTitleWrapper: {
       alignItems: 'center',
       backgroundColor: '#ede7f6',
       paddingHorizontal: 5,
       paddingVertical: 2,
-      marginTop: 10,
+      marginTop: 8,
     },
     revTagTab: {
       paddingHorizontal: 4,
@@ -289,9 +289,11 @@ export const useRevSiteStyles = () => {
       alignItems: 'flex-start',
       marginLeft: 12,
     },
-    revDescriptiveTitleViewContentNullContent: {
+    revSectionPointedContentContainer: {
+      flex: 1,
       paddingTop: 3,
       marginLeft: 1,
+      paddingRight: 12,
     },
     revRightBorderedArrowPointerWrapper: {
       alignItems: 'center',

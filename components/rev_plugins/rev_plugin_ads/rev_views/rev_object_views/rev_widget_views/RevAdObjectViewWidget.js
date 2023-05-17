@@ -130,21 +130,28 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revTeamMemberWrapper,
         ]}>
-        <RevSectionPointer revStyles={{marginTop: 0, marginRight: 1}} />
-        <View style={[revSiteStyles.revUserIconTinyCircle]}></View>
+        <RevSectionPointer
+          revStyles={{marginTop: 0, marginRight: 1, flex: 0}}
+        />
+        <View style={[revSiteStyles.revUserIconTinyCircle, {flex: 0}]}></View>
 
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revTeamMemberTxt,
-          ]}>
-          <Text style={[revSiteStyles.revSiteTxtBold]}>Oliver Muchai</Text>
-          <Text style={[revSiteStyles.revSiteTxtWeightNormal]}>
-            {'  -  ' +
-              revGenLoreumIpsumText({revMaxCharCount: 155, revMaxSentences: 5})}
+        <View style={{flex: 1}}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revTeamMemberTxt,
+            ]}>
+            <Text style={[revSiteStyles.revSiteTxtBold]}>Oliver Muchai</Text>
+            <Text style={[revSiteStyles.revSiteTxtWeightNormal]}>
+              {'  -  ' +
+                revGenLoreumIpsumText({
+                  revMaxCharCount: 155,
+                  revMaxSentences: 5,
+                })}
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
     );
 
@@ -250,7 +257,6 @@ const styles = StyleSheet.create({
     marginLeft: 22,
   },
   revTeamMemberTxt: {
-    paddingRight: 20,
     marginTop: 3,
     marginLeft: 2,
   },
