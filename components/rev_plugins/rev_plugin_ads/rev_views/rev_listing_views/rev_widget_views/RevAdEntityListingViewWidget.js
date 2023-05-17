@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   revAddAdTab: {
     paddingHorizontal: 8,
     paddingVertical: 5,
-    marginLeft: 12,
+    marginLeft: 17,
   },
   revAdPublisherInfoWrapper: {
     marginLeft: 0,

@@ -11,14 +11,14 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevScrollView_H} from '../../../../../rev_views/rev_output_form_views';
+import {RevScrollView_H} from '../../../../../rev_views/rev_page_views';
+import {RevDescriptiveTitleView} from '../../../../../rev_views/rev_page_views';
 
 import {RevEntityInfoDetailsWidget} from './RevEntityInfoDetailsWidget';
 
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-import {color} from 'native-base/lib/typescript/theme/styled-system';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   if (
@@ -107,7 +107,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
         style={[
           revSiteStyles.revSiteTxtColorLight,
           revSiteStyles.revSiteTxtTiny,
-          styles.revTagTab,
+          revSiteStyles.revTagTab,
         ]}>
         <FontAwesome style={revSiteStyles.revSiteTxtTiny} name="hashtag" />
         {'my_own_tag_' + revTag}
@@ -127,64 +127,10 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     <View
       style={[
         revSiteStyles.revFlexWrapper,
-        styles.revEntityProfileSectionTitleWrapper,
+        revSiteStyles.revDescriptiveTitleViewTitleWrapper,
       ]}>
       <RevScrollView_H
         revScrollViewContent={revScrollViewContent}></RevScrollView_H>
-    </View>
-  );
-
-  let revEntityProfileStoresListing = (
-    <View
-      style={[
-        revSiteStyles.revFlexContainer,
-        styles.revEntityProfileStoresListingContainer,
-      ]}>
-      <View
-        style={[
-          revSiteStyles.revFlexWrapper,
-          styles.revEntityProfileSectionTitleWrapper,
-          {paddingHorizontal: 10},
-        ]}>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColor,
-            revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          Stores
-        </Text>
-      </View>
-
-      <View
-        style={[
-          revSiteStyles.revFlexWrapper,
-          styles.revEntityProfileStoresScrollWrapper,
-        ]}>
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper_WidthAuto,
-            styles.revRightBorderedArrowPointerWrapper,
-          ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
-              {color: '#ede7f6'},
-            ]}
-            name="long-arrow-right"
-          />
-        </View>
-
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revNoStoresTxt,
-          ]}>
-          no stores published on this profile yet
-        </Text>
-      </View>
     </View>
   );
 
@@ -202,7 +148,12 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
       <RevUserProfileMedia />
 
-      {revEntityProfileStoresListing}
+      <RevDescriptiveTitleView
+        revVarArgs={{
+          revTitle: 'Stores',
+          revNullContentTxt: 'no stores published on this profile yet',
+        }}
+      />
     </View>
   );
 };
@@ -298,35 +249,6 @@ const styles = StyleSheet.create({
 
   /** */
 
-  revEntityProfileSectionTitleWrapper: {
-    alignItems: 'center',
-    backgroundColor: '#ede7f6',
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    marginTop: 10,
-  },
-  revTagTab: {
-    paddingHorizontal: 4,
-  },
-
   /** START STORES */
-  revEntityProfileStoresListingContainer: {
-    marginTop: 8,
-  },
-  revEntityProfileStoresScrollWrapper: {
-    alignItems: 'center',
-    marginLeft: 12,
-  },
-  revNoStoresTxt: {
-    paddingTop: 3,
-    marginLeft: 1,
-  },
   /** END STORES */
-
-  revRightBorderedArrowPointerWrapper: {
-    alignItems: 'center',
-    borderLeftColor: '#ede7f6',
-    borderLeftWidth: 1,
-    paddingTop: 5,
-  },
 });

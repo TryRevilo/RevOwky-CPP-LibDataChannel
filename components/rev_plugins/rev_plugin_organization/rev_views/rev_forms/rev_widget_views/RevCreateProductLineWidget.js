@@ -15,7 +15,7 @@ import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form
 import {RevDropdownListSelector} from '../../../../../rev_views/rev_input_form_views';
 import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
 
-import {RevInfoArea} from '../../../../../rev_views/rev_output_form_views';
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 

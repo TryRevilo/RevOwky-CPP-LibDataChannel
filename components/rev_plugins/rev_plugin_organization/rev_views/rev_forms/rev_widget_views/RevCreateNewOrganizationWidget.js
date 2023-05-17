@@ -12,8 +12,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
-import {RevInfoArea} from '../../../../../rev_views/rev_output_form_views';
-import {RevScrollView_V} from '../../../../../rev_views/rev_output_form_views';
+import {
+  RevScrollView_V,
+  RevInfoArea,
+} from '../../../../../rev_views/rev_page_views';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 

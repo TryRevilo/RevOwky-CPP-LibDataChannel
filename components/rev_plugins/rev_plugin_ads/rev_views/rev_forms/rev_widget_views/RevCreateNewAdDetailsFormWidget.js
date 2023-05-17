@@ -12,10 +12,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevTextInputWithCount} from '../../../../../rev_views/rev_input_form_views';
 import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form_views';
-import {RevDropdownListSelector} from '../../../../../rev_views/rev_input_form_views';
 import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
 
-import {RevInfoArea} from '../../../../../rev_views/rev_output_form_views';
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 

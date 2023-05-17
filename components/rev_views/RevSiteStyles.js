@@ -160,18 +160,6 @@ export const useRevSiteStyles = () => {
       marginTop: 8,
     },
 
-    revUserIconSmallCircle: {
-      alignItems: 'center',
-      backgroundColor: '#F7F7F7',
-      width: 32,
-      height: 32,
-      borderColor: '#CCC',
-      borderWidth: 1,
-      paddingHorizontal: 1,
-      paddingVertical: 1,
-      borderRadius: 100,
-    },
-
     /** REV FORM OUTPUT */
     revTagsOutputListingWrapper: {
       alignItems: 'center',
@@ -281,7 +269,73 @@ export const useRevSiteStyles = () => {
       paddingHorizontal: 8,
       paddingVertical: 2,
     },
-    /** START DROP-DOWN PICKER */
+    /** END DROP-DOWN PICKER */
+
+    /** START REV PAGE VIEWS */
+    revDescriptiveTitleViewContainer: {
+      marginTop: 8,
+    },
+    revDescriptiveTitleViewTitleWrapper: {
+      alignItems: 'center',
+      backgroundColor: '#ede7f6',
+      paddingHorizontal: 5,
+      paddingVertical: 2,
+      marginTop: 10,
+    },
+    revTagTab: {
+      paddingHorizontal: 4,
+    },
+    revDescriptiveTitleViewContentWrapper: {
+      alignItems: 'flex-start',
+      marginLeft: 12,
+    },
+    revDescriptiveTitleViewContentNullContent: {
+      paddingTop: 3,
+      marginLeft: 1,
+    },
+    revRightBorderedArrowPointerWrapper: {
+      alignItems: 'center',
+      borderLeftColor: '#ede7f6',
+      borderLeftWidth: 1,
+      paddingTop: 4,
+    },
+    /** END REV PAGE VIEWS */
+
+    /** START REV IMAGES */
+    revUserIconTinyCircle: {
+      alignItems: 'center',
+      backgroundColor: '#F7F7F7',
+      width: 17,
+      height: 17,
+      borderColor: '#CCC',
+      borderWidth: 1,
+      paddingHorizontal: 1,
+      paddingVertical: 1,
+      borderRadius: 100,
+    },
+    revUserIconSmallCircle: {
+      alignItems: 'center',
+      backgroundColor: '#F7F7F7',
+      width: 32,
+      height: 32,
+      borderColor: '#CCC',
+      borderWidth: 1,
+      paddingHorizontal: 1,
+      paddingVertical: 1,
+      borderRadius: 100,
+    },
+    revImageMedium: {
+      alignItems: 'center',
+      backgroundColor: '#EEE',
+      width: 55,
+      height: 32,
+      borderColor: '#E7E7E7',
+      borderWidth: 1,
+      paddingHorizontal: 1,
+      paddingVertical: 1,
+      borderRadius: 2,
+    },
+    /** END REV IMAGES */
   });
 
   return {revSiteStyles};

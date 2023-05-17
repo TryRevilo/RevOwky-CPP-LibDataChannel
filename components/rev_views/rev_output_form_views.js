@@ -63,58 +63,6 @@ export const RevTagsOutputListing = ({revVarArgs}) => {
   );
 };
 
-export const RevScrollView_H = ({revScrollViewContent}) => {
-  return (
-    <ScrollView
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{paddingHorizontal: 0}}>
-      {revScrollViewContent}
-    </ScrollView>
-  );
-};
-
-export const RevScrollView_V = ({revScrollViewContent, revStyles}) => {
-  const {revSiteStyles} = useRevSiteStyles();
-
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingVertical: 0}}>
-      <View
-        style={[revSiteStyles.revFlexContainer, {marginBottom: 25}, revStyles]}>
-        {revScrollViewContent}
-      </View>
-    </ScrollView>
-  );
-};
-
-export const RevInfoArea = ({revInfoText}) => {
-  const {revSiteStyles} = useRevSiteStyles();
-
-  return (
-    <View style={[revSiteStyles.revFlexContainer, revSiteStyles.revInfoArea]}>
-      <Text>
-        <FontAwesome
-          name="exclamation"
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtNormal,
-          ]}
-        />
-        {'  '}
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          {revInfoText}
-        </Text>
-      </Text>
-    </View>
-  );
-};
-
 export const RevTable = ({columns}) => {
   const {revSiteStyles} = useRevSiteStyles();
 

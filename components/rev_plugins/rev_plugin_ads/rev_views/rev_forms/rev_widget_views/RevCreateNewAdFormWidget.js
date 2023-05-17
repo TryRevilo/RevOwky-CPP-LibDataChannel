@@ -10,7 +10,7 @@ import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader'
 import {
   RevScrollView_H,
   RevScrollView_V,
-} from '../../../../../rev_views/rev_output_form_views';
+} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
