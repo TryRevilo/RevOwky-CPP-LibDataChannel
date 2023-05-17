@@ -317,7 +317,7 @@ function RevFooterArea() {
 
   const handleRevShowUserAdsTabPress = () => {
     let revPurchaseReceipt = revPluginsLoader({
-      revPluginName: 'rev_plugin_purchase_receipt',
+      revPluginName: 'rev_plugin_check_out',
       revViewName: 'RevPurchaseReceipt',
       revVarArgs: {},
     });

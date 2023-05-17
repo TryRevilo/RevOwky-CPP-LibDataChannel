@@ -1,13 +1,16 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import Svg, {Defs, ClipPath, Path} from 'react-native-svg';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 
-import {RevScrollView_V} from '../../../../../rev_views/rev_output_form_views';
+import {
+  RevScrollView_H,
+  RevScrollView_V,
+} from '../../../../../rev_views/rev_output_form_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -32,6 +35,59 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     revVarArgs: {},
   });
 
+  const revAdPreview = () => {
+    let revAdPreviewHeader = (
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revAdPreviewHeaderWrapper,
+        ]}>
+        <TouchableOpacity>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revAdPreviewHeaderTab,
+            ]}>
+            <FontAwesome name="edit" />
+            {' Edit'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revAdPreviewHeaderTab,
+            ]}>
+            <FontAwesome name="paypal" />
+            {' Continue to CheckOut'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+
+    let revAdObjectView = revPluginsLoader({
+      revPluginName: 'rev_plugin_ads',
+      revViewName: 'RevAdObjectView',
+      revVarArgs: {},
+    });
+
+    return (
+      <View style={revSiteStyles.revFlexContainer}>
+        {revAdPreviewHeader}
+        {revAdObjectView}
+      </View>
+    );
+  };
+
+  let revCheckOutForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_check_out',
+    revViewName: 'RevCheckOutForm',
+    revVarArgs: {},
+  });
+
   const [revCurrFormView, setRevCurrFormView] = useState(
     revCreateNewOrganization,
   );
@@ -48,10 +104,40 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     setRevCurrFormView(revCreateNewAdDetailsForm);
   };
 
+  const handleRevCreateNewAdPreviewTabPressed = () => {
+    setRevCurrFormView(revAdPreview());
+  };
+
+  const handleRevCreateNewAdCheckOutTabPressed = () => {
+    setRevCurrFormView(revCheckOutForm);
+  };
+
   let revTabsDataArr = [
-    {revTabId: 1, revCallBackFunc: handleRevCreateNewOrgTabPressed},
-    {revTabId: 2, revCallBackFunc: handleRevCreateNewProdLineTabPressed},
-    {revTabId: 3, revCallBackFunc: handleRevCreateNewAdDetailsTabPressed},
+    {
+      revTabId: 1,
+      revLabel: 1,
+      revCallBackFunc: handleRevCreateNewOrgTabPressed,
+    },
+    {
+      revTabId: 2,
+      revLabel: 2,
+      revCallBackFunc: handleRevCreateNewProdLineTabPressed,
+    },
+    {
+      revTabId: 3,
+      revLabel: 3,
+      revCallBackFunc: handleRevCreateNewAdDetailsTabPressed,
+    },
+    {
+      revTabId: 4,
+      revLabel: 'Preview',
+      revCallBackFunc: handleRevCreateNewAdPreviewTabPressed,
+    },
+    {
+      revTabId: 5,
+      revLabel: 'Check out',
+      revCallBackFunc: handleRevCreateNewAdCheckOutTabPressed,
+    },
   ];
 
   const revInitTabsArr = () => {
@@ -86,7 +172,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
             styles.revFormsNavTab,
             revCurrSelectedTabStyle,
           ]}>
-          {revTabId}
+          {revTabData.revLabel}
         </Text>
       </TouchableOpacity>
     );
@@ -107,7 +193,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper_WidthAuto,
             styles.revFormsNavTabWrapper,
           ]}>
-          {revCurrTabsArr}
+          <RevScrollView_H revScrollViewContent={revCurrTabsArr} />
         </View>
       </View>
 
@@ -139,5 +225,15 @@ const styles = StyleSheet.create({
   },
   revSelectedTab: {
     backgroundColor: '#444',
+  },
+  revAdPreviewHeaderWrapper: {
+    alignItems: 'center',
+  },
+  revAdPreviewHeaderTab: {
+    borderBottomColor: '#DDD',
+    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    marginRight: 4,
   },
 });
