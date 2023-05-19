@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
@@ -13,67 +15,86 @@ export const RevCheckOutFormWidget = () => {
   const [expirationDate, setExpirationDate] = useState('');
   const [cvv, setCVV] = useState('');
 
+  let revOrderDetails = revPluginsLoader({
+    revPluginName: 'rev_plugin_check_out',
+    revViewName: 'RevOrderDetails',
+    revVarArgs: {},
+  });
+
   let revInfoText =
     'You will be redirected to set your Ad to Live, after which we will start pushing it to the Owky community';
   let revStartSTopInfoText =
     'Please note that you can always Pause the Ad at any time from the Ad Dashboard';
 
   return (
-    <View style={styles.revCheckoutPayContainer}>
-      <RevInfoArea revInfoText={revInfoText} />
-      <RevInfoArea revInfoText={revStartSTopInfoText} />
-      <TextInput
-        style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
-        placeholderTextColor="#999"
-        placeholder="Card Number"
-        value={cardNumber}
-        onChangeText={setCardNumber}
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
-        placeholderTextColor="#999"
-        placeholder="Card Holder Name"
-        value={cardHolderName}
-        onChangeText={setCardHolderName}
-      />
-      <View style={styles.revRow}>
-        <TextInput
-          style={[
-            [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
-            styles.revHalfInput,
-          ]}
-          placeholderTextColor="#999"
-          placeholder="Expiration Date"
-          value={expirationDate}
-          onChangeText={setExpirationDate}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={[
-            [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
-            styles.revHalfInputLast,
-          ]}
-          placeholderTextColor="#999"
-          placeholder="CVV"
-          value={cvv}
-          onChangeText={setCVV}
-          keyboardType="numeric"
-          secureTextEntry
-        />
+    <View>
+      <View
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revOrderDetailsContainer,
+        ]}>
+        {revOrderDetails}
       </View>
 
-      <View
-        style={[revSiteStyles.revFlexWrapper, styles.revCheckOutFooterWrapper]}>
-        <Text
+      <View style={styles.revCheckoutPayContainer}>
+        <RevInfoArea revInfoText={revInfoText} />
+        <RevInfoArea revInfoText={revStartSTopInfoText} />
+        <TextInput
+          style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+          placeholderTextColor="#999"
+          placeholder="Card Number"
+          value={cardNumber}
+          onChangeText={setCardNumber}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+          placeholderTextColor="#999"
+          placeholder="Card Holder Name"
+          value={cardHolderName}
+          onChangeText={setCardHolderName}
+        />
+        <View style={styles.revRow}>
+          <TextInput
+            style={[
+              [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+              styles.revHalfInput,
+            ]}
+            placeholderTextColor="#999"
+            placeholder="Expiration Date"
+            value={expirationDate}
+            onChangeText={setExpirationDate}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={[
+              [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+              styles.revHalfInputLast,
+            ]}
+            placeholderTextColor="#999"
+            placeholder="CVV"
+            value={cvv}
+            onChangeText={setCVV}
+            keyboardType="numeric"
+            secureTextEntry
+          />
+        </View>
+
+        <View
           style={[
-            revSiteStyles.revSiteTxtColorWhite,
-            revSiteStyles.revSiteTxtTiny,
-            revSiteStyles.revSiteTxtBold,
-            styles.revCheckOutTab,
+            revSiteStyles.revFlexWrapper,
+            styles.revCheckOutFooterWrapper,
           ]}>
-          Pay Now
-        </Text>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorWhite,
+              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
+              styles.revCheckOutTab,
+            ]}>
+            Pay Now
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -81,10 +102,13 @@ export const RevCheckOutFormWidget = () => {
 
 const styles = StyleSheet.create({
   revCheckoutPayContainer: {
+    backgroundColor: '#F9F9F9',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: '#ede7f6',
-    borderRadius: 10,
+    marginTop: 10,
+  },
+  revOrderDetailsContainer: {
+    paddingHorizontal: 20,
   },
   revRow: {
     flexDirection: 'row',
@@ -92,7 +116,7 @@ const styles = StyleSheet.create({
   },
   revCheckOutTextInput: {
     backgroundColor: '#FFF',
-    borderWidth: 0,
+    borderColor: '#EEE',
   },
   revHalfInput: {
     flex: 1,

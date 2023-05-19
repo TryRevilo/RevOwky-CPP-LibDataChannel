@@ -2,6 +2,8 @@ import React from 'react';
 
 import {RevCreateNewAdForm} from './rev_views/rev_forms/RevCreateNewAdForm';
 import {RevCreateNewAdDetailsForm} from './rev_views/rev_forms/RevCreateNewAdDetailsForm';
+import {RevAdBudgetInputForm} from './rev_views/rev_forms/RevAdBudgetInputForm';
+import {RevAdCampaignTeamInputForm} from './rev_views/rev_forms/RevAdCampaignTeamInputForm';
 import {RevAdEntityListingView} from './rev_views/rev_listing_views/RevAdEntityListingView';
 import {RevAdObjectView} from './rev_views/rev_object_views/RevAdObjectView';
 
@@ -17,6 +19,14 @@ export default function RevStart({revVarArgs}) {
 
     case 'RevCreateNewAdDetailsForm':
       RevView = <RevCreateNewAdDetailsForm revVarArgs={revVarArgs} />;
+      break;
+
+    case 'RevAdBudgetInputForm':
+      RevView = <RevAdBudgetInputForm revVarArgs={revVarArgs} />;
+      break;
+
+    case 'RevAdCampaignTeamInputForm':
+      RevView = <RevAdCampaignTeamInputForm revVarArgs={revVarArgs} />;
       break;
 
     case 'RevAdEntityListingView':

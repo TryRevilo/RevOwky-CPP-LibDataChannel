@@ -22,6 +22,10 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateProductLineWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  revVarArgs = revVarArgs.revVarArgs;
+
+  const {revOnSaveCallBack} = revVarArgs;
+
   const [revSelectedIndustry, setRevSelectedIndustry] = useState('');
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
@@ -183,7 +187,10 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revFormFooterWrapper,
         ]}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            revOnSaveCallBack(revSelectedIndustry);
+          }}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,

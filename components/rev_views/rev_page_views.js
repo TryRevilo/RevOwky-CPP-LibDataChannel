@@ -40,7 +40,7 @@ export const RevSectionPointer = ({revStyles = null}) => {
   );
 };
 
-export const RevSectionPointedContent = ({revContent}) => {
+export const RevSectionPointedContent = ({revContent, revStyles}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   if (!revContent) {
@@ -53,7 +53,7 @@ export const RevSectionPointedContent = ({revContent}) => {
         revSiteStyles.revFlexWrapper,
         revSiteStyles.revDescriptiveTitleViewContentWrapper,
       ]}>
-      <RevSectionPointer />
+      <RevSectionPointer revStyles={revStyles} />
 
       <View style={revSiteStyles.revSectionPointedContentContainer}>
         {revContent}
@@ -62,13 +62,28 @@ export const RevSectionPointedContent = ({revContent}) => {
   );
 };
 
-export const RevDescriptiveTitleView = ({
-  revVarArgs,
-  revVarArgs: {revBodyContentItemsArr = [], revNullContentTxt = ''},
-}) => {
-  const {revSiteStyles} = useRevSiteStyles();
+const myFunc = ({val1 = 'default val', val2 = 'default val'} = {}) => {
+  // Your function logic here
+};
 
-  let revTitle = revVarArgs.revTitle;
+const MyFuncComponent = ({myVarArgs = {}}) => {
+  const {val1 = 'default val', val2 = 'default val'} = myVarArgs;
+};
+
+const MyFuncComponent_ = ({
+  myVarArgs: {val1 = 'default val', val2 = 'default val'} = {},
+}) => {};
+
+export const RevDescriptiveTitleView = ({
+  revVarArgs: {
+    revTitle = '',
+    revBodyContentItemsArr = [],
+    revNullContentTxt = '',
+    revStyles = {},
+    revPointerStyles = {},
+  },
+} = {}) => {
+  const {revSiteStyles} = useRevSiteStyles();
 
   let revNullContentSection = null;
 
@@ -84,12 +99,15 @@ export const RevDescriptiveTitleView = ({
     );
 
     revNullContentSection = (
-      <RevSectionPointedContent revContent={revNullContentSectionView} />
+      <RevSectionPointedContent
+        revContent={revNullContentSectionView}
+        revStyles={revPointerStyles}
+      />
     );
   }
 
   let revRetView = (
-    <View style={[revSiteStyles.revFlexContainer]}>
+    <View style={[revSiteStyles.revFlexContainer, revStyles]}>
       <View
         style={[
           revSiteStyles.revFlexWrapper,
@@ -112,6 +130,7 @@ export const RevDescriptiveTitleView = ({
         <RevSectionPointedContent
           key={'revBodyContentItem_' + revGetRandInteger()}
           revContent={revBodyContentItem}
+          revStyles={revPointerStyles}
         />
       ))}
     </View>

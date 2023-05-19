@@ -1,9 +1,25 @@
-import React, {useState, useRef} from 'react';
+/**
+ *  default: The default keyboard, which can vary depending on the platform and locale.
+    numeric: A keyboard for entering numeric values.
+    email-address: A keyboard optimized for entering email addresses.
+    phone-pad: A numeric keyboard with additional symbols commonly used in phone numbers.
+    number-pad: A numeric keyboard without symbols or decimal point.
+    decimal-pad: A numeric keyboard with a decimal point.
+    url: A keyboard optimized for entering URLs.
+    ascii-capable: A keyboard capable of entering ASCII characters only.
+    visible-password: A keyboard where the entered characters are visible (intended for password input fields).
+ * 
+ */
+
+import React, {useState, useRef, useCallback} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
+
+import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
@@ -82,6 +98,36 @@ export const RevTagsInput = ({revVarArgs}) => {
   );
 };
 
+export const RevTextInput = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const {
+    revTextInputOnChangeCallBack = null,
+    revPlaceHolderTxt = '',
+    revKeyboardType = 'default',
+  } = revVarArgs;
+
+  const [revInputText, setRevInputText] = useState('');
+
+  const revHandleTextChange = newText => {
+    setRevInputText(newText);
+    revTextInputOnChangeCallBack(newText);
+  };
+
+  return (
+    <View style={revSiteStyles.revFlexWrapper}>
+      <TextInput
+        value={revInputText}
+        style={[revSiteStyles.revSiteTextInput, {width: '100%'}]}
+        placeholder={revPlaceHolderTxt}
+        placeholderTextColor="#999"
+        onChangeText={revHandleTextChange}
+        keyboardType={revKeyboardType}
+      />
+    </View>
+  );
+};
+
 export const RevTextInputWithCount = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -139,10 +185,11 @@ export const RevTextInputAreaWithCount = ({revVarArgs}) => {
   const {
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
+    revDefaultTxt = '',
     revMaxTxtCount = 100,
   } = revVarArgs;
 
-  const [revInputText, setRevInputText] = useState('');
+  const [revInputText, setRevInputText] = useState(revDefaultTxt);
   const [revTextCountStatusStyle, setRevTextCountStatusStyle] = useState(
     revSiteStyles.revSiteTxtAlertSafe,
   );
@@ -215,7 +262,7 @@ export const RevDropdownListSelector = ({
           revSiteStyles.revSiteTxtTiny,
           revSiteStyles.revDropdownListSelectorTab,
         ]}>
-        {revFixedSelectedValue}{' '}
+        {revTruncateString(revFixedSelectedValue, 12, false)}{' '}
         <FontAwesome
           name="chevron-down"
           style={[
@@ -333,5 +380,75 @@ export const RevPasswordInput = ({revVarArgs}) => {
         />
       </TouchableOpacity>
     </View>
+  );
+};
+
+export const RevUploadFilesTab = ({
+  revVarArgs: {
+    revLabel = 'Upload',
+    revUploadTab = null,
+    revStyles = {},
+    revMIMETypes = DocumentPicker.types.allFiles,
+    revOnSelectedDataCallBack = revSelectedData => revSelectedData,
+  },
+} = {}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revSelectedData, setRevSelectedData] = useState(null);
+
+  const revHandleOnMediaSelectTab = useCallback(async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        type: [revMIMETypes],
+        presentationStyle: 'fullScreen',
+        allowMultiSelection: true,
+      });
+
+      setRevSelectedData(response);
+      revOnSelectedDataCallBack(response);
+    } catch (err) {
+      revHandleError(err);
+    }
+  }, [revSelectedData]);
+
+  if (!revUploadTab) {
+    revUploadTab = (
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          {alignItems: 'center'},
+        ]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          <FontAwesome
+            name={'plus'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtNormal,
+              {paddingHorizontal: 8},
+            ]}></FontAwesome>
+        </Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {' ' + revLabel}
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <TouchableOpacity
+      style={[revSiteStyles.revAddMeadiaTab, revStyles]}
+      onPress={() => {
+        revHandleOnMediaSelectTab();
+      }}>
+      {revUploadTab}
+    </TouchableOpacity>
   );
 };

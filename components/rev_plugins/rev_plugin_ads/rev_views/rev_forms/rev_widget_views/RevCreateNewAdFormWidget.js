@@ -17,25 +17,69 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  const [revOrganization, setRevOrganization] = useState(
+    (revVarArgs = {revOrganization: null}),
+  );
+
+  let revCheckOutForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_check_out',
+    revViewName: 'RevCheckOutForm',
+    revVarArgs: {},
+  });
+
+  const revInitCreateNewAdPreview = revRetData => {
+    setRevCurrFormView(revAdPreview(revRetData));
+    setRevCurrTabId(4);
+  };
+
+  const revInitCreateNewAdDetailsForm = revRetData => {
+    let revCreateNewAdDetailsForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_ads',
+      revViewName: 'RevCreateNewAdDetailsForm',
+      revVarArgs: {
+        revData: revRetData,
+        revOnSaveCallBack: revInitCreateNewAdPreview,
+      },
+    });
+
+    setRevCurrTabId(3);
+    setRevCurrFormView(revCreateNewAdDetailsForm);
+  };
+
+  const revInitNewProdLineForm = revRetData => {
+    let revCreateProductLine = revPluginsLoader({
+      revPluginName: 'rev_plugin_organization',
+      revViewName: 'RevCreateProductLine',
+      revVarArgs: {
+        revData: revRetData,
+        revOrganization: revOrganization,
+        revOnSaveCallBack: revInitCreateNewAdDetailsForm,
+      },
+    });
+
+    setRevOrganization(revRetData);
+    setRevCurrTabId(2);
+    setRevCurrFormView(revCreateProductLine);
+  };
+
   let revCreateNewOrganization = revPluginsLoader({
     revPluginName: 'rev_plugin_organization',
     revViewName: 'RevCreateNewOrganization',
-    revVarArgs: {},
+    revVarArgs: {
+      revOnSaveCallBack: revRetData => {
+        console.log('>>> revRetData', revRetData);
+        revInitNewProdLineForm(revRetData);
+      },
+    },
   });
 
-  let revCreateProductLine = revPluginsLoader({
-    revPluginName: 'rev_plugin_organization',
-    revViewName: 'RevCreateProductLine',
-    revVarArgs: {},
-  });
-
-  let revCreateNewAdDetailsForm = revPluginsLoader({
-    revPluginName: 'rev_plugin_ads',
-    revViewName: 'RevCreateNewAdDetailsForm',
-    revVarArgs: {},
-  });
+  const [revCurrFormView, setRevCurrFormView] = useState(
+    revCreateNewOrganization,
+  );
 
   const revAdPreview = () => {
+    console.log('>>> revAdPreview <<<');
+
     let revAdPreviewHeader = (
       <View
         style={[
@@ -82,30 +126,8 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     );
   };
 
-  let revCheckOutForm = revPluginsLoader({
-    revPluginName: 'rev_plugin_check_out',
-    revViewName: 'RevCheckOutForm',
-    revVarArgs: {},
-  });
-
-  const [revCurrFormView, setRevCurrFormView] = useState(
-    revCreateNewOrganization,
-  );
-
   const handleRevCreateNewOrgTabPressed = () => {
     setRevCurrFormView(revCreateNewOrganization);
-  };
-
-  const handleRevCreateNewProdLineTabPressed = () => {
-    setRevCurrFormView(revCreateProductLine);
-  };
-
-  const handleRevCreateNewAdDetailsTabPressed = () => {
-    setRevCurrFormView(revCreateNewAdDetailsForm);
-  };
-
-  const handleRevCreateNewAdPreviewTabPressed = () => {
-    setRevCurrFormView(revAdPreview());
   };
 
   const handleRevCreateNewAdCheckOutTabPressed = () => {
@@ -121,17 +143,17 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     {
       revTabId: 2,
       revLabel: 2,
-      revCallBackFunc: handleRevCreateNewProdLineTabPressed,
+      revCallBackFunc: revInitNewProdLineForm,
     },
     {
       revTabId: 3,
       revLabel: 3,
-      revCallBackFunc: handleRevCreateNewAdDetailsTabPressed,
+      revCallBackFunc: revInitCreateNewAdDetailsForm,
     },
     {
       revTabId: 4,
       revLabel: 'Preview',
-      revCallBackFunc: handleRevCreateNewAdPreviewTabPressed,
+      revCallBackFunc: revInitCreateNewAdPreview,
     },
     {
       revTabId: 5,
@@ -141,12 +163,35 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   ];
 
   const revInitTabsArr = () => {
-    return revTabsDataArr.map(revCurrTabData => (
+    let revLatArrowPointerItem = (
+      <FontAwesome
+        style={[
+          revSiteStyles.revSiteTxtColorLight_X,
+          revSiteStyles.revSiteTxtMedium,
+        ]}
+        name="long-arrow-right"
+      />
+    );
+
+    let revTabsArr = revTabsDataArr.map(revCurrTabData => (
       <RevFormsNavTab
         key={revCurrTabData.revTabId}
         revTabData={revCurrTabData}
       />
     ));
+
+    let revRetView = (
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revInitTabsArrWrapper,
+        ]}>
+        {revTabsArr}
+        {revLatArrowPointerItem}
+      </View>
+    );
+
+    return revRetView;
   };
 
   const [revCurrTabsArr, setRevCurrTabsArr] = useState([]);
@@ -207,7 +252,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
 const styles = StyleSheet.create({
   revFormsNavTabBorderWrapper: {
     backgroundColor: '#DDD',
-    width: '100%',
+    width: 'auto',
     height: 1,
     position: 'relative',
     top: '53%',
@@ -215,6 +260,9 @@ const styles = StyleSheet.create({
   revFormsNavTabWrapper: {
     position: 'relative',
     left: 5,
+  },
+  revInitTabsArrWrapper: {
+    alignItems: 'center',
   },
   revFormsNavTab: {
     backgroundColor: '#DDD',

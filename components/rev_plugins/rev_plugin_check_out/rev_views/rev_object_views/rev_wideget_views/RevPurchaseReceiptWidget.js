@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import React from 'react';
 
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
@@ -8,6 +10,12 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  let revOrderDetails = revPluginsLoader({
+    revPluginName: 'rev_plugin_check_out',
+    revViewName: 'RevOrderDetails',
+    revVarArgs: {},
+  });
 
   let revPaymentBrief = (
     <View
@@ -180,130 +188,6 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
       </View>
     </View>
   );
-
-  const RevOrderDetails = () => {
-    return (
-      <View style={revSiteStyles.revFlexContainer}>
-        <View style={styles.header}>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
-              styles.orderDetails,
-            ]}>
-            Order details
-          </Text>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
-              styles.quantity,
-            ]}>
-            Quantity
-          </Text>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
-              styles.price,
-            ]}>
-            Price
-          </Text>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
-              styles.subtotal,
-            ]}>
-            Subtotal
-          </Text>
-        </View>
-        <View style={revSiteStyles.revFlexContainer}>
-          <View style={styles.row}>
-            <Text style={styles.orderDetailsTd}></Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.quantityTd,
-              ]}>
-              1
-            </Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.priceTd,
-              ]}>
-              $1.35 USD
-            </Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.subtotalTd,
-              ]}>
-              $1.35 USD
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.orderDetailsTd}></Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.quantityTd,
-              ]}></Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.priceTd,
-              ]}>
-              Purchase Total
-            </Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.subtotalTd,
-              ]}>
-              $1.35 USD
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.orderDetailsTd}></Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.quantityTd,
-              ]}></Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.priceTd,
-              ]}>
-              Funding Source
-            </Text>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-                styles.subtotalTd,
-              ]}>
-              PayPal Account
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
 
   const RevPaymentDetails = () => {
     return (
@@ -529,7 +413,7 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexContainer,
           styles.revOrderDetailsTableContainer,
         ]}>
-        <RevOrderDetails />
+        {revOrderDetails}
       </View>
 
       <View

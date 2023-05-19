@@ -156,6 +156,8 @@ export const revWriteFile = revFile => {
     revURI,
     revDestFilePath,
   );
+
+  return revResStatus;
 };
 
 export const useRevCreateMediaAlbum = () => {
@@ -205,6 +207,8 @@ export const useRevCreateMediaAlbum = () => {
 
     for (let i = 0; i < revFileObjectsArr.length; i++) {
       let revFile = revFileObjectsArr[i];
+
+      console.log('>>> revFile', revFile);
 
       let revFileType = revGetFileType(revFile);
       let revFileSubtype = revGetFileObjectSubType(revFile);

@@ -16,6 +16,9 @@ export const useRevSiteStyles = () => {
     revSiteTxtColor: {
       color: '#757575',
     },
+    revSiteTxtColorLight_X: {
+      color: '#DDD',
+    },
     revSiteTxtColorLight: {
       color: '#999',
     },
@@ -338,6 +341,13 @@ export const useRevSiteStyles = () => {
       borderRadius: 2,
     },
     /** END REV IMAGES */
+
+    /** START REV UPLOAD INPUT */
+    revAddMeadiaTab: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      marginLeft: 22,
+    },
   });
 
   return {revSiteStyles};

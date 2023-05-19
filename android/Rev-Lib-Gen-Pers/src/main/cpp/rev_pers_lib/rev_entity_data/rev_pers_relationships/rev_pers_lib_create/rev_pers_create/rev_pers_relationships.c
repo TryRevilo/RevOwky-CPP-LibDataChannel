@@ -35,6 +35,12 @@ int revPersGetRelId(char *revEntityrelationship) {
         revRelId = 9;
     } else if (strcmp(revEntityrelationship, "rev_stranger_chat_of") == 0) {
         revRelId = 10;
+    } else if (strcmp(revEntityrelationship, "rev_product_line_of") == 0) {
+        revRelId = 11;
+    } else if (strcmp(revEntityrelationship, "rev_ad_campaign_of") == 0) {
+        revRelId = 12;
+    } else if (strcmp(revEntityrelationship, "rev_check_out_payment_of") == 0) {
+        revRelId = 13;
     } else {
         revRelId = -1;
     }
@@ -78,6 +84,15 @@ char *getRevEntityRelValue(int relTypeValId) {
             break;
         case 10:
             relTypeVal = "rev_stranger_chat_of";
+            break;
+        case 11:
+            relTypeVal = "rev_product_line_of";
+            break;
+        case 12:
+            relTypeVal = "rev_ad_campaign_of";
+            break;
+        case 13:
+            relTypeVal = "rev_check_out_payment_of";
             break;
         default:
             relTypeVal = "-1";

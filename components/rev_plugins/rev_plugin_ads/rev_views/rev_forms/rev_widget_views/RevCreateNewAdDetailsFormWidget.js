@@ -2,13 +2,14 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {RevTextInputWithCount} from '../../../../../rev_views/rev_input_form_views';
 import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form_views';
@@ -21,11 +22,29 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  console.log('>>> revVarArgs', revVarArgs);
+
+  revVarArgs = revVarArgs.revVarArgs;
+
+  const {revOnSaveCallBack} = revVarArgs;
+
   const [revSelectedIndustry, setRevSelectedIndustry] = useState('');
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
   const [revSearchText, setRevSearchText] = useState('');
   const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
+
+  let revAdBudgetInputForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_ads',
+    revViewName: 'RevAdBudgetInputForm',
+    revVarArgs: {},
+  });
+
+  let revAdCampaignTeamInputForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_ads',
+    revViewName: 'RevAdCampaignTeamInputForm',
+    revVarArgs: {},
+  });
 
   let revInfoTell = 'Finally set up your Ad here';
 
@@ -148,12 +167,28 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
         </View>
       </View>
 
+      <View style={[revSiteStyles.revFlexContainer]}>
+        {revAdBudgetInputForm}
+      </View>
+
+      <View>{revAdCampaignTeamInputForm}</View>
+
       <View
         style={[
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revFormFooterWrapper,
+          {
+            paddingTop: 12,
+            marginTop: 12,
+            borderTopColor: '#EEE',
+            borderStyle: 'dotted',
+            borderTopWidth: 1,
+          },
         ]}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            revOnSaveCallBack('<<< DETAILS >>>');
+          }}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,

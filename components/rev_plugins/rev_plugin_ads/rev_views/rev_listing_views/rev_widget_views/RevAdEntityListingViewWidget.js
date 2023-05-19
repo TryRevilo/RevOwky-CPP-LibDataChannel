@@ -86,11 +86,21 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
         <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
           Promoted
         </Text>
+
         <TouchableOpacity
           onPress={handleRevCreateNewAdTabPressed}
           style={[styles.revAddAdTab]}>
           <FontAwesome
             name="plus"
+            style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleRevCreateNewAdTabPressed}
+          style={[styles.revAddAdTab]}>
+          <FontAwesome
+            name="flag-o"
             style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
           />
         </TouchableOpacity>

@@ -5,19 +5,30 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  NativeModules,
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
+
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {
+  RevDropdownListSelector,
+  RevUploadFilesTab,
+} from '../../../../../rev_views/rev_input_form_views';
 import {
   RevScrollView_V,
   RevInfoArea,
 } from '../../../../../rev_views/rev_page_views';
 
-import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {useRevPersGetALLRevEntity_By_SubType_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {useRevCreateNewOrganizationAction} from '../../../rev_actions/rev_create_new_organization_action';
 
 import {
   RevTagsInput,
@@ -32,13 +43,81 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {SET_REV_SITE_VAR_ARGS} = useContext(RevSiteDataContext);
+  const {RevPersLibRead_React} = NativeModules;
+  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
+    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
+
+  revVarArgs = revVarArgs.revVarArgs;
+
+  const {revOnSaveCallBack} = revVarArgs;
+
+  const {revCreateNewOrganizationAction} = useRevCreateNewOrganizationAction();
+
+  const {REV_LOGGED_IN_ENTITY_GUID, SET_REV_SITE_VAR_ARGS} =
+    useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
+
+  const [revEntityNameText, setRevEntityNameText] = useState('');
+  const [revEntityDescText, setRevEntityDescText] = useState('');
+  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
+    [],
+  );
+  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
+    [],
+  );
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
-  const [revSearchText, setRevSearchText] = useState('');
-  const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
+
+  let revPassVarArgs = {
+    revSelect: [
+      '_revEntityGUID',
+      '_revOwnerEntityGUID',
+      '_revContainerEntityGUID',
+      '_revEntitySiteGUID',
+      '_revEntityAccessPermission',
+      '_revEntityType',
+      '_revEntitySubType',
+      '_revTimeCreated',
+    ],
+    revWhere: {
+      _revEntityType: 'rev_object',
+      _revEntitySubType: 'rev_organization',
+      _revOwnerEntityGUID: REV_LOGGED_IN_ENTITY_GUID,
+    },
+    revLimit: 20,
+  };
+  let revMyOrganizationsArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+    JSON.stringify(revPassVarArgs),
+  );
+
+  console.log(revMyOrganizationsArr.length);
+
+  let revCurrencySelectionOptionsArr = [];
+
+  for (let i = 0; i < revMyOrganizationsArr.length; i++) {
+    let revMyCurrOrganization = revMyOrganizationsArr[i];
+    let revEntityMetadataList =
+      revMyCurrOrganization._revInfoEntity._revEntityMetadataList;
+
+    let revEntityNameVal = revGetMetadataValue(
+      revEntityMetadataList,
+      'rev_entity_name_val',
+    );
+
+    revCurrencySelectionOptionsArr.push({
+      key: revMyCurrOrganization._revEntityGUID,
+      value: revEntityNameVal,
+    });
+  }
+
+  let revCurrencyDropdownListSelector = (
+    <RevDropdownListSelector
+      revFixedSelectedValue={revCurrencySelectionOptionsArr[0].value}
+      revOptions={revCurrencySelectionOptionsArr}
+      revOnSelect={() => {}}
+    />
+  );
 
   const handleRevCancelTabPress = () => {
     let RevUserSettings = revPluginsLoader({
@@ -54,30 +133,21 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     });
   };
 
-  const revHandleSearchTabPress = () => {
-    SET_REV_SITE_BODY(null);
+  const handleRevSaveBusinessTabPressed = async () => {
+    let revPassVarArgs = {
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revEntityNameVal: revEntityNameText,
+      revEntityDescVal: revEntityDescText,
+      revEntityNameVal: revEntityNameText,
 
-    let RevUserSettings = revPluginsLoader({
-      revPluginName: 'rev_plugin_user_settings',
-      revViewName: 'RevUserSettings',
-      revData: 'Hello World!',
+      revSelectedMedia: [
+        ...revSelectedImagesDataArray,
+        ...revSelectedVideosDataArray,
+      ],
+    };
+    revCreateNewOrganizationAction(revPassVarArgs, revPersResData => {
+      revOnSaveCallBack(revPersResData);
     });
-
-    SET_REV_SITE_BODY(RevUserSettings);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
-  };
-
-  const handleRevCreateProductLineTabPressed = () => {
-    let revCreateProductLine = revPluginsLoader({
-      revPluginName: 'rev_plugin_organization',
-      revViewName: 'RevCreateProductLine',
-      revVarArgs: {},
-    });
-
-    SET_REV_SITE_BODY(revCreateProductLine);
   };
 
   useEffect(() => {
@@ -110,6 +180,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
       style={[revSiteStyles.revFlexContainer, styles.revFormInputContainer]}>
       <RevInfoArea revInfoText={revInfoTell}></RevInfoArea>
 
+      {revCurrencyDropdownListSelector}
+
       <View
         style={[
           revSiteStyles.revFlexContainer,
@@ -120,18 +192,17 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           placeholder=" Business name"
           placeholderTextColor="#999"
           onChangeText={newText => {
-            setRevSearchText(newText);
+            setRevEntityNameText(newText);
           }}
-          defaultValue={revSearchText}
+          defaultValue={revEntityNameText}
         />
 
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputAreaWithCount
             revVarArgs={{
               revPlaceHolderTxt: ' Brief desc . . .',
-              revTextInputOnChangeCallBack: revNewTxt => {
-                setRevBriefInfoTxt(revNewTxt);
-              },
+              revDefaultTxt: revEntityDescText,
+              revTextInputOnChangeCallBack: setRevEntityDescText,
               revMaxTxtCount: 255,
             }}
           />
@@ -140,9 +211,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         <View style={[revSiteStyles.revFlexPageContainer]}>
           <RevTagsInput
             revVarArgs={{
-              revTagsInputUpdater: revLatestTagsArr => {
-                setRevTagsArr(revLatestTagsArr);
-              },
+              revTagsInputUpdater: setRevTagsArr,
             }}
           />
 
@@ -165,15 +234,13 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
             <FontAwesome name="camera" />
             <FontAwesome name="long-arrow-right" /> Company pics
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revMIMETypes: DocumentPicker.types.images,
+              revOnSelectedDataCallBack: setRevSelectedImagesDataArray,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -182,8 +249,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
-            You have 0 pictures on your business' profile. You can upload up to
-            22
+            {`You have selected ${revSelectedImagesDataArray.length} pictures for this business' profile. You can upload up to 22`}
           </Text>
         </View>
       </View>
@@ -203,15 +269,13 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
             <FontAwesome name="dot-circle-o" />
             <FontAwesome name="long-arrow-right" /> Video{'  '}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revMIMETypes: DocumentPicker.types.video,
+              revOnSelectedDataCallBack: setRevSelectedVideosDataArray,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -220,7 +284,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
-            You haven't uploaded a video yet
+            {`You have selected ${revSelectedVideosDataArray.length} a videos for this business' profile`}
           </Text>
         </View>
       </View>
@@ -230,7 +294,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revFormFooterWrapper,
         ]}>
-        <TouchableOpacity onPress={handleRevCreateProductLineTabPressed}>
+        <TouchableOpacity onPress={handleRevSaveBusinessTabPressed}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
@@ -299,11 +363,6 @@ const styles = StyleSheet.create({
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
     marginTop: 8,
-  },
-  revAddMeadiaTab: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginLeft: 22,
   },
   revAddedMediaTell: {
     marginTop: 4,
