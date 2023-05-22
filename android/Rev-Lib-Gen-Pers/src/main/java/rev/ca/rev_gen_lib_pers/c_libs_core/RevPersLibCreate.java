@@ -1,12 +1,11 @@
 package rev.ca.rev_gen_lib_pers.c_libs_core;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
+import rev.ca.rev_gen_lib_pers.RevDBModels.RevAnnotation;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntity;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityMetadata;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityRelationship;
-import rev.ca.rev_gen_lib_pers.RevDBModels.RevAnnotation;
 
 public class RevPersLibCreate {
 

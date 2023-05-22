@@ -97,56 +97,46 @@ const RevSiteContainer = () => {
   return (
     <View style={styles.revSiteContainer}>
       <View style={styles.pageContainer}>
-        <View style={[revSiteStyles.revFlexWrapper]}>
+        <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
           <View
             style={[revSiteStyles.revFlexContainer, styles.revHeaderContainer]}>
             <View
               style={[revSiteStyles.revFlexWrapper, styles.revSiteLogoWrapper]}>
-              <Text style={styles.revSiteLogoTxt}>Owki</Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColor,
+                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revSiteTxtLarge,
+                ]}>
+                Owki
+              </Text>
               <Text
                 style={[
                   revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteFontBold,
-                  revSiteStyles.revSiteTxtSmall,
+                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revSiteTxtTiny_X,
                   styles.revSiteVersion,
                 ]}>
                 {'  '}
-                <FontAwesome
-                  name="dot-circle-o"
-                  style={[
-                    revSiteStyles.revSiteTxtColorLight,
-                    revSiteStyles.revSiteTxtTiny,
-                  ]}
-                />
-                <FontAwesome
-                  name="long-arrow-right"
-                  style={[
-                    revSiteStyles.revSiteTxtColorLight,
-                    revSiteStyles.revSiteTxtTiny,
-                  ]}
-                />{' '}
                 Version{' : '}
               </Text>
               <Text
                 style={[
                   revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteTxtTiny,
-                  styles.revSiteVersion,
+                  revSiteStyles.revSiteTxtTiny_X,
                 ]}>
-                natalie-1.0.0{' '}
+                natalie-1.0.0{'  '}
                 <FontAwesome
                   name="copyright"
                   style={[
                     revSiteStyles.revSiteTxtColorLight,
-                    revSiteStyles.revSiteTxtTiny,
+                    revSiteStyles.revSiteTxtTiny_X,
                   ]}
-                />{' '}
+                />
+                {'  '}
                 2023
               </Text>
             </View>
-            <Text style={[revSiteStyles.revSiteTxtTiny, styles.revSiteTellTxt]}>
-              Chat with people from around the world !
-            </Text>
           </View>
           <View
             style={[
@@ -268,19 +258,7 @@ const styles = StyleSheet.create({
     width: 'auto',
   },
   revSiteLogoWrapper: {
-    alignItems: 'flex-end',
-  },
-  revSiteLogoTxt: {
-    color: '#009688',
-    fontSize: 17,
-    lineHeight: 17,
-    fontWeight: 'bold',
-  },
-  revSiteVersion: {
-    marginBottom: 1,
-  },
-  revSiteTellTxt: {
-    color: '#009688',
+    alignItems: 'baseline',
   },
   siteHeaderOptionsTabsWrapper: {
     alignItems: 'center',

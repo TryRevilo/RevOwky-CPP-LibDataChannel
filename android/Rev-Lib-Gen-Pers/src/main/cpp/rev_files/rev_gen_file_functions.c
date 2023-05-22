@@ -96,59 +96,48 @@ int revCopyFile_MemoryMapped(const char *revSourcePath, const char *revDestPath)
     return 0;
 }
 
-#define BUFFER_SIZE 4096
-
 int revCopyFile(const char *revSourcePath, const char *revDestPath) {
-    int input_fd, output_fd;
-    ssize_t bytes_read, bytes_written;
-    char buffer[BUFFER_SIZE];
+    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSourcePath %s revDestPath %s - %d", revSourcePath, revDestPath, 1);
 
-    input_fd = open(revSourcePath, O_RDONLY);
-    if (input_fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
+    FILE *sourceFile, *destinationFile;
+    char ch;
+
+    // Open the source file in read mode
+    sourceFile = fopen(revSourcePath, "r");
+    if (sourceFile == NULL) {
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> Error opening the source file.\n");
+        return 1;
     }
 
-    output_fd = open(revDestPath, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-    if (output_fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
+    // Open the destination file in write mode
+    destinationFile = fopen(revDestPath, "w");
+    if (destinationFile == NULL) {
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> Error opening the destination file.\n");
+        fclose(sourceFile);
+        return 1;
     }
 
-    while ((bytes_read = read(input_fd, buffer, BUFFER_SIZE)) > 0) {
-        bytes_written = write(output_fd, buffer, bytes_read);
-        if (bytes_written != bytes_read) {
-            perror("write");
-            exit(EXIT_FAILURE);
+    // Copy the contents of the source file to the destination file
+    while (!feof(sourceFile)) {
+        ch = fgetc(sourceFile);
+        if (ch != EOF) {
+            fputc(ch, destinationFile);
         }
     }
 
-    if (bytes_read == -1) {
-        perror("read");
-        exit(EXIT_FAILURE);
-    }
+    // Close the source and destination files
+    fclose(sourceFile);
+    fclose(destinationFile);
 
-    if (close(input_fd) == -1) {
-        perror("close input");
-        exit(EXIT_FAILURE);
-    }
-
-    if (close(output_fd) == -1) {
-        perror("close output");
-        exit(EXIT_FAILURE);
-    }
+    printf("File copied successfully.\n");
 
     return 0;
 }
-
 
 int revCopyFileCURL(const char *revSourceURI, const char *revDestPath) {
     CURL *curl;
     FILE *fp;
     CURLcode res;
-
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSourceURI %s\n", revSourceURI);
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revDestPath %s\n", revDestPath);
 
     /* open the file to copy */
     fp = fopen(revSourceURI, "rb");

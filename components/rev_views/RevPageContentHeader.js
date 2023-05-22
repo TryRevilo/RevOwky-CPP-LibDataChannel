@@ -25,7 +25,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtTiny,
             styles.revHeaderTextLink,
           ]}>
           / {'   '}
@@ -50,13 +50,29 @@ const RevPageContentHeader = ({revVarArgs}) => {
       <View
         style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
         <Text
-          style={
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny,
             revIsIndented
               ? styles.revAllItemsListingFilterTabIndented
-              : styles.revAllItemsListingFilterTabUnIndented
-          }>
-          <FontAwesome name="dot-circle-o" />
-          <FontAwesome name="long-arrow-right" /> All
+              : styles.revAllItemsListingFilterTabUnIndented,
+          ]}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="dot-circle-o"
+          />
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />{' '}
+          All
         </Text>
         <View>
           <RevHeaderLinks />
@@ -70,15 +86,14 @@ const RevPageContentHeader = ({revVarArgs}) => {
           <FontAwesome
             style={[
               revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtSmall,
-              styles.revHeaderTextLink,
+              revSiteStyles.revSiteTxtTiny,
             ]}
             name="dot-circle-o"
           />
           <Text
             style={[
               revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny,
               styles.revHeaderOnlineStateTextLink,
             ]}>
             onLiNE
@@ -105,9 +120,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   revAllItemsListingFilterTabIndented: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,
@@ -115,9 +127,6 @@ const styles = StyleSheet.create({
     paddingLeft: 38,
   },
   revAllItemsListingFilterTabUnIndented: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,

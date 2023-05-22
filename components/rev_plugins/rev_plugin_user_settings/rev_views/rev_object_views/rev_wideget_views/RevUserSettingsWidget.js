@@ -53,7 +53,7 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtTiny,
             styles.revHeaderTextLink,
           ]}>
           / {'  '}
@@ -115,9 +115,27 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
           revSiteStyles.revPageHeaderAreaWrapper,
         ]}>
         <TouchableOpacity onPress={revHandleOnLogOutTabPressed}>
-          <Text style={styles.revContentBodyTtlTellTxt}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Log out
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revContentBodyTtlTellTxt,
+            ]}>
+            <FontAwesome
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
+              name="dot-circle-o"
+            />
+            <FontAwesome
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
+              name="long-arrow-right"
+            />{' '}
+            Log out
           </Text>
         </TouchableOpacity>
 
@@ -225,9 +243,6 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   revContentBodyTtlTellTxt: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,

@@ -9,11 +9,20 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export const RevSearchEntitiesListing = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   let RevHeaderLink = ({revLinkText}) => {
     return (
       <TouchableOpacity>
-        <Text style={styles.revHeaderTextLink}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revHeaderTextLink,
+          ]}>
           / {'   '}
           {revLinkText}
         </Text>
@@ -23,7 +32,7 @@ export const RevSearchEntitiesListing = () => {
 
   let RevHeaderLinks = () => {
     return (
-      <View style={styles.revFlexWrapper}>
+      <View style={revSiteStyles.revFlexWrapper}>
         <RevHeaderLink revLinkText={'mine'} />
         <RevHeaderLink revLinkText={'contacts'} />
         <RevHeaderLink revLinkText={'all'} />
@@ -33,7 +42,8 @@ export const RevSearchEntitiesListing = () => {
 
   let RevHeader = () => {
     return (
-      <View style={[styles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
         <Text style={styles.revContentBodyTtlTellTxt}>
           <FontAwesome name="dot-circle-o" />
           <FontAwesome name="long-arrow-right" /> Find
@@ -46,10 +56,18 @@ export const RevSearchEntitiesListing = () => {
   };
 
   return (
-    <View style={[styles.revFlexContainer]}>
+    <View style={[revSiteStyles.revFlexContainer]}>
       <RevHeader />
-      <View style={[styles.revFlexContainer, styles.revSearchResultsContainer]}>
-        <Text style={[styles.revSiteTxtColor, styles.revSiteTxtSmall]}>
+      <View
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revSearchResultsContainer,
+        ]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtSmall,
+          ]}>
           RevSearchEntitiesListing
         </Text>
       </View>
@@ -63,27 +81,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 75;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revPageHeaderAreaWrapper: {
     alignItems: 'center',
     width: '100%',
@@ -92,14 +89,9 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
   },
   revHeaderTextLink: {
-    color: '#90a4ae',
-    fontSize: 11,
     marginLeft: 4,
   },
   revContentBodyTtlTellTxt: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,

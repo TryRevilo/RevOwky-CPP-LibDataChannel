@@ -17,6 +17,7 @@ import {
   revIsEmptyJSONObject,
   revIsEmptyVar,
   revGetFileType,
+  revGetFileAbsolutePath,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 
 const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
@@ -144,20 +145,32 @@ export const revWriteFile_ = async revFile => {
   });
 };
 
-export const revWriteFile = revFile => {
+export const revWriteFile = async revFile => {
   let revURI = revFile.uri;
   let revNewFileName = revFile.revNewFileName;
+
+  console.log('>>> revURI', revURI);
 
   const revDirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media/';
 
   let revDestFilePath = revDirectoryPath + revNewFileName;
 
-  let revResStatus = RevPersLibCreate_React.revCopyFile(
-    revURI,
-    revDestFilePath,
-  );
+  try {
+    let revFilePath = await revGetFileAbsolutePath(revURI);
 
-  return revResStatus;
+    console.log('>>> revFilePath', revFilePath);
+
+    let revResStatus = RevPersLibCreate_React.revCopyFile(
+      revFilePath,
+      revDestFilePath,
+    );
+
+    console.log('>>> revResStatus', revResStatus);
+
+    return revResStatus;
+  } catch (error) {
+    console.log('*** error -revWriteFile', error);
+  }
 };
 
 export const useRevCreateMediaAlbum = () => {
@@ -167,7 +180,10 @@ export const useRevCreateMediaAlbum = () => {
   const {revSetNewRemoteFile} = usRevSetNewRemoteFile();
   const {revSetFileObject} = useRevSetFileObject();
 
-  const revCreateMediaAlbum = (revEntityContainerGUID, revFileObjectsArr) => {
+  const revCreateMediaAlbum = async (
+    revEntityContainerGUID,
+    revFileObjectsArr,
+  ) => {
     let revPicAlbumObject = REV_ENTITY_STRUCT();
     revPicAlbumObject._revEntityResolveStatus = -1;
     revPicAlbumObject._revEntityChildableStatus = 301;
@@ -244,7 +260,7 @@ export const useRevCreateMediaAlbum = () => {
         );
 
         if (revPicRelId > 0) {
-          revWriteFile(revFile);
+          await revWriteFile(revFile);
         }
       }
     }
@@ -415,7 +431,7 @@ export const useRevSaveNewEntity = () => {
     ) {
       let revSelectedMedia = revVarArgs.revSelectedMedia;
 
-      revCreateMediaAlbum(revPersEntityGUID, revSelectedMedia);
+      await revCreateMediaAlbum(revPersEntityGUID, revSelectedMedia);
     }
     // END Save selected media
 

@@ -15,11 +15,13 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevAdCampaignTeamInputFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const [revDefaultCurrency, setRevDefaultCurrency] = useState('USD');
+  const [revPhoneNumber, setRevPhoneNumber] = useState('');
   const [revInputBudgetAmount, setRevInputBudgetAmount] = useState(0);
   const [revImpressions, setRevImpressions] = useState(0);
 
-  const handleRevEMailInputChange = revTxtVal => {};
+  const handleRevEMailInputChange = revTxtVal => {
+    setRevPhoneNumber(revTxtVal);
+  };
 
   let revPhoneNumberInput = (
     <View style={[revSiteStyles.revFlexWrapper, styles.revEMailInputWrapper]}>

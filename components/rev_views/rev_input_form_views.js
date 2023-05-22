@@ -111,13 +111,17 @@ export const RevTextInput = ({revVarArgs}) => {
 
   const revHandleTextChange = newText => {
     setRevInputText(newText);
-    revTextInputOnChangeCallBack(newText);
+
+    if (revTextInputOnChangeCallBack) {
+      revTextInputOnChangeCallBack(newText);
+    }
   };
 
   return (
     <View style={revSiteStyles.revFlexWrapper}>
       <TextInput
         value={revInputText}
+        defaultValue={revInputText}
         style={[revSiteStyles.revSiteTextInput, {width: '100%'}]}
         placeholder={revPlaceHolderTxt}
         placeholderTextColor="#999"
@@ -282,8 +286,8 @@ export const RevDropdownListSelector = ({
           {revOptions.map(option => (
             <Picker.Item
               key={option.key}
+              value={option.key}
               label={option.value}
-              value={option.value}
             />
           ))}
         </Picker>

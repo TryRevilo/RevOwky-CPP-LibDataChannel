@@ -24,7 +24,7 @@ const RevNullMessagesView = () => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtTiny,
             styles.revHeaderTextLink,
           ]}>
           / {'  '}
@@ -49,9 +49,28 @@ const RevNullMessagesView = () => {
       <View
         style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
         <TouchableOpacity>
-          <Text style={styles.revContentBodyTtlTellTxt}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Info
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revHeaderTextLink,
+              styles.revContentBodyTtlTellTxt,
+            ]}>
+            <FontAwesome
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
+              name="dot-circle-o"
+            />
+            <FontAwesome
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+              ]}
+              name="long-arrow-right"
+            />{' '}
+            Info
           </Text>
         </TouchableOpacity>
         <View>
@@ -157,9 +176,6 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   revContentBodyTtlTellTxt: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,

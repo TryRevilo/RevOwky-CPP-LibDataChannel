@@ -19,6 +19,6 @@ int revCopyFileCURL(const char *revSourceURI, const char *revDestPath);
 
 char *revReadFileBytes(const char *filename, size_t *size);
 
-const char* revGetFileExtension(const char* filename);
+const char *revGetFileExtension(const char *filename);
 
 const char *revGetFileName(const char *filepath);

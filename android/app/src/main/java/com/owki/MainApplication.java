@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.owki.rev_react_modules.RevGenFunctionLibs;
 import com.owki.rev_react_modules.RevPersistencePackages;
-// import com.rnfs.RNFSPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 

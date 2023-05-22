@@ -824,6 +824,35 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
     return revAnnotationId;
 }
 
+// Define the JNI function
+JNIEXPORT void JNICALL
+Java_com_example_yourpackage_yourclass_openFile(JNIEnv *env, jobject thiz, jstring uriString) {
+    const char *uri = (env)->GetStringUTFChars(uriString, 0);
+
+    // Get the content URI as a Java object
+    jclass uriClass = (env)->FindClass("android/net/Uri");
+    jmethodID parseMethod = (env)->GetStaticMethodID(uriClass, "parse",
+                                                     "(Ljava/lang/String;)Landroid/net/Uri;");
+    jobject contentUri = (env)->CallStaticObjectMethod(uriClass, parseMethod, uri);
+
+    // Get the ContentResolver from the current context
+    jclass contextClass = (env)->GetObjectClass(thiz);
+    jmethodID getContentResolverMethod = (env)->GetMethodID(contextClass, "getContentResolver", "()Landroid/content/ContentResolver;");
+    jobject contentResolver = (env)->CallObjectMethod(thiz, getContentResolverMethod);
+
+    // Open an InputStream for the content URI
+    jclass openableClass = (env)->FindClass("android/os/ParcelFileDescriptor");
+    jmethodID openMethod = (env)->GetStaticMethodID(openableClass, "open", "(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;");
+    jobject fileDescriptor = (env)->CallStaticObjectMethod(openableClass, openMethod, contentUri, "r");
+
+    // Use the file descriptor or convert it to a regular file descriptor using ParcelFileDescriptor.getFileDescriptor() if needed
+
+    // Clean up
+    (env)->ReleaseStringUTFChars(uriString, uri);
+    (env)->DeleteLocalRef(contentUri);
+    (env)->DeleteLocalRef(fileDescriptor);
+}
+
 extern "C"
 JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revCopyFile(JNIEnv *env, jobject thiz, jstring rev_source_path, jstring rev_dest_path) {

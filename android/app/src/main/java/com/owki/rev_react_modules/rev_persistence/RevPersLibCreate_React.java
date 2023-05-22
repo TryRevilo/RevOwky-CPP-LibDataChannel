@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.io.File;
-import java.net.URISyntaxException;
 
 import rev.ca.rev_gen_lib_pers.c_libs_core.RevPersLibCreate;
 
@@ -131,13 +129,7 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revCopyFile(String revSourcePath, String revDestPath) {
-        Uri revURI = Uri.parse(revSourcePath);
-        File file = new File(revURI.getPath());
-
-        String revURIFilePath = file.getAbsolutePath().replace("/document/primary:", "/storage/emulated/0/");
-
-        Log.d("MyApp", ">>> revURIFilePath " + revURIFilePath);
-        return revPersLibCreate.revCopyFile(revURIFilePath, revDestPath);
+        return revPersLibCreate.revCopyFile(revSourcePath, revDestPath);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
@@ -153,32 +145,17 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revCopyFileCURL(String revSourcePath, String revDestPath) {
-        Log.d("MyApp", ">>> revSourcePath " + revSourcePath);
-
-        Uri revURI = Uri.parse(revSourcePath);
-        File file = new File(revURI.getPath());
-        // String revURIFilePath = file.getAbsolutePath(); // revGetFilePathFromStringURI(revSourcePath);
-
-        String revURIFilePath = file.getAbsolutePath().replace("/document/primary:", "/storage/emulated/0/");
-
-        Log.d("MyApp", ">>> revURIFilePath " + revURIFilePath);
-
-        int revRetVal = revPersLibCreate.revCopyFileCURL(revURIFilePath, revDestPath);
+        int revRetVal = revPersLibCreate.revCopyFileCURL(revSourcePath, revDestPath);
 
         return revRetVal;
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revCopyFile_MemoryMapped(String revSourcePath, String revDestPath) {
-        Log.d("MyApp", ">>> revSourcePath " + revSourcePath);
-
         Uri revURI = Uri.parse(revSourcePath);
         File file = new File(revURI.getPath());
-        // String revURIFilePath = file.getAbsolutePath(); // revGetFilePathFromStringURI(revSourcePath);
 
         String revURIFilePath = file.getAbsolutePath().replace("/document/primary:", "/storage/emulated/0/");
-
-        Log.d("MyApp", ">>> revURIFilePath " + revURIFilePath);
 
         int revRetVal = revPersLibCreate.revCopyFile_MemoryMapped(revURIFilePath, revDestPath);
 

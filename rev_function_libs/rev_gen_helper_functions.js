@@ -1,4 +1,25 @@
+import RNFS from 'react-native-fs';
+import RNFetchBlob from 'react-native-fetch-blob';
+
 import {revGetServerData_JSON} from '../components/rev_libs_pers/rev_server/rev_pers_lib_read';
+
+// Function to get the absolute file path
+export const revGetFileAbsolutePath = async uri => {
+  let revRetVal = null;
+
+  try {
+    let revFileStats = await RNFetchBlob.fs.stat(uri);
+    revRetVal = revFileStats.path;
+  } catch (error) {
+    console.log('***error -revGetFileAbsolutePath', error);
+
+    revRetVal = null;
+  }
+
+  console.log('>>> revRetVal', revRetVal);
+
+  return revRetVal;
+};
 
 export function revGetRandInteger(min = 1, max = 1000) {
   return Math.floor(Math.random() * (max - min)) + min;

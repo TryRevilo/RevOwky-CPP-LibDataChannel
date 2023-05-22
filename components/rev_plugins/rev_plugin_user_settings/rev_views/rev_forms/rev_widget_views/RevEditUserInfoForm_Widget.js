@@ -37,6 +37,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const [revTagsArr, setRevTagsArr] = useState([]);
   const [revSearchText, setRevSearchText] = useState('');
   const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
+  const [revAboutEntityInfo, setRevAboutEntityInfo] = useState('');
 
   const handleRevCancelTabPress = () => {
     let RevUserSettings = revPluginsLoader({
@@ -130,7 +131,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revVarArgs={{
               revPlaceHolderTxt: ' About me . . .',
               revTextInputOnChangeCallBack: revNewTxt => {
-                setRevBriefInfoTxt(revNewTxt);
+                setRevAboutEntityInfo(revNewTxt);
               },
               revMaxTxtCount: 255,
             }}
