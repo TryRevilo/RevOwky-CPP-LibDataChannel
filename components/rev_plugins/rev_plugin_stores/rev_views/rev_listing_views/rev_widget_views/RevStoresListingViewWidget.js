@@ -11,7 +11,11 @@ import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
 import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevStoresListingViewWidget = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
 
@@ -32,9 +36,8 @@ export const RevStoresListingViewWidget = () => {
       <View style={[styles.revFlexContainer, styles.revNullDisplayContainer]}>
         <Text
           style={[
-            styles.revSiteTxtColorLight,
-            styles.revSiteTxtSmall,
-            styles.revNullNoticias,
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
           ]}>
           You have not yet created any stores to list your products into
         </Text>
@@ -44,14 +47,17 @@ export const RevStoresListingViewWidget = () => {
           }}
           style={[styles.revFlexWrapper, styles.revPublishNewTabWrapper]}>
           <FontAwesome
-            style={[styles.revSiteTxtColorLight, styles.revSiteTxtLarge]}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
             name="plus"
           />
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtSmall,
-              styles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
               styles.revPublishNewTabTell,
             ]}>
             Click to create a new Store
@@ -80,7 +86,7 @@ export const RevStoresListingViewWidget = () => {
   };
 
   return (
-    <View style={styles.revFlexContainer}>
+    <View style={revSiteStyles.revFlexContainer}>
       <RevPageContentHeader />
       <RevDisplay />
     </View>
@@ -88,39 +94,6 @@ export const RevStoresListingViewWidget = () => {
 };
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtNormal: {
-    fontSize: 11,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revSiteTxtLarge: {
-    fontSize: 14,
-  },
-  revSiteTxtBold: {
-    fontWeight: 'bold',
-  },
-  revSiteTxtWeightNormal: {
-    fontWeight: '100',
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revPageHeaderAreaWrapper: {
     alignItems: 'center',
     width: '100%',
@@ -140,9 +113,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     marginBottom: 5,
     paddingLeft: 8,
-  },
-  revNullNoticias: {
-    alignSelf: 'flex-start',
   },
   revNullDisplayContainer: {
     marginTop: 12,

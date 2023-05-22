@@ -6,35 +6,74 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevTextInputWithCount} from '../../../../../rev_views/rev_input_form_views';
-import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form_views';
-import {RevDropdownListSelector} from '../../../../../rev_views/rev_input_form_views';
-import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+
+import {
+  RevTextInputWithCount,
+  RevTextInputAreaWithCount,
+  RevDropdownListSelector,
+  RevTagsInput,
+  RevUploadFilesTab,
+} from '../../../../../rev_views/rev_input_form_views';
 
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+
+import {useRevCreateNewProductLineAction} from '../../../rev_actions/rev_create_new_product_line_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevCreateProductLineWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  const {revCreateNewProductLineAction} = useRevCreateNewProductLineAction();
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
   revVarArgs = revVarArgs.revVarArgs;
 
-  const {revOnSaveCallBack} = revVarArgs;
+  console.log('>>> revVarArgs', JSON.stringify(revVarArgs));
+
+  const {revContainerEntityGUID, revOnSaveCallBack} = revVarArgs;
 
   const [revSelectedIndustry, setRevSelectedIndustry] = useState('');
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
-  const [revSearchText, setRevSearchText] = useState('');
-  const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
+
+  const [revEntityNameText, setRevEntityNameText] = useState('');
+  const [revEntityDescText, setRevEntityDescText] = useState('');
+
+  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
+    [],
+  );
+  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
+    [],
+  );
 
   let revInfoTell = 'List some of the products your business deals in';
 
   let revProductLineSelectionOptions = require('../../../rev_resources/rev_industries_list.json');
+
+  const handleRevSaveProductLineTabPressed = async () => {
+    let revPassVarArgs = {
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revContainerEntityGUID: revContainerEntityGUID,
+      revEntityNameVal: revEntityNameText,
+      revEntityDescVal: revEntityDescText,
+
+      revSelectedMedia: [
+        ...revSelectedImagesDataArray,
+        ...revSelectedVideosDataArray,
+      ],
+    };
+    revCreateNewProductLineAction(revPassVarArgs, revPersEntityGUID => {
+      revOnSaveCallBack(revPersEntityGUID);
+    });
+  };
 
   let revOnSelect = revSelection => {
     setRevSelectedIndustry(revSelection);
@@ -75,22 +114,20 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
         ]}>
         <RevTextInputWithCount
           revVarArgs={{
-            revPlaceHolderTxt: ' Product line title . . .',
-            revTextInputOnChangeCallBack: revNewTxt => {
-              setRevBriefInfoTxt(revNewTxt);
-            },
-            revMaxTxtCount: 17,
+            revDefaultTxt: revEntityNameText,
+            revPlaceHolderTxt: ' Product line title title . . .',
+            revTextInputOnChangeCallBack: setRevEntityNameText,
+            revMaxTxtCount: 140,
           }}
         />
 
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputAreaWithCount
             revVarArgs={{
+              revDefaultTxt: revEntityDescText,
               revPlaceHolderTxt: ' Product line desc . . .',
-              revTextInputOnChangeCallBack: revNewTxt => {
-                setRevBriefInfoTxt(revNewTxt);
-              },
-              revMaxTxtCount: 155,
+              revTextInputOnChangeCallBack: setRevEntityDescText,
+              revMaxTxtCount: 500,
             }}
           />
         </View>
@@ -123,15 +160,13 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
             <FontAwesome name="camera" />
             <FontAwesome name="long-arrow-right" /> Products pics
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revMIMETypes: DocumentPicker.types.images,
+              revOnSelectedDataCallBack: setRevSelectedImagesDataArray,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -160,15 +195,13 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
             <FontAwesome name="dot-circle-o" />
             <FontAwesome name="long-arrow-right" /> Video{'  '}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revMIMETypes: DocumentPicker.types.video,
+              revOnSelectedDataCallBack: setRevSelectedVideosDataArray,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -187,10 +220,7 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revFormFooterWrapper,
         ]}>
-        <TouchableOpacity
-          onPress={() => {
-            revOnSaveCallBack(revSelectedIndustry);
-          }}>
+        <TouchableOpacity onPress={handleRevSaveProductLineTabPressed}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
@@ -265,11 +295,6 @@ const styles = StyleSheet.create({
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
     marginTop: 8,
-  },
-  revAddMeadiaTab: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginLeft: 22,
   },
   revAddedMediaTell: {
     marginTop: 4,

@@ -83,11 +83,6 @@ export const useRevSiteStyles = () => {
       alignItems: 'flex-start',
       width: 'auto',
     },
-    revNullNoticias: {
-      color: '#90a4ae',
-      fontSize: 10,
-      alignSelf: 'flex-start',
-    },
 
     /** TABS */
     revSaveTab: {
@@ -107,15 +102,13 @@ export const useRevSiteStyles = () => {
     /** REV TEXT INPUT */
     revSiteTextInput: {
       color: '#444',
-      fontSize: 11,
+      fontSize: 9,
       borderColor: '#F7F7F7',
       borderWidth: 1,
       paddingHorizontal: 5,
       paddingVertical: 2,
     },
     revSiteTextInputNoBorder: {
-      color: '#444',
-      fontSize: 11,
       borderWidth: 0,
       paddingHorizontal: 5,
       paddingVertical: 2,
@@ -127,7 +120,7 @@ export const useRevSiteStyles = () => {
     },
     revTagsInput: {
       color: '#444',
-      fontSize: 11,
+      fontSize: 9,
       lineHeight: 12,
       textAlignVertical: 'bottom',
       flex: 1,
@@ -154,8 +147,6 @@ export const useRevSiteStyles = () => {
       marginLeft: 8,
     },
     revTextInputAreaInputWithCount: {
-      color: '#444',
-      fontSize: 11,
       textAlignVertical: 'top',
       paddingHorizontal: 5,
       paddingTop: 7,
@@ -261,7 +252,7 @@ export const useRevSiteStyles = () => {
     },
     revPasswordInput: {
       color: '#444',
-      fontSize: 11,
+      fontSize: 9,
       flex: 1,
       paddingVertical: 0,
     },

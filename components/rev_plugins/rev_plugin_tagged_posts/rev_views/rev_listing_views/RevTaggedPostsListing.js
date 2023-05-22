@@ -12,7 +12,11 @@ import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_hel
 import {revGetLocal_OR_RemoteGUID} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetPublisherEntity} from '../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export const RevTaggedPostsListing = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   if (
     revIsEmptyJSONObject(revVarArgs) ||
     !revVarArgs.hasOwnProperty('revVarArgs')
@@ -100,7 +104,12 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
         style={styles.revSitePostsListingContainer}
       />
     ) : (
-      <Text style={styles.revNullNoticias}>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revFlexWrapper,
+        ]}>
         You do not have any chat conversations yet
       </Text>
     );
@@ -115,11 +124,6 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revNullNoticias: {
-    color: '#90a4ae',
-    fontSize: 10,
-    alignSelf: 'flex-start',
-  },
   revSitePostsListingContainer: {
     marginTop: 5,
   },

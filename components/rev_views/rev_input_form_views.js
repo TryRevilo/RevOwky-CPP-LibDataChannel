@@ -12,7 +12,14 @@
  */
 
 import React, {useState, useRef, useCallback} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
@@ -82,7 +89,7 @@ export const RevTagsInput = ({revVarArgs}) => {
         onSubmitEditing={revHandleTextSubmit}
         onKeyPress={revHandleKeyPress}
         placeholder=" #tags"
-        placeholderTextColor="#999"
+        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
         style={revSiteStyles.revTagsInput}
       />
 
@@ -98,16 +105,17 @@ export const RevTagsInput = ({revVarArgs}) => {
   );
 };
 
-export const RevTextInput = ({revVarArgs}) => {
+export const RevTextInput = React.memo(({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {
+    revDefaultText = '',
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
     revKeyboardType = 'default',
   } = revVarArgs;
 
-  const [revInputText, setRevInputText] = useState('');
+  const [revInputText, setRevInputText] = useState(revDefaultText);
 
   const revHandleTextChange = newText => {
     setRevInputText(newText);
@@ -124,24 +132,25 @@ export const RevTextInput = ({revVarArgs}) => {
         defaultValue={revInputText}
         style={[revSiteStyles.revSiteTextInput, {width: '100%'}]}
         placeholder={revPlaceHolderTxt}
-        placeholderTextColor="#999"
+        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
         onChangeText={revHandleTextChange}
         keyboardType={revKeyboardType}
       />
     </View>
   );
-};
+});
 
-export const RevTextInputWithCount = ({revVarArgs}) => {
+export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {
+    revDefaultText = '',
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
-    revMaxTxtCount = 100,
+    revMaxTxtCount = 140,
   } = revVarArgs;
 
-  const [revInputText, setRevInputText] = useState('');
+  const [revInputText, setRevInputText] = useState(revDefaultText);
   const [revTextCountStatusStyle, setRevTextCountStatusStyle] = useState(
     revSiteStyles.revSiteTxtAlertSafe,
   );
@@ -167,8 +176,12 @@ export const RevTextInputWithCount = ({revVarArgs}) => {
         onChangeText={revHandleTextChange}
         value={revInputText}
         placeholder={revPlaceHolderTxt}
-        style={revSiteStyles.revSiteTextInputNoBorder}
-        placeholderTextColor="#999"
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTextInputNoBorder,
+        ]}
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         defaultValue={revInputText}
       />
       <Text
@@ -181,22 +194,24 @@ export const RevTextInputWithCount = ({revVarArgs}) => {
       </Text>
     </View>
   );
-};
+});
 
-export const RevTextInputAreaWithCount = ({revVarArgs}) => {
+export const RevTextInputAreaWithCount = React.memo(({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {
+    revDefaultTxt = '',
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
-    revDefaultTxt = '',
-    revMaxTxtCount = 100,
+    revMaxTxtCount = 540,
   } = revVarArgs;
 
   const [revInputText, setRevInputText] = useState(revDefaultTxt);
   const [revTextCountStatusStyle, setRevTextCountStatusStyle] = useState(
     revSiteStyles.revSiteTxtAlertSafe,
   );
+
+  console.log('>>> revPlaceHolderTxt -', revPlaceHolderTxt);
 
   const revHandleTextChange = newText => {
     setRevInputText(newText);
@@ -221,8 +236,12 @@ export const RevTextInputAreaWithCount = ({revVarArgs}) => {
         placeholder={revPlaceHolderTxt}
         multiline={true}
         numberOfLines={5}
-        style={revSiteStyles.revTextInputAreaInputWithCount}
-        placeholderTextColor="#999"
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revTextInputAreaInputWithCount,
+        ]}
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         defaultValue={revInputText}
       />
       <Text
@@ -235,7 +254,7 @@ export const RevTextInputAreaWithCount = ({revVarArgs}) => {
       </Text>
     </View>
   );
-};
+});
 
 export const RevDropdownListSelector = ({
   revFixedSelectedValue,
@@ -371,7 +390,7 @@ export const RevPasswordInput = ({revVarArgs}) => {
         value={password}
         onChangeText={handleRevOnPasswordInputChange}
         placeholder="Password"
-        placeholderTextColor="#999"
+        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
       />
       <TouchableOpacity onPress={toggleShowPassword}>
         <FontAwesome

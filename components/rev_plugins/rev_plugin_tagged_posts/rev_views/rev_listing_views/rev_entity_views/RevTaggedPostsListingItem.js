@@ -34,12 +34,15 @@ import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_hel
 
 import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
-import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 const {RevPersLibRead_React} = NativeModules;
+
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevTaggedPostsListingItem = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
@@ -73,11 +76,9 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let revPublisherEntityNamesSecondInitial =
     revPublisherEntityNamesArr[1].split('')[0];
   let revPublisherEntityNames_Trunc =
-    revTruncateString(revPublisherEntityNamesFirst, 12) +
+    revTruncateString(revPublisherEntityNamesFirst, 3, false) +
     ' .' +
     revPublisherEntityNamesSecondInitial;
-
-  const {revSiteStyles} = useRevSiteStyles();
 
   const [revIsCommetForm, setRevIsCommetForm] = useState(false);
 
@@ -183,7 +184,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
     let revPublisherEntityNames_Trunc = revTruncateString(
       revSplitStringToArray(revPublisherEntityNames)[0],
-      4,
+      3,
       false,
     );
 
@@ -573,7 +574,15 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                   onPress={() => {
                     handleRevCommentFormPressed();
                   }}>
-                  <Text style={styles.revPostCommentTab}>your comment</Text>
+                  <Text
+                    style={[
+                      revSiteStyles.revSiteTxtColorLight,
+                      revSiteStyles.revSiteTxtBold,
+                      revSiteStyles.revSiteTxtTiny,
+                      styles.revPostCommentTab,
+                    ]}>
+                    your comment
+                  </Text>
                 </TouchableOpacity>
               )}
 
@@ -716,9 +725,6 @@ const styles = StyleSheet.create({
     marginHorizontal: -4,
   },
   revPostCommentTab: {
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 9,
     backgroundColor: '#FFF',
     borderColor: '#F7F7F7',
     borderWidth: 1,

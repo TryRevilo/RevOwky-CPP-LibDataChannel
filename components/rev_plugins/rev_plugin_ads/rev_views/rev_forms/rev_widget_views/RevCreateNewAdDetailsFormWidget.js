@@ -5,11 +5,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
 import {RevTextInputWithCount} from '../../../../../rev_views/rev_input_form_views';
 import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form_views';
@@ -17,22 +19,56 @@ import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
 
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
+import {useRevCreateNewAdDetailsForm} from '../../../rev_actions/rev_create_new_ad_details_form_action';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  console.log('>>> revVarArgs', revVarArgs);
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  const {revCreateNewAdDetailsForm} = useRevCreateNewAdDetailsForm();
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  const {revOnSaveCallBack} = revVarArgs;
+  console.log(
+    '>>> revVarArgs -RevCreateNewAdDetailsFormWidget',
+    JSON.stringify(revVarArgs),
+  );
 
-  const [revSelectedIndustry, setRevSelectedIndustry] = useState('');
-  const [revTagsOutputView, setRevTagsOutputView] = useState(null);
+  const {revOrganizationEntityGUID, revProductLineGUID, revOnSaveCallBack} =
+    revVarArgs;
+
   const [revTagsArr, setRevTagsArr] = useState([]);
-  const [revSearchText, setRevSearchText] = useState('');
-  const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
+
+  const [revEntityNameText, setRevEntityNameText] = useState('');
+  const [revEntityDescText, setRevEntityDescText] = useState('');
+
+  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
+    [],
+  );
+  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
+    [],
+  );
+
+  const [revTagsOutputView, setRevTagsOutputView] = useState(null);
+
+  const handleRevSaveAdDetailsTabPressed = async () => {
+    let revPassVarArgs = {
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revEntityNameVal: revEntityNameText,
+      revEntityDescVal: revEntityDescText,
+
+      revSelectedMedia: [
+        ...revSelectedImagesDataArray,
+        ...revSelectedVideosDataArray,
+      ],
+    };
+    revCreateNewAdDetailsForm(revPassVarArgs, revPersEntityGUID => {
+      revOnSaveCallBack(revPersEntityGUID);
+    });
+  };
 
   let revAdBudgetInputForm = revPluginsLoader({
     revPluginName: 'rev_plugin_ads',
@@ -60,21 +96,19 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
         ]}>
         <RevTextInputWithCount
           revVarArgs={{
+            revDefaultTxt: revEntityNameText,
             revPlaceHolderTxt: ' Ad Tag line . . .',
-            revTextInputOnChangeCallBack: revNewTxt => {
-              setRevBriefInfoTxt(revNewTxt);
-            },
-            revMaxTxtCount: 255,
+            revTextInputOnChangeCallBack: setRevEntityNameText,
+            revMaxTxtCount: 140,
           }}
         />
 
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputAreaWithCount
             revVarArgs={{
+              revDefaultTxt: revEntityDescText,
               revPlaceHolderTxt: ' Ad details . . .',
-              revTextInputOnChangeCallBack: revNewTxt => {
-                setRevBriefInfoTxt(revNewTxt);
-              },
+              revTextInputOnChangeCallBack: setRevEntityDescText,
               revMaxTxtCount: 555,
             }}
           />
@@ -185,10 +219,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
             borderTopWidth: 1,
           },
         ]}>
-        <TouchableOpacity
-          onPress={() => {
-            revOnSaveCallBack('<<< DETAILS >>>');
-          }}>
+        <TouchableOpacity onPress={handleRevSaveAdDetailsTabPressed}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,

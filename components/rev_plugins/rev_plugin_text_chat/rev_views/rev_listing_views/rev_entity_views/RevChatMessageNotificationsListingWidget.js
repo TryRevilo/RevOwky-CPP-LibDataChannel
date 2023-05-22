@@ -18,8 +18,12 @@ import {
   useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevChatMessageNotificationsListingWidget = () => {
-  [revPastChatMessagesData, setRevPastChatMessagesData] = useState(null);
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revPastChatMessagesData, setRevPastChatMessagesData] = useState(null);
 
   const {REV_SITE_ENTITY_GUID, REV_LOGGED_IN_ENTITY_GUID} =
     useContext(RevSiteDataContext);
@@ -101,7 +105,12 @@ export const RevChatMessageNotificationsListingWidget = () => {
         maxToRenderPerBatch={10}
       />
     ) : (
-      <Text style={styles.revNullNoticias}>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revFlexWrapper,
+        ]}>
         You do not have any chat conversations yet
       </Text>
     );
@@ -129,10 +138,5 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     marginBottom: 5,
     paddingLeft: 38,
-  },
-  revNullNoticias: {
-    color: '#90a4ae',
-    fontSize: 10,
-    alignSelf: 'flex-start',
   },
 });

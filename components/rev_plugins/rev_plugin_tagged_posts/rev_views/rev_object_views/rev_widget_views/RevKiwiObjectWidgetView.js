@@ -438,7 +438,15 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
                   styles.revCommentsContainer,
                 ]}>
                 <TouchableOpacity>
-                  <Text style={styles.revPostCommentTab}>your comment</Text>
+                  <Text
+                    style={[
+                      revSiteStyles.revSiteTxtColorLight,
+                      revSiteStyles.revSiteTxtBold,
+                      revSiteStyles.revSiteTxtTiny,
+                      styles.revPostCommentTab,
+                    ]}>
+                    your comment
+                  </Text>
                 </TouchableOpacity>
                 <RevGenComments />
               </View>

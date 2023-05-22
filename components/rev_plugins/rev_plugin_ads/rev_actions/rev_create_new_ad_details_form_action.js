@@ -7,14 +7,11 @@ import {REV_METADATA_FILLER} from '../../../rev_libs_pers/rev_db_struct_models/r
 
 import {useRevSaveNewEntity} from '../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
-export const useRevCreateNewOrganizationAction = () => {
+export const useRevCreateNewAdDetailsForm = () => {
   const {revSaveNewEntity} = useRevSaveNewEntity();
 
-  const revCreateNewOrganizationAction = async (
-    revVarArgs,
-    revPersCallBack,
-  ) => {
-    revVarArgs['revEntitySubType'] = 'rev_organization';
+  const revCreateNewAdDetailsForm = async (revVarArgs, revPersCallBack) => {
+    revVarArgs['revEntitySubType'] = 'rev_ad';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revVarArgs.revEntityNameVal),
@@ -27,10 +24,10 @@ export const useRevCreateNewOrganizationAction = () => {
       let revPersEntity = await revSaveNewEntity(revVarArgs);
       return revPersCallBack(revPersEntity._revEntityGUID);
     } catch (error) {
-      console.log('*** error', error);
+      console.log('*** error -revCreateNewAdDetailsForm', error);
       return revPersCallBack(-1);
     }
   };
 
-  return {revCreateNewOrganizationAction};
+  return {revCreateNewAdDetailsForm};
 };

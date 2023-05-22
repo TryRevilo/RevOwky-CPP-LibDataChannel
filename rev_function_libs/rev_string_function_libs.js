@@ -147,7 +147,7 @@ export const revTruncateString = (revStr, revLen, revIncludeHellipse) => {
   }
 
   return revStr.length > revLen
-    ? revStr.substr(0, revLen - 1) + revHellipse
+    ? revStr.substr(0, revLen) + revHellipse
     : revStr;
 };
 

@@ -320,6 +320,11 @@ export const useRevSaveNewEntity = () => {
     revPersEntityData._revEntityType = 'rev_object';
     revPersEntityData._revEntitySubType = revVarArgs.revEntitySubType;
     revPersEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
+    revPersEntityData._revEntityContainerGUID =
+      'revContainerEntityGUID' in revVarArgs &&
+      revVarArgs.revContainerEntityGUID > 0
+        ? revVarArgs.revContainerEntityGUID
+        : -1;
 
     let revPersEntityGUID = revCreateNewEntity(revPersEntityData);
 

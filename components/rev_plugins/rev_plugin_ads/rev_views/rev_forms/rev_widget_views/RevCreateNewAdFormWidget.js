@@ -17,8 +17,11 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const [revOrganization, setRevOrganization] = useState(
-    (revVarArgs = {revOrganization: null}),
+  let revContainerEntityGUIDParam = ({revContainerEntityGUID = -1} =
+    revVarArgs);
+
+  const [revOrganizationEntityGUID, setRevOrganizationEntityGUID] = useState(
+    revContainerEntityGUIDParam,
   );
 
   let revCheckOutForm = revPluginsLoader({
@@ -46,18 +49,22 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     setRevCurrFormView(revCreateNewAdDetailsForm);
   };
 
-  const revInitNewProdLineForm = revRetData => {
+  const revInitNewProdLineForm = revContainerEntityGUID => {
     let revCreateProductLine = revPluginsLoader({
       revPluginName: 'rev_plugin_organization',
       revViewName: 'RevCreateProductLine',
       revVarArgs: {
-        revData: revRetData,
-        revOrganization: revOrganization,
-        revOnSaveCallBack: revInitCreateNewAdDetailsForm,
+        revContainerEntityGUID: revContainerEntityGUID,
+        revOnSaveCallBack: revPersEntityGUID => {
+          revInitCreateNewAdDetailsForm({
+            revOrganizationEntityGUID: revOrganizationEntityGUID,
+            revProductLineGUID: revPersEntityGUID,
+          });
+        },
       },
     });
 
-    setRevOrganization(revRetData);
+    setRevOrganizationEntityGUID(revContainerEntityGUID);
     setRevCurrTabId(2);
     setRevCurrFormView(revCreateProductLine);
   };
@@ -66,9 +73,9 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     revPluginName: 'rev_plugin_organization',
     revViewName: 'RevCreateNewOrganization',
     revVarArgs: {
-      revOnSaveCallBack: revRetData => {
-        console.log('>>> revRetData', revRetData);
-        revInitNewProdLineForm(revRetData);
+      revOnSaveCallBack: revPersEntityGUID => {
+        setRevOrganizationEntityGUID(revPersEntityGUID);
+        revInitNewProdLineForm(revPersEntityGUID);
       },
     },
   });
@@ -78,8 +85,6 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   );
 
   const revAdPreview = () => {
-    console.log('>>> revAdPreview <<<');
-
     let revAdPreviewHeader = (
       <View
         style={[

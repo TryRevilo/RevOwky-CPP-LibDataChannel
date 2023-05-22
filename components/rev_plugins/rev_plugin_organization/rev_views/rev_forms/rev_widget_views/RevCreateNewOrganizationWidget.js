@@ -1,13 +1,12 @@
 import {
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Dimensions,
   NativeModules,
 } from 'react-native';
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
@@ -18,12 +17,10 @@ import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataCont
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {
-  RevTextInput,
   RevDropdownListSelector,
   RevUploadFilesTab,
 } from '../../../../../rev_views/rev_input_form_views';
 import {
-  RevScrollView_V,
   RevInfoArea,
   RevSectionPointedContent,
 } from '../../../../../rev_views/rev_page_views';
@@ -56,21 +53,16 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   const {revCreateNewOrganizationAction} = useRevCreateNewOrganizationAction();
 
-  const {REV_LOGGED_IN_ENTITY_GUID, SET_REV_SITE_VAR_ARGS} =
-    useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   const [revSelectedOrganizationGUID, setRevSelectedOrganizationGUID] =
     useState(-1);
 
-  const [revEntityNameText, setRevEntityNameText] = useState('');
-  const [revEntityDescText, setRevEntityDescText] = useState('');
-  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
-    [],
-  );
-  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
-    [],
-  );
+  const revEntityNameTextRef = useRef('');
+  const revEntityDescTextRef = useRef('');
+  const revSelectedImagesDataArrayRef = useRef([]);
+  const revSelectedVideosDataArrayRef = useRef([]);
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
@@ -96,8 +88,6 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   let revMyOrganizationsArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
     JSON.stringify(revPassVarArgs),
   );
-
-  console.log(revMyOrganizationsArr.length);
 
   let revOrgsSelectionOptionsArr = [];
 
@@ -134,16 +124,20 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         style={[
           revSiteStyles.revSiteTxtColorLight,
           revSiteStyles.revSiteTxtTiny,
+          {marginTop: -12, marginLeft: 7},
         ]}>
         Select a Business / Organization you had created earlier
       </Text>
-      <RevDropdownListSelector
-        revFixedSelectedValue={revOrgsSelectionOptionsArr[0].value}
-        revOptions={revOrgsSelectionOptionsArr}
-        revOnSelect={revOnSelectRetData => {
-          setRevSelectedOrganizationGUID(revOnSelectRetData);
-        }}
-      />
+      <View style={{paddingTop: 12}}>
+        <RevDropdownListSelector
+          revFixedSelectedValue={revOrgsSelectionOptionsArr[0].value}
+          revOptions={revOrgsSelectionOptionsArr}
+          revOnSelect={revOnSelectRetData => {
+            setRevSelectedOrganizationGUID(revOnSelectRetData);
+            revOnSaveCallBack(revOnSelectRetData);
+          }}
+        />
+      </View>
     </View>
   );
 
@@ -159,21 +153,17 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     });
 
     SET_REV_SITE_BODY(RevUserSettings);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
   };
 
   const handleRevSaveOrgTabPressed = async () => {
     let revPassVarArgs = {
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revEntityNameVal: revEntityNameText,
-      revEntityDescVal: revEntityDescText,
+      revEntityNameVal: revEntityNameTextRef.current,
+      revEntityDescVal: revEntityDescTextRef.current,
 
       revSelectedMedia: [
-        ...revSelectedImagesDataArray,
-        ...revSelectedVideosDataArray,
+        ...revSelectedImagesDataArrayRef.current,
+        ...revSelectedVideosDataArrayRef.current,
       ],
     };
     revCreateNewOrganizationAction(revPassVarArgs, revPersResData => {
@@ -205,6 +195,22 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   let revInfoTell = 'Business / Organization details';
 
+  const revEntityNameTextChangeCallBack = revNewtxtVal => {
+    revEntityNameTextRef.current = revNewtxtVal;
+  };
+
+  const revEntityDescTextChangeCallBack = revNewtxtVal => {
+    revEntityDescTextRef.current = revNewtxtVal;
+  };
+
+  const revSelectedImagesDataArrayChangeCallBack = revNewDataArr => {
+    revSelectedImagesDataArrayRef.current = revNewDataArr;
+  };
+
+  const revSelectedVideosDataArrayRefChangeCallBack = revNewDataArr => {
+    revSelectedVideosDataArrayRef.current = revNewDataArr;
+  };
+
   let revCreateNewOrgForm = (
     <View
       key={'revCreateNewOrgForm_' + revGetRandInteger()}
@@ -216,8 +222,9 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         ]}>
         <RevTextInputWithCount
           revVarArgs={{
+            revDefaultText: revEntityNameTextRef.current,
             revPlaceHolderTxt: ' Business name',
-            revTextInputOnChangeCallBack: setRevEntityNameText,
+            revTextInputOnChangeCallBack: revEntityNameTextChangeCallBack,
             revMaxTxtCount: 140,
           }}
         />
@@ -225,9 +232,9 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputAreaWithCount
             revVarArgs={{
+              revDefaultText: revEntityDescTextRef.current,
               revPlaceHolderTxt: ' Brief desc . . .',
-              revDefaultTxt: revEntityDescText,
-              revTextInputOnChangeCallBack: setRevEntityDescText,
+              revTextInputOnChangeCallBack: revEntityDescTextChangeCallBack,
               revMaxTxtCount: 255,
             }}
           />
@@ -263,7 +270,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <RevUploadFilesTab
             revVarArgs={{
               revMIMETypes: DocumentPicker.types.images,
-              revOnSelectedDataCallBack: setRevSelectedImagesDataArray,
+              revOnSelectedDataCallBack:
+                revSelectedImagesDataArrayChangeCallBack,
             }}
           />
         </View>
@@ -274,7 +282,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
-            {`You have selected ${revSelectedImagesDataArray.length} pictures for this business' profile. You can upload up to 22`}
+            {`You have selected ${revSelectedImagesDataArrayRef.current.length} pictures for this business' profile. You can upload up to 22`}
           </Text>
         </View>
       </View>
@@ -298,7 +306,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <RevUploadFilesTab
             revVarArgs={{
               revMIMETypes: DocumentPicker.types.video,
-              revOnSelectedDataCallBack: setRevSelectedVideosDataArray,
+              revOnSelectedDataCallBack:
+                revSelectedVideosDataArrayRefChangeCallBack,
             }}
           />
         </View>
@@ -309,7 +318,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
               styles.revAddedMediaTell,
             ]}>
-            {`You have selected ${revSelectedVideosDataArray.length} a videos for this business' profile`}
+            {`You have selected ${revSelectedVideosDataArrayRef.current.length} a videos for this business' profile`}
           </Text>
         </View>
       </View>
@@ -376,8 +385,12 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           ]}>
           OR
         </Text>
+
         <Text
           key={'revSelectOrganizationViewPointed_' + revGetRandInteger()}
+          onPress={() => {
+            setRevSelectedOrganizationGUID(-1);
+          }}
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtTiny,
@@ -403,7 +416,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     <View style={[revSiteStyles.revFlexContainer]}>
       {<RevInfoArea revInfoText={revInfoTell}></RevInfoArea>}
       {revSelectOrganizationViewPointed}
-      {revCreateNewOrgFormPointed}
+      {revSelectedOrganizationGUID > 0 ? null : revCreateNewOrgFormPointed}
     </View>
   );
 };
