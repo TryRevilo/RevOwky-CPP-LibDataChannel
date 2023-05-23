@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
+  Image,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
@@ -9,7 +10,14 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import MaskedView from '@react-native-masked-view/masked-view';
+// import Svg, {Defs, ClipPath, Path} from 'react-native-svg';
+import {Svg, Path} from 'react-native-svg';
+
+import {revGetRandInteger} from '../../rev_function_libs/rev_gen_helper_functions';
 import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
+
+import {useRevSiteStyles} from './RevSiteStyles';
 
 export const RevReadMoreTextView = ({revText, revMaxLength}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -78,13 +86,27 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
   );
 };
 
-import MaskedView from '@react-native-masked-view/masked-view';
-// import Svg, {Defs, ClipPath, Path} from 'react-native-svg';
-import {Svg, Path} from 'react-native-svg';
-
-import {revGetRandInteger} from '../../rev_function_libs/rev_gen_helper_functions';
-
-import {useRevSiteStyles} from './RevSiteStyles';
+export const RevCenteredImage = ({
+  revImageURI,
+  revImageDimens = {revWidth: 22, revHeight: 22},
+}) => {
+  return (
+    <View
+      style={{
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+      }}>
+      <Image
+        source={{uri: revImageURI}}
+        style={{
+          width: revImageDimens.revWidth,
+          height: revImageDimens.revHeight,
+          resizeMode: 'cover',
+        }}
+      />
+    </View>
+  );
+};
 
 export const RevSectionPointer = ({revStyles = null}) => {
   const {revSiteStyles} = useRevSiteStyles();

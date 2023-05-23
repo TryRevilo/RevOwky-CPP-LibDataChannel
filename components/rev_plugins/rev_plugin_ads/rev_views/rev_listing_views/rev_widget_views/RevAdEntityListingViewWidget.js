@@ -13,16 +13,36 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
+import {
+  RevScrollView_H,
+  RevCenteredImage,
+} from '../../../../../rev_views/rev_page_views';
+
 const {RevPersLibRead_React} = NativeModules;
 
-import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {
+  useRevPersGetRevEnty_By_EntityGUID,
+  useRevGetEntityPictureAlbums,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
-import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+  revIsEmptyVar,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  if (revIsEmptyJSONObject(revVarArgs) || !('revData' in revVarArgs)) {
+    return null;
+  }
+
   let revData = revVarArgs.revData;
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
@@ -30,7 +50,20 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
+  const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
+
+  if (!('_revEntityGUID' in revData || revIsEmptyVar(revData._revEntityGUID))) {
+    return null;
+  }
+
   let revAdEntityGUID = revData._revEntityGUID;
+
+  if (revAdEntityGUID < 1) {
+    return null;
+  }
+
+  const revSettings = require('../../../../../../rev_res/rev_settings.json');
+
   let revInfoEntity = revData._revInfoEntity;
 
   let revAdTitleTxtVal = revGetMetadataValue(
@@ -47,11 +80,25 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     return null;
   }
 
+  let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(revAdEntityGUID);
+  let revPicsArray = revEntityPictureAlbumsArr[0].revPicsArray;
+
+  let revOrgMainPicURI = revGetMetadataValue(
+    revPicsArray[0]._revEntityMetadataList,
+    'rev_remote_file_name',
+  );
+  revOrgMainPicURI =
+    'file:///' + revSettings.revPublishedMediaDir + '/' + revOrgMainPicURI;
+
   let revOrganizationGUID =
     RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
       'rev_organization_of',
       revAdEntityGUID,
     );
+
+  if (revOrganizationGUID < 1) {
+    return null;
+  }
 
   let revOrganizationEntity =
     revPersGetRevEnty_By_EntityGUID(revOrganizationGUID);
@@ -66,13 +113,36 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     return (
       <View
         key={revGetRandInteger(100, 1000)}
-        style={[styles.revFlexWrapper, styles.revLikesTabsWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revLikesTabsWrapper,
+        ]}>
         <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-          <FontAwesome name="arrow-up" style={styles.revLikesTab} />
+          <FontAwesome
+            name="arrow-up"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revLikesTab,
+            ]}
+          />
         </TouchableOpacity>
-        <Text style={styles.revLikesText}>{revGetRandInteger(1, 100)}</Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {revGetRandInteger(1, 100)}
+        </Text>
         <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-          <FontAwesome name="arrow-down" style={styles.revLikesTab} />
+          <FontAwesome
+            name="arrow-down"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revLikesTab,
+            ]}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -88,12 +158,19 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     );
   };
 
-  let revCommentUsersArr = [1, 2, 3, 4, 5, 6, 7];
+  let revCommentUsersArr = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ];
 
   const RevCommentEntityIcon = () => {
     return (
-      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-        <View style={[styles.revCommentUserIcon]}></View>
+      <TouchableOpacity key={'RevCommentEntityIcon_' + revGetRandInteger()}>
+        <View style={[styles.revCommentUserIcon]}>
+          <RevCenteredImage
+            revImageURI={revOrgMainPicURI}
+            revImageDimens={{revWidth: 20, revHeight: 20}}
+          />
+        </View>
       </TouchableOpacity>
     );
   };
@@ -109,9 +186,13 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   };
 
   return (
-    <View style={[styles.revFlexContainer]}>
-      <View style={[styles.revFlexWrapper, styles.revAdHeaderWrapper]}>
-        <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
+    <View style={[revSiteStyles.revFlexContainer]}>
+      <View style={[revSiteStyles.revFlexWrapper, styles.revAdHeaderWrapper]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
           Promoted
         </Text>
 
@@ -120,7 +201,10 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           style={[styles.revAddAdTab]}>
           <FontAwesome
             name="plus"
-            style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}
           />
         </TouchableOpacity>
 
@@ -129,36 +213,60 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           style={[styles.revAddAdTab]}>
           <FontAwesome
             name="flag-o"
-            style={[styles.revSiteTxtColorLight, styles.revSiteTxtSmall]}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}
           />
         </TouchableOpacity>
       </View>
-      <View style={[styles.revFlexWrapper, styles.revAdPublisherInfoWrapper]}>
-        <View style={styles.revPublisherIcon}></View>
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revAdPublisherInfoWrapper,
+        ]}>
+        <View style={[styles.revPublisherIconContainer]}>
+          <RevCenteredImage
+            revImageURI={revOrgMainPicURI}
+            revImageDimens={{revWidth: 25, revHeight: 22}}
+          />
+        </View>
         <TouchableOpacity
-          style={[styles.revFlexContainer, styles.revAdContentBodyContainer]}>
+          style={[
+            revSiteStyles.revFlexContainer,
+            styles.revAdContentBodyContainer,
+          ]}>
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteFontBold,
-              styles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteFontBold,
+              revSiteStyles.revSiteTxtSmall,
               styles.revPublisherInfoDescWrapper,
             ]}>
             {revOrganizationEntityTitleTxtVal}
           </Text>
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtTiny,
-              styles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtColorLight,
               styles.revAdDescTxt,
             ]}>
             {revTruncateString(revAdTitleTxtVal, 140)}
           </Text>
-          <View style={[styles.revAdMeadia]}></View>
-          <View style={[styles.revFlexWrapper, styles.revPostTagsListWrapper]}>
+          <View style={[styles.revAdMeadia]}>
+            <RevCenteredImage
+              revImageURI={revOrgMainPicURI}
+              revImageDimens={{revWidth: '100%', revHeight: 55}}
+            />
+          </View>
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revPostTagsListWrapper,
+            ]}>
             <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
-            <View style={[styles.revFlexWrapper]}>
+            <View style={[revSiteStyles.revFlexWrapper]}>
               {revPostTagsArr.map(revItem => {
                 let revKey =
                   'RevPostTagItem_' +
@@ -169,24 +277,47 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
               })}
             </View>
           </View>
-          <View style={[styles.revFlexWrapper, styles.revAdStatsFooterWrapper]}>
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revAdStatsFooterWrapper,
+            ]}>
             <RevLikes />
-            <TouchableOpacity>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                styles.revCommentUsersWrapper,
+                {flex: 1},
+              ]}>
+              <RevScrollView_H
+                revScrollViewContent={revCommentUsersArr.map(
+                  revCommentEntity => {
+                    return (
+                      <RevCommentEntityIcon
+                        key={
+                          revCommentEntity +
+                          'RevCommentEntityIcon_' +
+                          revGetRandInteger()
+                        }
+                      />
+                    );
+                  },
+                )}
+              />
+            </View>
+
+            <TouchableOpacity style={{paddingVertical: 4}}>
               <Text
                 style={[
-                  styles.revSiteTxtColorLight,
-                  styles.revSiteTxtTiny,
-                  styles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtColorBlueLink,
+                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revSiteTxtTiny_X,
                   styles.revCommentsTxtCount,
+                  {flex: 0},
                 ]}>
-                22 comments
+                + 22
               </Text>
             </TouchableOpacity>
-          </View>
-          <View style={[styles.revFlexWrapper, styles.revCommentUsersWrapper]}>
-            {revCommentUsersArr.map(revCommentEntity => {
-              return <RevCommentEntityIcon key={revCommentEntity} />;
-            })}
           </View>
         </TouchableOpacity>
       </View>
@@ -200,33 +331,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revAdHeaderWrapper: {
     alignItems: 'center',
     borderBottomColor: '#F7F7F7',
@@ -240,10 +344,7 @@ const styles = StyleSheet.create({
   revAdPublisherInfoWrapper: {
     marginLeft: 0,
   },
-  revPublisherIcon: {
-    backgroundColor: '#999',
-    width: 22,
-    height: 22,
+  revPublisherIconContainer: {
     marginTop: -1,
   },
   revPostTagsListWrapper: {
@@ -256,7 +357,7 @@ const styles = StyleSheet.create({
   },
   revAdContentBodyContainer: {
     width: maxChatMessageContainerWidth - 12,
-    marginLeft: 17,
+    marginLeft: 10,
   },
   revPublisherInfoDescWrapper: {
     marginTop: 2,
@@ -285,21 +386,19 @@ const styles = StyleSheet.create({
     marginLeft: -6,
   },
   revLikesTabsWrapper: {
+    flex: 0,
     alignItems: 'center',
   },
   revLikesTab: {
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 10,
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
-  revLikesText: {
-    color: '#999',
-    fontSize: 10,
-  },
   revCommentsTxtCount: {
-    marginLeft: 10,
+    textAlign: 'center',
+    width: 32,
+    borderBottomColor: '#5c6bc0',
+    borderBottomWidth: 1,
+    marginHorizontal: 10,
   },
   revCommentUsersWrapper: {
     marginTop: 4,
@@ -309,5 +408,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginLeft: 2,
+    borderRadius: 7,
+    overflow: 'hidden',
   },
 });

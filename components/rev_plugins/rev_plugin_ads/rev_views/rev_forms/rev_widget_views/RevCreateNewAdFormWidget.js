@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -17,75 +17,10 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  let revContainerEntityGUIDParam = ({revContainerEntityGUID = -1} =
-    revVarArgs);
+  const [revOrganizationEntityGUID, setRevOrganizationEntityGUID] =
+    useState(-1);
 
-  const [revOrganizationEntityGUID, setRevOrganizationEntityGUID] = useState(
-    revContainerEntityGUIDParam,
-  );
-
-  let revCheckOutForm = revPluginsLoader({
-    revPluginName: 'rev_plugin_check_out',
-    revViewName: 'RevCheckOutForm',
-    revVarArgs: {},
-  });
-
-  const revInitCreateNewAdPreview = revRetData => {
-    setRevCurrFormView(revAdPreview(revRetData));
-    setRevCurrTabId(4);
-  };
-
-  const revInitCreateNewAdDetailsForm = revRetData => {
-    console.log('>>> revRetData', JSON.stringify(revRetData));
-
-    let revCreateNewAdDetailsForm = revPluginsLoader({
-      revPluginName: 'rev_plugin_ads',
-      revViewName: 'RevCreateNewAdDetailsForm',
-      revVarArgs: {
-        revData: revRetData,
-        revOnSaveCallBack: revRetData => {
-          console.log('>>> revInitCreateNewAdDetailsForm', revRetData);
-        },
-      },
-    });
-
-    setRevCurrTabId(3);
-    setRevCurrFormView(revCreateNewAdDetailsForm);
-  };
-
-  const revInitNewProdLineForm = revContainerEntityGUID => {
-    let revCreateProductLine = revPluginsLoader({
-      revPluginName: 'rev_plugin_organization',
-      revViewName: 'RevCreateProductLine',
-      revVarArgs: {
-        revContainerEntityGUID: revContainerEntityGUID,
-        revOnSaveCallBack: revPersEntityGUID => {
-          revInitCreateNewAdDetailsForm({
-            revOrganizationEntityGUID: revOrganizationEntityGUID,
-            revProductLineGUID: revPersEntityGUID,
-          });
-        },
-      },
-    });
-
-    setRevCurrTabId(2);
-    setRevCurrFormView(revCreateProductLine);
-  };
-
-  let revCreateNewOrganization = revPluginsLoader({
-    revPluginName: 'rev_plugin_organization',
-    revViewName: 'RevCreateNewOrganization',
-    revVarArgs: {
-      revOnSaveCallBack: revPersEntityGUID => {
-        setRevOrganizationEntityGUID(revPersEntityGUID);
-        revInitNewProdLineForm(revPersEntityGUID);
-      },
-    },
-  });
-
-  const [revCurrFormView, setRevCurrFormView] = useState(
-    revCreateNewOrganization,
-  );
+  const revOrganizationEntityGUIDRef = useRef(revOrganizationEntityGUID);
 
   const revAdPreview = () => {
     let revAdPreviewHeader = (
@@ -133,6 +68,75 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
       </View>
     );
   };
+
+  let revCheckOutForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_check_out',
+    revViewName: 'RevCheckOutForm',
+    revVarArgs: {},
+  });
+
+  const revInitCreateNewAdPreview = revRetData => {
+    setRevCurrFormView(revAdPreview(revRetData));
+    setRevCurrTabId(4);
+  };
+
+  const revInitCreateNewAdDetailsForm = revRetData => {
+    let revCreateNewAdDetailsForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_ads',
+      revViewName: 'RevCreateNewAdDetailsForm',
+      revVarArgs: {
+        revData: revRetData,
+        revOnSaveCallBack: revRetData => {
+          console.log('>>> revInitCreateNewAdDetailsForm', revRetData);
+
+          revInitCreateNewAdPreview(revRetData);
+        },
+      },
+    });
+
+    setRevCurrTabId(3);
+    setRevCurrFormView(revCreateNewAdDetailsForm);
+  };
+
+  const revInitNewProdLineForm = revContainerEntityGUID => {
+    let revCreateProductLine = revPluginsLoader({
+      revPluginName: 'rev_plugin_organization',
+      revViewName: 'RevCreateProductLine',
+      revVarArgs: {
+        revContainerEntityGUID: revContainerEntityGUID,
+        revOnSaveCallBack: revPersEntityGUID => {
+          console.log(
+            '>>> revOrganizationEntityGUIDRef.current',
+            revOrganizationEntityGUIDRef.current,
+          );
+          revInitCreateNewAdDetailsForm({
+            revOrganizationEntityGUID: revOrganizationEntityGUIDRef.current,
+            revProductLineGUID: revPersEntityGUID,
+          });
+        },
+      },
+    });
+
+    setRevCurrTabId(2);
+    setRevCurrFormView(revCreateProductLine);
+  };
+
+  let revCreateNewOrganization = revPluginsLoader({
+    revPluginName: 'rev_plugin_organization',
+    revViewName: 'RevCreateNewOrganization',
+    revVarArgs: {
+      revOnSaveCallBack: revPersEntityGUID => {
+        setRevOrganizationEntityGUID(revPersEntityGUID);
+        revOrganizationEntityGUIDRef.current = revPersEntityGUID;
+
+        revInitNewProdLineForm(revPersEntityGUID);
+      },
+    },
+  });
+
+  const [revCurrFormView, setRevCurrFormView] = useState(
+    revCreateNewOrganization,
+  );
 
   const handleRevCreateNewOrgTabPressed = () => {
     setRevCurrFormView(revCreateNewOrganization);

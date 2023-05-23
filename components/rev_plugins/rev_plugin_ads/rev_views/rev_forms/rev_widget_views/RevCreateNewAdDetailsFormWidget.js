@@ -33,6 +33,13 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
   revVarArgs = revVarArgs.revVarArgs;
 
   const {revOrganizationEntityGUID, revProductLineGUID} = revVarArgs.revData;
+
+  console.log(
+    '>>> revOrganizationEntityGUID, revProductLineGUID',
+    revOrganizationEntityGUID,
+    revProductLineGUID,
+  );
+
   const {revOnSaveCallBack} = revVarArgs;
 
   const [revTagsArr, setRevTagsArr] = useState([]);

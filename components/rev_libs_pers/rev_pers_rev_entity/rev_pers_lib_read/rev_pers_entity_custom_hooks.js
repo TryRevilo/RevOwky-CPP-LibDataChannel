@@ -142,7 +142,7 @@ export function useRevGetEntityInfo(revEntityGUID) {
       revEntityGUID,
     );
 
-  if (revInfoEntityGUID < 0) {
+  if (revInfoEntityGUID < 1) {
     return {};
   }
 
@@ -155,6 +155,81 @@ export function useRevGetEntityInfo(revEntityGUID) {
 
   return JSON.parse(revInfoEntityStr);
 }
+
+export const revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID =
+  (revEntityRelationship, revEntityTargetGUID) => {
+    let revEntityGUIDsString =
+      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(
+        revEntityRelationship,
+        revEntityTargetGUID,
+      );
+
+    return JSON.parse(revEntityGUIDsString);
+  };
+
+export const revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID =
+  (revEntityRelationship, revEntityTargetGUID) => {
+    let revEntityGUIDsString =
+      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        revEntityRelationship,
+        revEntityTargetGUID,
+      );
+
+    return JSON.parse(revEntityGUIDsString);
+  };
+
+export const useRevGetEntityPictureAlbumPics = () => {
+  const revGetEntityPictureAlbumPics = revEntityGUID => {
+    let revPicAlbumPicsGUIDsArr =
+      revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        'rev_picture_of',
+        revEntityGUID,
+      );
+
+    if (revPicAlbumPicsGUIDsArr.length < 1) {
+      return [];
+    }
+
+    let revPicAlbumEntityPicsArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+      revPicAlbumPicsGUIDsArr,
+    );
+
+    return revPicAlbumEntityPicsArr;
+  };
+
+  return {revGetEntityPictureAlbumPics};
+};
+
+export const useRevGetEntityPictureAlbums = () => {
+  const {revGetEntityPictureAlbumPics} = useRevGetEntityPictureAlbumPics();
+
+  const revGetEntityPictureAlbums = revEntityGUID => {
+    let revPicAlbumGUIDsArr =
+      revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        'rev_pics_album_of',
+        155,
+      );
+
+    if (revPicAlbumGUIDsArr.length < 1) {
+      return [];
+    }
+
+    let revPicAlbumEntitiesArr =
+      useRevPersGetRevEntities_By_EntityGUIDsArr(revPicAlbumGUIDsArr);
+
+    for (let i = 0; i < revPicAlbumEntitiesArr.length; i++) {
+      let revPicAlbumGUID = revPicAlbumEntitiesArr[i]._revEntityGUID;
+      let revPicAlbumEntityPicsArr =
+        revGetEntityPictureAlbumPics(revPicAlbumGUID);
+
+      revPicAlbumEntitiesArr[i]['revPicsArray'] = revPicAlbumEntityPicsArr;
+    }
+
+    return revPicAlbumEntitiesArr;
+  };
+
+  return {revGetEntityPictureAlbums};
+};
 
 export function revPersGetFilledRevEntity_By_GUID(revEntityGUID) {
   let revEntityStr =
