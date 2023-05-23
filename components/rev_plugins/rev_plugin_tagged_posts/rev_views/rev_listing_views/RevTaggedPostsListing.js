@@ -5,6 +5,8 @@ import {revPluginsLoader} from '../../../../rev_plugins_loader';
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {useRevPersGetALLRevEntity_By_SubType_RevVarArgs} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
 import RevPageContentHeader from '../../../../rev_views/RevPageContentHeader';
 import {RevTaggedPostsListingItem} from './rev_entity_views/RevTaggedPostsListingItem';
 import {revGetRandInteger} from '../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -34,11 +36,64 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
     return null;
   }
 
-  let revEntitiesArr = revVarArgs.revTimelineEntities;
+  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
+    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
 
+  let revPassVarArgs = {
+    revSelect: [
+      '_revEntityGUID',
+      '_revOwnerEntityGUID',
+      '_revContainerEntityGUID',
+      '_revEntitySiteGUID',
+      '_revEntityAccessPermission',
+      '_revEntityType',
+      '_revEntitySubType',
+      '_revTimeCreated',
+    ],
+    revWhere: {
+      _revEntityType: 'rev_object',
+      _revEntitySubType: 'rev_ad',
+    },
+    revLimit: 22,
+  };
+  let revAdEntitiesArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+    JSON.stringify(revPassVarArgs),
+  );
+
+  let revAdEntitiesParsedArr = [];
+
+  for (let i = 0; i < revAdEntitiesArr.length; i++) {
+    let revAdEntity = revAdEntitiesArr[i];
+    let revAdEntityGUID = revAdEntity._revEntityGUID;
+
+    if (revAdEntityGUID < 1) {
+      continue;
+    }
+
+    let revOrganizationGUID =
+      RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+        'rev_organization_of',
+        revAdEntity._revEntityGUID,
+      );
+
+    let revprodLineGUID =
+      RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+        'rev_product_line_of',
+        revAdEntity._revEntityGUID,
+      );
+
+    if (revOrganizationGUID < 1 || revprodLineGUID < 1) {
+      continue;
+    }
+
+    revAdEntitiesParsedArr.push(revAdEntity);
+  }
+
+  let revEntitiesArr = revVarArgs.revTimelineEntities;
   let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
   let revCounter = 0;
+  let revCurrAdItem = 0;
 
   function revRenderItem({item}) {
     let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
@@ -71,13 +126,20 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
     let RevAdEntityListingView = revPluginsLoader({
       revPluginName: 'rev_plugin_ads',
       revViewName: 'RevAdEntityListingView',
-      revData: item,
+      revData: revAdEntitiesParsedArr[revCurrAdItem],
       revVarArgs: null,
     });
 
     let revAddAd = revCounter % 2 == 0 && revCounter !== 0;
     let RevView = revAddAd == true ? RevAdEntityListingView : null;
     revCounter++;
+
+    if (revAddAd) {
+      revCurrAdItem =
+        revCurrAdItem == revAdEntitiesParsedArr.length - 1
+          ? 0
+          : ++revCurrAdItem;
+    }
 
     return (
       <View key={revEntityGUID + '_revRenderItem_' + revGetRandInteger()}>
@@ -87,7 +149,10 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
     );
   }
 
-  let revDisplayEntitiesArr = revEntitiesArr.slice(0, 5);
+  let revDisplayEntitiesArr = revEntitiesArr.slice(
+    0,
+    revEntitiesArr.length > 32 ? 22 : revEntitiesArr.length,
+  );
   revDisplayEntitiesArr = JSON.parse(JSON.stringify(revDisplayEntitiesArr));
 
   let RevDisplay = () => {
@@ -100,7 +165,7 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
           return revEntityGUID + '_rev_tagged_post_L' + revGetRandInteger();
         }}
         initialNumToRender={10}
-        maxToRenderPerBatch={10}
+        maxToRenderPerBatch={55}
         style={styles.revSitePostsListingContainer}
       />
     ) : (

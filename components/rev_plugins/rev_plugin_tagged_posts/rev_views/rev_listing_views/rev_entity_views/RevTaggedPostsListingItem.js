@@ -16,6 +16,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
+import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
+
 import {
   revIsEmptyJSONObject,
   revIsEmptyVar,
@@ -98,7 +100,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  let maxMessageLen = 200;
+  let revMaxMessageLen = 200;
 
   let revKiwiTxtVal = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
@@ -109,29 +111,18 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     return null;
   }
 
-  let revChatMessageText = (_revKiwiTxtVal, {revTxtStyle} = {}) => {
-    let chatMessageView = (
-      <Text
-        key={'revChatMessageText_' + revGetRandInteger(100, 1000)}
-        style={[
-          revSiteStyles.revSiteTxtColor,
-          revSiteStyles.revSiteTxtTiny,
-          revTxtStyle,
-        ]}>
-        {_revKiwiTxtVal.length > maxMessageLen
-          ? _revKiwiTxtVal.substring(0, maxMessageLen) + ' . . .'
-          : _revKiwiTxtVal}
-      </Text>
-    );
-
+  let revChatMessageText = _revKiwiTxtVal => {
     return (
       <View
         key={'revChatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
-        style={styles.chatMsgContentTxtContainer}>
-        {chatMessageView}
-        {revKiwiTxtVal.length > maxMessageLen ? (
-          <Text style={styles.readMoreTextTab}>Read more</Text>
-        ) : null}
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revChatMsgContentTxtContainer,
+        ]}>
+        <RevReadMoreTextView
+          revText={_revKiwiTxtVal}
+          revMaxLength={revMaxMessageLen}
+        />
       </View>
     );
   };
@@ -544,9 +535,8 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                 })}
               </View>
             </View>
-            <View style={styles.chatMsgContentTxtContainer}>
-              {revChatMessageText(revKiwiTxtVal)}
-            </View>
+
+            {revChatMessageText(revKiwiTxtVal)}
 
             <View
               style={[
@@ -683,21 +673,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginHorizontal: 4,
   },
-  chatMsgContentTxtContainer: {
-    color: '#444',
-    fontSize: 10,
-    display: 'flex',
-    alignItems: 'flex-start',
-    width: '100%',
+  revChatMsgContentTxtContainer: {
     paddingRight: 5,
     marginTop: 2,
-  },
-  readMoreTextTab: {
-    color: '#009688',
-    fontWeight: 'bold',
-    fontSize: 9,
-    width: 'auto',
-    paddingTop: 5,
   },
   revLikesArea: {
     marginLeft: -6,
@@ -758,9 +736,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   revChatMsgCommentContentTxtContainer: {
-    alignItems: 'flex-start',
     paddingRight: 5,
-    marginTop: 2,
   },
   revImagesMediaViewContainer: {
     flex: 1,

@@ -9,6 +9,75 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
+
+export const RevReadMoreTextView = ({revText, revMaxLength}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revExpanded, setRevExpanded] = useState(false);
+
+  const togglerevExpanded = () => {
+    setRevExpanded(!revExpanded);
+  };
+
+  const revRenderText = () => {
+    if (revText.length <= revMaxLength || revExpanded) {
+      return revText;
+    }
+
+    return revTruncateString(revText, revMaxLength);
+  };
+
+  const revRenderReadMoreButton = () => {
+    if (revText.length > revMaxLength) {
+      if (revExpanded) {
+        return (
+          <TouchableOpacity onPress={togglerevExpanded}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorBlueLink,
+                revSiteStyles.revSiteTxtBold,
+                revSiteStyles.revSiteTxtTiny,
+                {paddingVertical: 5},
+              ]}>
+              Show Less
+            </Text>
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <TouchableOpacity onPress={togglerevExpanded}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorBlueLink,
+                revSiteStyles.revSiteTxtBold,
+                revSiteStyles.revSiteTxtTiny,
+                {paddingVertical: 5},
+              ]}>
+              Read More
+            </Text>
+          </TouchableOpacity>
+        );
+      }
+    }
+
+    return null;
+  };
+
+  return (
+    <View style={revSiteStyles.revFlexContainer}>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {revRenderText()}
+      </Text>
+      {revRenderReadMoreButton()}
+    </View>
+  );
+};
+
 import MaskedView from '@react-native-masked-view/masked-view';
 // import Svg, {Defs, ClipPath, Path} from 'react-native-svg';
 import {Svg, Path} from 'react-native-svg';

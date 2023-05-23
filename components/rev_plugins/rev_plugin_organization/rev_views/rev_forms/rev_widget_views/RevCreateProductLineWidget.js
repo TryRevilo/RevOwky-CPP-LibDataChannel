@@ -36,8 +36,6 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  console.log('>>> revVarArgs', JSON.stringify(revVarArgs));
-
   const {revContainerEntityGUID, revOnSaveCallBack} = revVarArgs;
 
   const [revSelectedIndustry, setRevSelectedIndustry] = useState('');

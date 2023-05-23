@@ -36,12 +36,16 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   };
 
   const revInitCreateNewAdDetailsForm = revRetData => {
+    console.log('>>> revRetData', JSON.stringify(revRetData));
+
     let revCreateNewAdDetailsForm = revPluginsLoader({
       revPluginName: 'rev_plugin_ads',
       revViewName: 'RevCreateNewAdDetailsForm',
       revVarArgs: {
         revData: revRetData,
-        revOnSaveCallBack: revInitCreateNewAdPreview,
+        revOnSaveCallBack: revRetData => {
+          console.log('>>> revInitCreateNewAdDetailsForm', revRetData);
+        },
       },
     });
 
@@ -64,7 +68,6 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
       },
     });
 
-    setRevOrganizationEntityGUID(revContainerEntityGUID);
     setRevCurrTabId(2);
     setRevCurrFormView(revCreateProductLine);
   };

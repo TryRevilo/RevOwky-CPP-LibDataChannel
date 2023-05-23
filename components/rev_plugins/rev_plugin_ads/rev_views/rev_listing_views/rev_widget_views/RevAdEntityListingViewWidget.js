@@ -4,35 +4,63 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  NativeModules,
 } from 'react-native';
 import React, {useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {LoremIpsum} from 'lorem-ipsum';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
+const {RevPersLibRead_React} = NativeModules;
+
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+
 import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
+  let revData = revVarArgs.revData;
+
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  let minMessageLen = 7;
-  let maxMessageLen = 22;
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
 
-  const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-      max: 8,
-      min: 4,
-    },
-    wordsPerSentence: {
-      max: revGetRandInteger(minMessageLen, maxMessageLen),
-      min: revGetRandInteger(1, 2),
-    },
-  });
+  let revAdEntityGUID = revData._revEntityGUID;
+  let revInfoEntity = revData._revInfoEntity;
 
-  let chatMsg = lorem.generateSentences(revGetRandInteger(1, 5));
+  let revAdTitleTxtVal = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_entity_name_val',
+  );
+
+  let revAdDescriptionTxtVal = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  if (!revAdTitleTxtVal || !revAdDescriptionTxtVal) {
+    return null;
+  }
+
+  let revOrganizationGUID =
+    RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+      'rev_organization_of',
+      revAdEntityGUID,
+    );
+
+  let revOrganizationEntity =
+    revPersGetRevEnty_By_EntityGUID(revOrganizationGUID);
+  let revOrganizationEntityInfo = revOrganizationEntity._revInfoEntity;
+
+  let revOrganizationEntityTitleTxtVal = revGetMetadataValue(
+    revOrganizationEntityInfo._revEntityMetadataList,
+    'rev_entity_name_val',
+  );
 
   let RevLikes = () => {
     return (
@@ -116,7 +144,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
               styles.revSiteTxtSmall,
               styles.revPublisherInfoDescWrapper,
             ]}>
-            Safaricom LLC
+            {revOrganizationEntityTitleTxtVal}
           </Text>
           <Text
             style={[
@@ -125,7 +153,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
               styles.revSiteTxtColorLight,
               styles.revAdDescTxt,
             ]}>
-            {chatMsg}
+            {revTruncateString(revAdTitleTxtVal, 140)}
           </Text>
           <View style={[styles.revAdMeadia]}></View>
           <View style={[styles.revFlexWrapper, styles.revPostTagsListWrapper]}>

@@ -110,8 +110,6 @@ function RevFooterArea() {
     let revTargetEntityGUID =
       REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
 
-    console.log('>>> revTargetEntityGUID ' + revTargetEntityGUID);
-
     let revDataUserEntityStr =
       RevPersLibRead_React.revPersGetRevEntity_By_RemoteRevEntityGUID(
         revTargetEntityGUID,

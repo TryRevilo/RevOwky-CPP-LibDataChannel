@@ -32,13 +32,8 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  console.log(
-    '>>> revVarArgs -RevCreateNewAdDetailsFormWidget',
-    JSON.stringify(revVarArgs),
-  );
-
-  const {revOrganizationEntityGUID, revProductLineGUID, revOnSaveCallBack} =
-    revVarArgs;
+  const {revOrganizationEntityGUID, revProductLineGUID} = revVarArgs.revData;
+  const {revOnSaveCallBack} = revVarArgs;
 
   const [revTagsArr, setRevTagsArr] = useState([]);
 
@@ -59,6 +54,8 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameText,
       revEntityDescVal: revEntityDescText,
+      revOrganizationEntityGUID: revOrganizationEntityGUID,
+      revProductLineGUID: revProductLineGUID,
 
       revSelectedMedia: [
         ...revSelectedImagesDataArray,
