@@ -25,6 +25,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
 
@@ -211,8 +212,6 @@ export const RevTextInputAreaWithCount = React.memo(({revVarArgs}) => {
     revSiteStyles.revSiteTxtAlertSafe,
   );
 
-  console.log('>>> revPlaceHolderTxt -', revPlaceHolderTxt);
-
   const revHandleTextChange = newText => {
     setRevInputText(newText);
     revTextInputOnChangeCallBack(newText);
@@ -313,6 +312,26 @@ export const RevDropdownListSelector = ({
       </View>
     </View>
   );
+};
+
+export const revOpeCropnImagePicker = (
+  revOnCropImageSelectCallBack,
+  {revCropWidth = 300, revCropHeight = 300},
+) => {
+  ImagePicker.openPicker({
+    width: revCropWidth, // Set the desired width of the cropped image
+    height: revCropHeight, // Set the desired height of the cropped image
+    cropping: true,
+  })
+    .then(image => {
+      // `image` contains information about the cropped image
+      console.log(image);
+      revOnCropImageSelectCallBack(image);
+    })
+    .catch(error => {
+      // Handle error if any
+      console.log(error);
+    });
 };
 
 export const RevDateTimePicker = ({revVarArgs}) => {

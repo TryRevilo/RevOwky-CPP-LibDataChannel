@@ -21,7 +21,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
   let revAdEntityListingView = revPluginsLoader({
     revPluginName: 'rev_plugin_ads',
     revViewName: 'RevAdEntityListingView',
-    revVarArgs: {},
+    revVarArgs: revVarArgs.revVarArgs,
   });
 
   let revAboutOrganizationBrief = (

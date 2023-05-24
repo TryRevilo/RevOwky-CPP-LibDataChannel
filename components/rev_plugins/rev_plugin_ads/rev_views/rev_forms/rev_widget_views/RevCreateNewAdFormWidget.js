@@ -5,6 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 
 import {
@@ -22,7 +24,10 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
 
   const revOrganizationEntityGUIDRef = useRef(revOrganizationEntityGUID);
 
-  const revAdPreview = () => {
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
+
+  const revAdPreview = revAdData => {
     let revAdPreviewHeader = (
       <View
         style={[
@@ -58,7 +63,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
     let revAdObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_ads',
       revViewName: 'RevAdObjectView',
-      revVarArgs: {},
+      revVarArgs: {revData: revAdData},
     });
 
     return (
@@ -76,7 +81,8 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   });
 
   const revInitCreateNewAdPreview = revRetData => {
-    setRevCurrFormView(revAdPreview(revRetData));
+    let revNewSavedAd = revPersGetRevEnty_By_EntityGUID(revRetData);
+    setRevCurrFormView(revAdPreview(revNewSavedAd));
     setRevCurrTabId(4);
   };
 
@@ -87,8 +93,6 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
       revVarArgs: {
         revData: revRetData,
         revOnSaveCallBack: revRetData => {
-          console.log('>>> revInitCreateNewAdDetailsForm', revRetData);
-
           revInitCreateNewAdPreview(revRetData);
         },
       },
@@ -105,10 +109,6 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
       revVarArgs: {
         revContainerEntityGUID: revContainerEntityGUID,
         revOnSaveCallBack: revPersEntityGUID => {
-          console.log(
-            '>>> revOrganizationEntityGUIDRef.current',
-            revOrganizationEntityGUIDRef.current,
-          );
           revInitCreateNewAdDetailsForm({
             revOrganizationEntityGUID: revOrganizationEntityGUIDRef.current,
             revProductLineGUID: revPersEntityGUID,
@@ -128,8 +128,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
       revOnSaveCallBack: revPersEntityGUID => {
         setRevOrganizationEntityGUID(revPersEntityGUID);
         revOrganizationEntityGUIDRef.current = revPersEntityGUID;
-
-        revInitNewProdLineForm(revPersEntityGUID);
+        revInitNewProdLineForm(revOrganizationEntityGUIDRef.current);
       },
     },
   });

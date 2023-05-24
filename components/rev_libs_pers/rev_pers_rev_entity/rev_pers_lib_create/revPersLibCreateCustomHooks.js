@@ -408,7 +408,6 @@ export const useRevSaveNewEntity = () => {
     let resEntityInfoGUID = revCreateNewEntity(revPersInfoEntityData);
 
     revPersInfoEntityData['_revEntityGUID'] = resEntityInfoGUID;
-
     revPersEntityData['_revInfoEntity'] = revPersInfoEntityData;
 
     if (resEntityInfoGUID < 0) {

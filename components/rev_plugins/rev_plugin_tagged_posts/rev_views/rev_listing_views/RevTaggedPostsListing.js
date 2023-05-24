@@ -126,8 +126,7 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
     let RevAdEntityListingView = revPluginsLoader({
       revPluginName: 'rev_plugin_ads',
       revViewName: 'RevAdEntityListingView',
-      revData: revAdEntitiesParsedArr[revCurrAdItem],
-      revVarArgs: null,
+      revVarArgs: {revData: revAdEntitiesParsedArr[revCurrAdItem]},
     });
 
     let revAddAd = revCounter % 2 == 0 && revCounter !== 0;

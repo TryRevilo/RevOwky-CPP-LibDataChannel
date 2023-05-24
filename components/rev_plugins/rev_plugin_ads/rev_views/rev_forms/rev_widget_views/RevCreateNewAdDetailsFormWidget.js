@@ -26,21 +26,24 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  if (!('revVarArgs' in revVarArgs)) {
+    return null;
+  }
+
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const {revCreateNewAdDetailsForm} = useRevCreateNewAdDetailsForm();
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  const {revOrganizationEntityGUID, revProductLineGUID} = revVarArgs.revData;
+  const {
+    revData = {},
+    revOnSaveCallBack = revRetData => {
+      console.log('*** ERR -revRetData unset', revRetData);
+    },
+  } = revVarArgs;
 
-  console.log(
-    '>>> revOrganizationEntityGUID, revProductLineGUID',
-    revOrganizationEntityGUID,
-    revProductLineGUID,
-  );
-
-  const {revOnSaveCallBack} = revVarArgs;
+  const {revOrganizationEntityGUID = -1, revProductLineGUID = -1} = revData;
 
   const [revTagsArr, setRevTagsArr] = useState([]);
 

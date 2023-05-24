@@ -23,6 +23,7 @@ import {
 import {
   RevInfoArea,
   RevSectionPointedContent,
+  RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
 import {useRevPersGetALLRevEntity_By_SubType_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
@@ -33,6 +34,7 @@ import {
   RevTagsInput,
   RevTextInputWithCount,
   RevTextInputAreaWithCount,
+  revOpeCropnImagePicker,
 } from '../../../../../rev_views/rev_input_form_views';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
@@ -58,6 +60,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   const [revSelectedOrganizationGUID, setRevSelectedOrganizationGUID] =
     useState(-1);
+
+  const [revOrganizationMainIcon, setRevOrganizationMainIcon] = useState(null);
 
   const revEntityNameTextRef = useRef('');
   const revEntityDescTextRef = useRef('');
@@ -193,6 +197,12 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     );
   }, [revTagsArr]);
 
+  useEffect(() => {
+    setRevOrganizationMainIcon(revSelectedImagesDataArrayRef.current[0]);
+  }, [revSelectedImagesDataArrayRef.current]);
+
+  useEffect(() => {}, [revOrganizationMainIcon]);
+
   let revInfoTell = 'Business / Organization details';
 
   const revEntityNameTextChangeCallBack = revNewtxtVal => {
@@ -269,6 +279,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
           <RevUploadFilesTab
             revVarArgs={{
+              revLabel: 'Select pictures',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack:
                 revSelectedImagesDataArrayChangeCallBack,
@@ -286,6 +297,54 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           </Text>
         </View>
       </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          revOpeCropnImagePicker(
+            revCroppedImageData => {
+              let revOrganizationMainIconView = (
+                <RevCenteredImage
+                  revImageURI={revCroppedImageData.path}
+                  revImageDimens={{revWidth: '100%', revHeight: 55}}
+                />
+              );
+              setRevOrganizationMainIcon(revOrganizationMainIconView);
+            },
+            {revCropHeight: 55},
+          );
+        }}
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          {alignItems: 'center', paddingHorizontal: 8, paddingVertical: 8},
+        ]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            {alignItems: 'center'},
+          ]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            <FontAwesome
+              name={'plus'}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtNormal,
+              ]}></FontAwesome>
+          </Text>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            {' Main Icon'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      {revOrganizationMainIcon}
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -305,6 +364,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
           <RevUploadFilesTab
             revVarArgs={{
+              revLabel: 'Select videos',
               revMIMETypes: DocumentPicker.types.video,
               revOnSelectedDataCallBack:
                 revSelectedVideosDataArrayRefChangeCallBack,
@@ -442,7 +502,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EEE',
     borderBottomWidth: 1,
     paddingBottom: 8,
-    marginTop: 8,
     paddingLeft: 8,
   },
   revAddedMediaTitleWrapper: {

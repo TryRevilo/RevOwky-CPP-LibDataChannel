@@ -75,10 +75,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
   return (
     <View style={revSiteStyles.revFlexContainer}>
       <Text
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-        ]}>
+        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
         {revRenderText()}
       </Text>
       {revRenderReadMoreButton()}

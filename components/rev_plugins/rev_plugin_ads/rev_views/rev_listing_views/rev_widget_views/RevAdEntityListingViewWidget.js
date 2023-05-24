@@ -39,11 +39,13 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  revVarArgs = revVarArgs.revVarArgs;
+
   if (revIsEmptyJSONObject(revVarArgs) || !('revData' in revVarArgs)) {
     return null;
   }
 
-  let revData = revVarArgs.revData;
+  const {revData} = revVarArgs;
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
@@ -121,7 +123,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           <FontAwesome
             name="arrow-up"
             style={[
-              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtColorBlueLink,
               revSiteStyles.revSiteTxtTiny,
               styles.revLikesTab,
             ]}
@@ -129,8 +131,9 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
         </TouchableOpacity>
         <Text
           style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtColorBlueLink,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {revGetRandInteger(1, 100)}
         </Text>
@@ -138,7 +141,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           <FontAwesome
             name="arrow-down"
             style={[
-              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtColorBlueLink,
               revSiteStyles.revSiteTxtTiny,
               styles.revLikesTab,
             ]}
@@ -153,14 +156,19 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   let RevPostTagItem = () => {
     return (
       <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-        <Text style={styles.revPostTagsListItem}>hello_world</Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revPostTagsListItem,
+          ]}>
+          hello_world
+        </Text>
       </TouchableOpacity>
     );
   };
 
-  let revCommentUsersArr = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ];
+  let revCommentUsersArr = [1, 2, 3, 4, 5];
 
   const RevCommentEntityIcon = () => {
     return (
@@ -239,17 +247,16 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteFontBold,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny,
               styles.revPublisherInfoDescWrapper,
             ]}>
             {revOrganizationEntityTitleTxtVal}
           </Text>
           <Text
             style={[
-              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtColor,
               revSiteStyles.revSiteTxtTiny,
-              revSiteStyles.revSiteTxtColorLight,
               styles.revAdDescTxt,
             ]}>
             {revTruncateString(revAdTitleTxtVal, 140)}
@@ -265,7 +272,14 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
               revSiteStyles.revFlexWrapper,
               styles.revPostTagsListWrapper,
             ]}>
-            <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
+            <FontAwesome
+              name="hashtag"
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+                {marginLeft: 2},
+              ]}
+            />
             <View style={[revSiteStyles.revFlexWrapper]}>
               {revPostTagsArr.map(revItem => {
                 let revKey =
@@ -282,13 +296,8 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
               revSiteStyles.revFlexWrapper,
               styles.revAdStatsFooterWrapper,
             ]}>
-            <RevLikes />
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper_WidthAuto,
-                styles.revCommentUsersWrapper,
-                {flex: 1},
-              ]}>
+            <RevLikes key={'RevLikes_' + revGetRandInteger()} />
+            <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {flex: 1}]}>
               <RevScrollView_H
                 revScrollViewContent={revCommentUsersArr.map(
                   revCommentEntity => {
@@ -305,19 +314,32 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
                 )}
               />
             </View>
-
-            <TouchableOpacity style={{paddingVertical: 4}}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                {
+                  flex: 0,
+                  alignItems: 'center',
+                  marginRight: 'auto',
+                  paddingHorizontal: 12,
+                },
+              ]}>
               <Text
                 style={[
                   revSiteStyles.revSiteTxtColorBlueLink,
-                  revSiteStyles.revSiteTxtBold,
-                  revSiteStyles.revSiteTxtTiny_X,
-                  styles.revCommentsTxtCount,
-                  {flex: 0},
+                  revSiteStyles.revSiteTxtTiny,
                 ]}>
-                + 22
+                View all
               </Text>
-            </TouchableOpacity>
+              <FontAwesome
+                name="long-arrow-right"
+                style={[
+                  revSiteStyles.revSiteTxtColorBlueLink,
+                  revSiteStyles.revSiteTxtTiny,
+                  {marginLeft: 2},
+                ]}
+              />
+            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -348,12 +370,8 @@ const styles = StyleSheet.create({
     marginTop: -1,
   },
   revPostTagsListWrapper: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
     paddingVertical: 5,
-  },
-  revPostTagsListIcon: {
-    color: '#999',
-    fontSize: 10,
   },
   revAdContentBodyContainer: {
     width: maxChatMessageContainerWidth - 12,
@@ -371,9 +389,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   revPostTagsListItem: {
-    color: '#999',
-    fontSize: 10,
-    lineHeight: 10,
     borderBottomColor: '#999',
     borderBottomWidth: 1,
     marginHorizontal: 4,
@@ -388,20 +403,11 @@ const styles = StyleSheet.create({
   revLikesTabsWrapper: {
     flex: 0,
     alignItems: 'center',
+    marginLeft: -6,
   },
   revLikesTab: {
     paddingHorizontal: 8,
     paddingVertical: 4,
-  },
-  revCommentsTxtCount: {
-    textAlign: 'center',
-    width: 32,
-    borderBottomColor: '#5c6bc0',
-    borderBottomWidth: 1,
-    marginHorizontal: 10,
-  },
-  revCommentUsersWrapper: {
-    marginTop: 4,
   },
   revCommentUserIcon: {
     backgroundColor: '#F7F7F7',
