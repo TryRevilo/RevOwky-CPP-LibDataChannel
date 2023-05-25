@@ -69,6 +69,10 @@ int revPersGetRelId(char *revEntityrelationship)
     {
         revRelId = 13;
     }
+    else if (strcmp(revEntityrelationship, "rev_tag_of") == 0)
+    {
+        revRelId = 14;
+    }
     else
     {
         revRelId = -1;
@@ -124,6 +128,9 @@ char *getRevEntityRelValue(int relTypeValId)
         break;
     case 13:
         relTypeVal = "rev_check_out_payment_of";
+        break;
+    case 14:
+        relTypeVal = "rev_tag_of";
         break;
     default:
         relTypeVal = "-1";

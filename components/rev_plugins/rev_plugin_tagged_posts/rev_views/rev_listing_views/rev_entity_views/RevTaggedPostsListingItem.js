@@ -206,7 +206,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                 revSiteStyles.revSiteTxtTiny_X,
                 styles.revChatMsgSendTime,
               ]}>
-              10:40 Jun 14, 2022
+              {revFormatLongDate(revVarArgs._revTimePublished)}
             </Text>
             <View style={styles.chatMsgOptionsWrapper}>
               <Text style={styles.chatMsgOptions}>

@@ -13,10 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {
-  RevScrollView_H,
-  RevCenteredImage,
-} from '../../../../../rev_views/rev_page_views';
+import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -26,6 +23,11 @@ import {
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+
+import {
+  RevSectionPointedContent,
+  RevInfoArea,
+} from '../../../../../rev_views/rev_page_views';
 
 import {
   revGetRandInteger,
@@ -41,8 +43,80 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  if (revIsEmptyJSONObject(revVarArgs) || !('revData' in revVarArgs)) {
-    return null;
+  const handleRevCreateNewAdTabPressed = () => {
+    let revCreateNewAdForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_ads',
+      revViewName: 'RevCreateNewAdForm',
+      revVarArgs: {},
+    });
+
+    SET_REV_SITE_BODY(revCreateNewAdForm);
+  };
+
+  let revAdHeaderView = () => {
+    return (
+      <View style={[revSiteStyles.revFlexWrapper, styles.revAdHeaderWrapper]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          Promoted
+        </Text>
+
+        <TouchableOpacity
+          onPress={handleRevCreateNewAdTabPressed}
+          style={[styles.revAddAdTab]}>
+          <FontAwesome
+            name="plus"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleRevCreateNewAdTabPressed}
+          style={[styles.revAddAdTab]}>
+          <FontAwesome
+            name="flag-o"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtSmall,
+            ]}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  let revNullAdRetView = (
+    <View style={revSiteStyles.revFlexContainer}>
+      {revAdHeaderView()}
+
+      <View style={revSiteStyles.revFlexWrapper}>
+        <RevSectionPointedContent
+          revContent={<RevInfoArea revInfoText={'Error Loading Ad'} />}
+          revStyles={{
+            marginTop: 8,
+            with: '100%',
+          }}
+        />
+      </View>
+    </View>
+  );
+
+  if (revIsEmptyJSONObject(revVarArgs)) {
+    return <>{revNullAdRetView}</>;
+  }
+
+  if (
+    revIsEmptyJSONObject(revVarArgs) ||
+    !('revData' in revVarArgs) ||
+    revIsEmptyJSONObject(revVarArgs.revData)
+  ) {
+    return <>{revNullAdRetView}</>;
   }
 
   const {revData} = revVarArgs;
@@ -55,13 +129,13 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
   if (!('_revEntityGUID' in revData || revIsEmptyVar(revData._revEntityGUID))) {
-    return null;
+    return <>{revNullAdRetView}</>;
   }
 
   let revAdEntityGUID = revData._revEntityGUID;
 
   if (revAdEntityGUID < 1) {
-    return null;
+    return <>{revNullAdRetView}</>;
   }
 
   const revSettings = require('../../../../../../rev_res/rev_settings.json');
@@ -117,16 +191,6 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
   });
 
-  const handleRevCreateNewAdTabPressed = () => {
-    let revCreateNewAdForm = revPluginsLoader({
-      revPluginName: 'rev_plugin_ads',
-      revViewName: 'RevCreateNewAdForm',
-      revVarArgs: {},
-    });
-
-    SET_REV_SITE_BODY(revCreateNewAdForm);
-  };
-
   let revLikeInlineForm = revPluginsLoader({
     revPluginName: 'rev_plugin_likes',
     revViewName: 'RevLikeInlineForm',
@@ -134,40 +198,10 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   });
 
   return (
-    <View style={[revSiteStyles.revFlexContainer]}>
-      <View style={[revSiteStyles.revFlexWrapper, styles.revAdHeaderWrapper]}>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          Promoted
-        </Text>
-
-        <TouchableOpacity
-          onPress={handleRevCreateNewAdTabPressed}
-          style={[styles.revAddAdTab]}>
-          <FontAwesome
-            name="plus"
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={handleRevCreateNewAdTabPressed}
-          style={[styles.revAddAdTab]}>
-          <FontAwesome
-            name="flag-o"
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}
-          />
-        </TouchableOpacity>
-      </View>
+    <View
+      key={'RevAdEntityListingViewWidget_' + revGetRandInteger()}
+      style={[revSiteStyles.revFlexContainer]}>
+      {revAdHeaderView()}
       <View
         style={[
           revSiteStyles.revFlexWrapper,

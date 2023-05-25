@@ -20,6 +20,7 @@ import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 import {useRevCreateNewAdDetailsForm} from '../../../rev_actions/rev_create_new_ad_details_form_action';
+import {useRevCreateNewTagFormAction} from '../../../../rev_plugin_tags/rev_actions/rev_create_new_tag_form_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -33,6 +34,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   const {revCreateNewAdDetailsForm} = useRevCreateNewAdDetailsForm();
+  const {revCreateNewTagFormAction} = useRevCreateNewTagFormAction();
 
   revVarArgs = revVarArgs.revVarArgs;
 
@@ -59,6 +61,22 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
 
+  const revSaveAdTags = async revEntityGUID => {
+    let revSavedTagsGUIDsArr = [];
+
+    for (let i = 0; i < revTagsArr.length; i++) {
+      let revPersVarArgs = {
+        revEntityNameVal: revTagsArr[i],
+        revEntityGUID: revEntityGUID,
+      };
+
+      let revPersRes = await revCreateNewTagFormAction(revPersVarArgs);
+      revSavedTagsGUIDsArr.push(revPersRes);
+    }
+
+    return revSavedTagsGUIDsArr;
+  };
+
   const handleRevSaveAdDetailsTabPressed = async () => {
     let revPassVarArgs = {
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
@@ -72,8 +90,9 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
         ...revSelectedVideosDataArray,
       ],
     };
-    revCreateNewAdDetailsForm(revPassVarArgs, revPersEntityGUID => {
-      revOnSaveCallBack(revPersEntityGUID);
+    revCreateNewAdDetailsForm(revPassVarArgs, async revPersEntityGUID => {
+      let revSavedTagsGUIDsArr = await revSaveAdTags(revPersEntityGUID);
+      revOnSaveCallBack(revPersEntityGUID, revSavedTagsGUIDsArr);
     });
   };
 

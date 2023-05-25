@@ -201,13 +201,13 @@ export const RevTextInputAreaWithCount = React.memo(({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {
-    revDefaultTxt = '',
+    revDefaultText = '',
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
     revMaxTxtCount = 540,
   } = revVarArgs;
 
-  const [revInputText, setRevInputText] = useState(revDefaultTxt);
+  const [revInputText, setRevInputText] = useState(revDefaultText);
   const [revTextCountStatusStyle, setRevTextCountStatusStyle] = useState(
     revSiteStyles.revSiteTxtAlertSafe,
   );

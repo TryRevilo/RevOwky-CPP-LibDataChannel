@@ -15,6 +15,8 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
+
+import {useRevCreateNewTagFormAction} from '../../../../rev_plugin_tags/rev_actions/rev_create_new_tag_form_action';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {
   RevDropdownListSelector,
@@ -54,6 +56,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   const {revOnSaveCallBack} = revVarArgs;
 
   const {revCreateNewOrganizationAction} = useRevCreateNewOrganizationAction();
+  const {revCreateNewTagFormAction} = useRevCreateNewTagFormAction();
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
@@ -70,6 +73,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
+  const revSelectedTagsArrayRef = useRef([]);
 
   let revPassVarArgs = {
     revSelect: [
@@ -159,6 +163,23 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     SET_REV_SITE_BODY(RevUserSettings);
   };
 
+  const revSaveAdTags = async revEntityGUID => {
+    let revSavedTagsGUIDsArr = [];
+
+    for (let i = 0; i < revTagsArr.length; i++) {
+      let revPersVarArgs = {
+        revEntityNameVal: revTagsArr[i],
+        revEntityGUID: revEntityGUID,
+        revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      };
+
+      let revPersRes = await revCreateNewTagFormAction(revPersVarArgs);
+      revSavedTagsGUIDsArr.push(revPersRes);
+    }
+
+    return revSavedTagsGUIDsArr;
+  };
+
   const handleRevSaveOrgTabPressed = async () => {
     let revPassVarArgs = {
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
@@ -170,8 +191,9 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         ...revSelectedVideosDataArrayRef.current,
       ],
     };
-    revCreateNewOrganizationAction(revPassVarArgs, revPersResData => {
-      revOnSaveCallBack(revPersResData);
+    revCreateNewOrganizationAction(revPassVarArgs, async revPersResData => {
+      let revSavedTagsGUIDsArr = await revSaveAdTags(revPersResData);
+      revOnSaveCallBack(revPersResData, revSavedTagsGUIDsArr);
     });
   };
 
@@ -200,8 +222,6 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   useEffect(() => {
     setRevOrganizationMainIcon(revSelectedImagesDataArrayRef.current[0]);
   }, [revSelectedImagesDataArrayRef.current]);
-
-  useEffect(() => {}, [revOrganizationMainIcon]);
 
   let revInfoTell = 'Business / Organization details';
 
@@ -253,6 +273,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         <View style={[revSiteStyles.revFlexPageContainer]}>
           <RevTagsInput
             revVarArgs={{
+              revTagsInputValsArr: revTagsArr,
               revTagsInputUpdater: setRevTagsArr,
             }}
           />
@@ -271,7 +292,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny,
             ]}>
             <FontAwesome name="camera" />
             <FontAwesome name="long-arrow-right" /> Company pics
@@ -315,11 +336,12 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         }}
         style={[
           revSiteStyles.revFlexWrapper_WidthAuto,
-          {alignItems: 'center', paddingHorizontal: 8, paddingVertical: 8},
+          {alignItems: 'center', paddingVertical: 8},
         ]}>
         <View
           style={[
-            revSiteStyles.revFlexWrapper_WidthAuto,
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaContainer,
             {alignItems: 'center'},
           ]}>
           <Text
@@ -328,18 +350,15 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
             ]}>
             <FontAwesome
-              name={'plus'}
+              name={'file-picture-o'}
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtNormal,
-              ]}></FontAwesome>
-          </Text>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' Main Icon'}
+                revSiteStyles.revSiteTxtLarge,
+              ]}
+            />
+
+            <FontAwesome name="long-arrow-right" />
+            {' Select main pic Icon'}
           </Text>
         </View>
       </TouchableOpacity>
@@ -496,7 +515,9 @@ const styles = StyleSheet.create({
   revBriefDescInputWrapper: {
     marginTop: 8,
   },
-  revTagsListingWrapper: {marginTop: 2},
+  revTagsListingWrapper: {
+    marginTop: 2,
+  },
   revAddedMediaContainer: {
     borderStyle: 'dotted',
     borderBottomColor: '#EEE',

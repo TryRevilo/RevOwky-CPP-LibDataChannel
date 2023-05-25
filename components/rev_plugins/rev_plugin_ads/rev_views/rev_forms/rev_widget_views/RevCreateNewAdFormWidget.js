@@ -239,7 +239,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
   }, [revCurrTabId]);
 
   return (
-    <View style={revSiteStyles.revFlexContainer}>
+    <View style={[revSiteStyles.revFlexContainer, {width: '100%'}]}>
       <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
 
       <View style={{marginVertical: 10, position: 'relative'}}>

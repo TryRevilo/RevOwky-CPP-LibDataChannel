@@ -6,6 +6,10 @@ export function revRemoveLinebreaks(revStr) {
   return revStr.replace(/(\r\n|\n|\r)/gm, '');
 }
 
+export const revReplaceWiteSpaces = (revString, revReplacement) => {
+  return revString.replace(/\s+/g, revReplacement);
+};
+
 export const revSplitStringToArray = revStr => {
   revStr = revRemoveLinebreaks(revStr);
   return revStr.split(/\s+/);

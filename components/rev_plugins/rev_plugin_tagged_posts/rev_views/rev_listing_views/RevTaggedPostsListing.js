@@ -129,7 +129,7 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
       revVarArgs: {revData: revAdEntitiesParsedArr[revCurrAdItem]},
     });
 
-    let revAddAd = revCounter % 2 == 0 && revCounter !== 0;
+    let revAddAd = revCounter % 2 == 0;
     let RevView = revAddAd == true ? RevAdEntityListingView : null;
     revCounter++;
 
@@ -148,10 +148,8 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
     );
   }
 
-  let revDisplayEntitiesArr = revEntitiesArr.slice(
-    0,
-    revEntitiesArr.length > 32 ? 22 : revEntitiesArr.length,
-  );
+  let revDisplayEntitiesArr = revEntitiesArr.slice(0, 10);
+
   revDisplayEntitiesArr = JSON.parse(JSON.stringify(revDisplayEntitiesArr));
 
   let RevDisplay = () => {
@@ -164,7 +162,7 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
           return revEntityGUID + '_rev_tagged_post_L' + revGetRandInteger();
         }}
         initialNumToRender={10}
-        maxToRenderPerBatch={55}
+        maxToRenderPerBatch={10}
         style={styles.revSitePostsListingContainer}
       />
     ) : (
