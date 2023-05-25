@@ -4,10 +4,20 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  NativeModules,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+
+const {
+  RevPersLibCreate_React,
+  RevPersLibRead_React,
+  RevPersLibUpdate_React,
+  RevGenLibs_Server_React,
+} = NativeModules;
 
 import {
   RevScrollView_H,
@@ -16,7 +26,14 @@ import {
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {useRevGetEntityPictureAlbums} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
-import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
+import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
+import {useRevLikeInlineFormAction} from '../../../rev_actions/rev_like_inline_form_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -24,17 +41,36 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
   const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
+  revVarArgs = revVarArgs.revVarArgs;
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  const {revLikeInlineFormAction} = useRevLikeInlineFormAction();
+
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
   let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(100);
-  let revPicsArray = revEntityPictureAlbumsArr[0].revPicsArray;
 
-  let revOrgMainPicURI = revGetMetadataValue(
-    revPicsArray[0]._revEntityMetadataList,
-    'rev_remote_file_name',
-  );
-  revOrgMainPicURI =
-    'file:///' + revSettings.revPublishedMediaDir + '/' + revOrgMainPicURI;
+  let revOrgMainPicURI = '';
+
+  if (
+    Array.isArray(revEntityPictureAlbumsArr) &&
+    revEntityPictureAlbumsArr.length > 0
+  ) {
+    if (
+      !revIsEmptyJSONObject(revEntityPictureAlbumsArr[0]) &&
+      'revPicsArr' in revEntityPictureAlbumsArr[0]
+    ) {
+      let revPicsArray = revEntityPictureAlbumsArr[0].revPicsArray;
+
+      revOrgMainPicURI = revGetMetadataValue(
+        revPicsArray[0]._revEntityMetadataList,
+        'rev_remote_file_name',
+      );
+      revOrgMainPicURI =
+        'file:///' + revSettings.revPublishedMediaDir + '/' + revOrgMainPicURI;
+    }
+  }
 
   let revLikeEntityGUIDsArr = [];
 
@@ -55,6 +91,17 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     );
   };
 
+  const handleRevAddLikeTabPressed = () => {
+    let revRetVal = revLikeInlineFormAction(
+      'rev_like',
+      '1',
+      revVarArgs._revEntityGUID,
+      REV_LOGGED_IN_ENTITY_GUID,
+    );
+
+    console.log('>>> ', revRetVal);
+  };
+
   let RevLikes = () => {
     return (
       <View
@@ -63,7 +110,9 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revLikesTabsWrapper,
         ]}>
-        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
+        <TouchableOpacity
+          key={'RevLikes_' + revGetRandInteger(100, 1000)}
+          onPress={handleRevAddLikeTabPressed}>
           <FontAwesome
             name="arrow-up"
             style={[
@@ -83,7 +132,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
             ? revGetRandInteger(1, 100)
             : revLikeEntityGUIDsArr.length}
         </Text>
-        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
+        <TouchableOpacity key={'RevLikes_' + revGetRandInteger(100, 1000)}>
           <FontAwesome
             name="arrow-down"
             style={[

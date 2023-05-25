@@ -136,7 +136,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let revLikeInlineForm = revPluginsLoader({
     revPluginName: 'rev_plugin_likes',
     revViewName: 'RevLikeInlineForm',
-    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+    revVarArgs: revVarArgs,
   });
 
   let RevCommentItem = ({revVarArgs}) => {

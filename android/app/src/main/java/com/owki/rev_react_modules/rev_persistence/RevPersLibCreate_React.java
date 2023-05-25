@@ -122,6 +122,20 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
         return revret;
     }
 
+    /**
+     * START ANNOTATIONS
+     **/
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public Integer revPersRevEntityAnnotationWithValues(String _revAnnotationName, String _revAnnotationValue, Integer _revEntityGUID, Integer _ownerEntityGUID) {
+        int revret = (int) revPersLibCreate.revPersRevEntityAnnotationWithValues(_revAnnotationName, _revAnnotationValue, _revEntityGUID, _ownerEntityGUID);
+
+        return revret;
+    }
+
+    /**
+     * END ANNOTATIONS
+     **/
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     public void revCURLFileUpload(String revURL, String revFiles, String revData) {
         revPersLibCreate.revCURLFileUpload(revURL, revFiles, revData);

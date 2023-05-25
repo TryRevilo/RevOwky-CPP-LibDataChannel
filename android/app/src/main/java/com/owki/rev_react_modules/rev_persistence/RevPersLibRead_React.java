@@ -292,4 +292,19 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     /**
      * END REV READ METADATA
      **/
+
+
+    /**
+     * START ANNOTATIONS
+     **/
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public Integer revGetRevEntityAnnoationValueIdBy_revAnnotationName_RevEntityGUID_RevEntityOwnerGUID(String revAnnotationName, Integer revEntityGUID, Integer revEntityOwnerGUID) {
+        long revAnnID = revPersLibRead.getRevEntityAnnoationValueIdBy_revAnnotationName_RevEntityGUID_RevEntityOwnerGUID(revAnnotationName, (int) revEntityGUID, (int) revEntityOwnerGUID);
+        return (int) revAnnID;
+    }
+
+    /**
+     * END ANNOTATIONS
+     **/
 }

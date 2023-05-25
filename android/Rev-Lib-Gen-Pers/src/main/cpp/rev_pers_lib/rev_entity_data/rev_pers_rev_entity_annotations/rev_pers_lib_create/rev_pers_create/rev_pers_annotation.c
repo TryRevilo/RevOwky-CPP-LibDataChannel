@@ -11,8 +11,17 @@
 #include "../../rev_db_models/rev_entity_annotation.h"
 #include "../../../../../rev_gen_functions/rev_gen_functions.h"
 
-long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue,
-                       long _revEntityGUID, long revEntityOwnerGUID) {
+int revPersGetAnnNameID(char *revEntityAnnotationName) {
+    int revAnnNameID = -1;
+
+    if (strcmp(revEntityAnnotationName, "rev_like") == 0) {
+        revAnnNameID = 1;
+    }
+
+    return revAnnNameID;
+}
+
+long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long _revEntityGUID, long revEntityOwnerGUID) {
 
     sqlite3 *db = revDb();
 
@@ -40,12 +49,7 @@ long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationV
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, &pzTest);
 
     if (rc == SQLITE_OK) {
-        if (revEntityMetastringExists(revEntityAnnotationName) < 0) {
-            sqlite3_bind_int(stmt, 1, revPersRevEntityMetastrings(revEntityAnnotationName));
-        } else {
-            sqlite3_bind_int(stmt, 1, getRevEntityMetaStringValueId(revEntityAnnotationName));
-        }
-
+        sqlite3_bind_int(stmt, 1, revPersGetAnnNameID(revEntityAnnotationName));
         sqlite3_bind_text(stmt, 2, (const char *) revEntityAnnotationValue, -1, SQLITE_STATIC);
 
         sqlite3_bind_int(stmt, 3, _revEntityGUID);

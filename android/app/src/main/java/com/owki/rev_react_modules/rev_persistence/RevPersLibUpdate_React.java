@@ -75,4 +75,16 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     public int setMetadataValue_BY_MetadataId(Integer revMetadataId, String revMetadataValue) {
         return revPersLibUpdate.setMetadataValue_BY_MetadataId((long) revMetadataId, revMetadataValue);
     }
+
+    /**
+     * START ANNOTATIONS
+     **/
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public Integer revPersSetRevAnnResStatus_By_RevAnnId(Integer revAnnotationId, Integer revAnnotationResStatus) {
+        return revPersLibUpdate.revPersSetRevAnnResStatus_By_RevAnnId((long) revAnnotationId, revAnnotationResStatus);
+    }
+
+    /**
+     * END ANNOTATIONS
+     **/
 }

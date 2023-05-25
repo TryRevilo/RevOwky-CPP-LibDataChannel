@@ -384,8 +384,6 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveSt
 }
 
 RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue) {
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", "revMetadataName %s -revMetadataValue %s", revMetadataName, revMetadataValue);
-
     RevEntityMetadata revEntityMetadata = *revInitializedMetadata();
 
     sqlite3 *db = revDb();
@@ -393,7 +391,8 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *re
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
-                "METADATA_ID "
+                "METADATA_ID, "
+                "METADATA_ENTITY_GUID "
                 "FROM REV_ENTITY_METADATA_TABLE "
                 "WHERE METADATA_NAME = ? AND METADATA_VALUE = ? LIMIT 1";
 
@@ -406,12 +405,14 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *re
         fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_MetadataName_MetadataValue %s", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
         long metadataId = sqlite3_column_int64(stmt, 0);
+        long revEntityGUID = sqlite3_column_int64(stmt, 1);
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> metadataId %ld", metadataId);
 
         revEntityMetadata._metadataId = metadataId;
         revEntityMetadata._metadataName = revMetadataName;
         revEntityMetadata._metadataValue = revMetadataValue;
+        revEntityMetadata._metadataOwnerGUID = revEntityGUID;
     }
 
     sqlite3_finalize(stmt);

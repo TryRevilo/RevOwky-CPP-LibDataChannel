@@ -96,7 +96,10 @@ export const revRemoveAllWhiteSpaces = revStr => {
 
 export const revStringEmpty = revString => {
   return (
-    !revString || !revString.length || revRemoveAllWhiteSpaces(revString) == ''
+    !revString ||
+    !revString.length ||
+    revString == null ||
+    revRemoveAllWhiteSpaces(revString) == ''
   );
 };
 

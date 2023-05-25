@@ -5,6 +5,8 @@
 #ifndef OWKI_REV_ENTITY_ANNOTATION_H
 #define OWKI_REV_ENTITY_ANNOTATION_H
 
+#include <string.h>
+
 typedef struct RevEntityAnnotation {
     int _revAnnotationResStatus;
 

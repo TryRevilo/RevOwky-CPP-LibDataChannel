@@ -25,4 +25,10 @@ public class RevPersLibDelete_React extends ReactContextBaseJavaModule {
     Integer revDeleteEntity_By_EntityGUID(Integer revEntityGUID) {
         return revPersLibDelete.revDeleteEntity_By_EntityGUID((long) revEntityGUID);
     }
+
+    /**
+     * START ANNOTATIONS
+     **//**
+     * END ANNOTATIONS
+     **/
 }
