@@ -9,6 +9,16 @@ var REV_PLUGINS = {
     revPluginName: 'rev_flag',
     revPlugin: loadable(() => import(`./rev_plugins/rev_flag/RevStart`)),
   },
+  rev_plugin_likes: {
+    revPluginName: 'rev_plugin_likes',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_likes/RevStart`),
+    ),
+  },
+  rev_plugin_tags: {
+    revPluginName: 'rev_plugin_tags',
+    revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_tags/RevStart`)),
+  },
   rev_plugin_text_chat: {
     revPluginName: 'rev_plugin_text_chat',
     revPlugin: loadable(() =>

@@ -127,15 +127,17 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
-  let revPostTagsArr = [1, 2, 3, 4];
+  let revTagEntitiesInlineListing = revPluginsLoader({
+    revPluginName: 'rev_plugin_tags',
+    revViewName: 'RevTagEntitiesInlineListing',
+    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+  });
 
-  let RevPostTagItem = () => {
-    return (
-      <TouchableOpacity key={'RevPostTagItem_' + revGetRandInteger(10, 1000)}>
-        <Text style={styles.revPostTagsListItem}>hello_world</Text>
-      </TouchableOpacity>
-    );
-  };
+  let revLikeInlineForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_likes',
+    revViewName: 'RevLikeInlineForm',
+    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+  });
 
   let RevCommentItem = ({revVarArgs}) => {
     if (
@@ -387,22 +389,6 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
-  let RevLikes = () => {
-    return (
-      <View
-        key={'RevLikes_' + revGetRandInteger(10, 1000)}
-        style={[revSiteStyles.revFlexWrapper, styles.revLikesTabsWrapper]}>
-        <TouchableOpacity>
-          <FontAwesome name="arrow-up" style={styles.revLikesTab} />
-        </TouchableOpacity>
-        <Text style={styles.revLikesText}>{revGetRandInteger(1, 100)}</Text>
-        <TouchableOpacity>
-          <FontAwesome name="arrow-down" style={styles.revLikesTab} />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   const handleRevUserProfileClick = () => {
     let RevUserProfileObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_user_profile',
@@ -524,16 +510,8 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                 styles.revPostTagsListWrapper,
               ]}>
               <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
-              <View style={[revSiteStyles.revFlexWrapper]}>
-                {revPostTagsArr.map(revItem => {
-                  let revKey =
-                    'RevPostTagItem_' +
-                    revItem +
-                    '_' +
-                    revGetRandInteger(10, 1000);
-                  return <RevPostTagItem key={revKey} />;
-                })}
-              </View>
+
+              {revTagEntitiesInlineListing}
             </View>
 
             {revChatMessageText(revKiwiTxtVal)}
@@ -548,9 +526,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
               {RevVideoPlayerView}
             </View>
 
-            <View style={styles.revLikesArea}>
-              <RevLikes />
-            </View>
+            {revLikeInlineForm}
 
             <View
               style={[
@@ -665,35 +641,9 @@ const styles = StyleSheet.create({
     color: '#999',
     fontSize: 10,
   },
-  revPostTagsListItem: {
-    color: '#999',
-    fontSize: 10,
-    lineHeight: 10,
-    borderBottomColor: '#999',
-    borderBottomWidth: 1,
-    marginHorizontal: 4,
-  },
   revChatMsgContentTxtContainer: {
     paddingRight: 5,
     marginTop: 2,
-  },
-  revLikesArea: {
-    marginLeft: -6,
-  },
-  revLikesTabsWrapper: {
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  revLikesTab: {
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  revLikesText: {
-    color: '#999',
-    fontSize: 10,
   },
   revCommentsContainer: {
     backgroundColor: '#F7F7F7',

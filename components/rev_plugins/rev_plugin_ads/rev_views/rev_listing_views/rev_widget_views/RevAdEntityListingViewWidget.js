@@ -111,77 +111,11 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     'rev_entity_name_val',
   );
 
-  let RevLikes = () => {
-    return (
-      <View
-        key={revGetRandInteger(100, 1000)}
-        style={[
-          revSiteStyles.revFlexWrapper_WidthAuto,
-          styles.revLikesTabsWrapper,
-        ]}>
-        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-          <FontAwesome
-            name="arrow-up"
-            style={[
-              revSiteStyles.revSiteTxtColorBlueLink,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revLikesTab,
-            ]}
-          />
-        </TouchableOpacity>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorBlueLink,
-            revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny_X,
-          ]}>
-          {revGetRandInteger(1, 100)}
-        </Text>
-        <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-          <FontAwesome
-            name="arrow-down"
-            style={[
-              revSiteStyles.revSiteTxtColorBlueLink,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revLikesTab,
-            ]}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  let revPostTagsArr = [1, 2, 3, 4];
-
-  let RevPostTagItem = () => {
-    return (
-      <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revPostTagsListItem,
-          ]}>
-          hello_world
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  let revCommentUsersArr = [1, 2, 3, 4, 5];
-
-  const RevCommentEntityIcon = () => {
-    return (
-      <TouchableOpacity key={'RevCommentEntityIcon_' + revGetRandInteger()}>
-        <View style={[styles.revCommentUserIcon]}>
-          <RevCenteredImage
-            revImageURI={revOrgMainPicURI}
-            revImageDimens={{revWidth: 20, revHeight: 20}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  let revTagEntitiesInlineListing = revPluginsLoader({
+    revPluginName: 'rev_plugin_tags',
+    revViewName: 'RevTagEntitiesInlineListing',
+    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+  });
 
   const handleRevCreateNewAdTabPressed = () => {
     let revCreateNewAdForm = revPluginsLoader({
@@ -192,6 +126,12 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
 
     SET_REV_SITE_BODY(revCreateNewAdForm);
   };
+
+  let revLikeInlineForm = revPluginsLoader({
+    revPluginName: 'rev_plugin_likes',
+    revViewName: 'RevLikeInlineForm',
+    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+  });
 
   return (
     <View style={[revSiteStyles.revFlexContainer]}>
@@ -280,67 +220,11 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
                 {marginLeft: 2},
               ]}
             />
-            <View style={[revSiteStyles.revFlexWrapper]}>
-              {revPostTagsArr.map(revItem => {
-                let revKey =
-                  'RevPostTagItem_' +
-                  revItem +
-                  '_' +
-                  revGetRandInteger(10, 1000);
-                return <RevPostTagItem key={revKey} />;
-              })}
-            </View>
+
+            {revTagEntitiesInlineListing}
           </View>
-          <View
-            style={[
-              revSiteStyles.revFlexWrapper,
-              styles.revAdStatsFooterWrapper,
-            ]}>
-            <RevLikes key={'RevLikes_' + revGetRandInteger()} />
-            <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {flex: 1}]}>
-              <RevScrollView_H
-                revScrollViewContent={revCommentUsersArr.map(
-                  revCommentEntity => {
-                    return (
-                      <RevCommentEntityIcon
-                        key={
-                          revCommentEntity +
-                          'RevCommentEntityIcon_' +
-                          revGetRandInteger()
-                        }
-                      />
-                    );
-                  },
-                )}
-              />
-            </View>
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper_WidthAuto,
-                {
-                  flex: 0,
-                  alignItems: 'center',
-                  marginRight: 'auto',
-                  paddingHorizontal: 12,
-                },
-              ]}>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorBlueLink,
-                  revSiteStyles.revSiteTxtTiny,
-                ]}>
-                View all
-              </Text>
-              <FontAwesome
-                name="long-arrow-right"
-                style={[
-                  revSiteStyles.revSiteTxtColorBlueLink,
-                  revSiteStyles.revSiteTxtTiny,
-                  {marginLeft: 2},
-                ]}
-              />
-            </View>
-          </View>
+
+          {revLikeInlineForm}
         </TouchableOpacity>
       </View>
     </View>
@@ -387,34 +271,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
     height: 55,
     marginTop: 4,
-  },
-  revPostTagsListItem: {
-    borderBottomColor: '#999',
-    borderBottomWidth: 1,
-    marginHorizontal: 4,
-  },
-  revAdStatsFooterWrapper: {
-    alignItems: 'center',
-    marginTop: 4,
-  },
-  revLikesArea: {
-    marginLeft: -6,
-  },
-  revLikesTabsWrapper: {
-    flex: 0,
-    alignItems: 'center',
-    marginLeft: -6,
-  },
-  revLikesTab: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  revCommentUserIcon: {
-    backgroundColor: '#F7F7F7',
-    width: 20,
-    height: 20,
-    marginLeft: 2,
-    borderRadius: 7,
-    overflow: 'hidden',
   },
 });
