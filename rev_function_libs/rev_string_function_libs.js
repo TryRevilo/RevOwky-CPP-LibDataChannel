@@ -164,3 +164,27 @@ export const revGetRawHTML = revStr => {
 
   return revStr;
 };
+
+export const revGetFilePathType = revStr => {
+  const filePathRegex = /^(?:[a-z]+:)?\/\/[^\s]+$/i;
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  const contentUriRegex = /^content:[/][/][^\s]+$/i;
+
+  if (filePathRegex.test(revStr)) {
+    return 'rev_local_file_path';
+  } else if (urlRegex.test(revStr)) {
+    return 'rev_url';
+  } else if (contentUriRegex.test(revStr)) {
+    return 'rev_content_uri';
+  } else {
+    return 'rev_unknown';
+  }
+};
+
+export const revCompareStrings = (revStr1, revStr2) => {
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: 'base',
+  });
+  return collator.compare(revStr1, revStr2);
+};

@@ -20,6 +20,8 @@ import {
   revGetFileAbsolutePath,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 
+import {revGetFilePathType} from '../../../../rev_function_libs/rev_string_function_libs';
+
 const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
 
 export const useRevCreateNewEntity = () => {
@@ -114,42 +116,11 @@ export const useRevSetFileObject = () => {
   return {revSetFileObject};
 };
 
-export const revWriteFile_ = async revFile => {
-  return new Promise(async (resolve, reject) => {
-    let revName = revFile.name;
-    let revURI = revFile.uri;
-    let revNewFileName = revFile.revNewFileName;
-
-    let stats = await RNFetchBlob.fs.stat(revURI);
-
-    let revStatsPath = 'file://' + stats.path;
-
-    const DirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media';
-
-    var path = DirectoryPath + '/_rev_' + revNewFileName;
-
-    const ifstream = await RNFetchBlob.fs.readStream(
-      revStatsPath,
-      'base64',
-      4096,
-    );
-
-    ifstream.open();
-    ifstream.onData(async chunk => {
-      await RNFetchBlob.fs.appendFile(path, chunk, 'base64');
-    });
-
-    ifstream.onEnd(() => {
-      resolve(revStatsPath);
-    });
-  });
-};
-
 export const revWriteFile = async revFile => {
   let revURI = revFile.uri;
   let revNewFileName = revFile.revNewFileName;
 
-  console.log('>>> revURI', revURI);
+  let revFilePathType = revGetFilePathType(revURI);
 
   const revDirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media/';
 
@@ -158,14 +129,10 @@ export const revWriteFile = async revFile => {
   try {
     let revFilePath = await revGetFileAbsolutePath(revURI);
 
-    console.log('>>> revFilePath', revFilePath);
-
     let revResStatus = RevPersLibCreate_React.revCopyFile(
       revFilePath,
       revDestFilePath,
     );
-
-    console.log('>>> revResStatus', revResStatus);
 
     return revResStatus;
   } catch (error) {
@@ -195,8 +162,6 @@ export const useRevCreateMediaAlbum = () => {
 
     let revPicAlbumEntityGUID = revCreateNewEntity(revPicAlbumObject);
 
-    console.log('>>> revPicAlbumEntityGUID ' + revPicAlbumEntityGUID);
-
     if (revPicAlbumEntityGUID < 1) {
       return;
     }
@@ -211,8 +176,6 @@ export const useRevCreateMediaAlbum = () => {
       JSON.stringify(revPicsAlbumRel),
     );
 
-    console.log('>>> revPicsAlbumRelId ' + revPicsAlbumRelId);
-
     if (revPicsAlbumRelId < 1) {
       return;
     }
@@ -223,8 +186,6 @@ export const useRevCreateMediaAlbum = () => {
 
     for (let i = 0; i < revFileObjectsArr.length; i++) {
       let revFile = revFileObjectsArr[i];
-
-      console.log('>>> revFile', revFile);
 
       let revFileType = revGetFileType(revFile);
       let revFileSubtype = revGetFileObjectSubType(revFile);

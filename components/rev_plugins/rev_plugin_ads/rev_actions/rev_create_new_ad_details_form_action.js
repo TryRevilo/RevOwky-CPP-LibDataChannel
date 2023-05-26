@@ -8,17 +8,36 @@ import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../rev_libs_pers/rev_db_stru
 
 import {useRevSaveNewEntity} from '../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
+import {revStringEmpty} from '../../../../rev_function_libs/rev_string_function_libs';
+
 export const useRevCreateNewAdDetailsForm = () => {
   const {revSaveNewEntity} = useRevSaveNewEntity();
 
   const revCreateNewAdDetailsForm = async (revVarArgs, revPersCallBack) => {
-    const {revOrganizationEntityGUID, revProductLineGUID} = revVarArgs;
+    const {
+      revEntityNameVal = '',
+      revEntityDescVal = '',
+      revMainCampaignIconPath = '',
+      revOrganizationEntityGUID = -1,
+      revProductLineGUID = -1,
+    } = revVarArgs;
+
+    if (
+      revStringEmpty(revEntityNameVal) ||
+      revStringEmpty(revEntityDescVal) ||
+      revStringEmpty(revMainCampaignIconPath) ||
+      revOrganizationEntityGUID < 1 ||
+      revProductLineGUID < 1
+    ) {
+      return revPersCallBack(-1);
+    }
 
     revVarArgs['revEntitySubType'] = 'rev_ad';
 
     let revPersEntityInfoMetadataList = [
-      REV_METADATA_FILLER('rev_entity_name_val', revVarArgs.revEntityNameVal),
-      REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),
+      REV_METADATA_FILLER('rev_entity_name_val', revEntityNameVal),
+      REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
+      REV_METADATA_FILLER('revMainCampaignIconPath', revMainCampaignIconPath),
     ];
 
     revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;

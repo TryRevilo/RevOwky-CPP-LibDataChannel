@@ -110,7 +110,7 @@ export const RevCreateNewAdFormWidget = ({revVarArgs}) => {
         revContainerEntityGUID: revContainerEntityGUID,
         revOnSaveCallBack: revPersEntityGUID => {
           revInitCreateNewAdDetailsForm({
-            revOrganizationEntityGUID: revOrganizationEntityGUIDRef.current,
+            revOrganizationEntityGUID: revContainerEntityGUID,
             revProductLineGUID: revPersEntityGUID,
           });
         },

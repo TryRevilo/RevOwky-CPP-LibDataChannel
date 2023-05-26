@@ -299,6 +299,7 @@ target_link_libraries(
 set(REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations)
 set(REV_ENTITY_ANNOTATION_SRCS
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_annotation.h
+        ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_annotation.c
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.h
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.h

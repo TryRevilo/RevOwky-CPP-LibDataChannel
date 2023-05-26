@@ -30,13 +30,15 @@ import {
 
 import {useRevPersGetALLRevEntity_By_SubType_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
+import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
 import {useRevCreateNewOrganizationAction} from '../../../rev_actions/rev_create_new_organization_action';
 
 import {
   RevTagsInput,
   RevTextInputWithCount,
   RevTextInputAreaWithCount,
-  revOpeCropnImagePicker,
+  revOpenCropnImagePicker,
 } from '../../../../../rev_views/rev_input_form_views';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
@@ -64,7 +66,9 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   const [revSelectedOrganizationGUID, setRevSelectedOrganizationGUID] =
     useState(-1);
 
-  const [revOrganizationMainIcon, setRevOrganizationMainIcon] = useState(null);
+  const [revMainOrganizationIcon, setRevMainOrganizationIcon] = useState(null);
+  const [revMainOrganizationIconPath, setRevMainOrganizationIconPath] =
+    useState('');
 
   const revEntityNameTextRef = useRef('');
   const revEntityDescTextRef = useRef('');
@@ -73,7 +77,6 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
-  const revSelectedTagsArrayRef = useRef([]);
 
   let revPassVarArgs = {
     revSelect: [
@@ -185,6 +188,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameTextRef.current,
       revEntityDescVal: revEntityDescTextRef.current,
+      revMainOrganizationIconPath: revMainOrganizationIconPath,
 
       revSelectedMedia: [
         ...revSelectedImagesDataArrayRef.current,
@@ -192,8 +196,12 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
       ],
     };
     revCreateNewOrganizationAction(revPassVarArgs, async revPersResData => {
-      let revSavedTagsGUIDsArr = await revSaveAdTags(revPersResData);
-      revOnSaveCallBack(revPersResData, revSavedTagsGUIDsArr);
+      try {
+        let revSavedTagsGUIDsArr = await revSaveAdTags(revPersResData);
+        revOnSaveCallBack(revPersResData, revSavedTagsGUIDsArr);
+      } catch (error) {
+        console.log('*** revSavedTagsGUIDsArr', error);
+      }
     });
   };
 
@@ -218,10 +226,6 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
       </View>,
     );
   }, [revTagsArr]);
-
-  useEffect(() => {
-    setRevOrganizationMainIcon(revSelectedImagesDataArrayRef.current[0]);
-  }, [revSelectedImagesDataArrayRef.current]);
 
   let revInfoTell = 'Business / Organization details';
 
@@ -321,15 +325,38 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
       <TouchableOpacity
         onPress={() => {
-          revOpeCropnImagePicker(
+          revOpenCropnImagePicker(
             revCroppedImageData => {
-              let revOrganizationMainIconView = (
+              let revCroppedImageDataPath = revCroppedImageData.path;
+
+              setRevMainOrganizationIconPath(revCroppedImageDataPath);
+
+              revSelectedImagesDataArrayRef.current =
+                revSelectedImagesDataArrayRef.current.filter(
+                  revCurrItem =>
+                    revCompareStrings(
+                      revCurrItem,
+                      revMainOrganizationIconPath,
+                    ) !== 0,
+                );
+
+              revSelectedImagesDataArrayRef.current.push({
+                name: revCroppedImageDataPath.substring(
+                  revCroppedImageDataPath.lastIndexOf('/') + 1,
+                ),
+                size: revCroppedImageData.size,
+                type: revCroppedImageData.mime,
+                uri: revCroppedImageDataPath,
+              });
+
+              let revMainOrganizationIconView = (
                 <RevCenteredImage
-                  revImageURI={revCroppedImageData.path}
+                  revImageURI={revCroppedImageDataPath}
                   revImageDimens={{revWidth: '100%', revHeight: 55}}
                 />
               );
-              setRevOrganizationMainIcon(revOrganizationMainIconView);
+
+              setRevMainOrganizationIcon(revMainOrganizationIconView);
             },
             {revCropHeight: 55},
           );
@@ -344,26 +371,33 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
             styles.revAddedMediaContainer,
             {alignItems: 'center'},
           ]}>
+          <FontAwesome
+            name={'file-picture-o'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtTiny,
             ]}>
-            <FontAwesome
-              name={'file-picture-o'}
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtLarge,
-              ]}
-            />
-
-            <FontAwesome name="long-arrow-right" />
-            {' Select main pic Icon'}
+            {' Select main Icon'}
           </Text>
         </View>
       </TouchableOpacity>
 
-      {revOrganizationMainIcon}
+      <>{revMainOrganizationIcon}</>
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -456,14 +490,16 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
         style={{
           paddingHorizontal: 8,
         }}>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColor,
-            revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtMedium,
-          ]}>
-          OR
-        </Text>
+        {revOrgsSelectionOptionsArr.length ? (
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtMedium,
+            ]}>
+            OR
+          </Text>
+        ) : null}
 
         <Text
           key={'revSelectOrganizationViewPointed_' + revGetRandInteger()}
@@ -524,10 +560,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 8,
     paddingLeft: 8,
+    marginTop: 4,
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
-    marginTop: 8,
   },
   revAddedMediaTell: {
     marginTop: 4,

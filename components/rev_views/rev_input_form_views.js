@@ -314,7 +314,7 @@ export const RevDropdownListSelector = ({
   );
 };
 
-export const revOpeCropnImagePicker = (
+export const revOpenCropnImagePicker = (
   revOnCropImageSelectCallBack,
   {revCropWidth = 300, revCropHeight = 300},
 ) => {
@@ -449,7 +449,7 @@ export const RevUploadFilesTab = ({
       setRevSelectedData(response);
       revOnSelectedDataCallBack(response);
     } catch (err) {
-      revHandleError(err);
+      console.log('*** revHandleOnMediaSelectTab', err);
     }
   }, [revSelectedData]);
 

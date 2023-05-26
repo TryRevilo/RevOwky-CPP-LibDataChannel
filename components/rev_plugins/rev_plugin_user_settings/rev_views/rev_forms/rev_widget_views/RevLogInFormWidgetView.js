@@ -67,7 +67,7 @@ export const RevLogInFormWidgetView = () => {
 
         let revSiteEntityResStatus = -1;
 
-        if (revRemoteSiteEntityGUID > 0) {
+        if (revRemoteSiteEntityGUID < 0) {
           revSiteEntityResStatus = 2;
         }
 

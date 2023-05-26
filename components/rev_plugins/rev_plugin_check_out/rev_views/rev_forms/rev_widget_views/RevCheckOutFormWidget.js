@@ -23,7 +23,7 @@ export const RevCheckOutFormWidget = () => {
 
   let revInfoText =
     'You will be redirected to set your Ad to Live, after which we will start pushing it to the Owky community';
-  let revStartSTopInfoText =
+  let revStartStopInfoText =
     'Please note that you can always Pause the Ad at any time from the Ad Dashboard';
 
   return (
@@ -38,7 +38,7 @@ export const RevCheckOutFormWidget = () => {
 
       <View style={styles.revCheckoutPayContainer}>
         <RevInfoArea revInfoText={revInfoText} />
-        <RevInfoArea revInfoText={revStartSTopInfoText} />
+        <RevInfoArea revInfoText={revStartStopInfoText} />
         <TextInput
           style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
           placeholderTextColor="#999"
@@ -104,8 +104,10 @@ const styles = StyleSheet.create({
   revCheckoutPayContainer: {
     backgroundColor: '#F9F9F9',
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10,
+    paddingTop: 2,
+    paddingBottom: 17,
+    marginTop: -1,
+    borderRadius: 12,
   },
   revOrderDetailsContainer: {
     paddingHorizontal: 20,

@@ -16,8 +16,6 @@ export const revGetFileAbsolutePath = async uri => {
     revRetVal = null;
   }
 
-  console.log('>>> revRetVal', revRetVal);
-
   return revRetVal;
 };
 
@@ -130,8 +128,6 @@ export const revGetFileObjectSubType = revFile => {
     default:
       revEntitySubType = 'rev_file';
   }
-
-  console.log('revEntitySubType : ' + revEntitySubType);
 
   return revEntitySubType;
 };

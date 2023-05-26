@@ -13,8 +13,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
-
 const {RevPersLibRead_React} = NativeModules;
 
 import {
@@ -25,6 +23,7 @@ import {
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 import {
+  RevCenteredImage,
   RevSectionPointedContent,
   RevInfoArea,
 } from '../../../../../rev_views/rev_page_views';
@@ -34,7 +33,10 @@ import {
   revIsEmptyJSONObject,
   revIsEmptyVar,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revStringEmpty,
+  revTruncateString,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -42,6 +44,8 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   revVarArgs = revVarArgs.revVarArgs;
+
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   const handleRevCreateNewAdTabPressed = () => {
     let revCreateNewAdForm = revPluginsLoader({
@@ -121,8 +125,6 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
 
   const {revData} = revVarArgs;
 
-  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
-
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
@@ -152,19 +154,21 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     'rev_entity_desc_val',
   );
 
-  if (!revAdTitleTxtVal || !revAdDescriptionTxtVal) {
-    return null;
-  }
-
-  let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(revAdEntityGUID);
-  let revPicsArray = revEntityPictureAlbumsArr[0].revPicsArray;
-
-  let revOrgMainPicURI = revGetMetadataValue(
-    revPicsArray[0]._revEntityMetadataList,
-    'rev_remote_file_name',
+  let revMainCampaignIconPath = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'revMainCampaignIconPath',
   );
-  revOrgMainPicURI =
-    'file:///' + revSettings.revPublishedMediaDir + '/' + revOrgMainPicURI;
+
+  let revAdPicsArr = revGetEntityPictureAlbums(revAdEntityGUID);
+
+  if (
+    revStringEmpty(revAdTitleTxtVal) ||
+    revStringEmpty(revAdDescriptionTxtVal) ||
+    revStringEmpty(revMainCampaignIconPath) ||
+    !revAdPicsArr.length
+  ) {
+    return <>{revNullAdRetView}</>;
+  }
 
   let revOrganizationGUID =
     RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
@@ -173,7 +177,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     );
 
   if (revOrganizationGUID < 1) {
-    return null;
+    return <>{revNullAdRetView}</>;
   }
 
   let revOrganizationEntity =
@@ -209,7 +213,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
         ]}>
         <View style={[styles.revPublisherIconContainer]}>
           <RevCenteredImage
-            revImageURI={revOrgMainPicURI}
+            revImageURI={revMainCampaignIconPath}
             revImageDimens={{revWidth: 25, revHeight: 22}}
           />
         </View>
@@ -237,7 +241,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
           </Text>
           <View style={[styles.revAdMeadia]}>
             <RevCenteredImage
-              revImageURI={revOrgMainPicURI}
+              revImageURI={revMainCampaignIconPath}
               revImageDimens={{revWidth: '100%', revHeight: 55}}
             />
           </View>

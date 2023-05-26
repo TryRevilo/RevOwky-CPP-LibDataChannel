@@ -204,10 +204,14 @@ export const useRevGetEntityPictureAlbums = () => {
   const {revGetEntityPictureAlbumPics} = useRevGetEntityPictureAlbumPics();
 
   const revGetEntityPictureAlbums = revEntityGUID => {
+    if (!revEntityGUID || revEntityGUID < 1) {
+      return [];
+    }
+
     let revPicAlbumGUIDsArr =
       revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_pics_album_of',
-        155,
+        revEntityGUID,
       );
 
     if (revPicAlbumGUIDsArr.length < 1) {

@@ -15,7 +15,10 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import {Svg, Path} from 'react-native-svg';
 
 import {revGetRandInteger} from '../../rev_function_libs/rev_gen_helper_functions';
-import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
+import {
+  revStringEmpty,
+  revTruncateString,
+} from '../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
@@ -87,20 +90,61 @@ export const RevCenteredImage = ({
   revImageURI,
   revImageDimens = {revWidth: 22, revHeight: 22},
 }) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revImageLoaded, setRevImageLoaded] = useState(false);
+  const [revImageError, setRevImageError] = useState(false);
+
+  const handleImageLoad = () => {
+    setRevImageLoaded(true);
+  };
+
+  const handleRevImageError = () => {
+    setRevImageError(true);
+  };
+
+  let revErrImagePlaceholder = (
+    <View
+      style={[
+        revSiteStyles.revNullImagePlaceholder,
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: revImageDimens.revWidth,
+          height: revImageDimens.revHeight,
+        },
+      ]}>
+      <FontAwesome
+        style={[
+          revSiteStyles.revSiteTxtAlertDangerColor,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny,
+        ]}
+        name="exclamation"
+      />
+    </View>
+  );
+
   return (
     <View
       style={{
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
       }}>
-      <Image
-        source={{uri: revImageURI}}
-        style={{
-          width: revImageDimens.revWidth,
-          height: revImageDimens.revHeight,
-          resizeMode: 'cover',
-        }}
-      />
+      {(revImageLoaded && revImageError) || revStringEmpty(revImageURI) ? (
+        <>{revErrImagePlaceholder}</>
+      ) : (
+        <Image
+          source={{uri: revImageURI}}
+          style={{
+            width: revImageDimens.revWidth,
+            height: revImageDimens.revHeight,
+            resizeMode: 'cover',
+          }}
+          onLoad={handleImageLoad}
+          onError={handleRevImageError}
+        />
+      )}
     </View>
   );
 };

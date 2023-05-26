@@ -331,6 +331,15 @@ export const useRevSiteStyles = () => {
       paddingVertical: 1,
       borderRadius: 2,
     },
+    revNullImagePlaceholder: {
+      alignItems: 'center',
+      backgroundColor: '#EEE',
+      borderColor: '#E7E7E7',
+      borderWidth: 1,
+      paddingHorizontal: 1,
+      paddingVertical: 1,
+      borderRadius: 1,
+    },
     /** END REV IMAGES */
 
     /** START REV UPLOAD INPUT */

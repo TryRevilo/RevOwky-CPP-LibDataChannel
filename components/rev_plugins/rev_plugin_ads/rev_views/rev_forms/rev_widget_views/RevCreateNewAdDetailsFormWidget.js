@@ -5,22 +5,34 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
-import {RevTextInputWithCount} from '../../../../../rev_views/rev_input_form_views';
-import {RevTextInputAreaWithCount} from '../../../../../rev_views/rev_input_form_views';
-import {RevTagsInput} from '../../../../../rev_views/rev_input_form_views';
+import {
+  RevTextInputWithCount,
+  RevTextInputAreaWithCount,
+  RevTagsInput,
+  RevUploadFilesTab,
+  revOpenCropnImagePicker,
+} from '../../../../../rev_views/rev_input_form_views';
 
-import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
+
+import {
+  RevInfoArea,
+  RevCenteredImage,
+} from '../../../../../rev_views/rev_page_views';
 
 import {useRevCreateNewAdDetailsForm} from '../../../rev_actions/rev_create_new_ad_details_form_action';
 import {useRevCreateNewTagFormAction} from '../../../../rev_plugin_tags/rev_actions/rev_create_new_tag_form_action';
+
+import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -59,7 +71,18 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
     [],
   );
 
+  const [revMainCampaignIconView, setRevMainCampaignIconView] = useState(null);
+  const [revMainCampaignIconPath, setRevMainCampaignIconPath] = useState('');
+
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
+
+  const revSelectedImagesDataArrayChangeCallBack = revNewDataArr => {
+    setRevSelectedImagesDataArray(revNewDataArr);
+  };
+
+  const revSelectedVideosDataArrayRefChangeCallBack = revNewDataArr => {
+    setRevSelectedVideosDataArray(revNewDataArr);
+  };
 
   const revSaveAdTags = async revEntityGUID => {
     let revSavedTagsGUIDsArr = [];
@@ -84,6 +107,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
       revEntityDescVal: revEntityDescText,
       revOrganizationEntityGUID: revOrganizationEntityGUID,
       revProductLineGUID: revProductLineGUID,
+      revMainCampaignIconPath: revMainCampaignIconPath,
 
       revSelectedMedia: [
         ...revSelectedImagesDataArray,
@@ -160,23 +184,38 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
+          <FontAwesome
+            name={'camera'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtMedium,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtSmall,
             ]}>
-            <FontAwesome name="camera" />
-            <FontAwesome name="long-arrow-right" /> Ad pics
+            {' Ad pics'}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revLabel: 'Select pictures',
+              revMIMETypes: DocumentPicker.types.images,
+              revOnSelectedDataCallBack:
+                revSelectedImagesDataArrayChangeCallBack,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -189,6 +228,80 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           </Text>
         </View>
       </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          revOpenCropnImagePicker(
+            revCroppedImageData => {
+              let revCroppedImageDataPath = revCroppedImageData.path;
+
+              setRevMainCampaignIconPath(revCroppedImageDataPath);
+
+              let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
+                revCurrItem =>
+                  revCompareStrings(revCurrItem, revMainCampaignIconPath) !== 0,
+              );
+
+              revNewSelectedImagesArr.push({
+                name: revCroppedImageDataPath.substring(
+                  revCroppedImageDataPath.lastIndexOf('/') + 1,
+                ),
+                size: revCroppedImageData.size,
+                type: revCroppedImageData.mime,
+                uri: revCroppedImageDataPath,
+              });
+
+              setRevSelectedImagesDataArray(revNewSelectedImagesArr);
+
+              let revMainCampaignIconViewView = (
+                <RevCenteredImage
+                  revImageURI={revCroppedImageDataPath}
+                  revImageDimens={{revWidth: '100%', revHeight: 55}}
+                />
+              );
+
+              setRevMainCampaignIconView(revMainCampaignIconViewView);
+            },
+            {revCropHeight: 55},
+          );
+        }}
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          {alignItems: 'center', paddingVertical: 8},
+        ]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaContainer,
+            {alignItems: 'center'},
+          ]}>
+          <FontAwesome
+            name={'file-picture-o'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            {' Select main campaign Pic'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <>{revMainCampaignIconView}</>
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -205,15 +318,15 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
             <FontAwesome name="dot-circle-o" />
             <FontAwesome name="long-arrow-right" /> Video{'  '}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revLabel: 'Select videos',
+              revMIMETypes: DocumentPicker.types.video,
+              revOnSelectedDataCallBack:
+                revSelectedVideosDataArrayRefChangeCallBack,
+            }}
+          />
         </View>
         <View>
           <Text
@@ -283,6 +396,28 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
     </View>
   );
 
+  useEffect(() => {
+    setRevTagsOutputView(
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revTagsListingWrapper]}>
+        <RevTagsOutputListing
+          revVarArgs={{
+            revTagsArr: revTagsArr,
+            revDelTagItemCallBack: revDelTagItem => {
+              console.log('>>> revDelTagItem', revDelTagItem);
+
+              setRevTagsArr(prevState => {
+                return prevState.filter(revCurr => {
+                  return revCurr !== revDelTagItem;
+                });
+              });
+            },
+          }}
+        />
+      </View>,
+    );
+  }, [revTagsArr]);
+
   return revRetView;
 };
 
@@ -314,12 +449,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EEE',
     borderBottomWidth: 1,
     paddingBottom: 8,
-    marginTop: 8,
     paddingLeft: 8,
+    marginTop: 4,
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
-    marginTop: 8,
   },
   revAddMeadiaTab: {
     paddingHorizontal: 8,

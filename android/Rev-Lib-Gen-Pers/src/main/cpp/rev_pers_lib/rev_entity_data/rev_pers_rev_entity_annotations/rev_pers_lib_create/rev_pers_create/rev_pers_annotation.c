@@ -11,16 +11,6 @@
 #include "../../rev_db_models/rev_entity_annotation.h"
 #include "../../../../../rev_gen_functions/rev_gen_functions.h"
 
-int revPersGetAnnNameID(char *revEntityAnnotationName) {
-    int revAnnNameID = -1;
-
-    if (strcmp(revEntityAnnotationName, "rev_like") == 0) {
-        revAnnNameID = 1;
-    }
-
-    return revAnnNameID;
-}
-
 long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long _revEntityGUID, long revEntityOwnerGUID) {
 
     sqlite3 *db = revDb();
