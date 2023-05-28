@@ -35,3 +35,13 @@ export const useRevSetMetadataArrayRemoteID = (
 
   return true;
 };
+
+export const useRevUpdateRevEntityStats = () => {
+  const revUpdateRevEntityStats = (
+    revEntityGUID,
+    revStatsName,
+    revStatsVal,
+  ) => {};
+
+  return {revUpdateRevEntityStats};
+};

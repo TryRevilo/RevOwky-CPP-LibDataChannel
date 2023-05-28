@@ -290,6 +290,11 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
         return revEntityMetadataListStr;
     }
 
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(String revMetadataName, Integer revEntityGUID) {
+        return revPersLibRead.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(revMetadataName, (long) revEntityGUID);
+    }
+
     /**
      * END REV READ METADATA
      **/

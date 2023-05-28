@@ -6,7 +6,7 @@ import {
   Dimensions,
   NativeModules,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -54,6 +54,18 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
   }
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  let revLikesStatsVal =
+    RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
+      'rev_like',
+      revEntityGUID,
+    );
+
+  console.log('>>>', revEntityGUID, 'revLikesStatsVal', revLikesStatsVal);
+
+  const [revLikesCount, setRevLikesCount] = useState(
+    revStringEmpty(revLikesStatsVal) ? 0 : revLikesStatsVal,
+  );
 
   const {revLikeInlineFormAction} = useRevLikeInlineFormAction();
 
@@ -119,6 +131,10 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     );
 
     console.log('>>> ', revRetVal);
+
+    if (revRetVal) {
+      setRevLikesCount(revLikesCount + 1);
+    }
   };
 
   const handleRevUnlikeLikeTabPressed = () => {
@@ -130,6 +146,10 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     );
 
     console.log('>>> ', revRetVal);
+
+    if (revRetVal) {
+      setRevLikesCount(revLikesCount + -1);
+    }
   };
 
   let RevLikes = () => {
@@ -158,9 +178,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
             revSiteStyles.revSiteTxtBold,
             revSiteStyles.revSiteTxtTiny_X,
           ]}>
-          {revLikeEntityGUIDsArr.length > 2
-            ? revGetRandInteger(1, 100)
-            : revLikeEntityGUIDsArr.length}
+          {revLikesCount}
         </Text>
         <TouchableOpacity
           key={'RevLikes_' + revGetRandInteger(100, 1000)}
