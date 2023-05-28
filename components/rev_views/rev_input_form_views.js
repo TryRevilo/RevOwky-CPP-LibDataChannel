@@ -494,3 +494,68 @@ export const RevUploadFilesTab = ({
     </TouchableOpacity>
   );
 };
+
+export const RevCheckBox = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revChecked, setRevChecked] = useState(false);
+
+  const {revOnCheckedStatusChangeCallBack, revCheckBoxText = ''} = revVarArgs;
+
+  const handleCheckBoxToggle = () => {
+    setRevChecked(!revChecked);
+    revOnCheckedStatusChangeCallBack(!revChecked);
+  };
+
+  return (
+    <View
+      style={[revSiteStyles.revFlexWrapper_WidthAuto, {alignItems: 'center'}]}>
+      <CheckBox
+        value={revChecked}
+        onValueChange={handleCheckBoxToggle}
+        tintColors={{
+          true: revSiteStyles.revSiteTxtAlertSafe,
+          false: revSiteStyles.revSiteTxtColorLight,
+        }}
+      />
+
+      {revCheckBoxText ? (
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            {marginLeft: 10},
+          ]}>
+          {revCheckBoxText}
+        </Text>
+      ) : null}
+    </View>
+  );
+};
+
+export const RevRadioButton = ({revVarArgs}) => {
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = option => {
+    setSelectedOption(option);
+  };
+
+  return (
+    <View>
+      <TouchableOpacity onPress={() => handleOptionSelect('option1')}>
+        <Text>{selectedOption === 'option1' ? '●' : '○'}</Text>
+        <Text>Option 1</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => handleOptionSelect('option2')}>
+        <Text>{selectedOption === 'option2' ? '●' : '○'}</Text>
+        <Text>Option 2</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => handleOptionSelect('option3')}>
+        <Text>{selectedOption === 'option3' ? '●' : '○'}</Text>
+        <Text>Option 3</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};

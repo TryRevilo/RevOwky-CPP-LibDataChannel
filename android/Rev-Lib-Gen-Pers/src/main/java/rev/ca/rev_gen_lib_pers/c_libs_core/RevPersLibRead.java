@@ -170,13 +170,15 @@ public class RevPersLibRead {
 
     public native List<Long> getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID);
 
-    public native List<Long> getAllRevEntityAnnoationIds_By_RevEntityContainer_GUID(String revAnnotationName, long revEntityContainerGUID);
+    public native List<Long> revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(String revAnnotationName, long revEntityGUID);
 
     public native long getRevAnnotationOwnerGUID_ByAnnotationId(long annotationId);
 
     public native List<Long> getAllRevEntityAnnoationIds_By_ResStatus(int revAnnResStatus);
 
     public native RevAnnotation revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId);
+
+    public native RevAnnotation revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(String revAnnotationName, long revEntityGUID, long revOwnerGUID);
 
     /**
      * END REV ENTITY ANNOTATION

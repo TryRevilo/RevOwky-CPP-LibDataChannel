@@ -165,17 +165,49 @@ export const revGetRawHTML = revStr => {
   return revStr;
 };
 
-export const revGetFilePathType = revStr => {
+export const revGetFilePathType_ = revStr => {
   const filePathRegex = /^(?:[a-z]+:)?\/\/[^\s]+$/i;
-  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-  const contentUriRegex = /^content:[/][/][^\s]+$/i;
+  const revURLRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  const revContentUriRegex = /^content:[/][/][^\s]+$/i;
 
   if (filePathRegex.test(revStr)) {
     return 'rev_local_file_path';
-  } else if (urlRegex.test(revStr)) {
+  } else if (revURLRegex.test(revStr)) {
     return 'rev_url';
-  } else if (contentUriRegex.test(revStr)) {
+  } else if (revContentUriRegex.test(revStr)) {
     return 'rev_content_uri';
+  } else {
+    return 'rev_unknown';
+  }
+};
+
+const checkPathType = path => {
+  if (path.startsWith('file://')) {
+    if (path.startsWith('file:///')) {
+      return 'Local File Path';
+    } else {
+      return 'Content URI';
+    }
+  } else if (path.match(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i)) {
+    return 'URL';
+  } else if (path.startsWith('/')) {
+    return 'Local File Path';
+  } else {
+    return 'Unknown';
+  }
+};
+
+export const revGetPathType = revPath => {
+  const revContentUriRegex = /^content:\/\/[^/]+$/;
+  const revLocalFilePathRegex = /^(\/|(file:\/\/\/)|(file:\/{4}\/))/;
+  const revURLRegex = /^(https?|ftp):\/\/[^/]+/;
+
+  if (revContentUriRegex.test(revPath)) {
+    return 'rev_content_uri';
+  } else if (revLocalFilePathRegex.test(revPath)) {
+    return 'rev_local_file_path';
+  } else if (revURLRegex.test(revPath)) {
+    return 'rev_url';
   } else {
     return 'rev_unknown';
   }

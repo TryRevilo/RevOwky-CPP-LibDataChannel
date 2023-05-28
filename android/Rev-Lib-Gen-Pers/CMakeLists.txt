@@ -310,6 +310,8 @@ set(REV_ENTITY_ANNOTATION_SRCS
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_read/rev_pers_read_rev_entity_annotations.c
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update_rev_entity_ann.h
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update_rev_entity_ann.c
+        ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_delete/rev_pers_delete_rev_entity_annotations.h
+        ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_delete/rev_pers_delete_rev_entity_annotations.c
         )
 add_library(rev_pers_rev_entity_annotations SHARED ${REV_ENTITY_ANNOTATION_SRCS})
 target_link_libraries(

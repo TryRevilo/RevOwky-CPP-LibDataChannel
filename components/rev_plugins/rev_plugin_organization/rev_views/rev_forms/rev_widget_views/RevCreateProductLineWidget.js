@@ -144,73 +144,117 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
       </View>
 
       <View
-        style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revAddedMediaContainer,
+          {borderTopWidth: 1},
+        ]}>
         <View
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="camera"
+          />
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny,
             ]}>
-            <FontAwesome name="camera" />
-            <FontAwesome name="long-arrow-right" /> Products pics
+            {' '}
+            Products pics
           </Text>
 
           <RevUploadFilesTab
             revVarArgs={{
+              revLabel: ' Select pics',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack: setRevSelectedImagesDataArray,
             }}
           />
         </View>
-        <View>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
-            ]}>
-            You have 0 product line pictures. You can upload up to 22
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 3},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedImagesDataArray.length}
           </Text>
-        </View>
+          {' product line pictures selected. You can upload up to 22'}
+        </Text>
       </View>
 
       <View
-        style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
+        style={[
+          revSiteStyles.revFlexContainer,
+          styles.revAddedMediaContainer,
+          {paddingTop: 0, paddingLeft: 10},
+        ]}>
         <View
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="dot-circle-o"
+          />
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny,
             ]}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Video{'  '}
+            {' '}
+            Video{'  '}
           </Text>
 
           <RevUploadFilesTab
             revVarArgs={{
+              revLabel: ' Select videos',
               revMIMETypes: DocumentPicker.types.video,
               revOnSelectedDataCallBack: setRevSelectedVideosDataArray,
             }}
           />
         </View>
-        <View>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
-            ]}>
-            You haven't uploaded a product line video yet
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 2},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedVideosDataArray.length}
           </Text>
-        </View>
+          {' videos product line videos selected'}
+        </Text>
       </View>
 
       <View
@@ -284,15 +328,14 @@ const styles = StyleSheet.create({
   },
   revAddedMediaContainer: {
     borderStyle: 'dotted',
-    borderBottomColor: '#EEE',
+    borderColor: '#EEE',
     borderBottomWidth: 1,
-    paddingBottom: 8,
+    paddingVertical: 8,
     marginTop: 8,
     paddingLeft: 8,
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
-    marginTop: 8,
   },
   revAddedMediaTell: {
     marginTop: 4,

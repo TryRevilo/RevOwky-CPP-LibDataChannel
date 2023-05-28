@@ -32,6 +32,8 @@ typedef struct RevEntityAnnotation {
     long _revTimePublishedUpdated;
 } RevEntityAnnotation;
 
+RevEntityAnnotation *revInitializedAnnotation();
+
 int revPersGetAnnNameID(char *revEntityAnnotationName);
 
 #endif //OWKI_REV_ENTITY_ANNOTATION_H

@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 
 import java.util.List;
 
+import rev.ca.rev_gen_lib_pers.RevDBModels.RevAnnotation;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntity;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityMetadata;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityRelationship;
@@ -299,9 +300,25 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(String revAnnotationName, Integer revEntityGUID) {
+        List<Long> revAnnIDsList = revPersLibRead.revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(revAnnotationName, revEntityGUID);
+        String revAnnIDsListStr = new RevJSONEntityConstructor().revObjectSerializer(revAnnIDsList);
+
+        return revAnnIDsListStr;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revGetRevEntityAnnoationValueIdBy_revAnnotationName_RevEntityGUID_RevEntityOwnerGUID(String revAnnotationName, Integer revEntityGUID, Integer revEntityOwnerGUID) {
-        long revAnnID = revPersLibRead.getRevEntityAnnoationValueIdBy_revAnnotationName_RevEntityGUID_RevEntityOwnerGUID(revAnnotationName, (int) revEntityGUID, (int) revEntityOwnerGUID);
+        long revAnnID = revPersLibRead.getRevEntityAnnoationValueIdBy_revAnnotationName_RevEntityGUID_RevEntityOwnerGUID(revAnnotationName, (long) revEntityGUID, (long) revEntityOwnerGUID);
         return (int) revAnnID;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(String revAnnotationName, Integer revEntityGUID, Integer revOwnerGUID) {
+        RevAnnotation revAnnotation = revPersLibRead.revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(revAnnotationName, (long) revEntityGUID, (long) revOwnerGUID);
+        String revAnnotationStr = new RevJSONEntityConstructor().revObjectSerializer(revAnnotation);
+
+        return revAnnotationStr;
     }
 
     /**

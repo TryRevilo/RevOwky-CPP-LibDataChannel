@@ -103,7 +103,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
         <RevSectionPointedContent
           revContent={<RevInfoArea revInfoText={'Error Loading Ad'} />}
           revStyles={{
-            marginTop: 8,
+            marginTop: 10,
             with: '100%',
           }}
         />

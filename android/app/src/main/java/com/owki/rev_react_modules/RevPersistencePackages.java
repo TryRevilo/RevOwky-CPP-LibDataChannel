@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.owki.rev_react_modules.rev_persistence.RevPersLibCreate_React;
 import com.owki.rev_react_modules.rev_persistence.RevPersLibRead_React;
 import com.owki.rev_react_modules.rev_persistence.RevPersLibUpdate_React;
+import com.owki.rev_react_modules.rev_persistence.RevPersLibDelete_React;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ public class RevPersistencePackages implements ReactPackage {
         modules.add(new RevPersLibCreate_React(reactApplicationContext));
         modules.add(new RevPersLibRead_React(reactApplicationContext));
         modules.add(new RevPersLibUpdate_React(reactApplicationContext));
+        modules.add(new RevPersLibDelete_React(reactApplicationContext));
 
         return modules;
     }

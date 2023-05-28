@@ -28,7 +28,12 @@ public class RevPersLibDelete_React extends ReactContextBaseJavaModule {
 
     /**
      * START ANNOTATIONS
-     **//**
+     **/
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    Integer revDeleteEntityAnnotation_By_AnnotationID(Integer revAnnotationID) {
+        return revPersLibDelete.revDeleteEntityAnnotation_By_AnnotationID((long) revAnnotationID);
+    }
+    /**
      * END ANNOTATIONS
      **/
 }

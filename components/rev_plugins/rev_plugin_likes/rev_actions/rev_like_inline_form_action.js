@@ -13,10 +13,9 @@ const {
   RevPersLibCreate_React,
   RevPersLibRead_React,
   RevPersLibUpdate_React,
+  RevPersLibDelete_React,
   RevGenLibs_Server_React,
 } = NativeModules;
-
-import {RevSiteDataContext} from '../../../../rev_contexts/RevSiteDataContext';
 
 export const useRevLikeInlineFormAction = () => {
   const revLikeInlineFormAction = (
@@ -25,13 +24,20 @@ export const useRevLikeInlineFormAction = () => {
     revEntityGUID,
     revOwnerEntityGUID,
   ) => {
-    console.log(
-      'revAnnotationName, revAnnotationValue, revEntityGUID, revOwnerEntityGUID',
-      revAnnotationName,
-      revAnnotationValue,
-      revEntityGUID,
-      revOwnerEntityGUID,
-    );
+    let revAnnsStr =
+      RevPersLibRead_React.revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(
+        'rev_like',
+        revEntityGUID,
+      );
+
+    let revAnnsArr = JSON.parse(revAnnsStr);
+
+    for (let i = 0; i < revAnnsArr.length; i++) {
+      let revAnnDel =
+        RevPersLibDelete_React.revDeleteEntityAnnotation_By_AnnotationID(
+          revAnnsArr[i],
+        );
+    }
 
     let revRetVal = RevPersLibCreate_React.revPersRevEntityAnnotationWithValues(
       revAnnotationName,
@@ -40,7 +46,7 @@ export const useRevLikeInlineFormAction = () => {
       revOwnerEntityGUID,
     );
 
-    console.log('>>> revRetVal -revLikeInlineFormAction', revRetVal);
+    return revRetVal;
   };
 
   return {revLikeInlineFormAction};

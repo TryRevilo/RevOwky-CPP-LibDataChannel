@@ -10,4 +10,6 @@ public class RevPersLibDelete {
 
     public native int deleteRevRel_By_Unset_Subject_Target_GUID(long revUnsetRelEntityGUID, long revUnsetRelEntityRemoteGUID);
 
+    public native int revDeleteEntityAnnotation_By_AnnotationID(long revAnnotationID);
+
 }

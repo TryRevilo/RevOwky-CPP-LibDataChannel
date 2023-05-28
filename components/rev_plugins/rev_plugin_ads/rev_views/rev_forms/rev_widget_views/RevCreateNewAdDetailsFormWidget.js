@@ -210,23 +210,26 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
 
           <RevUploadFilesTab
             revVarArgs={{
-              revLabel: 'Select pictures',
+              revLabel: ' Select pictures',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack:
                 revSelectedImagesDataArrayChangeCallBack,
             }}
           />
         </View>
-        <View>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
-            ]}>
-            You have 0 Ad pictures. You can upload up to 22
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 4},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedImagesDataArray.length}
           </Text>
-        </View>
+          {' Ad pictures selected. You can upload up to 22'}
+        </Text>
       </View>
 
       <TouchableOpacity
@@ -254,21 +257,19 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
               setRevSelectedImagesDataArray(revNewSelectedImagesArr);
 
               let revMainCampaignIconViewView = (
-                <RevCenteredImage
-                  revImageURI={revCroppedImageDataPath}
-                  revImageDimens={{revWidth: '100%', revHeight: 55}}
-                />
+                <View style={{marginTop: 4, overflow: 'hidden'}}>
+                  <RevCenteredImage
+                    revImageURI={revCroppedImageDataPath}
+                    revImageDimens={{revWidth: '100%', revHeight: 55}}
+                  />
+                </View>
               );
 
               setRevMainCampaignIconView(revMainCampaignIconViewView);
             },
             {revCropHeight: 55},
           );
-        }}
-        style={[
-          revSiteStyles.revFlexWrapper_WidthAuto,
-          {alignItems: 'center', paddingVertical: 8},
-        ]}>
+        }}>
         <View
           style={[
             revSiteStyles.revFlexWrapper,
@@ -309,6 +310,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
+            {marginLeft: 2},
           ]}>
           <Text
             style={[
@@ -321,23 +323,26 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
 
           <RevUploadFilesTab
             revVarArgs={{
-              revLabel: 'Select videos',
+              revLabel: ' Select videos',
               revMIMETypes: DocumentPicker.types.video,
               revOnSelectedDataCallBack:
                 revSelectedVideosDataArrayRefChangeCallBack,
             }}
           />
         </View>
-        <View>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
-            ]}>
-            You haven't uploaded a video for this Ad yet
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 4},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedVideosDataArray.length}
           </Text>
-        </View>
+          {' videos selected for this Ad yet'}
+        </Text>
       </View>
 
       <View style={[revSiteStyles.revFlexContainer]}>
@@ -446,11 +451,11 @@ const styles = StyleSheet.create({
   },
   revAddedMediaContainer: {
     borderStyle: 'dotted',
-    borderBottomColor: '#EEE',
-    borderBottomWidth: 1,
-    paddingBottom: 8,
+    borderColor: '#EEE',
+    borderTopWidth: 1,
+    paddingTop: 8,
     paddingLeft: 8,
-    marginTop: 4,
+    marginTop: 8,
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',

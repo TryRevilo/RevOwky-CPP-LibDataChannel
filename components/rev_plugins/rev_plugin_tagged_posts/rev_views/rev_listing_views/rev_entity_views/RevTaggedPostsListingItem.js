@@ -13,6 +13,7 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
@@ -98,6 +99,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let revInfoEntity = revVarArgs._revInfoEntity;
   let revTimePublished = revFormatLongDate(revVarArgs._revTimePublished);
 
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   let revMaxMessageLen = 200;

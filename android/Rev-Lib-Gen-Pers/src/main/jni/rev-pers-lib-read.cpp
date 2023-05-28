@@ -2709,36 +2709,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getRevEntityAnnoati
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getAllRevEntityAnnoationValueByRevEntityContainerGUID_1Subtype(JNIEnv *env, jobject instance, jstring revAnnotationName_, jlong revEntityGUID) {
-    const char *revAnnotationName = env->GetStringUTFChars(revAnnotationName_, 0);
-
-    list *valueIds = getAllRevEntityAnnotationId(strdup(revAnnotationName), (long) revEntityGUID);
-
-    list_for_each(valueIds, revPersGetRevEntityDataLong);
-
-    // First, get all the methods we need:
-    jclass arrayListClass = env->FindClass("java/util/ArrayList");
-    jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
-    jmethodID addMethod = env->GetMethodID(arrayListClass, "add", "(Ljava/lang/Object;)Z");
-
-    // The list we're going to return:
-    jobject revRetJObjectArrayList = env->NewObject(arrayListClass, arrayListConstructor);
-
-    for (size_t i = 0; i < searchRecordResultLong.size(); i++) {
-        char *value = getRevEntityMetaStringById((jlong) searchRecordResultLong[i]);
-
-        env->CallBooleanMethod(revRetJObjectArrayList, addMethod, env->NewStringUTF(value));
-    }
-
-    searchRecordResultLong.clear();
-
-    env->ReleaseStringUTFChars(revAnnotationName_, revAnnotationName);
-
-    return revRetJObjectArrayList;
-}
-
-extern "C"
-JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getAllRevEntityAnnoationIds_1By_1RevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID) {
 
     list *valueIds = getAllRevEntityAnnoationIds_By_RevEntityGUID((long) revEntityGUID);
@@ -2772,10 +2742,10 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getAllRevEntityAnno
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getAllRevEntityAnnoationIds_1By_1RevEntityContainer_1GUID(JNIEnv *env, jobject instance, jstring revAnnotationName_, jlong revEntityContainerGUID) {
-    const char *revAnnotationName = env->GetStringUTFChars(revAnnotationName_, 0);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetAllRevEntityAnnoationIds_1By_1AnnName_1RevEntity_1GUID(JNIEnv *env, jobject thiz, jstring rev_annotation_name, jlong rev_entity_guid) {
+    const char *revAnnotationName = env->GetStringUTFChars(rev_annotation_name, 0);
 
-    list *valueIds = getAllRevEntityAnnoationIds_By_RevEntityContainer_GUID(strdup(revAnnotationName), (long) revEntityContainerGUID);
+    list *valueIds = revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(strdup(revAnnotationName), (long) rev_entity_guid);
 
     list_for_each(valueIds, revPersGetRevEntityDataLong);
 
@@ -2801,7 +2771,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_getAllRevEntityAnno
 
     searchRecordResultLong.clear();
 
-    env->ReleaseStringUTFChars(revAnnotationName_, revAnnotationName);
+    env->ReleaseStringUTFChars(rev_annotation_name, revAnnotationName);
 
     return revRetJObjectArrayList;
 }
@@ -2840,6 +2810,21 @@ extern "C"
 JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntityAnn_1By_1LocalAnnId(JNIEnv *env, jobject instance, jlong revAnnotationId) {
     RevEntityAnnotation revEntityAnnotation = *(revPersGetRevEntityAnn_By_LocalAnnId((long) revAnnotationId));
+
+    REV_ENTITY_ANNOTATION_JNI_POSREC *rev_entity_annotation_jni_posrec = LoadRevEntityAnnotationJniPosRec(env);
+    jobject jPosRec = env->NewObject(rev_entity_annotation_jni_posrec->cls, rev_entity_annotation_jni_posrec->constructortor_ID);
+    FillDataRecValuesToRevAnnotationJni(env, jPosRec, revEntityAnnotation);
+
+    return jPosRec;
+}
+
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntityAnn_1By_1AnnName_1EntityGUID_1OwnerGUID(JNIEnv *env, jobject thiz, jstring rev_annotation_name, jlong rev_entity_guid, jlong rev_owner_guid) {
+    const char *revAnnotationName = env->GetStringUTFChars(rev_annotation_name, 0);
+
+    RevEntityAnnotation revEntityAnnotation = *(revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(strdup(revAnnotationName), (long) rev_entity_guid, (long) rev_owner_guid));
 
     REV_ENTITY_ANNOTATION_JNI_POSREC *rev_entity_annotation_jni_posrec = LoadRevEntityAnnotationJniPosRec(env);
     jobject jPosRec = env->NewObject(rev_entity_annotation_jni_posrec->cls, rev_entity_annotation_jni_posrec->constructortor_ID);

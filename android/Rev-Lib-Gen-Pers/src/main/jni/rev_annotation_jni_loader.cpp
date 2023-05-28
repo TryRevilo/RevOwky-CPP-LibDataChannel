@@ -2,15 +2,17 @@
 // Created by home on 2019-09-12.
 //
 
-#include <cstdio>
 #include "rev_annotation_jni_loader.h"
+
+#include <cstdio>
+#include <android/log.h>
 
 REV_ENTITY_ANNOTATION_JNI_POSREC *rev_entity_annotation_jni_posrec;
 
 REV_ENTITY_ANNOTATION_JNI_POSREC *LoadRevEntityAnnotationJniPosRec(JNIEnv *env) {
     rev_entity_annotation_jni_posrec = new REV_ENTITY_ANNOTATION_JNI_POSREC;
 
-    rev_entity_annotation_jni_posrec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels$RevAnnotation");
+    rev_entity_annotation_jni_posrec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels/RevAnnotation");
 
     if (rev_entity_annotation_jni_posrec->cls != NULL) {
         printf("sucessfully rev_entity_annotation_jni_posrec created class");
@@ -48,6 +50,8 @@ REV_ENTITY_ANNOTATION_JNI_POSREC *LoadRevEntityAnnotationJniPosRec(JNIEnv *env) 
 }
 
 void FillDataRecValuesToRevAnnotationJni(JNIEnv *env, jobject jPosRec, RevEntityAnnotation revEntityAnnotation) {
+    __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> FillDataRecValuesToRevAnnotationJni <<<");
+
     rev_entity_annotation_jni_posrec = LoadRevEntityAnnotationJniPosRec(env);
 
     jint _revAnnotationResStatus = revEntityAnnotation._revAnnotationResStatus;
@@ -57,6 +61,8 @@ void FillDataRecValuesToRevAnnotationJni(JNIEnv *env, jobject jPosRec, RevEntity
     env->SetIntField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationNameId, _revAnnotationNameId);
 
     char *_revAnnotationValue = revEntityAnnotation._revAnnotationValue;
+
+    __android_log_print(ANDROID_LOG_ERROR, "MyApp", "_revAnnotationValue >>> %s", _revAnnotationValue);
 
     long _revAnnotationId = revEntityAnnotation._revAnnotationId;
 
