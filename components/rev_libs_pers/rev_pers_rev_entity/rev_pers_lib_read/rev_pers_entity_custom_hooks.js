@@ -58,7 +58,7 @@ export function useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE() {
   return {revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE};
 }
 
-export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
+export const revPersGetRevEntities_By_EntityGUIDsArr = revEntityGUIDsArr => {
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
@@ -95,7 +95,7 @@ export function useRevPersGetRevEntities_By_EntityGUIDsArr(revEntityGUIDsArr) {
   }
 
   return revEntities;
-}
+};
 
 export function revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus) {
   let revUnresolvedEntityGUIDsStr =
@@ -109,7 +109,7 @@ export function revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus) {
     console.log('>>> error ' + error);
   }
 
-  let revRetEntitiesArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+  let revRetEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
     revUnresolvedEntityGUIDs,
   );
 
@@ -127,7 +127,7 @@ export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
         revEntitySubType,
       );
 
-    return useRevPersGetRevEntities_By_EntityGUIDsArr(
+    return revPersGetRevEntities_By_EntityGUIDsArr(
       JSON.parse(revUnresolvedEntityGUIDsStr),
     );
   };
@@ -190,7 +190,7 @@ export const useRevGetEntityPictureAlbumPics = () => {
       return [];
     }
 
-    let revPicAlbumEntityPicsArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+    let revPicAlbumEntityPicsArr = revPersGetRevEntities_By_EntityGUIDsArr(
       revPicAlbumPicsGUIDsArr,
     );
 
@@ -219,7 +219,7 @@ export const useRevGetEntityPictureAlbums = () => {
     }
 
     let revPicAlbumEntitiesArr =
-      useRevPersGetRevEntities_By_EntityGUIDsArr(revPicAlbumGUIDsArr);
+      revPersGetRevEntities_By_EntityGUIDsArr(revPicAlbumGUIDsArr);
 
     for (let i = 0; i < revPicAlbumEntitiesArr.length; i++) {
       let revPicAlbumGUID = revPicAlbumEntitiesArr[i]._revEntityGUID;

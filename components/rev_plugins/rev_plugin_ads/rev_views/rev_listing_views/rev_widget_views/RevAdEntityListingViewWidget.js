@@ -21,6 +21,7 @@ import {
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {revPersGetRevEntities_By_EntityGUIDsArr} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {
   RevCenteredImage,
@@ -189,21 +190,37 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     'rev_entity_name_val',
   );
 
-  let revTagEntitiesInlineListing = revPluginsLoader({
-    revPluginName: 'rev_plugin_tags',
-    revViewName: 'RevTagEntitiesInlineListing',
-    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
-  });
-
   let revLikeInlineForm = revPluginsLoader({
     revPluginName: 'rev_plugin_likes',
     revViewName: 'RevLikeInlineForm',
-    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
+    revVarArgs: revData,
+  });
+
+  // Get TAGS
+  let revTagEntityGUIDsStr =
+    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_tag_of',
+      revOrganizationEntity._revEntityGUID,
+    );
+
+  let revTagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
+    JSON.parse(revTagEntityGUIDsStr),
+  );
+
+  let revTagEntitiesInlineListing = revPluginsLoader({
+    revPluginName: 'rev_plugin_tags',
+    revViewName: 'RevTagEntitiesInlineListing',
+    revVarArgs: {revTagItemsArr: revTagEntitiesArr},
   });
 
   return (
     <View
-      key={'RevAdEntityListingViewWidget_' + revGetRandInteger()}
+      key={
+        'RevAdEntityListingViewWidget_' +
+        revAdEntityGUID +
+        '_' +
+        revGetRandInteger()
+      }
       style={[revSiteStyles.revFlexContainer]}>
       {revAdHeaderView()}
       <View

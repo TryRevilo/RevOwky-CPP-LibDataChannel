@@ -178,10 +178,10 @@ export const RevTaggedPostsListing = ({revVarArgs}) => {
   };
 
   return (
-    <View>
+    <>
       <RevPageContentHeader />
       <RevDisplay />
-    </View>
+    </>
   );
 };
 

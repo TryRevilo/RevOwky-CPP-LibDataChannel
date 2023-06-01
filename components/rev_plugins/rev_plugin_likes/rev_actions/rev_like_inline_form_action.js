@@ -1,13 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  NativeModules,
-} from 'react-native';
+import {NativeModules} from 'react-native';
 
-import React, {useContext} from 'react';
+import React from 'react';
 
 const {
   RevPersLibCreate_React,
@@ -43,39 +36,9 @@ export const useRevLikeInlineFormAction = () => {
         revOwnerEntityGUID,
       );
 
-    console.log('>>> revEntityAnnData', revEntityAnnData);
-
     let revAnnotationId = revEntityAnnData._revAnnotationId;
-
-    if (revAnnotationId < 1) {
-      let revRetVal =
-        RevPersLibCreate_React.revPersRevEntityAnnotationWithValues(
-          revAnnotationName,
-          revAnnotationValue.toString(),
-          revEntityGUID,
-          revOwnerEntityGUID,
-        );
-    } else {
-      let revSavedAnnotationValue = revEntityAnnData._revAnnotationValue;
-
-      if (revSavedAnnotationValue == revAnnotationValue) {
-        // Delete like
-        RevPersLibDelete_React.revDeleteEntityAnnotation_By_AnnotationID(
-          revAnnotationId,
-        );
-      } else {
-        // Set opposite like
-        let revInverseAnnotationValue = Number(revAnnotationValue);
-        revInverseAnnotationValue = -revInverseAnnotationValue;
-
-        console.log('>>> revInverseAnnotationValue', revInverseAnnotationValue);
-
-        RevPersLibUpdate_React.revPersSetRevAnnVal_By_RevAnnId(
-          revAnnotationId,
-          revInverseAnnotationValue.toString(),
-        );
-      }
-    }
+    let revSavedAnnotationValue = revEntityAnnData._revAnnotationValue;
+    let revSavedAnnotationValueInt = Number(revSavedAnnotationValue);
 
     let revLikesStatsMetadataStr =
       RevPersLibRead_React.revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(
@@ -84,16 +47,47 @@ export const useRevLikeInlineFormAction = () => {
       );
 
     let revLikesStatsMetadata = JSON.parse(revLikesStatsMetadataStr);
-
-    let revCurrVal = Number(revLikesStatsMetadata._metadataValue);
-
-    let revUpdatedLikesStatsValNum =
-      (revCurrVal ? revCurrVal : 0) + Number(revAnnotationValue);
-
-    return revUpdateLikesStatsMetadata(
-      revLikesStatsMetadata.revMetadataId,
-      revUpdatedLikesStatsValNum.toString(),
+    let revCurrMetadataStasValInt = Number(
+      revLikesStatsMetadata._metadataValue,
     );
+
+    if (revAnnotationId < 1) {
+      RevPersLibCreate_React.revPersRevEntityAnnotationWithValues(
+        revAnnotationName,
+        revAnnotationValue.toString(),
+        revEntityGUID,
+        revOwnerEntityGUID,
+      );
+
+      revCurrMetadataStasValInt =
+        revCurrMetadataStasValInt + revAnnotationValue;
+    } else {
+      if (revSavedAnnotationValueInt == revAnnotationValue) {
+        // Delete like
+        RevPersLibDelete_React.revDeleteEntityAnnotation_By_AnnotationID(
+          revAnnotationId,
+        );
+
+        revCurrMetadataStasValInt =
+          revCurrMetadataStasValInt - revAnnotationValue;
+      } else {
+        RevPersLibUpdate_React.revPersSetRevAnnVal_By_RevAnnId(
+          revAnnotationId,
+          revAnnotationValue.toString(),
+        );
+
+        revCurrMetadataStasValInt =
+          revCurrMetadataStasValInt + revAnnotationValue;
+      }
+    }
+
+    // Update stats
+    revUpdateLikesStatsMetadata(
+      revLikesStatsMetadata.revMetadataId,
+      revCurrMetadataStasValInt.toString(),
+    );
+
+    return;
   };
 
   return {revLikeInlineFormAction};

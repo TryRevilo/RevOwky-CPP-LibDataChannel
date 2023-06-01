@@ -18,7 +18,7 @@ import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_re
 import {
   useRevPersGetALLRevEntity_By_SubType_RevVarArgs,
   revPersGetFilledRevEntity_By_GUID,
-  useRevPersGetRevEntities_By_EntityGUIDsArr,
+  revPersGetRevEntities_By_EntityGUIDsArr,
 } from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {RevScrollView_V} from './rev_page_views';
@@ -94,7 +94,7 @@ function RevFooterArea() {
           revPicAlbumEntityGUID,
         );
 
-      let revPicsEntitiesArr = useRevPersGetRevEntities_By_EntityGUIDsArr(
+      let revPicsEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
         JSON.parse(revPicAlbumPicsGUIDsArr),
       );
 
@@ -146,13 +146,13 @@ function RevFooterArea() {
         };
       }
 
-      let RevTaggedPostsListing = revPluginsLoader({
+      let revTaggedPostsListing = revPluginsLoader({
         revPluginName: 'rev_plugin_tagged_posts',
         revViewName: 'RevTaggedPostsListing',
         revVarArgs: revRetData,
       });
 
-      SET_REV_SITE_BODY(RevTaggedPostsListing);
+      SET_REV_SITE_BODY(revTaggedPostsListing);
     });
   };
 

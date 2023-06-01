@@ -33,7 +33,7 @@ export const useRevCreateNewTagFormAction = () => {
     let revSavedTagMetadata =
       revGetRevEntityMetadata_By_MetadataName_MetadataValue(
         'rev_entity_name_val',
-        'Jfjdsvk',
+        revEntityNameVal,
       );
 
     if (!revIsEmptyJSONObject(revSavedTagMetadata)) {

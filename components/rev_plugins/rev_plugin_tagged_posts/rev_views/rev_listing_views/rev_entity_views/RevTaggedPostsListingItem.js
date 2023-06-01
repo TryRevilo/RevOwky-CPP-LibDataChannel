@@ -35,7 +35,10 @@ import {
 } from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
-import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {
+  useRevPersGetRevEnty_By_EntityGUID,
+  revPersGetRevEntities_By_EntityGUIDsArr,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
 
 const {RevPersLibRead_React} = NativeModules;
@@ -129,11 +132,45 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     );
   };
 
-  let revTagEntitiesInlineListing = revPluginsLoader({
-    revPluginName: 'rev_plugin_tags',
-    revViewName: 'RevTagEntitiesInlineListing',
-    revVarArgs: {revTagItemsArr: [1, 2, 3, 4]},
-  });
+  let revTagEntitiesInlineListingView = () => {
+    let revTagEntityGUIDsStr =
+      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        'rev_tag_of',
+        revEntityGUID,
+      );
+
+    let revTagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
+      JSON.parse(revTagEntityGUIDsStr),
+    );
+
+    if (!revTagEntitiesArr.length) {
+      return null;
+    }
+
+    let revTagEntitiesInlineListing = revPluginsLoader({
+      revPluginName: 'rev_plugin_tags',
+      revViewName: 'RevTagEntitiesInlineListing',
+      revVarArgs: {revTagItemsArr: []},
+    });
+
+    console.log('>>> revTagEntitiesInlineListing', revTagEntitiesInlineListing);
+
+    return (
+      <>
+        {revTagEntitiesInlineListing !== null ? (
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revPostTagsListWrapper,
+            ]}>
+            <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
+
+            {revTagEntitiesInlineListing}
+          </View>
+        ) : null}
+      </>
+    );
+  };
 
   let revLikeInlineForm = revPluginsLoader({
     revPluginName: 'rev_plugin_likes',
@@ -211,18 +248,19 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
               {revFormatLongDate(revVarArgs._revTimePublished)}
             </Text>
             <View style={styles.chatMsgOptionsWrapper}>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="reply" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="retweet" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="list" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="flag-o" />
-              </Text>
+              <FontAwesome
+                name="retweet"
+                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+              />
+
+              <FontAwesome
+                name="flag-o"
+                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+              />
+              <FontAwesome
+                name="list"
+                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+              />
             </View>
           </View>
           <View
@@ -492,29 +530,23 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                 {revTimePublished}
               </Text>
               <View style={styles.chatMsgOptionsWrapper}>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="reply" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="retweet" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="list" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="flag-o" />
-                </Text>
+                <FontAwesome
+                  name="retweet"
+                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                />
+
+                <FontAwesome
+                  name="flag-o"
+                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                />
+                <FontAwesome
+                  name="list"
+                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                />
               </View>
             </View>
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper,
-                styles.revPostTagsListWrapper,
-              ]}>
-              <FontAwesome name="hashtag" style={styles.revPostTagsListIcon} />
 
-              {revTagEntitiesInlineListing}
-            </View>
+            {revTagEntitiesInlineListingView()}
 
             {revChatMessageText(revKiwiTxtVal)}
 
@@ -632,7 +664,6 @@ const styles = StyleSheet.create({
   },
   chatMsgOptions: {
     color: '#bdbdbd',
-    fontSize: 12,
     paddingHorizontal: 8,
   },
   revPostTagsListWrapper: {

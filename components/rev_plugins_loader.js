@@ -3,6 +3,7 @@ import React from 'react';
 import {View} from 'react-native';
 
 import loadable from '@loadable/component';
+import {revIsEmptyVar} from '../rev_function_libs/rev_gen_helper_functions';
 
 var REV_PLUGINS = {
   rev_flag: {
@@ -138,13 +139,11 @@ export function revPluginsViews(revVarArgs) {
 }
 
 export function revPluginsLoader(revVarArgs) {
-  let RevPluginViewsArr = revPluginsViews(revVarArgs);
+  let revPluginViewsArr = revPluginsViews(revVarArgs);
 
-  return (
-    <View>
-      {RevPluginViewsArr.map(RevPluginView => {
-        return RevPluginView;
-      })}
-    </View>
-  );
+  let revRetView = revPluginViewsArr.map(revPluginView => {
+    return revPluginView;
+  });
+
+  return revRetView;
 }

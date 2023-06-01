@@ -280,7 +280,6 @@ const styles = StyleSheet.create({
   revSiteContentContainer: {
     flex: 7,
     position: 'relative',
-    paddingBottom: 47,
     height: 'auto',
   },
 });

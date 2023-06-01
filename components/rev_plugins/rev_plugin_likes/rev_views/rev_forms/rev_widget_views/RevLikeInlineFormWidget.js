@@ -63,14 +63,6 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       revEntityGUID,
     );
 
-  console.log(
-    revStringEmpty(revLikesStatsVal),
-    '>>>',
-    revEntityGUID,
-    'revLikesStatsVal',
-    revLikesStatsVal,
-  );
-
   if (revStringEmpty(revLikesStatsVal)) {
     let revTotLikesStatsMetadata = REV_METADATA_FILLER(
       'rev_tot_likes_stats',
@@ -82,8 +74,6 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       RevPersLibCreate_React.revPersSaveEntityMetadataJSONStr(
         JSON.stringify(revTotLikesStatsMetadata),
       );
-
-    console.log('>>> revTotLikesStatsMetadataID', revTotLikesStatsMetadataID);
   }
 
   const [revLikesCount, setRevLikesCount] = useState(
@@ -139,36 +129,30 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
   };
 
   const handleRevLikeTabPressed = revLikeVal => {
-    let revRetVal = revLikeInlineFormAction(
+    revLikeInlineFormAction(
       'rev_like',
       revLikeVal,
-      revVarArgs._revEntityGUID,
+      revEntityGUID,
       REV_LOGGED_IN_ENTITY_GUID,
     );
 
-    console.log('>>> ', revRetVal);
+    let revLikesStatsVal =
+      RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
+        'rev_tot_likes_stats',
+        revEntityGUID,
+      );
 
-    if (revRetVal) {
-      let revLikesStatsVal =
-        RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
-          'rev_tot_likes_stats',
-          revEntityGUID,
-        );
-
-      setRevLikesCount(revLikesStatsVal);
-    }
+    setRevLikesCount(revLikesStatsVal);
   };
 
   let RevLikes = () => {
     return (
       <View
-        key={revGetRandInteger(100, 1000)}
         style={[
           revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revLikesTabsWrapper,
         ]}>
         <TouchableOpacity
-          key={'RevLikes_' + revGetRandInteger(100, 1000)}
           onPress={() => {
             handleRevLikeTabPressed(1);
           }}>
@@ -190,7 +174,6 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
           {revLikesCount}
         </Text>
         <TouchableOpacity
-          key={'RevLikes_' + revGetRandInteger(100, 1000)}
           onPress={() => {
             handleRevLikeTabPressed(-1);
           }}>
@@ -238,9 +221,9 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
 
   return (
     <View
-      key={'RevLikeInlineFormWidget_' + revGetRandInteger(10, 1000)}
+      key={'RevLikeInlineFormWidget_' + revEntityGUID}
       style={[revSiteStyles.revFlexWrapper, styles.revAdStatsFooterWrapper]}>
-      <RevLikes key={'RevLikes_' + revGetRandInteger()} />
+      <RevLikes key={'RevLikes_' + revEntityGUID + revGetRandInteger()} />
       <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {flex: 1}]}>
         <RevScrollView_H
           revScrollViewContent={revLikeEntityGUIDsArr.map(revCommentEntity => {
