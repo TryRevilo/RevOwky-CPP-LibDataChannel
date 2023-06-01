@@ -260,6 +260,19 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setResStatus_1By_
     return setResStatus_By_RevCreationDate((long long) revTimeCreated, (int) revResStatus);
 }
 
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetRevAnnVal_1By_1RevAnnId(JNIEnv *env, jobject thiz, jlong rev_annotation_id, jstring rev_entity_annotation_value) {
+    const char *revEntityAnnotationValue = env->GetStringUTFChars(rev_entity_annotation_value, 0);
+
+    int revUpdateStatus = revPersSetRevAnnVal_By_RevAnnId((long) rev_annotation_id, strdup(revEntityAnnotationValue));
+
+    env->ReleaseStringUTFChars(rev_entity_annotation_value, revEntityAnnotationValue);
+
+    return revUpdateStatus;
+}
+
 extern "C"
 JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetRevAnnResStatus_1By_1RevAnnId(JNIEnv *env, jobject instance, jlong revAnnotationId, jint revAnnotationResStatus) {

@@ -7,4 +7,6 @@ long revPersSaveRevMetadata(void *revEntityMetadataList);
 
 long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata);
 
+long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr);
+
 #endif // REV_PERS_REV_ENTITY_METADATA

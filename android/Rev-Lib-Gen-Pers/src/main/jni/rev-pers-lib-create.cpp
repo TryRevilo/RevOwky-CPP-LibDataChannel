@@ -27,6 +27,7 @@ extern "C"
 #include "../cpp/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.h"
 #include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.h"
 #include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
+#include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
@@ -52,6 +53,13 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *pjvm, void *reserved) {
 
 JavaVM *revGetJVM() {
     return gJvm;
+}
+
+std::vector<RevEntityMetadata> searchRecordResultRevEntityMetadata;
+
+bool revPersGetRevEntityMetadata(void *data) {
+    searchRecordResultRevEntityMetadata.push_back(*(RevEntityMetadata *) data);
+    return true;
 }
 
 extern "C"
@@ -325,13 +333,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInitJSON(J
 
 /** REV ENTITY METADATA **/
 
-std::vector<RevEntityMetadata> searchRecordResultRevEntityMetadata;
-
-bool revPersGetRevEntityMetadata(void *data) {
-    searchRecordResultRevEntityMetadata.push_back(*(RevEntityMetadata *) data);
-    return true;
-}
-
 extern "C" JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityMetadataList(JNIEnv *env, jobject instance, jobject revEntityMetadataList) {
 
@@ -534,6 +535,19 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
     return revPersSaveRevEntityMetadata(&c_revEntityMetadata);
 }
 
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersSaveEntityMetadataJSONStr(JNIEnv *env, jobject thiz, jstring rev_entity_metadata_jsonstr) {
+    const char *revEntityMetadataJSONStr = env->GetStringUTFChars(rev_entity_metadata_jsonstr, 0);
+
+    RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataJSONStr);
+    long revMetadataID = revPersSaveRevEntityMetadata(revEntityMetadata);
+
+    env->ReleaseStringUTFChars(rev_entity_metadata_jsonstr, revEntityMetadataJSONStr);
+
+    return revMetadataID;
+}
+
 /** END REV ENTITY METADATA **/
 
 /** REV RELATIONSHIP **/
@@ -669,6 +683,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRelationsh
     RevEntityRelationship *revEntityRelationship = revJSONEntityRelationshipFiller(revJSONEntityRelationship);
 
     long relationshipId = revPersRelationshipObject(revEntityRelationship);
+
+    env->ReleaseStringUTFChars(rev_jsonentity_relationship, revJSONEntityRelationship);
 
     return relationshipId;
 }

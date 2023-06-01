@@ -5,6 +5,8 @@
 #ifndef REVCAMPANN_REV_PERS_UPDATE_REV_ENTITY_ANN_H
 #define REVCAMPANN_REV_PERS_UPDATE_REV_ENTITY_ANN_H
 
+int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, char *revEntityAnnotationValue);
+
 int revPersSetRevAnnResStatus_By_RevAnnId(long revAnnotationId, int revAnnotationResStatus);
 
 int revPersSetRemoteRevAnnId(long revAnnotationId, long revAnnotationRemoteId);

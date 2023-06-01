@@ -4,12 +4,12 @@
 
 #include "rev_entity_relationships.h"
 
-#include "../../../../../../../libs/cJSON/cJSON.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <android/log.h>
+
+#include "../../../../../../../libs/cJSON/cJSON.h"
 
 RevEntityRelationship *revInitializedEntityRelationship() {
     RevEntityRelationship *revEntityRelationship = (RevEntityRelationship *) malloc(sizeof(RevEntityRelationship));

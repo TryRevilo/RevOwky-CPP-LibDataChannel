@@ -1,5 +1,5 @@
 //
-// Created by rev on 12/6/22.
+// Created by rev on 6/1/23.
 //
 
 #ifndef OWKI_REV_ENTITY_METADATA_H
@@ -26,6 +26,8 @@ typedef struct RevEntityMetadata {
 
 RevEntityMetadata *revInitializedMetadata();
 
-list *revJSONMetadataFiller(const char *const revJSONStringMetadata);
+RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJSONStr);
+
+list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr);
 
 #endif //OWKI_REV_ENTITY_METADATA_H

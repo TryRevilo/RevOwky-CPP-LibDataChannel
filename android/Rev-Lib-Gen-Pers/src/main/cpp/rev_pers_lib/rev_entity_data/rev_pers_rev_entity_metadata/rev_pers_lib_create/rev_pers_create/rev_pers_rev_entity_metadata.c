@@ -20,6 +20,14 @@ long revPersSaveRevMetadata(void *revEntityMetadataList) {
     return 0;
 }
 
+long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr) {
+    RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataJSONStr);
+
+    long revMetadataID = revPersSaveRevEntityMetadata(revEntityMetadata);
+
+    return  revMetadataID;
+}
+
 long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
     long revReturnVal;
 
@@ -39,6 +47,9 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
     long _revTimePublished = revEntityMetadata->_revTimePublished;
     long _revTimePublishedUpdated = revEntityMetadata->_revTimePublishedUpdated;
 
+    if (metadataOwnerGUID < 1 || (metadataName[0] == '\0') || (metadataValue[0] == '\0')) {
+        return -1;
+    }
 
     int rc;
     char *szSQL;

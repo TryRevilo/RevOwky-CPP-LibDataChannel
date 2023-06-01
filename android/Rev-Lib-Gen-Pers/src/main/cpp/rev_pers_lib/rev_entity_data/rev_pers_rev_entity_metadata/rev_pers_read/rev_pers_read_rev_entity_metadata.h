@@ -16,6 +16,8 @@ long revGetRevEntityMetadataId_By_RevMetadataName_RevEntityGUID(char *revMetadat
 
 char *revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID);
 
+RevEntityMetadata revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID);
+
 long revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue);
 
 list *revPersGetALLRevEntityRevEntityMetadataByOwnerGUID(long revEntityGUID);

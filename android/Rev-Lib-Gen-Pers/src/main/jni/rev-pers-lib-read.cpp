@@ -2294,6 +2294,19 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRevEntityMeta
 
 extern "C"
 JNIEXPORT jobject JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revGetRevEntityMetadata_1By_1RevMetadataName_1RevEntityGUID(JNIEnv *env, jobject thiz, jstring rev_metadata_name, jlong rev_entity_guid) {
+    const char *revMetadataName = env->GetStringUTFChars(rev_metadata_name, 0);
+
+    RevEntityMetadata revEntityMetadata = revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(strdup(revMetadataName), (long) rev_entity_guid);
+    jobject jPosRec = revGetFilledRevMetadataJniObject(env, revEntityMetadata);
+
+    env->ReleaseStringUTFChars(rev_metadata_name, revMetadataName);
+
+    return jPosRec;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEntityMetadataByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID) {
     list revMetadataList = *(revPersGetALLRevEntityRevEntityMetadataByOwnerGUID((long) revEntityGUID));
 

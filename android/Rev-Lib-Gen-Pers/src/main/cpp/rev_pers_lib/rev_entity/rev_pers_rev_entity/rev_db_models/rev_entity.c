@@ -228,7 +228,7 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     // _revEntityMetadataList
     const cJSON *_revEntityMetadataList = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityMetadataList");
 
-    revEntity->_revEntityMetadataList = *(revJSONMetadataFiller(cJSON_Print(_revEntityMetadataList)));
+    revEntity->_revEntityMetadataList = *(revMetaDataJSONArrStrFiller(cJSON_Print(_revEntityMetadataList)));
 
     end:
 

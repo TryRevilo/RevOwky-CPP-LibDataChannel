@@ -144,6 +144,8 @@ public class RevPersLibRead {
 
     public native String revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(String revMetadataName, long revEntityGUID);
 
+    public native RevEntityMetadata revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(String revMetadataName, long revEntityGUID);
+
     public native List<RevEntityMetadata> revPersGetALLRevEntityMetadataByRevEntityGUID(long revEntityGUID);
 
     public native List<Long> revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus);

@@ -33,6 +33,8 @@ public class RevPersLibCreate {
 
     public native long revSaveRevEntityMetadata(RevEntityMetadata revEntityMetadata);
 
+    public native long revPersSaveEntityMetadataJSONStr(String revEntityMetadataJSONStr);
+
     public native void revCURLFileUpload(String revURL, String revFiles, String revData);
 
     public native int revCopyFile(String revSourcePath, String revDestPath);

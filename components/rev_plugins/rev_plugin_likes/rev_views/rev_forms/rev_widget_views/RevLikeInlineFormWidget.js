@@ -24,6 +24,8 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
+import {REV_METADATA_FILLER} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID} from '../../../../../rev_libs_pers/rev_pers_annotations/rev_read/RevPersReadAnnotationsCustomHooks';
 import {useRevGetEntityPictureAlbums} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
@@ -57,11 +59,32 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
 
   let revLikesStatsVal =
     RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
-      'rev_like',
+      'rev_tot_likes_stats',
       revEntityGUID,
     );
 
-  console.log('>>>', revEntityGUID, 'revLikesStatsVal', revLikesStatsVal);
+  console.log(
+    revStringEmpty(revLikesStatsVal),
+    '>>>',
+    revEntityGUID,
+    'revLikesStatsVal',
+    revLikesStatsVal,
+  );
+
+  if (revStringEmpty(revLikesStatsVal)) {
+    let revTotLikesStatsMetadata = REV_METADATA_FILLER(
+      'rev_tot_likes_stats',
+      '0',
+    );
+    revTotLikesStatsMetadata._revMetadataEntityGUID = revEntityGUID;
+
+    let revTotLikesStatsMetadataID =
+      RevPersLibCreate_React.revPersSaveEntityMetadataJSONStr(
+        JSON.stringify(revTotLikesStatsMetadata),
+      );
+
+    console.log('>>> revTotLikesStatsMetadataID', revTotLikesStatsMetadataID);
+  }
 
   const [revLikesCount, setRevLikesCount] = useState(
     revStringEmpty(revLikesStatsVal) ? 0 : revLikesStatsVal,
@@ -73,7 +96,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID();
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
-  let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(100);
+  let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(revEntityGUID);
 
   let revOrgMainPicURI = '';
 
@@ -102,13 +125,6 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     revLikeEntityGUIDsArr.push(i);
   }
 
-  let revEntityAnnData = revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(
-    'rev_like',
-    revEntityGUID,
-    REV_LOGGED_IN_ENTITY_GUID,
-  );
-  console.log('>>> revEntityAnnData', revEntityAnnData);
-
   const RevUserEntityIcon = () => {
     return (
       <TouchableOpacity key={'RevUserEntityIcon_' + revGetRandInteger()}>
@@ -122,10 +138,10 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     );
   };
 
-  const handleRevAddLikeTabPressed = () => {
+  const handleRevLikeTabPressed = revLikeVal => {
     let revRetVal = revLikeInlineFormAction(
       'rev_like',
-      '1',
+      revLikeVal,
       revVarArgs._revEntityGUID,
       REV_LOGGED_IN_ENTITY_GUID,
     );
@@ -133,22 +149,13 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     console.log('>>> ', revRetVal);
 
     if (revRetVal) {
-      setRevLikesCount(revLikesCount + 1);
-    }
-  };
+      let revLikesStatsVal =
+        RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
+          'rev_tot_likes_stats',
+          revEntityGUID,
+        );
 
-  const handleRevUnlikeLikeTabPressed = () => {
-    let revRetVal = revLikeInlineFormAction(
-      'rev_like',
-      '-1',
-      revVarArgs._revEntityGUID,
-      REV_LOGGED_IN_ENTITY_GUID,
-    );
-
-    console.log('>>> ', revRetVal);
-
-    if (revRetVal) {
-      setRevLikesCount(revLikesCount + -1);
+      setRevLikesCount(revLikesStatsVal);
     }
   };
 
@@ -162,7 +169,9 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
         ]}>
         <TouchableOpacity
           key={'RevLikes_' + revGetRandInteger(100, 1000)}
-          onPress={handleRevAddLikeTabPressed}>
+          onPress={() => {
+            handleRevLikeTabPressed(1);
+          }}>
           <FontAwesome
             name="arrow-up"
             style={[
@@ -182,7 +191,9 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
         </Text>
         <TouchableOpacity
           key={'RevLikes_' + revGetRandInteger(100, 1000)}
-          onPress={handleRevUnlikeLikeTabPressed}>
+          onPress={() => {
+            handleRevLikeTabPressed(-1);
+          }}>
           <FontAwesome
             name="arrow-down"
             style={[

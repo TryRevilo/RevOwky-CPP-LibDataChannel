@@ -78,6 +78,8 @@ public class RevPersLibUpdate {
      * REV ENTITY ANNOTATIONS
      **/
 
+    public native int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, String revEntityAnnotationValue);
+
     public native int revPersSetRevAnnResStatus_By_RevAnnId(long revAnnotationId, int revAnnotationResStatus);
 
     public native int revPersSetRemoteRevAnnId(long revAnnotationId, long revAnnotationRemoteId);

@@ -61,6 +61,10 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
         return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) resolveStatus);
     }
 
+    /**
+     * START METADATA
+     **/
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     public int setRemoteRevEntityMetadataId(Integer revMetadataId, Integer remoteRevMetadataId) {
         return revPersLibUpdate.setRemoteRevEntityMetadataId((long) revMetadataId, (long) remoteRevMetadataId);
@@ -77,8 +81,18 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     }
 
     /**
+     * END METADATA
+     **/
+
+    /**
      * START ANNOTATIONS
      **/
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public Integer revPersSetRevAnnVal_By_RevAnnId(Integer revAnnotationId, String revEntityAnnotationValue) {
+        return revPersLibUpdate.revPersSetRevAnnVal_By_RevAnnId((long) revAnnotationId, revEntityAnnotationValue);
+    }
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revPersSetRevAnnResStatus_By_RevAnnId(Integer revAnnotationId, Integer revAnnotationResStatus) {
         return revPersLibUpdate.revPersSetRevAnnResStatus_By_RevAnnId((long) revAnnotationId, revAnnotationResStatus);
