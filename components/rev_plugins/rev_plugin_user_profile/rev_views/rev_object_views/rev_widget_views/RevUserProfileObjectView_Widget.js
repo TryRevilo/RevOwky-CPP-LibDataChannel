@@ -145,7 +145,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
                 return (
                   <RevConnectionProfileTab
                     key={
-                      revGetRandInteger() +
+                      revGetRandInteger(1, 1000) +
                       '_revCurrConnection_' +
                       revCurrConnection
                     }

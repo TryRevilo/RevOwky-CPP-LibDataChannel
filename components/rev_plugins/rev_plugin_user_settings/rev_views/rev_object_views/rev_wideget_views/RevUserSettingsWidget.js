@@ -17,6 +17,8 @@ import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/r
 
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
+import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 const {RevPersLibUpdate_React} = NativeModules;
@@ -225,7 +227,7 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
         styles.revSearchResultsContainer,
       ]}>
       <RevHeader />
-      <View style={[revSiteStyles.revFlexContainer]}>{RevSettingsBody}</View>
+      <RevScrollView_V revScrollViewContent={RevSettingsBody}></RevScrollView_V>
     </View>
   );
 };

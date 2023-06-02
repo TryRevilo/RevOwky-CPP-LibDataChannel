@@ -19,10 +19,12 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Platform,
+  StyleSheet,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
+import {CheckBox, Icon} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -54,7 +56,7 @@ export const RevTagsInput = ({revVarArgs}) => {
     }
   };
 
-  const revrevHandleTextChange = text => {
+  const revHandleTextChange = text => {
     const revSpacedStringArray = text.split(' ');
 
     if (revSpacedStringArray.length > 2) {
@@ -86,7 +88,7 @@ export const RevTagsInput = ({revVarArgs}) => {
       style={[revSiteStyles.revFlexWrapper, revSiteStyles.revTagsInputWrapper]}>
       <TextInput
         value={revTagsInputText}
-        onChangeText={revrevHandleTextChange}
+        onChangeText={revHandleTextChange}
         onSubmitEditing={revHandleTextSubmit}
         onKeyPress={revHandleKeyPress}
         placeholder=" #tags"
@@ -133,7 +135,7 @@ export const RevTextInput = React.memo(({revVarArgs}) => {
         defaultValue={revInputText}
         style={[revSiteStyles.revSiteTextInput, {width: '100%'}]}
         placeholder={revPlaceHolderTxt}
-        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         onChangeText={revHandleTextChange}
         keyboardType={revKeyboardType}
       />
@@ -498,25 +500,36 @@ export const RevUploadFilesTab = ({
 export const RevCheckBox = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const [revChecked, setRevChecked] = useState(false);
+  const [revIsChecked, setRevIsChecked] = useState(false);
 
   const {revOnCheckedStatusChangeCallBack, revCheckBoxText = ''} = revVarArgs;
 
   const handleCheckBoxToggle = () => {
-    setRevChecked(!revChecked);
-    revOnCheckedStatusChangeCallBack(!revChecked);
+    setRevIsChecked(!revIsChecked);
+    revOnCheckedStatusChangeCallBack(!revIsChecked);
   };
 
   return (
     <View
       style={[revSiteStyles.revFlexWrapper_WidthAuto, {alignItems: 'center'}]}>
       <CheckBox
-        value={revChecked}
-        onValueChange={handleCheckBoxToggle}
-        tintColors={{
-          true: revSiteStyles.revSiteTxtAlertSafe,
-          false: revSiteStyles.revSiteTxtColorLight,
-        }}
+        // title={revCheckBoxText}
+        checked={revIsChecked}
+        onPress={handleCheckBoxToggle}
+        size={revSiteStyles.revSiteTxtTiny.fontSize}
+        containerStyle={revSiteStyles.revCheckBoxContainer}
+        textStyle={revSiteStyles.revCheckBoxText}
+        checkedIcon={
+          <FontAwesome
+            name="check"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny_X,
+              {margin: 'auto'},
+            ]}
+          />
+        }
+        uncheckedIcon={null}
       />
 
       {revCheckBoxText ? (
@@ -524,7 +537,6 @@ export const RevCheckBox = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtTiny,
-            {marginLeft: 10},
           ]}>
           {revCheckBoxText}
         </Text>

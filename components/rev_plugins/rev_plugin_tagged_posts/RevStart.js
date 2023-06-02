@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 import {RevSitePublisherForm} from './rev_views/rev_forms/RevSitePublisherForm';
+import {RevTaggedPostsListingItem} from './rev_views/rev_listing_views/RevTaggedPostsListingItem';
 import {RevTaggedPostsListing} from './rev_views/rev_listing_views/RevTaggedPostsListing';
 import {RevKiwiObjectView} from './rev_views/rev_object_views/RevKiwiObjectView';
 
@@ -17,6 +18,10 @@ export default function RevStart({revVarArgs}) {
 
     case 'rev_object_views':
       RevView = <RevKiwiObjectView revVarArgs={revVarArgs} />;
+      break;
+
+    case 'RevTaggedPostsListingItem':
+      RevView = <RevTaggedPostsListingItem revVarArgs={revVarArgs} />;
       break;
 
     case 'RevTaggedPostsListing':

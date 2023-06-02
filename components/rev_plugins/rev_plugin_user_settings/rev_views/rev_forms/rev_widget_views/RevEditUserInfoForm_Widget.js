@@ -9,6 +9,7 @@ import {
 import React, {useState, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
@@ -21,9 +22,14 @@ import {
   RevTagsInput,
   RevTextInputWithCount,
   RevTextInputAreaWithCount,
+  RevUploadFilesTab,
+  revOpenCropnImagePicker,
 } from '../../../../../rev_views/rev_input_form_views';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
+import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
+
+import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -33,11 +39,34 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const {SET_REV_SITE_VAR_ARGS} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  const [revTagsOutputView, setRevTagsOutputView] = useState(null);
   const [revTagsArr, setRevTagsArr] = useState([]);
   const [revSearchText, setRevSearchText] = useState('');
   const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
   const [revAboutEntityInfo, setRevAboutEntityInfo] = useState('');
+
+  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
+    [],
+  );
+  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
+    [],
+  );
+
+  const [revMainCampaignIconView, setRevMainCampaignIconView] = useState(null);
+  const [revMainCampaignIconPath, setRevMainCampaignIconPath] = useState('');
+  const [revSelectedMainProfilePicPath, setRevSelectedMainProfilePicPath] =
+    useState(null);
+  const [revSelectedMainProfilePic, setRevSelectedMainProfilePic] =
+    useState(null);
+
+  const [revTagsOutputView, setRevTagsOutputView] = useState(null);
+
+  const revSelectedImagesDataArrayChangeCallBack = revNewDataArr => {
+    setRevSelectedImagesDataArray(revNewDataArr);
+  };
+
+  const revSelectedVideosDataArrayRefChangeCallBack = revNewDataArr => {
+    setRevSelectedVideosDataArray(revNewDataArr);
+  };
 
   const handleRevCancelTabPress = () => {
     let RevUserSettings = revPluginsLoader({
@@ -104,14 +133,13 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           revSiteStyles.revFlexContainer,
           revSiteStyles.revMarginTopSmall,
         ]}>
-        <TextInput
-          style={revSiteStyles.revSiteTextInput}
-          placeholder=" Full names . . ."
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevSearchText(newText);
+        <RevTextInputWithCount
+          revVarArgs={{
+            revDefaultTxt: revSearchText,
+            revPlaceHolderTxt: ' Full names . . .',
+            revTextInputOnChangeCallBack: setRevSearchText,
+            revMaxTxtCount: 140,
           }}
-          defaultValue={revSearchText}
         />
 
         <View style={styles.revBriefDescInputWrapper}>
@@ -133,7 +161,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
               revTextInputOnChangeCallBack: revNewTxt => {
                 setRevAboutEntityInfo(revNewTxt);
               },
-              revMaxTxtCount: 255,
+              revMaxTxtCount: 500,
             }}
           />
         </View>
@@ -158,35 +186,193 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
+          <FontAwesome
+            name={'camera'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtMedium,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtSmall,
             ]}>
-            <FontAwesome name="camera" />
-            <FontAwesome name="long-arrow-right" /> Profile pics
+            {' Ad pics'}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revLabel: ' Select pictures',
+              revMIMETypes: DocumentPicker.types.images,
+              revOnSelectedDataCallBack:
+                revSelectedImagesDataArrayChangeCallBack,
+            }}
+          />
         </View>
-        <View>
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 4},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedImagesDataArray.length}
+          </Text>
+          {' profile pics selected. You can upload up to 22'}
+        </Text>
+      </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          revOpenCropnImagePicker(
+            revCroppedImageData => {
+              let revCroppedImageDataPath = revCroppedImageData.path;
+
+              setRevSelectedMainProfilePicPath(revCroppedImageDataPath);
+
+              let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
+                revCurrItem =>
+                  revCompareStrings(revCurrItem, revMainCampaignIconPath) !== 0,
+              );
+
+              revNewSelectedImagesArr.push({
+                name: revCroppedImageDataPath.substring(
+                  revCroppedImageDataPath.lastIndexOf('/') + 1,
+                ),
+                size: revCroppedImageData.size,
+                type: revCroppedImageData.mime,
+                uri: revCroppedImageDataPath,
+              });
+
+              setRevSelectedImagesDataArray(revNewSelectedImagesArr);
+
+              let revSelectedMainProfilePicView = (
+                <View style={{overflow: 'hidden'}}>
+                  <RevCenteredImage
+                    revImageURI={revCroppedImageDataPath}
+                    revImageDimens={{revWidth: 55, revHeight: 55}}
+                  />
+                </View>
+              );
+
+              setRevSelectedMainProfilePic(revSelectedMainProfilePicView);
+            },
+            {revCropWidth: 55, revCropHeight: 55},
+          );
+        }}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaContainer,
+            {alignItems: 'center'},
+          ]}>
+          <View style={[styles.revMainProfilePicContainer]}>
+            {revSelectedMainProfilePic}
+          </View>
+
+          <Text>{'  '}</Text>
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="plus"
+          />
+
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
             ]}>
-            You have 0 pictures on your profile. You can upload up to 7
+            {' Select main profile Pic'}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          revOpenCropnImagePicker(
+            revCroppedImageData => {
+              let revCroppedImageDataPath = revCroppedImageData.path;
+
+              setRevMainCampaignIconPath(revCroppedImageDataPath);
+
+              let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
+                revCurrItem =>
+                  revCompareStrings(revCurrItem, revMainCampaignIconPath) !== 0,
+              );
+
+              revNewSelectedImagesArr.push({
+                name: revCroppedImageDataPath.substring(
+                  revCroppedImageDataPath.lastIndexOf('/') + 1,
+                ),
+                size: revCroppedImageData.size,
+                type: revCroppedImageData.mime,
+                uri: revCroppedImageDataPath,
+              });
+
+              setRevSelectedImagesDataArray(revNewSelectedImagesArr);
+
+              let revMainCampaignIconViewView = (
+                <View style={{marginTop: 4, overflow: 'hidden'}}>
+                  <RevCenteredImage
+                    revImageURI={revCroppedImageDataPath}
+                    revImageDimens={{revWidth: '100%', revHeight: 55}}
+                  />
+                </View>
+              );
+
+              setRevMainCampaignIconView(revMainCampaignIconViewView);
+            },
+            {revCropHeight: 55},
+          );
+        }}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revAddedMediaContainer,
+            {alignItems: 'center'},
+          ]}>
+          <FontAwesome
+            name={'file-picture-o'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            {' Select banner Pic'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <>{revMainCampaignIconView}</>
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -194,6 +380,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
+            {marginLeft: 2},
           ]}>
           <Text
             style={[
@@ -201,28 +388,31 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtSmall,
             ]}>
             <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Profile Vid{'  '}
+            <FontAwesome name="long-arrow-right" /> Video{'  '}
           </Text>
-          <TouchableOpacity style={[styles.revAddMeadiaTab]}>
-            <FontAwesome
-              name="plus"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-              ]}
-            />
-          </TouchableOpacity>
+
+          <RevUploadFilesTab
+            revVarArgs={{
+              revLabel: ' Select videos',
+              revMIMETypes: DocumentPicker.types.video,
+              revOnSelectedDataCallBack:
+                revSelectedVideosDataArrayRefChangeCallBack,
+            }}
+          />
         </View>
-        <View>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revAddedMediaTell,
-            ]}>
-            You haven't uploaded a profile video
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revAddedMediaTell,
+            {marginLeft: 4},
+          ]}>
+          <Text style={revSiteStyles.revSiteTxtBold}>
+            {revSelectedVideosDataArray.length}
           </Text>
-        </View>
+          {' profile videos selected'}
+        </Text>
       </View>
 
       <View
@@ -287,7 +477,17 @@ const styles = StyleSheet.create({
   revBriefDescInputWrapper: {
     marginTop: 8,
   },
-  revTagsListingWrapper: {marginTop: 2},
+  revTagsListingWrapper: {
+    marginTop: 2,
+  },
+  revMainProfilePicContainer: {
+    width: 60,
+    minHeight: 55,
+    borderStyle: 'solid',
+    borderColor: '#EEE',
+    borderWidth: 1,
+    padding: 2,
+  },
   revAddedMediaContainer: {
     borderStyle: 'dotted',
     borderBottomColor: '#EEE',

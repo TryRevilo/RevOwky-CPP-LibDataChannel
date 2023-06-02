@@ -341,7 +341,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           <Text style={revSiteStyles.revSiteTxtBold}>
             {revSelectedVideosDataArray.length}
           </Text>
-          {' videos selected for this Ad yet'}
+          {' videos selected for this Ad'}
         </Text>
       </View>
 

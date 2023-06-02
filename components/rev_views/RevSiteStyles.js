@@ -95,8 +95,12 @@ export const useRevSiteStyles = () => {
       borderRadius: 100,
     },
     revCancelTab: {
+      color: '#999',
       fontWeight: 'bold',
       paddingHorizontal: 8,
+      paddingVertical: 3,
+      marginLeft: 5,
+      borderRadius: 100,
     },
 
     /** REV TEXT INPUT */
@@ -155,6 +159,21 @@ export const useRevSiteStyles = () => {
     revFormFooterWrapper: {
       alignItems: 'center',
       marginTop: 8,
+    },
+
+    /** REV CHECK_BOX */
+    revCheckBoxContainer: {
+      width: 20,
+      height: 15,
+      borderWidth: 1,
+      padding: 0,
+      borderRadius: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: '#DDD',
+    },
+    revCheckBoxText: {
+      marginLeft: 0,
     },
 
     /** REV FORM OUTPUT */

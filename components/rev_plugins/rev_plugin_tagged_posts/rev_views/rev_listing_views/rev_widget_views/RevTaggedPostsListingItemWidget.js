@@ -46,8 +46,10 @@ const {RevPersLibRead_React} = NativeModules;
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
-export const RevTaggedPostsListingItem = ({revVarArgs}) => {
+export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  revVarArgs = revVarArgs.revVarArgs;
 
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
@@ -103,7 +105,8 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   let revTimePublished = revFormatLongDate(revVarArgs._revTimePublished);
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
-  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
+  const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
+    useContext(ReViewsContext);
 
   let revMaxMessageLen = 200;
 
@@ -152,8 +155,6 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
       revViewName: 'RevTagEntitiesInlineListing',
       revVarArgs: {revTagItemsArr: []},
     });
-
-    console.log('>>> revTagEntitiesInlineListing', revTagEntitiesInlineListing);
 
     return (
       <>
@@ -457,6 +458,16 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
     setRevIsCommetForm(true);
   };
 
+  const handleRevOnFlagTabPressed = () => {
+    let revFlagForm = revPluginsLoader({
+      revPluginName: 'rev_flag',
+      revViewName: 'RevFlagForm',
+      revVarArgs: {revCancelFlag: revCloseSiteModal},
+    });
+
+    revInitSiteModal(revFlagForm);
+  };
+
   const revGetCommentForm = () => {
     let RevKiwiObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_comments',
@@ -476,7 +487,7 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
   return (
     <TouchableOpacity
       key={
-        'RevTaggedPostsListingItem_' +
+        'RevTaggedPostsListingItemWidget_' +
         revEntityGUID +
         '_' +
         revGetRandInteger(10, 1000)
@@ -535,10 +546,16 @@ export const RevTaggedPostsListingItem = ({revVarArgs}) => {
                   style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
                 />
 
-                <FontAwesome
-                  name="flag-o"
-                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
-                />
+                <TouchableOpacity onPress={handleRevOnFlagTabPressed}>
+                  <FontAwesome
+                    name="flag-o"
+                    style={[
+                      revSiteStyles.revSiteTxtSmall,
+                      styles.chatMsgOptions,
+                    ]}
+                  />
+                </TouchableOpacity>
+
                 <FontAwesome
                   name="list"
                   style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
