@@ -6,7 +6,10 @@ import {
   RevTextInputAreaWithCount,
   RevCheckBox,
 } from '../../../../../rev_views/rev_input_form_views';
-import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+import {
+  RevInfoArea,
+  RevScrollView_V,
+} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -98,7 +101,7 @@ export const RevFlagFormWidget = ({revVarArgs}) => {
 
   let revInfoTell = 'Tag item';
 
-  return (
+  let revRetView = (
     <View
       style={[
         revSiteStyles.revFlexContainer,
@@ -123,6 +126,8 @@ export const RevFlagFormWidget = ({revVarArgs}) => {
       </View>
     </View>
   );
+
+  return <RevScrollView_V revScrollViewContent={revRetView} />;
 };
 
 const styles = StyleSheet.create({
