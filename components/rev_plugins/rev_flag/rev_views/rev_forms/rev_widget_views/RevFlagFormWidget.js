@@ -6,10 +6,7 @@ import {
   RevTextInputAreaWithCount,
   RevCheckBox,
 } from '../../../../../rev_views/rev_input_form_views';
-import {
-  RevInfoArea,
-  RevSectionPointedContent,
-} from '../../../../../rev_views/rev_page_views';
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
