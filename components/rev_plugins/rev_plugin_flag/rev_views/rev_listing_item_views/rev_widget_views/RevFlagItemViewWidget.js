@@ -35,63 +35,82 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
 
   let revFlagValsTabsArr = [];
 
-  for (let i = 0; i < revFlagEntitiesArr.length; i++) {
-    let revFlagEntity = revFlagEntitiesArr[i];
+  let revFlagEntity = revFlagEntitiesArr[0];
 
-    let revNudityFlag = revGetMetadataValue(
-      revFlagEntity._revInfoEntity._revEntityMetadataList,
-      'rev_nudity_flag',
+  let revNudityFlag = revGetMetadataValue(
+    revFlagEntity._revInfoEntity._revEntityMetadataList,
+    'rev_nudity_flag',
+  );
+
+  if (!revStringEmpty(revNudityFlag)) {
+    revFlagValsTabsArr.push(
+      <Text
+        key={'rev_nudity_flag_' + revGetRandInteger()}
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {' Nudity / '}
+      </Text>,
     );
-
-    if (!revStringEmpty(revNudityFlag)) {
-      revFlagValsTabsArr.push(
-        <Text
-          key={'rev_nudity_flag_' + revGetRandInteger()}
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          {' Nudity / '}
-        </Text>,
-      );
-    }
-
-    let revViolenceFlag = revGetMetadataValue(
-      revFlagEntity._revInfoEntity._revEntityMetadataList,
-      'rev_violence_flag',
-    );
-
-    if (!revStringEmpty(revViolenceFlag)) {
-      revFlagValsTabsArr.push(
-        <Text
-          key={'rev_violence_flag_' + revGetRandInteger()}
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          {' Inciting Violence / '}
-        </Text>,
-      );
-    }
-
-    let revMisleadingFlag = revGetMetadataValue(
-      revFlagEntity._revInfoEntity._revEntityMetadataList,
-      'rev_misleading_flag',
-    );
-
-    if (!revStringEmpty(revMisleadingFlag)) {
-      revFlagValsTabsArr.push(
-        <Text
-          key={'rev_misleading_flag_' + revGetRandInteger()}
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          {' Misleading / '}
-        </Text>,
-      );
-    }
   }
+
+  let revViolenceFlag = revGetMetadataValue(
+    revFlagEntity._revInfoEntity._revEntityMetadataList,
+    'rev_violence_flag',
+  );
+
+  if (!revStringEmpty(revViolenceFlag)) {
+    revFlagValsTabsArr.push(
+      <Text
+        key={'rev_violence_flag_' + revGetRandInteger()}
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {' Inciting Violence / '}
+      </Text>,
+    );
+  }
+
+  let revMisleadingFlag = revGetMetadataValue(
+    revFlagEntity._revInfoEntity._revEntityMetadataList,
+    'rev_misleading_flag',
+  );
+
+  if (!revStringEmpty(revMisleadingFlag)) {
+    revFlagValsTabsArr.push(
+      <Text
+        key={'rev_misleading_flag_' + revGetRandInteger()}
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {' Misleading / '}
+      </Text>,
+    );
+  }
+
+  let revFlagContextVal = revGetMetadataValue(
+    revFlagEntitiesArr[0]._revInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  let revFlagContextView = revStringEmpty(revFlagContextVal) ? null : (
+    <Text
+      style={[
+        revSiteStyles.revSiteTxtColor,
+        revSiteStyles.revSiteTxtTiny,
+        {
+          backgroundColor: '#FFF',
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          marginTop: 4,
+        },
+      ]}>
+      {revFlagContextVal}
+    </Text>
+  );
 
   const RevUserEntityIcon = () => {
     return (
@@ -143,12 +162,14 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtTiny,
-              styles.revPostFlagsIcon,
+              {marginLeft: -2},
             ]}
           />
 
           {revFlagValsTabsArr}
         </View>
+
+        {revFlagContextView}
 
         <TouchableOpacity
           onPress={() => {
