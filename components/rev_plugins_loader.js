@@ -6,9 +6,9 @@ import loadable from '@loadable/component';
 import {revIsEmptyVar} from '../rev_function_libs/rev_gen_helper_functions';
 
 var REV_PLUGINS = {
-  rev_flag: {
-    revPluginName: 'rev_flag',
-    revPlugin: loadable(() => import(`./rev_plugins/rev_flag/RevStart`)),
+  rev_plugin_flag: {
+    revPluginName: 'rev_plugin_flag',
+    revPlugin: loadable(() => import(`./rev_plugins/rev_plugin_flag/RevStart`)),
   },
   rev_plugin_likes: {
     revPluginName: 'rev_plugin_likes',

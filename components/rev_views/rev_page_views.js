@@ -271,11 +271,16 @@ export const RevDescriptiveTitleView = ({
   return revRetView;
 };
 
-export const RevInfoArea = ({revInfoText}) => {
+export const RevInfoArea = ({revInfoText, revStyles = null}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   return (
-    <View style={[revSiteStyles.revFlexContainer, revSiteStyles.revInfoArea]}>
+    <View
+      style={[
+        revSiteStyles.revFlexContainer,
+        revSiteStyles.revInfoArea,
+        revStyles,
+      ]}>
       <Text>
         <FontAwesome
           name="exclamation"

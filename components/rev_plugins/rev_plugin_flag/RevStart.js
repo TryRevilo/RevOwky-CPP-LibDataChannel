@@ -1,7 +1,8 @@
 import React, {lazy} from 'react';
 
 import {RevFooter1} from './rev_views/RevFooter1';
-import {RevFlagForm} from './rev_views/rev_forms/RevFlagForm';
+import {RevCreateFlagForm} from './rev_views/rev_forms/RevCreateFlagForm';
+import {RevFlagItemView} from './rev_views/rev_listing_item_views/RevFlagItemView';
 
 export default function RevStart({revVarArgs}) {
   let RevView = null;
@@ -13,8 +14,12 @@ export default function RevStart({revVarArgs}) {
       RevView = <RevFooter1 revVarArgs={revVarArgs} />;
       break;
 
-    case 'RevFlagForm':
-      RevView = <RevFlagForm revVarArgs={revVarArgs} />;
+    case 'RevCreateFlagForm':
+      RevView = <RevCreateFlagForm revVarArgs={revVarArgs} />;
+      break;
+
+    case 'RevFlagItemView':
+      RevView = <RevFlagItemView revVarArgs={revVarArgs} />;
       break;
 
     default:

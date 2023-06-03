@@ -17,7 +17,10 @@ import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataCont
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
-import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
+import {
+  RevReadMoreTextView,
+  RevInfoArea,
+} from '../../../../../rev_views/rev_page_views';
 
 import {
   revIsEmptyJSONObject,
@@ -118,6 +121,16 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   if (!revKiwiTxtVal) {
     return null;
   }
+
+  let revFlagEntityGUIDsStr =
+    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_flag_of',
+      revEntityGUID,
+    );
+
+  let revFlagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
+    JSON.parse(revFlagEntityGUIDsStr),
+  );
 
   let revChatMessageText = _revKiwiTxtVal => {
     return (
@@ -459,13 +472,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   };
 
   const handleRevOnFlagTabPressed = () => {
-    let revFlagForm = revPluginsLoader({
-      revPluginName: 'rev_flag',
-      revViewName: 'RevFlagForm',
-      revVarArgs: {revCancelFlag: revCloseSiteModal},
+    let revCreateFlagForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_flag',
+      revViewName: 'RevCreateFlagForm',
+      revVarArgs: {revCancelFlag: revCloseSiteModal, revData: revVarArgs},
     });
 
-    revInitSiteModal(revFlagForm);
+    revInitSiteModal(revCreateFlagForm);
   };
 
   const revGetCommentForm = () => {
@@ -482,6 +495,35 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     });
 
     return RevKiwiObjectView;
+  };
+
+  let revContentBody = (
+    <>
+      {revChatMessageText(revKiwiTxtVal)}
+
+      <View
+        style={[
+          RevImagesMediaView || RevVideoPlayerView
+            ? styles.revImagesMediaViewContainer
+            : null,
+        ]}>
+        {RevImagesMediaView}
+        {RevVideoPlayerView}
+      </View>
+    </>
+  );
+
+  const revFlagAreaView = () => {
+    let revFlagItemView = revPluginsLoader({
+      revPluginName: 'rev_plugin_flag',
+      revViewName: 'RevFlagItemView',
+      revVarArgs: {
+        revFlagEntitiesArr: revFlagEntitiesArr,
+        revContentView: revContentBody,
+      },
+    });
+
+    return revFlagItemView;
   };
 
   return (
@@ -565,17 +607,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
             {revTagEntitiesInlineListingView()}
 
-            {revChatMessageText(revKiwiTxtVal)}
-
-            <View
-              style={[
-                RevImagesMediaView || RevVideoPlayerView
-                  ? styles.revImagesMediaViewContainer
-                  : null,
-              ]}>
-              {RevImagesMediaView}
-              {RevVideoPlayerView}
-            </View>
+            {revFlagEntitiesArr.length ? revFlagAreaView() : revContentBody}
 
             {revLikeInlineForm}
 

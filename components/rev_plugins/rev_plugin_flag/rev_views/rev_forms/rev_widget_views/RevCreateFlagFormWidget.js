@@ -1,5 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
 import {
   RevTextInput,
@@ -11,39 +13,77 @@ import {
   RevScrollView_V,
 } from '../../../../../rev_views/rev_page_views';
 
+import {useRevCreateFlagFormAction} from '../../../rev_actions/rev_create_flag_form_action';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
-export const RevFlagFormWidget = ({revVarArgs}) => {
+export const RevCreateFlagFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   revVarArgs = revVarArgs.revVarArgs;
 
+  const [revFlagsArr, setRevFlagsArr] = useState([]);
+  const [revFlagRefLinkValsArr, setRevFlagRefLinkValsArr] = useState([]);
+  const [revEntityNameText, setRevEntityNameText] = useState('');
   const [revEntityDescText, setRevEntityDescText] = useState('');
 
-  const {revCancelFlag} = revVarArgs;
+  const {revCancelFlag, revData} = revVarArgs;
+
+  let revEntityGUID = revData._revEntityGUID;
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  const {revCreateFlagFormAction} = useRevCreateFlagFormAction();
+
+  const handleRevSaveTabPressed = () => {
+    let revPassVarArgs = {
+      _revEntityGUID: revEntityGUID,
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revFlagValsArr: revFlagsArr,
+      revFlagRefLinkValsArr: revFlagRefLinkValsArr,
+      revEntityNameVal: revEntityNameText,
+      revEntityDescVal: revEntityDescText,
+    };
+
+    revCreateFlagFormAction(revPassVarArgs);
+  };
 
   const handleRevCancelTabPressed = () => {
     revCancelFlag();
   };
 
+  const revFlagIsSet = revFlag => {
+    return revFlagsArr.includes(revFlag);
+  };
+
+  const revAddOrUnsetFlag = (revCheckStatus, revFlag) => {
+    if (revCheckStatus && !revFlagIsSet(revFlag)) {
+      setRevFlagsArr(revCurrFlags => [...revCurrFlags, revFlag]);
+    } else {
+      setRevFlagsArr(revCurrFlags =>
+        revCurrFlags.filter(element => element !== revFlag),
+      );
+    }
+  };
+
   let revNudityCheckBoxParams = {
     revCheckBoxText: 'Nudity',
     revOnCheckedStatusChangeCallBack: revCheckStatus => {
-      console.log('>>> revNudityCheckBoxParams', revCheckStatus);
+      revAddOrUnsetFlag(revCheckStatus, 'rev_nudity_flag');
     },
   };
 
   let revViolenceCheckBoxParams = {
     revCheckBoxText: 'Inciting violence',
     revOnCheckedStatusChangeCallBack: revCheckStatus => {
-      console.log('>>> revViolenceCheckBoxParams', revCheckStatus);
+      revAddOrUnsetFlag(revCheckStatus, 'rev_violence_flag');
     },
   };
 
   let revMisleadingCheckBoxParams = {
     revCheckBoxText: 'Misleading',
     revOnCheckedStatusChangeCallBack: revCheckStatus => {
-      console.log('>>> revMisleadingCheckBoxParams', revCheckStatus);
+      revAddOrUnsetFlag(revCheckStatus, 'rev_misleading_flag');
     },
   };
 
@@ -99,7 +139,7 @@ export const RevFlagFormWidget = ({revVarArgs}) => {
     return <>{revContent}</>;
   };
 
-  let revInfoTell = 'Tag item';
+  let revInfoTell = 'Flag item';
 
   let revRetView = (
     <View
@@ -113,9 +153,12 @@ export const RevFlagFormWidget = ({revVarArgs}) => {
       {revFlagContextSection()}
 
       <View style={[revSiteStyles.revFlexWrapper, styles.revFlagFooterWrapper]}>
-        <Text style={[revSiteStyles.revSiteTxtTiny, revSiteStyles.revSaveTab]}>
-          Flag
-        </Text>
+        <TouchableOpacity onPress={handleRevSaveTabPressed}>
+          <Text
+            style={[revSiteStyles.revSiteTxtTiny, revSiteStyles.revSaveTab]}>
+            Flag
+          </Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={handleRevCancelTabPressed}>
           <Text
