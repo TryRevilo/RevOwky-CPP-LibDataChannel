@@ -115,7 +115,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
             name={'external-link'}
             style={[revSiteStyles.revSiteTxtTiny]}
           />
-          {' ' + revFlagLinkValMetadata}
+          {'    ' + revFlagLinkValMetadata}
         </Text>
       </TouchableOpacity>
     ),
@@ -199,7 +199,9 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
           {revFlagValsTabsArr}
         </View>
 
-        {revFlagLinkTabsArr}
+        {revFlagLinkTabsArr.length ? (
+          <View style={{marginTop: 4}}>{revFlagLinkTabsArr}</View>
+        ) : null}
 
         {revFlagContextView}
 
