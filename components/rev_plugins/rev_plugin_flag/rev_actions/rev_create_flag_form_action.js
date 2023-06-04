@@ -32,13 +32,13 @@ export const useRevCreateFlagFormAction = () => {
       revEntityOwnerGUID < 1 ||
       !revFlagValsArr.length
     ) {
-      return revPersCallBack({});
+      return -1;
     }
 
     let revPersEntityGUID = revFlagEntityGUID;
 
     if (revPersEntityGUID < 0) {
-      revVarArgs['revEntitySubType'] = 'rev_flag';
+      revVarArgs['revEntitySubType'] = 'rev_flag_val';
 
       revVarArgs['revPersEntityInfoMetadataList'] = [];
 
@@ -46,7 +46,7 @@ export const useRevCreateFlagFormAction = () => {
         let revFlagVal = revFlagValsArr[i];
 
         revVarArgs.revPersEntityInfoMetadataList.push(
-          REV_METADATA_FILLER(revFlagVal, revFlagVal),
+          REV_METADATA_FILLER('rev_flag_val', revFlagVal),
         );
       }
 
@@ -54,7 +54,7 @@ export const useRevCreateFlagFormAction = () => {
         let revFlagRefLinkVal = revFlagRefLinkValsArr[i];
 
         revVarArgs.revPersEntityInfoMetadataList.push(
-          REV_METADATA_FILLER(revFlagRefLinkVal, revFlagRefLinkVal),
+          REV_METADATA_FILLER('rev_flag_ref_link', revFlagRefLinkVal),
         );
       }
 

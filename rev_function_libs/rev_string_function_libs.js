@@ -10,6 +10,15 @@ export const revReplaceWiteSpaces = (revString, revReplacement) => {
   return revString.replace(/\s+/g, revReplacement);
 };
 
+export const revRemoveAllWhiteSpaces = revStr => {
+  if (!revStr) {
+    return '';
+  }
+
+  revStr = revStr.replace(/\s/g, '');
+  return revStr;
+};
+
 export const revSplitStringToArray = revStr => {
   revStr = revRemoveLinebreaks(revStr);
   return revStr.split(/\s+/);
@@ -83,15 +92,6 @@ export const revGenRandString = revLength => {
 
 export const revIsStringEqual = (revString1, revString2) => {
   return revString1 && revString2 && revString1.localeCompare(revString2) == 0;
-};
-
-export const revRemoveAllWhiteSpaces = revStr => {
-  if (!revStr) {
-    return '';
-  }
-
-  revStr = revStr.replace(/\s/g, '');
-  return revStr;
 };
 
 export const revStringEmpty = revString => {

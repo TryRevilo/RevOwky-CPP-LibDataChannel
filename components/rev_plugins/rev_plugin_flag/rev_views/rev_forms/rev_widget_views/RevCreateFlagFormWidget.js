@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
@@ -16,6 +16,10 @@ import {
 import {useRevCreateFlagFormAction} from '../../../rev_actions/rev_create_flag_form_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {
+  revCompareStrings,
+  revRemoveAllWhiteSpaces,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevCreateFlagFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -23,9 +27,9 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
   revVarArgs = revVarArgs.revVarArgs;
 
   const [revFlagsArr, setRevFlagsArr] = useState([]);
-  const [revFlagRefLinkValsArr, setRevFlagRefLinkValsArr] = useState([]);
-  const [revEntityNameText, setRevEntityNameText] = useState('');
-  const [revEntityDescText, setRevEntityDescText] = useState('');
+  const revFlagRefLinkValRef = useRef('');
+  const revFlagRefLinkValsArrRef = useRef([]);
+  const revEntityDescTextRef = useRef('');
 
   const {revCancelFlag, revData} = revVarArgs;
 
@@ -40,9 +44,8 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
       _revEntityGUID: revEntityGUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revFlagValsArr: revFlagsArr,
-      revFlagRefLinkValsArr: revFlagRefLinkValsArr,
-      revEntityNameVal: revEntityNameText,
-      revEntityDescVal: revEntityDescText,
+      revFlagRefLinkValsArr: revFlagRefLinkValsArrRef.current,
+      revEntityDescVal: revEntityDescTextRef.current,
     };
 
     revCreateFlagFormAction(revPassVarArgs);
@@ -50,6 +53,16 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
 
   const handleRevCancelTabPressed = () => {
     revCancelFlag();
+  };
+
+  const handleRevAddLinkTabPressed = () => {
+    let revNewLink = revRemoveAllWhiteSpaces(revFlagRefLinkValRef.current);
+    revFlagRefLinkValsArrRef.current = revFlagRefLinkValsArrRef.current.filter(
+      revCurrLink => revCompareStrings(revCurrLink, revNewLink),
+    );
+
+    revFlagRefLinkValsArrRef.current.push(revNewLink);
+    revFlagRefLinkValRef.current = '';
   };
 
   const revFlagIsSet = revFlag => {
@@ -95,19 +108,33 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
     </View>
   );
 
-  let revFlagContextSection = () => {
+  let RevFlagContextSection = () => {
     let revLink = (
-      <View style={[{marginTop: 4}]}>
-        <RevTextInput
-          revVarArgs={{
-            revDefaultTxt: '',
-            revPlaceHolderTxt: ' links [ separated by comma ]',
-            revTextInputOnChangeCallBack: revNewLinkTxt => {
-              console.log('>>> revNewLinkTxt', revNewLinkTxt);
-            },
-            revMaxTxtCount: 140,
-          }}
-        />
+      <View
+        style={[revSiteStyles.revFlexWrapper, {width: '100%', marginTop: 4}]}>
+        <View style={{flex: 1}}>
+          <RevTextInput
+            revVarArgs={{
+              revDefaultTxt: revFlagRefLinkValRef.current,
+              revPlaceHolderTxt: ' Enter a link',
+              revTextInputOnChangeCallBack: revNewLinkVal => {
+                revFlagRefLinkValRef.current = revNewLinkVal;
+              },
+            }}
+          />
+        </View>
+
+        <TouchableOpacity onPress={handleRevAddLinkTabPressed}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+              styles.revAddLinkTab,
+              {flex: 0},
+            ]}>
+            Add Link
+          </Text>
+        </TouchableOpacity>
       </View>
     );
 
@@ -115,9 +142,11 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
       <View style={[{marginTop: 4}]}>
         <RevTextInputAreaWithCount
           revVarArgs={{
-            revDefaultTxt: revEntityDescText,
+            revDefaultTxt: revEntityDescTextRef.current,
             revPlaceHolderTxt: ' Details . . .',
-            revTextInputOnChangeCallBack: setRevEntityDescText,
+            revTextInputOnChangeCallBack: revNewTxtVal => {
+              revEntityDescTextRef.current = revNewTxtVal;
+            },
             revMaxTxtCount: 555,
           }}
         />
@@ -128,7 +157,7 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
       <View
         style={[
           revSiteStyles.revFlexContainer,
-          styles.revFlagContextSectionContainer,
+          styles.RevFlagContextSectionContainer,
         ]}>
         {revLink}
 
@@ -150,7 +179,7 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
       <RevInfoArea revInfoText={revInfoTell}></RevInfoArea>
 
       {revCheckBoxesSection}
-      {revFlagContextSection()}
+      <RevFlagContextSection />
 
       <View style={[revSiteStyles.revFlexWrapper, styles.revFlagFooterWrapper]}>
         <TouchableOpacity onPress={handleRevSaveTabPressed}>
@@ -174,8 +203,20 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revFlagContextSectionContainer: {
+  RevFlagContextSectionContainer: {
     width: '100%',
+  },
+  revAddLinkTab: {
+    color: '#F7F7F7',
+    backgroundColor: '#444',
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+    width: 'auto',
+    borderRadius: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 4,
+    marginTop: 7,
+    marginLeft: -4,
   },
   revFlagFooterWrapper: {
     alignItems: 'center',

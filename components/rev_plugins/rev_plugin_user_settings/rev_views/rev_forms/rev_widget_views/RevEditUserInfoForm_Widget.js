@@ -244,7 +244,10 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
               let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
                 revCurrItem =>
-                  revCompareStrings(revCurrItem, revMainCampaignIconPath) !== 0,
+                  revCompareStrings(
+                    revCurrItem.uri,
+                    revSelectedMainProfilePicPath,
+                  ) !== 0,
               );
 
               revNewSelectedImagesArr.push({
@@ -269,7 +272,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
               setRevSelectedMainProfilePic(revSelectedMainProfilePicView);
             },
-            {revCropWidth: 55, revCropHeight: 55},
+            {revCropWidth: 600, revCropHeight: 600},
           );
         }}>
         <View
@@ -481,9 +484,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   revMainProfilePicContainer: {
-    width: 60,
-    minHeight: 55,
-    borderStyle: 'solid',
+    width: 61,
+    height: 61,
+    borderStyle: 'dashed',
     borderColor: '#EEE',
     borderWidth: 1,
     padding: 2,

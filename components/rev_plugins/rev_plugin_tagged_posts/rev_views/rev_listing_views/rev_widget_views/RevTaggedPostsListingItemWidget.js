@@ -478,7 +478,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
       revVarArgs: {revCancelFlag: revCloseSiteModal, revData: revVarArgs},
     });
 
-    revInitSiteModal(revCreateFlagForm);
+    revInitSiteModal(<View style={{width: '100%'}}>{revCreateFlagForm}</View>);
   };
 
   const revGetCommentForm = () => {

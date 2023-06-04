@@ -325,9 +325,13 @@ export const RevScrollView_V = ({revScrollViewContent, revStyles}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingVertical: 0}}>
+      contentContainerStyle={{width: '100%', paddingVertical: 0}}>
       <View
-        style={[revSiteStyles.revFlexContainer, {marginBottom: 25}, revStyles]}>
+        style={[
+          revSiteStyles.revFlexContainer,
+          {width: '100%', marginBottom: 25},
+          revStyles,
+        ]}>
         {revScrollViewContent}
       </View>
     </ScrollView>

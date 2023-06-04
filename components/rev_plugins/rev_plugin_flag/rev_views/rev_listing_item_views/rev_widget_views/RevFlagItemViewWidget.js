@@ -9,15 +9,19 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
-import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {
+  revGetMetadataValue,
+  revGetMetadataValuesArr,
+} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 import {
   revGetRandInteger,
   revHexToRgba,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
+import {revIsStringEqual} from '../../../../../../rev_function_libs/rev_string_function_libs';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-import {Hidden} from 'native-base';
 import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevFlagItemViewWidget = ({revVarArgs}) => {
@@ -37,59 +41,85 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
 
   let revFlagEntity = revFlagEntitiesArr[0];
 
-  let revNudityFlag = revGetMetadataValue(
+  let revFlagValsMetadataArr = revGetMetadataValuesArr(
     revFlagEntity._revInfoEntity._revEntityMetadataList,
-    'rev_nudity_flag',
+    'rev_flag_val',
   );
 
-  if (!revStringEmpty(revNudityFlag)) {
-    revFlagValsTabsArr.push(
-      <Text
-        key={'rev_nudity_flag_' + revGetRandInteger()}
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-        ]}>
-        {' Nudity / '}
-      </Text>,
-    );
+  let revSetFlagsArr = [];
+
+  for (let i = 0; i < revFlagValsMetadataArr.length; i++) {
+    let revCurrFlagVal = revFlagValsMetadataArr[i];
+
+    if (revSetFlagsArr.includes(revCurrFlagVal)) {
+      continue;
+    } else {
+      revSetFlagsArr.push(revCurrFlagVal);
+    }
+
+    if (revIsStringEqual(revCurrFlagVal, 'rev_nudity_flag')) {
+      revFlagValsTabsArr.push(
+        <Text
+          key={'rev_nudity_flag_' + revGetRandInteger()}
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {' Nudity / '}
+        </Text>,
+      );
+    }
+
+    if (revIsStringEqual(revCurrFlagVal, 'rev_violence_flag')) {
+      revFlagValsTabsArr.push(
+        <Text
+          key={'rev_violence_flag_' + revGetRandInteger()}
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {' Inciting Violence / '}
+        </Text>,
+      );
+    }
+
+    if (revIsStringEqual(revCurrFlagVal, 'rev_misleading_flag')) {
+      revFlagValsTabsArr.push(
+        <Text
+          key={'rev_misleading_flag_' + revGetRandInteger()}
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {' Misleading / '}
+        </Text>,
+      );
+    }
   }
 
-  let revViolenceFlag = revGetMetadataValue(
+  let revFlagLinkValsMetadataArr = revGetMetadataValuesArr(
     revFlagEntity._revInfoEntity._revEntityMetadataList,
-    'rev_violence_flag',
+    'rev_flag_ref_link',
   );
 
-  if (!revStringEmpty(revViolenceFlag)) {
-    revFlagValsTabsArr.push(
-      <Text
-        key={'rev_violence_flag_' + revGetRandInteger()}
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-        ]}>
-        {' Inciting Violence / '}
-      </Text>,
-    );
-  }
-
-  let revMisleadingFlag = revGetMetadataValue(
-    revFlagEntity._revInfoEntity._revEntityMetadataList,
-    'rev_misleading_flag',
+  let revFlagLinkTabsArr = revFlagLinkValsMetadataArr.map(
+    revFlagLinkValMetadata => (
+      <TouchableOpacity key={'rev_flag_ref_link_' + revGetRandInteger()}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorBlueLink,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revFlagLinkTab,
+          ]}>
+          <FontAwesome
+            name={'external-link'}
+            style={[revSiteStyles.revSiteTxtTiny]}
+          />
+          {' ' + revFlagLinkValMetadata}
+        </Text>
+      </TouchableOpacity>
+    ),
   );
-
-  if (!revStringEmpty(revMisleadingFlag)) {
-    revFlagValsTabsArr.push(
-      <Text
-        key={'rev_misleading_flag_' + revGetRandInteger()}
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-        ]}>
-        {' Misleading / '}
-      </Text>,
-    );
-  }
 
   let revFlagContextVal = revGetMetadataValue(
     revFlagEntitiesArr[0]._revInfoEntity._revEntityMetadataList,
@@ -169,6 +199,8 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
           {revFlagValsTabsArr}
         </View>
 
+        {revFlagLinkTabsArr}
+
         {revFlagContextView}
 
         <TouchableOpacity
@@ -212,5 +244,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     marginBottom: 7,
+  },
+  revFlagLinkTab: {
+    paddingVertical: 2,
+    paddingLeft: 9,
   },
 });
