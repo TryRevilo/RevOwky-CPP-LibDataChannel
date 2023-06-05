@@ -13,10 +13,11 @@ import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
-import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
-import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
 import {
   RevTagsInput,
@@ -31,41 +32,89 @@ import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
 
 import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+import {useRevEditUserInfoFormAction} from '../../../rev_actions/rev_edit_user_info_action';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {SET_REV_SITE_VAR_ARGS} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY, REV_LOGGED_IN_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
+  let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
+  let revInfoEntityGUID = revInfoEntity._revEntityGUID;
+  let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
+
+  let revFullNames = revGetMetadataValue(
+    revInfoEntityMetadataList,
+    'rev_full_names',
+  );
+  let revEntityDesc = revGetMetadataValue(
+    revInfoEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+  let revAboutEntityInfo = revGetMetadataValue(
+    revInfoEntityMetadataList,
+    'rev_about_entity_info',
+  );
+  let revMainEntityIconVal = revGetMetadataValue(
+    revInfoEntityMetadataList,
+    'rev_main_entity_icon_val',
+  );
+  let revMainEntityBannerIconVal = revGetMetadataValue(
+    revInfoEntityMetadataList,
+    'rev_main_entity_banner_icon_val',
+  );
+
+  let revSavedMainEntityIconView = (
+    <RevCenteredImage
+      revImageURI={revMainEntityIconVal}
+      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
+    />
+  );
+
+  let revSavedMainEntityBannerIconView = (
+    <RevCenteredImage
+      revImageURI={revMainEntityBannerIconVal}
+      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
+    />
+  );
+
+  const [revEntityNameTxt, setRevEntityNameTxt] = useState(revFullNames);
+  const [revEntityDescTxt, setRevEntityDescTxt] = useState(revEntityDesc);
+  const [revAboutEntityInfoTxt, setRevAboutEntityInfoTxt] =
+    useState(revAboutEntityInfo);
   const [revTagsArr, setRevTagsArr] = useState([]);
-  const [revSearchText, setRevSearchText] = useState('');
-  const [revBriefInfoTxt, setRevBriefInfoTxt] = useState('');
-  const [revAboutEntityInfo, setRevAboutEntityInfo] = useState('');
 
-  const [revSelectedImagesDataArray, setRevSelectedImagesDataArray] = useState(
-    [],
-  );
-  const [revSelectedVideosDataArray, setRevSelectedVideosDataArray] = useState(
-    [],
-  );
+  const [revImagesDataArray, setRevImagesDataArray] = useState([]);
+  const [revVideosDataArray, setRevVideosDataArray] = useState([]);
 
-  const [revMainCampaignIconView, setRevMainCampaignIconView] = useState(null);
-  const [revMainCampaignIconPath, setRevMainCampaignIconPath] = useState('');
-  const [revSelectedMainProfilePicPath, setRevSelectedMainProfilePicPath] =
-    useState(null);
-  const [revSelectedMainProfilePic, setRevSelectedMainProfilePic] =
-    useState(null);
+  const [revMainEntityIconView, setMainEntityIconView] = useState(
+    revSavedMainEntityIconView,
+  );
+  const [revMainEntityIconPath, setRevMainEntityIconPath] =
+    useState(revMainEntityIconVal);
+
+  const [revEntityBannerIconPath, setRevEntityBannerIconPath] = useState(
+    revMainEntityBannerIconVal,
+  );
+  const [revEntityBannerIcon, setRevEntityBannerIcon] = useState(
+    revSavedMainEntityBannerIconView,
+  );
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
 
-  const revSelectedImagesDataArrayChangeCallBack = revNewDataArr => {
-    setRevSelectedImagesDataArray(revNewDataArr);
+  const {revEditUserInfoFormAction} = useRevEditUserInfoFormAction();
+
+  const revImagesDataArrayChangeCallBack = revNewDataArr => {
+    setRevImagesDataArray(revNewDataArr);
   };
 
-  const revSelectedVideosDataArrayRefChangeCallBack = revNewDataArr => {
-    setRevSelectedVideosDataArray(revNewDataArr);
+  const revVideosDataArrayRefChangeCallBack = revNewDataArr => {
+    setRevVideosDataArray(revNewDataArr);
   };
 
   const handleRevCancelTabPress = () => {
@@ -76,25 +125,24 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     });
 
     SET_REV_SITE_BODY(RevUserSettings);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
-    });
   };
 
-  const revHandleSearchTabPress = () => {
-    SET_REV_SITE_BODY(null);
+  const handleRevSaveInfoTabPress = () => {
+    let revPassVarArgs = {
+      _revEntityGUID: revInfoEntityGUID,
+      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      revEntityNameVal: revEntityNameTxt,
+      revEntityDescVal: revEntityDescTxt,
+      revAboutEntityInfo: revAboutEntityInfoTxt,
+      revTagsArr: revTagsArr,
+      revMainEntityIconPath: revMainEntityIconPath,
+      revEntityBannerIconPath: revEntityBannerIconPath,
 
-    let RevUserSettings = revPluginsLoader({
-      revPluginName: 'rev_plugin_user_settings',
-      revViewName: 'RevUserSettings',
-      revData: 'Hello World!',
-    });
+      revSelectedMedia: [...revImagesDataArray, ...revVideosDataArray],
+    };
 
-    SET_REV_SITE_BODY(RevUserSettings);
-
-    SET_REV_SITE_VAR_ARGS({
-      revRemoteEntityGUID: 0,
+    revEditUserInfoFormAction(revPassVarArgs, async revPersResData => {
+      console.log('>>> revPersResData', revPersResData);
     });
   };
 
@@ -135,9 +183,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         ]}>
         <RevTextInputWithCount
           revVarArgs={{
-            revDefaultTxt: revSearchText,
+            revDefaultText: revEntityNameTxt,
             revPlaceHolderTxt: ' Full names . . .',
-            revTextInputOnChangeCallBack: setRevSearchText,
+            revTextInputOnChangeCallBack: setRevEntityNameTxt,
             revMaxTxtCount: 140,
           }}
         />
@@ -145,10 +193,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputWithCount
             revVarArgs={{
+              revDefaultText: revEntityDescTxt,
               revPlaceHolderTxt: ' Brief desc . . .',
-              revTextInputOnChangeCallBack: revNewTxt => {
-                setRevBriefInfoTxt(revNewTxt);
-              },
+              revTextInputOnChangeCallBack: setRevEntityDescTxt,
               revMaxTxtCount: 55,
             }}
           />
@@ -157,10 +204,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         <View style={styles.revBriefDescInputWrapper}>
           <RevTextInputAreaWithCount
             revVarArgs={{
+              revDefaultText: revAboutEntityInfoTxt,
               revPlaceHolderTxt: ' About me . . .',
-              revTextInputOnChangeCallBack: revNewTxt => {
-                setRevAboutEntityInfo(revNewTxt);
-              },
+              revTextInputOnChangeCallBack: setRevAboutEntityInfoTxt,
               revMaxTxtCount: 500,
             }}
           />
@@ -214,8 +260,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revVarArgs={{
               revLabel: ' Select pictures',
               revMIMETypes: DocumentPicker.types.images,
-              revOnSelectedDataCallBack:
-                revSelectedImagesDataArrayChangeCallBack,
+              revOnSelectedDataCallBack: revImagesDataArrayChangeCallBack,
             }}
           />
         </View>
@@ -228,7 +273,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             {marginLeft: 4},
           ]}>
           <Text style={revSiteStyles.revSiteTxtBold}>
-            {revSelectedImagesDataArray.length}
+            {revImagesDataArray.length}
           </Text>
           {' profile pics selected. You can upload up to 22'}
         </Text>
@@ -240,14 +285,12 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revCroppedImageData => {
               let revCroppedImageDataPath = revCroppedImageData.path;
 
-              setRevSelectedMainProfilePicPath(revCroppedImageDataPath);
+              setRevMainEntityIconPath(revCroppedImageDataPath);
 
-              let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
+              let revNewSelectedImagesArr = revImagesDataArray.filter(
                 revCurrItem =>
-                  revCompareStrings(
-                    revCurrItem.uri,
-                    revSelectedMainProfilePicPath,
-                  ) !== 0,
+                  revCompareStrings(revCurrItem.uri, revMainEntityIconPath) !==
+                  0,
               );
 
               revNewSelectedImagesArr.push({
@@ -259,9 +302,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
                 uri: revCroppedImageDataPath,
               });
 
-              setRevSelectedImagesDataArray(revNewSelectedImagesArr);
+              setRevImagesDataArray(revNewSelectedImagesArr);
 
-              let revSelectedMainProfilePicView = (
+              let revEntityBannerIconView = (
                 <View style={{overflow: 'hidden'}}>
                   <RevCenteredImage
                     revImageURI={revCroppedImageDataPath}
@@ -270,7 +313,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
                 </View>
               );
 
-              setRevSelectedMainProfilePic(revSelectedMainProfilePicView);
+              setMainEntityIconView(revEntityBannerIconView);
             },
             {revCropWidth: 600, revCropHeight: 600},
           );
@@ -282,7 +325,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             {alignItems: 'center'},
           ]}>
           <View style={[styles.revMainProfilePicContainer]}>
-            {revSelectedMainProfilePic}
+            {revMainEntityIconView}
           </View>
 
           <Text>{'  '}</Text>
@@ -311,11 +354,11 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revCroppedImageData => {
               let revCroppedImageDataPath = revCroppedImageData.path;
 
-              setRevMainCampaignIconPath(revCroppedImageDataPath);
+              setRevEntityBannerIconPath(revCroppedImageDataPath);
 
-              let revNewSelectedImagesArr = revSelectedImagesDataArray.filter(
+              let revNewSelectedImagesArr = revImagesDataArray.filter(
                 revCurrItem =>
-                  revCompareStrings(revCurrItem, revMainCampaignIconPath) !== 0,
+                  revCompareStrings(revCurrItem, revEntityBannerIconPath) !== 0,
               );
 
               revNewSelectedImagesArr.push({
@@ -327,20 +370,20 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
                 uri: revCroppedImageDataPath,
               });
 
-              setRevSelectedImagesDataArray(revNewSelectedImagesArr);
+              setRevImagesDataArray(revNewSelectedImagesArr);
 
-              let revMainCampaignIconViewView = (
+              let revMainEntityIconViewView = (
                 <View style={{marginTop: 4, overflow: 'hidden'}}>
                   <RevCenteredImage
                     revImageURI={revCroppedImageDataPath}
-                    revImageDimens={{revWidth: '100%', revHeight: 55}}
+                    revImageDimens={{revWidth: '100%', revHeight: 100}}
                   />
                 </View>
               );
 
-              setRevMainCampaignIconView(revMainCampaignIconViewView);
+              setRevEntityBannerIcon(revMainEntityIconViewView);
             },
-            {revCropHeight: 55},
+            {revCropHeight: 100},
           );
         }}>
         <View
@@ -375,7 +418,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         </View>
       </TouchableOpacity>
 
-      <>{revMainCampaignIconView}</>
+      <View style={{height: 100}}>{revEntityBannerIcon}</View>
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -398,8 +441,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revVarArgs={{
               revLabel: ' Select videos',
               revMIMETypes: DocumentPicker.types.video,
-              revOnSelectedDataCallBack:
-                revSelectedVideosDataArrayRefChangeCallBack,
+              revOnSelectedDataCallBack: revVideosDataArrayRefChangeCallBack,
             }}
           />
         </View>
@@ -412,7 +454,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             {marginLeft: 4},
           ]}>
           <Text style={revSiteStyles.revSiteTxtBold}>
-            {revSelectedVideosDataArray.length}
+            {revVideosDataArray.length}
           </Text>
           {' profile videos selected'}
         </Text>
@@ -423,7 +465,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revFormFooterWrapper,
         ]}>
-        <TouchableOpacity onPress={revHandleSearchTabPress}>
+        <TouchableOpacity onPress={handleRevSaveInfoTabPress}>
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,

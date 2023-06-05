@@ -158,6 +158,14 @@ export const revTruncateString = (revStr, revLen, revIncludeHellipse) => {
     : revStr;
 };
 
+export const revCompareStrings = (revStr1, revStr2) => {
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: 'base',
+  });
+  return collator.compare(revStr1, revStr2);
+};
+
 export const revGetRawHTML = revStr => {
   revStr = revStr.replace(/&/gi, '&amp;');
   revStr = revStr.replace(/</gi, '&lt;');
@@ -213,10 +221,20 @@ export const revGetPathType = revPath => {
   }
 };
 
-export const revCompareStrings = (revStr1, revStr2) => {
-  const collator = new Intl.Collator(undefined, {
-    numeric: true,
-    sensitivity: 'base',
-  });
-  return collator.compare(revStr1, revStr2);
+export const revExtractDomainParts = revURL => {
+  const revParsedUrl = new URL(revURL);
+  const revProtocol = revParsedUrl.protocol.replace(':', '');
+  const revSubdomain = revParsedUrl.hostname.split('.')[0];
+  const revDomain = revParsedUrl.hostname.replace(`${revSubdomain}.`, '');
+  const revPath = revParsedUrl.pathname;
+
+  return {revProtocol, revSubdomain, revDomain, revPath};
+};
+
+export const revIsValidURL = revURL => {
+  const revPattern = new RegExp(
+    '^((http|https)://)?([a-z0-9]+([-.][a-z0-9]+)*.[a-z]{2,})(:[0-9]{2,5})?(/.*)?$',
+    'i',
+  );
+  return revPattern.test(revURL);
 };

@@ -89,6 +89,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
 export const RevCenteredImage = ({
   revImageURI,
   revImageDimens = {revWidth: 22, revHeight: 22},
+  revStyles = null,
 }) => {
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -130,17 +131,22 @@ export const RevCenteredImage = ({
       style={{
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        width: 'auto',
+        height: 'auto',
       }}>
       {(revImageLoaded && revImageError) || revStringEmpty(revImageURI) ? (
         <>{revErrImagePlaceholder}</>
       ) : (
         <Image
           source={{uri: revImageURI}}
-          style={{
-            width: revImageDimens.revWidth,
-            height: revImageDimens.revHeight,
-            resizeMode: 'cover',
-          }}
+          style={[
+            {
+              width: revImageDimens.revWidth,
+              height: revImageDimens.revHeight,
+              resizeMode: 'cover',
+            },
+            revStyles,
+          ]}
           onLoad={handleImageLoad}
           onError={handleRevImageError}
         />

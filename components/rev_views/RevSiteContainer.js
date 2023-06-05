@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, memo} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -284,4 +284,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RevSiteContainer;
+export default memo(RevSiteContainer);

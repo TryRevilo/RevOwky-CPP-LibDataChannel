@@ -20,6 +20,7 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {
   RevReadMoreTextView,
   RevInfoArea,
+  RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
 import {
@@ -35,6 +36,7 @@ import {
 import {
   revTruncateString,
   revSplitStringToArray,
+  revStringEmpty,
 } from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
@@ -71,13 +73,16 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   }
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
+  let revPublisherInfoEntity = revPublisherEntity._revInfoEntity;
+  let revPublisherInfoEntityMetadataList =
+    revPublisherInfoEntity._revEntityMetadataList;
 
   if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    revPublisherInfoEntityMetadataList,
     'rev_full_names',
   );
   let revPublisherEntityNamesArr = revSplitStringToArray(
@@ -225,7 +230,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     }
 
     let revPublisherEntityNames = revGetMetadataValue(
-      revPublisherEntity._revInfoEntity._revEntityMetadataList,
+      revPublisherInfoEntityMetadataList,
       'rev_full_names',
     );
     let revPublisherEntityNames_Trunc = revTruncateString(
@@ -261,19 +266,28 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
               ]}>
               {revFormatLongDate(revVarArgs._revTimePublished)}
             </Text>
-            <View style={styles.chatMsgOptionsWrapper}>
+            <View style={styles.revChatMsgOptionsWrapper}>
               <FontAwesome
                 name="retweet"
-                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                style={[
+                  revSiteStyles.revSiteTxtNormal,
+                  styles.revChatMsgOptions,
+                ]}
               />
 
               <FontAwesome
                 name="flag-o"
-                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                style={[
+                  revSiteStyles.revSiteTxtSmall,
+                  styles.revChatMsgOptions,
+                ]}
               />
               <FontAwesome
                 name="list"
-                style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                style={[
+                  revSiteStyles.revSiteTxtSmall,
+                  styles.revChatMsgOptions,
+                ]}
               />
             </View>
           </View>
@@ -526,6 +540,21 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     return revFlagItemView;
   };
 
+  let revMainEntityIconVal = revGetMetadataValue(
+    revPublisherInfoEntityMetadataList,
+    'rev_main_entity_icon_val',
+  );
+
+  let revMainEntityIconView = !revStringEmpty(revMainEntityIconVal) ? (
+    <RevCenteredImage
+      revImageURI={revMainEntityIconVal}
+      revImageDimens={{revWidth: 19, revHeight: 29}}
+      revStyles={{borderRadius: 100}}
+    />
+  ) : (
+    <FontAwesome name="user" style={styles.revAvailableChatPeopleNonIcon} />
+  );
+
   return (
     <TouchableOpacity
       key={
@@ -542,12 +571,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
           onPress={() => {
             handleRevUserProfileClick();
           }}>
-          <View style={styles.revChatMsgUserIcon}>
-            <FontAwesome
-              name="user"
-              style={styles.revAvailableChatPeopleNonIcon}
-            />
-          </View>
+          <View style={styles.revChatMsgUserIcon}>{revMainEntityIconView}</View>
         </TouchableOpacity>
         <View
           style={[
@@ -582,10 +606,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 ]}>
                 {revTimePublished}
               </Text>
-              <View style={styles.chatMsgOptionsWrapper}>
+              <View style={styles.revChatMsgOptionsWrapper}>
                 <FontAwesome
                   name="retweet"
-                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                  style={[
+                    revSiteStyles.revSiteTxtNormal,
+                    styles.revChatMsgOptions,
+                  ]}
                 />
 
                 <TouchableOpacity onPress={handleRevOnFlagTabPressed}>
@@ -593,14 +620,17 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                     name="flag-o"
                     style={[
                       revSiteStyles.revSiteTxtSmall,
-                      styles.chatMsgOptions,
+                      styles.revChatMsgOptions,
                     ]}
                   />
                 </TouchableOpacity>
 
                 <FontAwesome
                   name="list"
-                  style={[revSiteStyles.revSiteTxtSmall, styles.chatMsgOptions]}
+                  style={[
+                    revSiteStyles.revSiteTxtSmall,
+                    styles.revChatMsgOptions,
+                  ]}
                 />
               </View>
             </View>
@@ -660,6 +690,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 1,
   },
   revAvailableChatPeopleNonIcon: {
     color: '#c5e1a5',
@@ -703,7 +734,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     marginLeft: 5,
   },
-  chatMsgOptionsWrapper: {
+  revChatMsgOptionsWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -711,7 +742,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
     position: 'relative',
   },
-  chatMsgOptions: {
+  revChatMsgOptions: {
     color: '#bdbdbd',
     paddingHorizontal: 8,
   },

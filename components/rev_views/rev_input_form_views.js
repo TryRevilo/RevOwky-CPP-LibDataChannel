@@ -178,6 +178,7 @@ export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
       <TextInput
         onChangeText={revHandleTextChange}
         value={revInputText}
+        defaultValue={revInputText}
         placeholder={revPlaceHolderTxt}
         style={[
           revSiteStyles.revSiteTxtColor,
@@ -185,7 +186,6 @@ export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
           revSiteStyles.revSiteTextInputNoBorder,
         ]}
         placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
-        defaultValue={revInputText}
       />
       <Text
         style={[

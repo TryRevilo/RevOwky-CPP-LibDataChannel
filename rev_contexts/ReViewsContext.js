@@ -1,4 +1,10 @@
-import React, {createContext, useEffect, useState, useRef} from 'react';
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 import {
   View,
   Animated,
@@ -18,7 +24,11 @@ const ReViewsContextProvider = ({children}) => {
   const [REV_PAGE_HEADER_CONTENT_VIEWER, SET_REV_PAGE_HEADER_CONTENT_VIEWER] =
     useState(null);
 
-  const [REV_SITE_BODY, SET_REV_SITE_BODY] = useState(<RevNullMessagesView />);
+  const [REV_SITE_BODY, setRevSiteBody] = useState(<RevNullMessagesView />);
+
+  const SET_REV_SITE_BODY = useCallback(newBody => {
+    setRevSiteBody(newBody);
+  }, []);
 
   const [
     REV_SITE_FOOTER_1_CONTENT_VIEWER,

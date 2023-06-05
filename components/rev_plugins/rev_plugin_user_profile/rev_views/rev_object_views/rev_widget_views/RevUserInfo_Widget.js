@@ -21,6 +21,8 @@ import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   if (
     revIsEmptyJSONObject(revVarArgs) ||
     !revVarArgs.hasOwnProperty('revVarArgs')
@@ -33,8 +35,6 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
   if (!revIsUserEntity_WithInfo(revOwkiMemberEntity)) {
     return null;
   }
-
-  const {revSiteStyles} = useRevSiteStyles();
 
   const RevUserProfileMedia = () => {
     return (

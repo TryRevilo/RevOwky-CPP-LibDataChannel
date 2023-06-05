@@ -10,10 +10,15 @@ import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
+import {
+  RevImageView,
+  RevScrollView_V,
+} from '../../../../../rev_views/rev_page_views';
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -21,12 +26,15 @@ import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_
 import {useRevConnectUser_Action} from '../../../rev_actions/rev_connect_user_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
+import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 const {RevPersLibRead_React} = NativeModules;
 
 export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   revVarArgs = revVarArgs.revVarArgs;
   let revUserEntity = revVarArgs.revEntity;
+  let revInfoEntity = revUserEntity._revInfoEntity;
 
   if (
     revIsEmptyJSONObject(revUserEntity) ||
@@ -138,14 +146,11 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
                 revSiteStyles.revFlexWrapper,
                 styles.revConnectedUsersIconWrapper,
               ]}>
-              {[
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1,
-                2, 3, 4, 5, 6, 7, 8, 9, 0,
-              ].map(revCurrConnection => {
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(revCurrConnection => {
                 return (
                   <RevConnectionProfileTab
                     key={
-                      revGetRandInteger(1, 1000) +
+                      revGetRandInteger() +
                       '_revCurrConnection_' +
                       revCurrConnection
                     }
@@ -168,21 +173,33 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
     );
   };
 
+  let revMainEntityBannerIconVal = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_main_entity_banner_icon_val',
+  );
+
+  let revProfileBannerIconView = !revStringEmpty(revMainEntityBannerIconVal) ? (
+    <RevCenteredImage
+      revImageURI={revMainEntityBannerIconVal}
+      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
+    />
+  ) : (
+    <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
+  );
+
   let revRetView = (
     <View style={revSiteStyles.revFlexContainer}>
       {!revAddPageHeader ? null : (
         <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
       )}
-      <ScrollView style={revSiteStyles.revFlexContainer}>
-        <View style={styles.revPublisherMainNonIconArea}>
-          <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
-        </View>
-        <View style={[revSiteStyles.revFlexContainer, styles.revInfoContainer]}>
-          {RevInfo}
-        </View>
+      <View style={styles.revPublisherMainIconArea}>
+        {revProfileBannerIconView}
+      </View>
+      <View style={[revSiteStyles.revFlexContainer, styles.revInfoContainer]}>
+        {RevInfo}
+      </View>
 
-        <RevConnectionsView revVarArgs={revUserEntity} />
-      </ScrollView>
+      <RevConnectionsView revVarArgs={revUserEntity} />
     </View>
   );
 
@@ -190,16 +207,14 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revPublisherMainNonIconArea: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  revPublisherMainIconArea: {
     backgroundColor: '#EEE',
-    width: '100%',
     height: 100,
     marginTop: 1,
     borderRadius: 8,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
+    overflow: 'hidden',
   },
   revPublisherMainNonIcon: {
     color: '#CCC',

@@ -6,6 +6,8 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 import {RevSiteDataContext} from '../../../../rev_contexts/RevSiteDataContext';
 
+import {useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID} from '../../rev_pers_metadata/rev_read/RevPersReadMetadataCustomHooks';
+
 import {REV_ENTITY_STRUCT} from '../../rev_db_struct_models/revEntity';
 import {REV_METADATA_FILLER} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../rev_db_struct_models/revEntityRelationship';
@@ -20,7 +22,11 @@ import {
   revGetFileAbsolutePath,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 
-import {revGetFilePathType} from '../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revCompareStrings,
+  revGetFilePathType,
+  revStringEmpty,
+} from '../../../../rev_function_libs/rev_string_function_libs';
 
 const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
 
@@ -255,10 +261,17 @@ export const useRevSetRemoteRelGUID = () => {
 
 export const useRevSaveNewEntity = () => {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
+  const {revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID} =
+    useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID();
+
   const {revCreateNewEntity} = useRevCreateNewEntity();
   const {revCreateMediaAlbum} = useRevCreateMediaAlbum();
 
   const revSaveNewEntity = async revVarArgs => {
+    if (revIsEmptyJSONObject(revVarArgs)) {
+      return;
+    }
+
     if (
       !revVarArgs.hasOwnProperty(
         'revEntityOwnerGUID' || revVarArgs.revEntityOwnerGUID < 1,
@@ -273,6 +286,66 @@ export const useRevSaveNewEntity = () => {
       )
     ) {
       return -1;
+    }
+
+    if ('_revEntityGUID' in revVarArgs && revVarArgs._revEntityGUID) {
+      let revEntityGUID = revVarArgs._revEntityGUID;
+      let revPersEntityInfoMetadataList =
+        revVarArgs.revPersEntityInfoMetadataList;
+
+      for (let i = 0; i < revPersEntityInfoMetadataList.length; i++) {
+        let revPersEntityInfoMetadata = revPersEntityInfoMetadataList[i];
+
+        let revUpdateMetadataVal = revPersEntityInfoMetadata._metadataValue;
+
+        let revMetadata =
+          revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(
+            revPersEntityInfoMetadata._revMetadataName,
+            revEntityGUID,
+          );
+
+        let revMetadataId = revMetadata.revMetadataId;
+        let revMetadataValue = revMetadata._metadataValue;
+
+        if (
+          revStringEmpty(revUpdateMetadataVal) ||
+          revCompareStrings(
+            revMetadataValue,
+            revPersEntityInfoMetadata._metadataValue,
+          ) == 0
+        ) {
+          continue;
+        }
+
+        if (revMetadataId > 0) {
+          let revUpdateStatus =
+            RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
+              revMetadataId,
+              revUpdateMetadataVal,
+            );
+
+          console.log(revMetadataId, '>>> revUpdateStatus', revUpdateStatus);
+        } else {
+          revPersEntityInfoMetadata['_revMetadataEntityGUID'] = revEntityGUID;
+
+          console.log(
+            revMetadataId,
+            'revPersEntityInfoMetadata',
+            revPersEntityInfoMetadata,
+          );
+
+          let revPersMetedataStatus =
+            RevPersLibCreate_React.revPersSaveEntityMetadataJSONStr(
+              JSON.stringify(revPersEntityInfoMetadata),
+            );
+
+          console.log('>>> revPersMetedataStatus', revPersMetedataStatus);
+        }
+      }
+
+      return;
+    } else {
+      return;
     }
 
     let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;

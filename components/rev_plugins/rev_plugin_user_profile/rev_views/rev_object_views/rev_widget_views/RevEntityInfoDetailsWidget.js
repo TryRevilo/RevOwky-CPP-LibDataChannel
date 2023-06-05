@@ -5,11 +5,15 @@ import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
-import {revSplitStringToArray} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revSplitStringToArray,
+  revStringEmpty,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGenLoreumIpsumText} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
 
 export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -26,6 +30,16 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
     'rev_full_names',
   );
 
+  let revEntityDescVal = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_entity_desc_val',
+  );
+
+  let revAboutEntityInfo = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_about_entity_info',
+  );
+
   let revEntityFullNamesArr = revSplitStringToArray(revEntityFullNames);
   let revEntityFirstName = revEntityFullNamesArr[0];
   let revEntityOtherNamesArr = revEntityFullNamesArr.splice(
@@ -33,14 +47,23 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
     revEntityFullNamesArr.length,
   );
 
-  let revUserInfoBriefDescTxt = revGenLoreumIpsumText({revMaxCharCount: 55});
-  let revUserInfoAboutDescTxt = revGenLoreumIpsumText({
-    revMaxCharCount: 255,
-    revMaxSentences: 5,
-  });
-
   let revUserRegLongDate = revVarArgs._revTimeCreated;
   let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
+
+  let revMainEntityIconVal = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_main_entity_icon_val',
+  );
+
+  let revMainEntityIconView = !revStringEmpty(revMainEntityIconVal) ? (
+    <RevCenteredImage
+      revImageURI={revMainEntityIconVal}
+      revImageDimens={{revWidth: 28, revHeight: 28}}
+      revStyles={{borderRadius: 100}}
+    />
+  ) : (
+    <FontAwesome name="user" style={revSiteStyles.revSiteTxtLarge} />
+  );
 
   return (
     <View style={revSiteStyles.revFlexContainer}>
@@ -119,7 +142,7 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
             ]}>
             <Text style={revSiteStyles.revSiteTxtBold}>brief -</Text>
-            <Text>{' ' + revUserInfoBriefDescTxt}</Text>
+            <Text>{' ' + revEntityDescVal}</Text>
           </Text>
 
           <Text
@@ -128,7 +151,7 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
               revSiteStyles.revSiteTxtTiny,
             ]}>
             <Text style={revSiteStyles.revSiteTxtBold}>about -</Text>
-            <Text>{' ' + revUserInfoAboutDescTxt}</Text>
+            <Text>{' ' + revAboutEntityInfo}</Text>
           </Text>
         </View>
         <View
@@ -136,7 +159,13 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexContainer,
             styles.revPPalGrossAmtContainer,
           ]}>
-          <View style={revSiteStyles.revUserIconSmallCircle}></View>
+          <View
+            style={[
+              revSiteStyles.revUserIconSmallCircle,
+              {width: 32, height: 32},
+            ]}>
+            {revMainEntityIconView}
+          </View>
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
