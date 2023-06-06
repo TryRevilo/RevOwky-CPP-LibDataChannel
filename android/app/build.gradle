@@ -177,6 +177,10 @@ dependencies {
     implementation project(':react-native-fs')
 
     implementation project(':react-native-contacts')
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.5'
+
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

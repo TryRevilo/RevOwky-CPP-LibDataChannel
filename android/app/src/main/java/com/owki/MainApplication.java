@@ -9,11 +9,10 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
-
-import java.util.List;
-
 import com.owki.rev_react_modules.RevGenFunctionLibs;
 import com.owki.rev_react_modules.RevPersistencePackages;
+
+import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,8 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
 
                     packages.add(new RevPersistencePackages());
                     packages.add(new RevGenFunctionLibs());
-
-                    // packages.add(new RNFSPackage());
 
                     return packages;
                 }

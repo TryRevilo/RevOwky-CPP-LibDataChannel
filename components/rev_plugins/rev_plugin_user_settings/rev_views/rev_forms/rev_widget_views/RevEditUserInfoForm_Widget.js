@@ -5,11 +5,13 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  NativeModules,
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
+import RNFS from 'react-native-fs';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
@@ -19,23 +21,36 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
+const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
+
+import {
+  revGetFileAbsolutePath,
+  revGetFileNameFromPath,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
 import {
   RevTagsInput,
   RevTextInputWithCount,
   RevTextInputAreaWithCount,
   RevUploadFilesTab,
   revOpenCropnImagePicker,
+  RevEntityIconCropperView,
+  RevBannerCropperView,
 } from '../../../../../rev_views/rev_input_form_views';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
 import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
 
-import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revCompareStrings,
+  revReplaceWiteSpaces,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevEditUserInfoFormAction} from '../../../rev_actions/rev_edit_user_info_action';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {revGenerateVideoThumbnail} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -69,20 +84,6 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     'rev_main_entity_banner_icon_val',
   );
 
-  let revSavedMainEntityIconView = (
-    <RevCenteredImage
-      revImageURI={revMainEntityIconVal}
-      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
-    />
-  );
-
-  let revSavedMainEntityBannerIconView = (
-    <RevCenteredImage
-      revImageURI={revMainEntityBannerIconVal}
-      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
-    />
-  );
-
   const [revEntityNameTxt, setRevEntityNameTxt] = useState(revFullNames);
   const [revEntityDescTxt, setRevEntityDescTxt] = useState(revEntityDesc);
   const [revAboutEntityInfoTxt, setRevAboutEntityInfoTxt] =
@@ -91,18 +92,11 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   const [revImagesDataArray, setRevImagesDataArray] = useState([]);
   const [revVideosDataArray, setRevVideosDataArray] = useState([]);
-
-  const [revMainEntityIconView, setMainEntityIconView] = useState(
-    revSavedMainEntityIconView,
-  );
   const [revMainEntityIconPath, setRevMainEntityIconPath] =
     useState(revMainEntityIconVal);
 
   const [revEntityBannerIconPath, setRevEntityBannerIconPath] = useState(
     revMainEntityBannerIconVal,
-  );
-  const [revEntityBannerIcon, setRevEntityBannerIcon] = useState(
-    revSavedMainEntityBannerIconView,
   );
 
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
@@ -113,7 +107,28 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     setRevImagesDataArray(revNewDataArr);
   };
 
-  const revVideosDataArrayRefChangeCallBack = revNewDataArr => {
+  const revVideosDataArrayChangeCallBack = async revNewDataArr => {
+    for (let i = 0; i < revNewDataArr.length; i++) {
+      let revCurrData = revNewDataArr[i];
+
+      let revCapturedVidURI = await revGenerateVideoThumbnail({
+        url: revCurrData.uri,
+        timeStamp: 1,
+      });
+
+      const revFileName = revGetFileNameFromPath(revCapturedVidURI.path);
+
+      const revDirectoryPath =
+        '/storage/emulated/0/Documents/Owki/rev_media/thumbnails/';
+      let revDestFilePath = revDirectoryPath + revFileName + '.jpeg';
+
+      let revSourcePath = revCapturedVidURI.path.replace('file://', '');
+
+      RevPersLibCreate_React.revCopyFile(revSourcePath, revDestFilePath);
+
+      revNewDataArr[i]['revVidThumbnail'] = revDestFilePath;
+    }
+
     setRevVideosDataArray(revNewDataArr);
   };
 
@@ -279,146 +294,57 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         </Text>
       </View>
 
-      <TouchableOpacity
-        onPress={() => {
-          revOpenCropnImagePicker(
-            revCroppedImageData => {
-              let revCroppedImageDataPath = revCroppedImageData.path;
+      <RevEntityIconCropperView
+        revCropDimensions={{revWidth: 600, revHeight: 600}}
+        revDefaultIconPath={revMainEntityIconVal}
+        revCallBackFunc={revCroppedImageData => {
+          let revIconPath = revCroppedImageData.path;
 
-              setRevMainEntityIconPath(revCroppedImageDataPath);
+          setRevMainEntityIconPath(revIconPath);
 
-              let revNewSelectedImagesArr = revImagesDataArray.filter(
-                revCurrItem =>
-                  revCompareStrings(revCurrItem.uri, revMainEntityIconPath) !==
-                  0,
-              );
-
-              revNewSelectedImagesArr.push({
-                name: revCroppedImageDataPath.substring(
-                  revCroppedImageDataPath.lastIndexOf('/') + 1,
-                ),
-                size: revCroppedImageData.size,
-                type: revCroppedImageData.mime,
-                uri: revCroppedImageDataPath,
-              });
-
-              setRevImagesDataArray(revNewSelectedImagesArr);
-
-              let revEntityBannerIconView = (
-                <View style={{overflow: 'hidden'}}>
-                  <RevCenteredImage
-                    revImageURI={revCroppedImageDataPath}
-                    revImageDimens={{revWidth: 55, revHeight: 55}}
-                  />
-                </View>
-              );
-
-              setMainEntityIconView(revEntityBannerIconView);
-            },
-            {revCropWidth: 600, revCropHeight: 600},
+          let revNewSelectedImagesArr = revImagesDataArray.filter(
+            revCurrItem =>
+              revCompareStrings(revCurrItem.uri, revMainEntityIconPath) !== 0,
           );
-        }}>
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper,
-            styles.revAddedMediaContainer,
-            {alignItems: 'center'},
-          ]}>
-          <View style={[styles.revMainProfilePicContainer]}>
-            {revMainEntityIconView}
-          </View>
 
-          <Text>{'  '}</Text>
+          revNewSelectedImagesArr.push({
+            name: revIconPath.substring(revIconPath.lastIndexOf('/') + 1),
+            size: revCroppedImageData.size,
+            type: revCroppedImageData.mime,
+            uri: revIconPath,
+          });
 
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="plus"
-          />
+          setRevImagesDataArray(revNewSelectedImagesArr);
+        }}
+      />
 
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' Select main profile Pic'}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <RevBannerCropperView
+        revDefaultCropBannerIconPath={revMainEntityBannerIconVal}
+        revCropDimensions={{revCropWidth: 1200, revCropHeight: 300}}
+        revPreviewDimensions={{revPreviewWidth: '100%', revPreviewHeight: 100}}
+        revDefaultIconPath={revMainEntityIconVal}
+        revCallBackFunc={revCroppedImageData => {
+          let revCroppedBannerIconPath = revCroppedImageData.path;
 
-      <TouchableOpacity
-        onPress={() => {
-          revOpenCropnImagePicker(
-            revCroppedImageData => {
-              let revCroppedImageDataPath = revCroppedImageData.path;
+          setRevEntityBannerIconPath(revCroppedBannerIconPath);
 
-              setRevEntityBannerIconPath(revCroppedImageDataPath);
-
-              let revNewSelectedImagesArr = revImagesDataArray.filter(
-                revCurrItem =>
-                  revCompareStrings(revCurrItem, revEntityBannerIconPath) !== 0,
-              );
-
-              revNewSelectedImagesArr.push({
-                name: revCroppedImageDataPath.substring(
-                  revCroppedImageDataPath.lastIndexOf('/') + 1,
-                ),
-                size: revCroppedImageData.size,
-                type: revCroppedImageData.mime,
-                uri: revCroppedImageDataPath,
-              });
-
-              setRevImagesDataArray(revNewSelectedImagesArr);
-
-              let revMainEntityIconViewView = (
-                <View style={{marginTop: 4, overflow: 'hidden'}}>
-                  <RevCenteredImage
-                    revImageURI={revCroppedImageDataPath}
-                    revImageDimens={{revWidth: '100%', revHeight: 100}}
-                  />
-                </View>
-              );
-
-              setRevEntityBannerIcon(revMainEntityIconViewView);
-            },
-            {revCropHeight: 100},
+          let revNewSelectedImagesArr = revImagesDataArray.filter(
+            revCurrItem =>
+              revCompareStrings(revCurrItem, revCroppedBannerIconPath) !== 0,
           );
-        }}>
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper,
-            styles.revAddedMediaContainer,
-            {alignItems: 'center'},
-          ]}>
-          <FontAwesome
-            name={'file-picture-o'}
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtLarge,
-            ]}
-          />
 
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
+          revNewSelectedImagesArr.push({
+            name: revCroppedBannerIconPath.substring(
+              revCroppedBannerIconPath.lastIndexOf('/') + 1,
+            ),
+            size: revCroppedImageData.size,
+            type: revCroppedImageData.mime,
+            uri: revCroppedBannerIconPath,
+          });
 
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' Select banner Pic'}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <View style={{height: 100}}>{revEntityBannerIcon}</View>
+          setRevImagesDataArray(revNewSelectedImagesArr);
+        }}
+      />
 
       <View
         style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
@@ -441,7 +367,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             revVarArgs={{
               revLabel: ' Select videos',
               revMIMETypes: DocumentPicker.types.video,
-              revOnSelectedDataCallBack: revVideosDataArrayRefChangeCallBack,
+              revOnSelectedDataCallBack: revVideosDataArrayChangeCallBack,
             }}
           />
         </View>

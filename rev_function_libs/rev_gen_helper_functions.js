@@ -1,4 +1,3 @@
-import RNFS from 'react-native-fs';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 import {revGetServerData_JSON} from '../components/rev_libs_pers/rev_server/rev_pers_lib_read';
@@ -17,6 +16,14 @@ export const revGetFileAbsolutePath = async uri => {
   }
 
   return revRetVal;
+};
+
+export const revGetFileNameFromPath = revPath => {
+  return revPath.match(/[^/]+$/)[0];
+};
+
+export const revGetFileExtension = revPath => {
+  return revPath.match(/\.[^.]+$/)?.[0];
 };
 
 export function revGetRandInteger(min = 1, max = 1000) {
@@ -434,4 +441,24 @@ export const revHexToRgba = (hex, opacity) => {
   const b = parseInt(hex.slice(5, 7), 16);
 
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+};
+
+import {NativeModules, Platform} from 'react-native';
+
+export const revGenerateVideoThumbnail = async revParams => {
+  try {
+    if (Platform.OS === 'android') {
+      const thumbnailUri =
+        await NativeModules.RevMediaFunctionsHelperModule.revGetVideoThumbnail(
+          revParams,
+        );
+      return thumbnailUri;
+    } else {
+      // Handle other platforms (iOS, etc.) if necessary
+      throw new Error('Unsupported platform');
+    }
+  } catch (error) {
+    console.error('Error retrieving thumbnail:', error);
+    throw error;
+  }
 };

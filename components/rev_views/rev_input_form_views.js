@@ -12,15 +12,7 @@
  */
 
 import React, {useState, useRef, useCallback} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
@@ -32,6 +24,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from './RevSiteStyles';
+import {RevCenteredImage} from './rev_page_views';
 
 export const RevTagsInput = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -318,7 +311,7 @@ export const RevDropdownListSelector = ({
 
 export const revOpenCropnImagePicker = (
   revOnCropImageSelectCallBack,
-  {revCropWidth = 300, revCropHeight = 300},
+  {revCropWidth = 0, revCropHeight = 0},
 ) => {
   ImagePicker.openPicker({
     width: revCropWidth, // Set the desired width of the cropped image
@@ -494,6 +487,193 @@ export const RevUploadFilesTab = ({
       }}>
       {revUploadTab}
     </TouchableOpacity>
+  );
+};
+
+export const RevEntityIconCropperView = ({
+  revCallBackFunc,
+  revCropDimensions = {},
+  revPreviewDimensions = {},
+  revDefaultIconPath = '',
+}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const {revCropWidth = 0, revCropHeight = 0} = revCropDimensions;
+  const {revPreviewWidth = 55, revPreviewHeight = 55} = revPreviewDimensions;
+
+  let revDefaultIconView = (
+    <RevCenteredImage
+      revImageURI={revDefaultIconPath}
+      revImageDimens={{revWidth: '100%', revHeight: '100%'}}
+    />
+  );
+
+  const [revIconView, setIconView] = useState(revDefaultIconView);
+
+  let revAddedMediaContainer = {
+    borderStyle: 'dotted',
+    borderBottomColor: '#EEE',
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+    marginTop: 8,
+    paddingLeft: 8,
+  };
+
+  let revMainProfilePicContainer = {
+    width: revPreviewWidth + 6,
+    height: revPreviewHeight + 6,
+    borderStyle: 'dashed',
+    borderColor: '#EEE',
+    borderWidth: 1,
+    padding: 2,
+  };
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        revOpenCropnImagePicker(
+          revCroppedImageData => {
+            let revCroppedImageDataPath = revCroppedImageData.path;
+
+            let revNewIconView = (
+              <View style={{overflow: 'hidden'}}>
+                <RevCenteredImage
+                  revImageURI={revCroppedImageDataPath}
+                  revImageDimens={{
+                    revWidth: revPreviewWidth,
+                    revHeight: revPreviewHeight,
+                  }}
+                />
+              </View>
+            );
+
+            setIconView(revNewIconView);
+            revCallBackFunc(revCroppedImageData);
+          },
+          {revCropWidth: revCropWidth, revCropHeight: revCropHeight},
+        );
+      }}>
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          revAddedMediaContainer,
+          {alignItems: 'center'},
+        ]}>
+        <View style={[revMainProfilePicContainer]}>{revIconView}</View>
+
+        <Text>{'  '}</Text>
+
+        <FontAwesome
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}
+          name="plus"
+        />
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          {' Select main profile Pic'}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export const RevBannerCropperView = ({
+  revCallBackFunc,
+  revCropDimensions = {},
+  revPreviewDimensions = {},
+  revDefaultCropBannerIconPath = '',
+}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const {revCropWidth = 600, revCropHeight = 600} = revCropDimensions;
+  const {revPreviewWidth = 55, revPreviewHeight = 55} = revPreviewDimensions;
+
+  let revSavedMainEntityBannerIconView = (
+    <RevCenteredImage
+      revImageURI={revDefaultCropBannerIconPath}
+      revImageDimens={{revWidth: revPreviewWidth, revHeight: revPreviewHeight}}
+    />
+  );
+
+  const [revBannerIcon, setRevBannerIcon] = useState(
+    revSavedMainEntityBannerIconView,
+  );
+
+  let revAddedMediaContainer = {
+    borderStyle: 'dotted',
+    borderBottomColor: '#EEE',
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+    marginTop: 8,
+    paddingLeft: 8,
+  };
+
+  return (
+    <View style={revSiteStyles.revFlexContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          revOpenCropnImagePicker(
+            revCroppedImageData => {
+              let revCroppedImageDataPath = revCroppedImageData.path;
+
+              let revMainEntityIconViewView = (
+                <View style={{marginTop: 4, overflow: 'hidden'}}>
+                  <RevCenteredImage
+                    revImageURI={revCroppedImageDataPath}
+                    revImageDimens={{
+                      revWidth: revPreviewWidth,
+                      revHeight: revPreviewHeight,
+                    }}
+                  />
+                </View>
+              );
+
+              setRevBannerIcon(revMainEntityIconViewView);
+              revCallBackFunc(revCroppedImageDataPath);
+            },
+            {revCropWidth: revCropWidth, revCropHeight: revCropHeight},
+          );
+        }}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            revAddedMediaContainer,
+            {alignItems: 'center'},
+          ]}>
+          <FontAwesome
+            name={'file-picture-o'}
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
+          />
+
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}
+            name="long-arrow-right"
+          />
+
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            {' Select banner Pic'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <View style={{height: revPreviewHeight}}>{revBannerIcon}</View>
+    </View>
   );
 };
 
