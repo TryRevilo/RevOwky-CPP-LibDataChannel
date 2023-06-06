@@ -635,7 +635,7 @@ export const RevBannerCropperView = ({
               );
 
               setRevBannerIcon(revMainEntityIconViewView);
-              revCallBackFunc(revCroppedImageDataPath);
+              revCallBackFunc(revCroppedImageData);
             },
             {revCropWidth: revCropWidth, revCropHeight: revCropHeight},
           );

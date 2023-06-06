@@ -1,7 +1,13 @@
 import {NativeModules} from 'react-native';
 import React from 'react';
 
-import {revIsEmptyVar} from '../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyJSONObject,
+  revIsEmptyVar,
+} from '../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetMetadataValue} from '../../rev_db_struct_models/revEntityMetadata';
+
+const rev_settings = require('../../../../rev_res/rev_settings.json');
 
 const {
   RevPersLibCreate_React,
@@ -167,6 +173,19 @@ export const revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUI
     return JSON.parse(revEntityGUIDsString);
   };
 
+export const revPersGetSubjectGUID_BY_RelStr_TargetGUID = (
+  revEntityRelationship,
+  revEntityTargetGUID,
+) => {
+  let revEntityGUIDsString =
+    RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+      revEntityRelationship,
+      revEntityTargetGUID,
+    );
+
+  return JSON.parse(revEntityGUIDsString);
+};
+
 export const revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID =
   (revEntityRelationship, revEntityTargetGUID) => {
     let revEntityGUIDsString =
@@ -282,3 +301,52 @@ export function useRevPersGetALLRevEntity_By_SubType_RevVarArgs() {
 
   return {revPersGetALLRevEntity_By_SubType_RevVarArgs};
 }
+
+export const useRevGetEntityIcon = () => {
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
+
+  const revGetEntityIcon = revEntityGUID => {
+    let revMainEntityIconGUID = revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+      'rev_entity_icon_of',
+      revEntityGUID,
+    );
+
+    if (revMainEntityIconGUID < 1) {
+      return {};
+    }
+
+    let revMainEntityIconFileEntity = revPersGetRevEnty_By_EntityGUID(
+      revMainEntityIconGUID,
+    );
+
+    if (revIsEmptyJSONObject(revMainEntityIconFileEntity)) {
+      return {};
+    }
+
+    if (
+      !('_revEntityMetadataList' in revMainEntityIconFileEntity) ||
+      !Array.isArray(revMainEntityIconFileEntity._revEntityMetadataList)
+    ) {
+      return {};
+    }
+
+    let revMainEntityIconVal = revGetMetadataValue(
+      revMainEntityIconFileEntity._revEntityMetadataList,
+      'rev_remote_file_name',
+    );
+
+    let revMainEntityIconValPath =
+      'file://' +
+      rev_settings.revPublishedMediaDir +
+      '/' +
+      revMainEntityIconVal;
+
+    return {
+      revFileName: revMainEntityIconVal,
+      revMainEntityIconLocalPath: revMainEntityIconValPath,
+    };
+  };
+
+  return {revGetEntityIcon};
+};

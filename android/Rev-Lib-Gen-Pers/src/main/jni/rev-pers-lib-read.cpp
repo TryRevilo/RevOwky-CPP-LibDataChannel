@@ -447,9 +447,6 @@ void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, RE
     // LOAD INFO
     RevLoadEntityInfo(env, jPosRec, cPosRec, revEntityJniPosRec);
 
-    // LOAD REV ENTITY PUBLISHER
-    RevLoadPublisher(env, jPosRec, cPosRec, revEntityJniPosRec);
-
 }
 
 /** ######################################################################### **/

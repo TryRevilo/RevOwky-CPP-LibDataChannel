@@ -11,6 +11,7 @@ import {
   revIsEmptyVar,
   revIsEmptyJSONObject,
 } from '../rev_function_libs/rev_gen_helper_functions';
+import {useRevGetEntityPictureAlbums} from '../components/rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 const RevSiteDataContext = createContext();
 
@@ -29,6 +30,7 @@ const RevSiteDataContextProvider = ({children}) => {
 
   const {revGetSiteEntity} = useRevGetSiteEntity();
   const {revCreateSiteEntity} = useRevCreateSiteEntity();
+  const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
   useEffect(() => {
     if (
@@ -43,6 +45,11 @@ const RevSiteDataContextProvider = ({children}) => {
       );
 
       let revLoggedInEntity = JSON.parse(revLoggedInEntityStr);
+
+      let revEntityPicsAlbumArr = revGetEntityPictureAlbums(
+        REV_LOGGED_IN_ENTITY_GUID,
+      );
+      revLoggedInEntity['revEntityPicsAlbum'] = revEntityPicsAlbumArr[0];
 
       SET_REV_LOGGED_IN_ENTITY(revLoggedInEntity);
 

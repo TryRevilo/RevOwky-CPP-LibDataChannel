@@ -77,6 +77,14 @@ int revPersGetRelId(char *revEntityrelationship)
     {
         revRelId = 15;
     }
+    else if (strcmp(revEntityrelationship, "rev_entity_icon_of") == 0)
+    {
+        revRelId = 16;
+    }
+    else if (strcmp(revEntityrelationship, "rev_entity_banner_icon_of") == 0)
+    {
+        revRelId = 17;
+    }
     else
     {
         revRelId = -1;
@@ -138,6 +146,12 @@ char *getRevEntityRelValue(int relTypeValId)
         break;
     case 15:
         relTypeVal = "rev_flag_of";
+        break;
+    case 16:
+        relTypeVal = "rev_entity_icon_of";
+        break;
+    case 17:
+        relTypeVal = "rev_entity_banner_icon_of";
         break;
     default:
         relTypeVal = "-1";

@@ -12,6 +12,11 @@ import {REV_ENTITY_STRUCT} from '../../rev_db_struct_models/revEntity';
 import {REV_METADATA_FILLER} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../rev_db_struct_models/revEntityRelationship';
 
+import {
+  useRevPersGetRevEnty_By_EntityGUID,
+  revPersGetSubjectGUID_BY_RelStr_TargetGUID,
+} from '../rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
 import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataComponent';
 
 import {
@@ -24,7 +29,7 @@ import {
 
 import {
   revCompareStrings,
-  revGetFilePathType,
+  revGetPathType,
   revStringEmpty,
 } from '../../../../rev_function_libs/rev_string_function_libs';
 
@@ -126,8 +131,6 @@ export const revWriteFile = async revFile => {
   let revURI = revFile.uri;
   let revNewFileName = revFile.revNewFileName;
 
-  let revFilePathType = revGetFilePathType(revURI);
-
   const revDirectoryPath = '/storage/emulated/0/Documents/Owki/rev_media/';
 
   let revDestFilePath = revDirectoryPath + revNewFileName;
@@ -157,35 +160,42 @@ export const useRevCreateMediaAlbum = () => {
     revEntityContainerGUID,
     revFileObjectsArr,
   ) => {
-    let revPicAlbumObject = REV_ENTITY_STRUCT();
-    revPicAlbumObject._revEntityResolveStatus = -1;
-    revPicAlbumObject._revEntityChildableStatus = 301;
-    revPicAlbumObject._revEntityType = 'rev_object';
-    revPicAlbumObject._revEntitySubType = 'rev_pics_album';
-    revPicAlbumObject._revEntityOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
-    revPicAlbumObject.revEntityContainerGUID = revEntityContainerGUID;
-    revPicAlbumObject._revTimeCreated = new Date().getTime();
-
-    let revPicAlbumEntityGUID = revCreateNewEntity(revPicAlbumObject);
-
-    if (revPicAlbumEntityGUID < 1) {
-      return;
-    }
-
-    /** START CREATE PICS ALBUM REL */
-    let revPicsAlbumRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revPicsAlbumRel._revEntityRelationshipType = 'rev_pics_album_of';
-    revPicsAlbumRel._revEntityTargetGUID = revEntityContainerGUID;
-    revPicsAlbumRel._revEntitySubjectGUID = revPicAlbumEntityGUID;
-
-    let revPicsAlbumRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-      JSON.stringify(revPicsAlbumRel),
+    let revPicAlbumEntityGUID = revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+      'rev_pics_album_of',
+      revEntityContainerGUID,
     );
 
-    if (revPicsAlbumRelId < 1) {
-      return;
+    if (revPicAlbumEntityGUID < 1) {
+      let revPicAlbumObject = REV_ENTITY_STRUCT();
+      revPicAlbumObject._revEntityResolveStatus = -1;
+      revPicAlbumObject._revEntityChildableStatus = 301;
+      revPicAlbumObject._revEntityType = 'rev_object';
+      revPicAlbumObject._revEntitySubType = 'rev_pics_album';
+      revPicAlbumObject._revEntityOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
+      revPicAlbumObject.revEntityContainerGUID = revEntityContainerGUID;
+      revPicAlbumObject._revTimeCreated = new Date().getTime();
+
+      revPicAlbumEntityGUID = revCreateNewEntity(revPicAlbumObject);
+
+      if (revPicAlbumEntityGUID < 1) {
+        return;
+      }
+
+      /** START CREATE PICS ALBUM REL */
+      let revPicsAlbumRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+      revPicsAlbumRel._revEntityRelationshipType = 'rev_pics_album_of';
+      revPicsAlbumRel._revEntityTargetGUID = revEntityContainerGUID;
+      revPicsAlbumRel._revEntitySubjectGUID = revPicAlbumEntityGUID;
+
+      let revPicsAlbumRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+        JSON.stringify(revPicsAlbumRel),
+      );
+
+      if (revPicsAlbumRelId < 1) {
+        return;
+      }
+      /** END CREATE PICS ALBUM REL */
     }
-    /** END CREATE PICS ALBUM REL */
 
     /** START SET OBJECT */
     let revEntityGUIDs = [];
@@ -227,7 +237,35 @@ export const useRevCreateMediaAlbum = () => {
         );
 
         if (revPicRelId > 0) {
-          await revWriteFile(revFile);
+          try {
+            await revWriteFile(revFile);
+          } catch (error) {
+            console.log('*** error -revWriteFile', error);
+          }
+        }
+
+        if ('revEntityIcon' in revFile) {
+          let revMainEntityIconRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+          revMainEntityIconRel._revEntityRelationshipType =
+            'rev_entity_icon_of';
+          revMainEntityIconRel._revEntityTargetGUID = revEntityContainerGUID;
+          revMainEntityIconRel._revEntitySubjectGUID = revPersFileEntityGUID;
+
+          RevPersLibCreate_React.revPersRelationshipJSON(
+            JSON.stringify(revMainEntityIconRel),
+          );
+        }
+
+        if ('revEntityBannerIcon' in revFile) {
+          let revEntityBannerIconRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+          revEntityBannerIconRel._revEntityRelationshipType =
+            'rev_entity_banner_icon_of';
+          revEntityBannerIconRel._revEntityTargetGUID = revEntityContainerGUID;
+          revEntityBannerIconRel._revEntitySubjectGUID = revPersFileEntityGUID;
+
+          RevPersLibCreate_React.revPersRelationshipJSON(
+            JSON.stringify(revEntityBannerIconRel),
+          );
         }
       }
     }
@@ -261,6 +299,9 @@ export const useRevSetRemoteRelGUID = () => {
 
 export const useRevSaveNewEntity = () => {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
+
+  const {revPersGetRevEnty_By_EntityGUID} =
+    useRevPersGetRevEnty_By_EntityGUID();
   const {revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID} =
     useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID();
 
@@ -288,8 +329,26 @@ export const useRevSaveNewEntity = () => {
       return -1;
     }
 
-    if ('_revEntityGUID' in revVarArgs && revVarArgs._revEntityGUID) {
-      let revEntityGUID = revVarArgs._revEntityGUID;
+    let revPersEntityGUID = -1;
+    let revPersinfoEntityGUID = -1;
+
+    if (
+      '_revEntityGUID' in revVarArgs &&
+      revVarArgs._revEntityGUID &&
+      revVarArgs._revEntityGUID > 0
+    ) {
+      revPersEntityGUID = revVarArgs._revEntityGUID;
+
+      let revSavedEntity = revPersGetRevEnty_By_EntityGUID(
+        revVarArgs._revEntityGUID,
+      );
+
+      if ('_revInfoEntity' in revSavedEntity) {
+        revPersinfoEntityGUID = revSavedEntity._revInfoEntity._revEntityGUID;
+      }
+    }
+
+    if (revPersinfoEntityGUID && revPersinfoEntityGUID > 0) {
       let revPersEntityInfoMetadataList =
         revVarArgs.revPersEntityInfoMetadataList;
 
@@ -301,7 +360,7 @@ export const useRevSaveNewEntity = () => {
         let revMetadata =
           revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(
             revPersEntityInfoMetadata._revMetadataName,
-            revEntityGUID,
+            revPersinfoEntityGUID,
           );
 
         let revMetadataId = revMetadata.revMetadataId;
@@ -326,7 +385,8 @@ export const useRevSaveNewEntity = () => {
 
           console.log(revMetadataId, '>>> revUpdateStatus', revUpdateStatus);
         } else {
-          revPersEntityInfoMetadata['_revMetadataEntityGUID'] = revEntityGUID;
+          revPersEntityInfoMetadata['_revMetadataEntityGUID'] =
+            revPersinfoEntityGUID;
 
           console.log(
             revMetadataId,
@@ -342,124 +402,120 @@ export const useRevSaveNewEntity = () => {
           console.log('>>> revPersMetedataStatus', revPersMetedataStatus);
         }
       }
-
-      return;
     } else {
-      return;
-    }
+      let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
 
-    let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
+      let revPersEntityData = REV_ENTITY_STRUCT();
+      revPersEntityData._revEntityType = 'rev_object';
+      revPersEntityData._revEntitySubType = revVarArgs.revEntitySubType;
+      revPersEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
+      revPersEntityData._revEntityContainerGUID =
+        'revContainerEntityGUID' in revVarArgs &&
+        revVarArgs.revContainerEntityGUID > 0
+          ? revVarArgs.revContainerEntityGUID
+          : -1;
 
-    let revPersEntityData = REV_ENTITY_STRUCT();
-    revPersEntityData._revEntityType = 'rev_object';
-    revPersEntityData._revEntitySubType = revVarArgs.revEntitySubType;
-    revPersEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
-    revPersEntityData._revEntityContainerGUID =
-      'revContainerEntityGUID' in revVarArgs &&
-      revVarArgs.revContainerEntityGUID > 0
-        ? revVarArgs.revContainerEntityGUID
-        : -1;
+      revPersEntityGUID = revCreateNewEntity(revPersEntityData);
 
-    let revPersEntityGUID = revCreateNewEntity(revPersEntityData);
+      revPersEntityData['_revEntityGUID'] = revPersEntityGUID;
 
-    revPersEntityData['_revEntityGUID'] = revPersEntityGUID;
-
-    if (revPersEntityGUID < 1) {
-      return -1;
-    }
-
-    /** START SAVE SUBJECT RELS */
-    if (
-      revVarArgs.hasOwnProperty('revSubjectRelsArr') &&
-      Array.isArray(revVarArgs.revSubjectRelsArr)
-    ) {
-      let revSubjectRelsArr = revVarArgs.revSubjectRelsArr;
-
-      for (let i = 0; i < revSubjectRelsArr.length; i++) {
-        let revSubjectRel = revSubjectRelsArr[i];
-
-        if (revIsEmptyJSONObject(revSubjectRel)) {
-          continue;
-        }
-
-        if (
-          !revSubjectRel ||
-          !revSubjectRel._revEntityTargetGUID ||
-          revSubjectRel._revEntityTargetGUID < 1
-        ) {
-          continue;
-        }
-
-        revSubjectRel._revEntitySubjectGUID = revPersEntityGUID;
-
-        let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-          JSON.stringify(revSubjectRel),
-        );
+      if (revPersEntityGUID < 1) {
+        return -1;
       }
-    }
-    /** END SAVE SUBJECT RELS */
 
-    /** START SAVE TARGET RELS */
-    if (
-      revVarArgs.hasOwnProperty('revTargetRelsArr') &&
-      Array.isArray(revVarArgs.revTargetRelsArr)
-    ) {
-      let revTargetRelsArr = revVarArgs.revTargetRelsArr;
+      /** START SAVE SUBJECT RELS */
+      if (
+        revVarArgs.hasOwnProperty('revSubjectRelsArr') &&
+        Array.isArray(revVarArgs.revSubjectRelsArr)
+      ) {
+        let revSubjectRelsArr = revVarArgs.revSubjectRelsArr;
 
-      for (let i = 0; i < revTargetRelsArr.length; i++) {
-        let revTargetRel = revTargetRelsArr[i];
+        for (let i = 0; i < revSubjectRelsArr.length; i++) {
+          let revSubjectRel = revSubjectRelsArr[i];
 
-        if (revIsEmptyJSONObject(revTargetRel)) {
-          continue;
+          if (revIsEmptyJSONObject(revSubjectRel)) {
+            continue;
+          }
+
+          if (
+            !revSubjectRel ||
+            !revSubjectRel._revEntityTargetGUID ||
+            revSubjectRel._revEntityTargetGUID < 1
+          ) {
+            continue;
+          }
+
+          revSubjectRel._revEntitySubjectGUID = revPersEntityGUID;
+
+          let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+            JSON.stringify(revSubjectRel),
+          );
         }
-
-        if (
-          !revTargetRel ||
-          !revTargetRel._revEntitySubjectGUID ||
-          revTargetRel._revEntitySubjectGUID < 1
-        ) {
-          continue;
-        }
-
-        revTargetRel._revEntityTargetGUID = revPersEntityGUID;
-
-        let revTargetRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-          JSON.stringify(revTargetRel),
-        );
       }
-    }
-    /** END SAVE TARGET RELS */
+      /** END SAVE SUBJECT RELS */
 
-    /** START REV INFO */
-    let revPersInfoEntityData = REV_ENTITY_STRUCT();
-    revPersInfoEntityData._revEntityType = 'rev_object';
-    revPersInfoEntityData._revEntitySubType = 'rev_entity_info';
-    revPersInfoEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
-    revPersInfoEntityData._revEntityContainerGUID = revPersEntityGUID;
-    revPersInfoEntityData._revEntityMetadataList =
-      revVarArgs.revPersEntityInfoMetadataList;
+      /** START SAVE TARGET RELS */
+      if (
+        revVarArgs.hasOwnProperty('revTargetRelsArr') &&
+        Array.isArray(revVarArgs.revTargetRelsArr)
+      ) {
+        let revTargetRelsArr = revVarArgs.revTargetRelsArr;
 
-    let resEntityInfoGUID = revCreateNewEntity(revPersInfoEntityData);
+        for (let i = 0; i < revTargetRelsArr.length; i++) {
+          let revTargetRel = revTargetRelsArr[i];
 
-    revPersInfoEntityData['_revEntityGUID'] = resEntityInfoGUID;
-    revPersEntityData['_revInfoEntity'] = revPersInfoEntityData;
+          if (revIsEmptyJSONObject(revTargetRel)) {
+            continue;
+          }
 
-    if (resEntityInfoGUID < 0) {
-      return -1;
-    }
+          if (
+            !revTargetRel ||
+            !revTargetRel._revEntitySubjectGUID ||
+            revTargetRel._revEntitySubjectGUID < 1
+          ) {
+            continue;
+          }
 
-    let revInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revInfoRel._revEntityRelationshipType = 'rev_entity_info';
-    revInfoRel._revOwnerGUID = revEntityOwnerGUID;
-    revInfoRel._revEntityTargetGUID = revPersEntityGUID;
-    revInfoRel._revEntitySubjectGUID = resEntityInfoGUID;
+          revTargetRel._revEntityTargetGUID = revPersEntityGUID;
 
-    let revinfoRelId = RevPersLibCreate_React.revPersRelationshipJSON(
-      JSON.stringify(revInfoRel),
-    );
+          let revTargetRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+            JSON.stringify(revTargetRel),
+          );
+        }
+      }
+      /** END SAVE TARGET RELS */
 
-    if (revinfoRelId < 1) {
-      return -1;
+      /** START REV INFO */
+      let revPersInfoEntityData = REV_ENTITY_STRUCT();
+      revPersInfoEntityData._revEntityType = 'rev_object';
+      revPersInfoEntityData._revEntitySubType = 'rev_entity_info';
+      revPersInfoEntityData._revEntityOwnerGUID = revEntityOwnerGUID;
+      revPersInfoEntityData._revEntityContainerGUID = revPersEntityGUID;
+      revPersInfoEntityData._revEntityMetadataList =
+        revVarArgs.revPersEntityInfoMetadataList;
+
+      revPersinfoEntityGUID = revCreateNewEntity(revPersInfoEntityData);
+
+      revPersInfoEntityData['_revEntityGUID'] = revPersinfoEntityGUID;
+      revPersEntityData['_revInfoEntity'] = revPersInfoEntityData;
+
+      if (revPersinfoEntityGUID < 0) {
+        return -1;
+      }
+
+      let revInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+      revInfoRel._revEntityRelationshipType = 'rev_entity_info';
+      revInfoRel._revOwnerGUID = revEntityOwnerGUID;
+      revInfoRel._revEntityTargetGUID = revPersEntityGUID;
+      revInfoRel._revEntitySubjectGUID = revPersinfoEntityGUID;
+
+      let revinfoRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+        JSON.stringify(revInfoRel),
+      );
+
+      if (revinfoRelId < 1) {
+        return -1;
+      }
     }
 
     // START Save selected media
@@ -479,7 +535,7 @@ export const useRevSaveNewEntity = () => {
       );
     });
 
-    return revPersEntityData;
+    return revPersEntityGUID;
   };
 
   return {revSaveNewEntity};

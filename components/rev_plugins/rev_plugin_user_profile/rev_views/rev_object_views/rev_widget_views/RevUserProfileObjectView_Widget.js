@@ -184,7 +184,13 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
       revImageDimens={{revWidth: '100%', revHeight: '100%'}}
     />
   ) : (
-    <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
+    <FontAwesome
+      name="user"
+      style={[
+        styles.revPublisherMainNonIcon,
+        {marginTop: '10%', marginLeft: '47%'},
+      ]}
+    />
   );
 
   let revRetView = (

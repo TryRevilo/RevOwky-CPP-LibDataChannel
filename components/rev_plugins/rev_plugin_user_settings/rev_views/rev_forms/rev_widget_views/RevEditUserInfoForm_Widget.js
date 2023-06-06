@@ -24,8 +24,8 @@ import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
 
 import {
-  revGetFileAbsolutePath,
   revGetFileNameFromPath,
+  revIsEmptyJSONObject,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
@@ -38,19 +38,23 @@ import {
   RevBannerCropperView,
 } from '../../../../../rev_views/rev_input_form_views';
 
-import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
-import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
-
 import {
-  revCompareStrings,
-  revReplaceWiteSpaces,
-} from '../../../../../../rev_function_libs/rev_string_function_libs';
+  revPersGetSubjectGUID_BY_RelStr_TargetGUID,
+  useRevGetEntityIcon,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
+
+import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevEditUserInfoFormAction} from '../../../rev_actions/rev_edit_user_info_action';
-
-import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {revGenerateVideoThumbnail} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
+const rev_settings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -59,8 +63,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
+  const {revGetEntityIcon} = useRevGetEntityIcon();
+
   let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
-  let revInfoEntityGUID = revInfoEntity._revEntityGUID;
   let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
 
   let revFullNames = revGetMetadataValue(
@@ -75,10 +80,13 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     revInfoEntityMetadataList,
     'rev_about_entity_info',
   );
-  let revMainEntityIconVal = revGetMetadataValue(
-    revInfoEntityMetadataList,
-    'rev_main_entity_icon_val',
+
+  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon(
+    REV_LOGGED_IN_ENTITY_GUID,
   );
+
+  console.log('>>> revMainEntityIconLocalPath', revMainEntityIconLocalPath);
+
   let revMainEntityBannerIconVal = revGetMetadataValue(
     revInfoEntityMetadataList,
     'rev_main_entity_banner_icon_val',
@@ -92,8 +100,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   const [revImagesDataArray, setRevImagesDataArray] = useState([]);
   const [revVideosDataArray, setRevVideosDataArray] = useState([]);
-  const [revMainEntityIconPath, setRevMainEntityIconPath] =
-    useState(revMainEntityIconVal);
+  const [revMainEntityIconPath, setRevMainEntityIconPath] = useState(
+    revMainEntityIconLocalPath,
+  );
 
   const [revEntityBannerIconPath, setRevEntityBannerIconPath] = useState(
     revMainEntityBannerIconVal,
@@ -144,7 +153,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   const handleRevSaveInfoTabPress = () => {
     let revPassVarArgs = {
-      _revEntityGUID: revInfoEntityGUID,
+      _revEntityGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameTxt,
       revEntityDescVal: revEntityDescTxt,
@@ -296,7 +305,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
       <RevEntityIconCropperView
         revCropDimensions={{revWidth: 600, revHeight: 600}}
-        revDefaultIconPath={revMainEntityIconVal}
+        revDefaultIconPath={revMainEntityIconPath}
         revCallBackFunc={revCroppedImageData => {
           let revIconPath = revCroppedImageData.path;
 
@@ -312,6 +321,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             size: revCroppedImageData.size,
             type: revCroppedImageData.mime,
             uri: revIconPath,
+            revEntityIcon: 'revEntityIcon',
           });
 
           setRevImagesDataArray(revNewSelectedImagesArr);
@@ -319,14 +329,12 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
       />
 
       <RevBannerCropperView
-        revDefaultCropBannerIconPath={revMainEntityBannerIconVal}
+        revDefaultCropBannerIconPath={revEntityBannerIconPath}
         revCropDimensions={{revCropWidth: 1200, revCropHeight: 300}}
         revPreviewDimensions={{revPreviewWidth: '100%', revPreviewHeight: 100}}
-        revDefaultIconPath={revMainEntityIconVal}
+        revDefaultIconPath={revEntityBannerIconPath}
         revCallBackFunc={revCroppedImageData => {
           let revCroppedBannerIconPath = revCroppedImageData.path;
-
-          setRevEntityBannerIconPath(revCroppedBannerIconPath);
 
           let revNewSelectedImagesArr = revImagesDataArray.filter(
             revCurrItem =>
@@ -340,8 +348,10 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
             size: revCroppedImageData.size,
             type: revCroppedImageData.mime,
             uri: revCroppedBannerIconPath,
+            revEntityBannerIcon: true,
           });
 
+          setRevEntityBannerIconPath(revCroppedBannerIconPath);
           setRevImagesDataArray(revNewSelectedImagesArr);
         }}
       />
