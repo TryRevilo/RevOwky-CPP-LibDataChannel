@@ -88,6 +88,10 @@ export const revIsEmptyVar = v => {
 };
 
 export const revGetFileType = revFile => {
+  if (revStringEmpty(revFile)) {
+    return null;
+  }
+
   let filename = revFile.name;
   let revFileType = filename.slice(
     (Math.max(0, filename.lastIndexOf('.')) || Infinity) + 1,
@@ -444,6 +448,7 @@ export const revHexToRgba = (hex, opacity) => {
 };
 
 import {NativeModules, Platform} from 'react-native';
+import {revStringEmpty} from './rev_string_function_libs';
 
 export const revGenerateVideoThumbnail = async revParams => {
   try {

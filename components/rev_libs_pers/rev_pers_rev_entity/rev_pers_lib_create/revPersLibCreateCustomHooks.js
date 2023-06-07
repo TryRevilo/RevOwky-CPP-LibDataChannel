@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import {NativeModules} from 'react-native';
 
-var RNFS = require('react-native-fs');
-import RNFetchBlob from 'react-native-fetch-blob';
-
 import {RevSiteDataContext} from '../../../../rev_contexts/RevSiteDataContext';
 
-import {useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID} from '../../rev_pers_metadata/rev_read/RevPersReadMetadataCustomHooks';
+import {
+  useRevGetRevEntityMetadata_By_MetadataName_MetadataValue,
+  useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID,
+} from '../../rev_pers_metadata/rev_read/RevPersReadMetadataCustomHooks';
 
 import {REV_ENTITY_STRUCT} from '../../rev_db_struct_models/revEntity';
 import {REV_METADATA_FILLER} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -30,7 +30,7 @@ import {
 
 import {
   revCompareStrings,
-  revGetPathType,
+  revReplaceWiteSpaces,
   revStringEmpty,
 } from '../../../../rev_function_libs/rev_string_function_libs';
 
@@ -204,6 +204,12 @@ export const useRevCreateMediaAlbum = () => {
     for (let i = 0; i < revFileObjectsArr.length; i++) {
       let revFile = revFileObjectsArr[i];
 
+      console.log('>>> revFile', revFile);
+
+      if (revStringEmpty(revFile)) {
+        continue;
+      }
+
       let revFileType = revGetFileType(revFile);
       let revFileSubtype = revGetFileObjectSubType(revFile);
 
@@ -315,6 +321,60 @@ export const useRevSetRemoteRelGUID = () => {
   return {revSetRemoteRelGUID};
 };
 
+export const useRevCreateNewTag = () => {
+  const {revGetRevEntityMetadata_By_MetadataName_MetadataValue} =
+    useRevGetRevEntityMetadata_By_MetadataName_MetadataValue();
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  const revCreateNewTag = revVarArgs => {
+    const {revEntityNameVal = '', revEntityDescVal = ''} = revVarArgs;
+    const {revContainerEntityGUID = -1} = revVarArgs;
+
+    if (revStringEmpty(revEntityNameVal) || revContainerEntityGUID < 0) {
+      return -1;
+    }
+
+    let revEntityNameValPers = revReplaceWiteSpaces(revEntityNameVal, '_');
+
+    let revSavedTagMetadata =
+      revGetRevEntityMetadata_By_MetadataName_MetadataValue(
+        'rev_entity_name_val',
+        revEntityNameVal,
+      );
+
+    if (!revIsEmptyJSONObject(revSavedTagMetadata)) {
+      return revSavedTagMetadata._revMetadataEntityGUID;
+    }
+
+    revVarArgs['revEntitySubType'] = 'rev_tag';
+    revVarArgs['revEntityOwnerGUID'] = REV_LOGGED_IN_ENTITY_GUID;
+
+    let revPersEntityInfoMetadataList = [
+      REV_METADATA_FILLER('rev_entity_name_val', revEntityNameValPers),
+    ];
+
+    if (!revStringEmpty(revEntityDescVal)) {
+      revPersEntityInfoMetadataList.push(
+        REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
+      );
+    }
+
+    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+
+    let revEntityTagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
+    revEntityTagRel._revEntityRelationshipType = 'rev_tag_of';
+    revEntityTagRel._revEntityTargetGUID = revContainerEntityGUID;
+    revEntityTagRel._revEntitySubjectGUID = -1;
+
+    revVarArgs['revSubjectRelsArr'] = [revEntityTagRel];
+
+    return revVarArgs;
+  };
+
+  return {revCreateNewTag};
+};
+
 export const useRevSaveNewEntity = () => {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
@@ -325,6 +385,7 @@ export const useRevSaveNewEntity = () => {
 
   const {revCreateNewEntity} = useRevCreateNewEntity();
   const {revCreateMediaAlbum} = useRevCreateMediaAlbum();
+  const {revCreateNewTag} = useRevCreateNewTag();
 
   const revSaveNewEntity = async revVarArgs => {
     if (revIsEmptyJSONObject(revVarArgs)) {
@@ -543,9 +604,35 @@ export const useRevSaveNewEntity = () => {
     ) {
       let revSelectedMedia = revVarArgs.revSelectedMedia;
 
-      await revCreateMediaAlbum(revPersEntityGUID, revSelectedMedia);
+      try {
+        await revCreateMediaAlbum(revPersEntityGUID, revSelectedMedia);
+      } catch (error) {
+        console.log('*** error -revCreateMediaAlbum', error);
+      }
     }
     // END Save selected media
+
+    // START Save Tags
+    if (
+      revVarArgs.hasOwnProperty('revTagsArr') &&
+      Array.isArray(revVarArgs.revTagsArr)
+    ) {
+      let revTagsArr = revVarArgs.revTagsArr;
+
+      for (let i = 0; i < revTagsArr.length; i++) {
+        let revCurrTag = revTagsArr[i];
+        revCurrTag['revContainerEntityGUID'] = revPersEntityGUID;
+
+        let revPersTagVarArgs = revCreateNewTag(revCurrTag);
+
+        try {
+          await revSaveNewEntity(revPersTagVarArgs);
+        } catch (error) {
+          console.log('*** error -revCreateNewTag', error);
+        }
+      }
+    }
+    // END Save Tags
 
     revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
       console.log(

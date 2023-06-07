@@ -17,6 +17,7 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {
   RevTextInputWithCount,
+  RevPasswordInput,
   RevDateTimePicker,
 } from '../../../../../rev_views/rev_input_form_views';
 
@@ -72,14 +73,15 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
           revSiteStyles.revFlexContainer,
           styles.revPasswordInputsAreaContainer,
         ]}>
-        <TextInput
-          style={revSiteStyles.revSiteTextInput}
-          placeholder=" confirm password"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevSearchText(newText);
+        <RevPasswordInput
+          revVarArgs={{
+            revPlaceHolderTxt: ' confirm password',
+            revMinCharacterCount: 8,
+            revTextInputOnChangeCallBack: revNewTxt => {
+              setRevBriefInfoTxt(revNewTxt);
+            },
+            revContainerStyles: {borderColor: '#F7F7F7', borderTopWidth: 0},
           }}
-          defaultValue={revSearchText}
         />
       </View>
 
@@ -88,24 +90,26 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
           revSiteStyles.revFlexContainer,
           styles.revIdInputsAreaContainer,
         ]}>
-        <TextInput
-          style={revSiteStyles.revSiteTextInput}
-          placeholder=" @-EMail.com"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevSearchText(newText);
+        <RevTextInputWithCount
+          revVarArgs={{
+            revPlaceHolderTxt: ' @-EMail.com',
+            revTextInputOnChangeCallBack: revNewTxt => {
+              setRevBriefInfoTxt(revNewTxt);
+            },
+            revMaxTxtCount: 100,
+            revContainerStyles: {borderColor: '#F7F7F7', borderTopWidth: 0},
           }}
-          defaultValue={revSearchText}
         />
 
-        <TextInput
-          style={[revSiteStyles.revSiteTextInput]}
-          placeholder=" Phone #"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevSearchText(newText);
+        <RevTextInputWithCount
+          revVarArgs={{
+            revPlaceHolderTxt: ' Phone #',
+            revTextInputOnChangeCallBack: revNewTxt => {
+              setRevBriefInfoTxt(revNewTxt);
+            },
+            revMaxTxtCount: 17,
+            revContainerStyles: {borderColor: '#F7F7F7', borderTopWidth: 0},
           }}
-          defaultValue={revSearchText}
         />
 
         <RevTextInputWithCount
@@ -115,6 +119,7 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
               setRevBriefInfoTxt(revNewTxt);
             },
             revMaxTxtCount: 17,
+            revContainerStyles: {borderColor: '#F7F7F7', borderTopWidth: 0},
           }}
         />
 
@@ -125,6 +130,7 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
               setRevBriefInfoTxt(revNewTxt);
             },
             revMaxTxtCount: 3,
+            revContainerStyles: {borderColor: '#F7F7F7', borderTopWidth: 0},
           }}
         />
 
@@ -211,18 +217,16 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   revPasswordInputsAreaContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 9,
+    marginRight: 1,
   },
   revIdInputsAreaContainer: {
-    backgroundColor: '#F9F9F9',
     borderColor: '#F7F7F7',
-    borderWidth: 1,
     borderStyle: 'solid',
+    borderWidth: 1,
     paddingHorizontal: 8,
-    paddingTop: 0,
     paddingBottom: 22,
-    marginTop: 1,
-    borderRadius: 3,
+    marginTop: 4,
   },
   revInputArea: {
     marginTop: 8,

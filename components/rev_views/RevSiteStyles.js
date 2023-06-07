@@ -1,10 +1,15 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 export const useRevSiteStyles = () => {
-  var pageWidth = Dimensions.get('window').width - 12;
-  var height = Dimensions.get('window').height;
+  var revPageWidth = Dimensions.get('window').width - 12;
+  var revPageHeight = Dimensions.get('window').height;
 
-  var maxChatMessageContainerWidth = pageWidth - 17;
+  let revPageDimens = {
+    revrevPageWidth: revPageWidth,
+    revPageHeight: revPageHeight,
+  };
+
+  var maxChatMessageContainerWidth = revPageWidth - 17;
 
   const revSiteStyles = StyleSheet.create({
     revSiteTxtAlertDangerColor: {
@@ -119,21 +124,18 @@ export const useRevSiteStyles = () => {
     },
 
     revTagsInputWrapper: {
-      alignItems: 'flex-end',
+      alignItems: 'center',
       marginTop: 8,
     },
     revTagsInput: {
       color: '#444',
       fontSize: 9,
-      lineHeight: 12,
-      textAlignVertical: 'bottom',
       flex: 1,
       borderColor: '#F7F7F7',
       borderWidth: 1,
       paddingHorizontal: 5,
-      paddingTop: 2,
-      paddingBottom: 2,
-      height: 22,
+      paddingVertical: 0,
+      margin: 0,
     },
     revEnteredTags: {
       flex: 2,
@@ -372,5 +374,8 @@ export const useRevSiteStyles = () => {
     },
   });
 
-  return {revSiteStyles};
+  return {
+    revSiteStyles,
+    revPageDimens,
+  };
 };

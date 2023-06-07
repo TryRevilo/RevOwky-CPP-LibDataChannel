@@ -36,7 +36,12 @@ import {
   RevSelectImagesInput,
 } from '../../../../../rev_views/rev_input_form_views';
 
-import {useRevGetEntityIcon} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revPersGetRevEntities_By_EntityGUIDsArr} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+
+import {
+  revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
+  useRevGetEntityIcon,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
 
@@ -104,11 +109,30 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     'rev_main_entity_banner_icon_val',
   );
 
+  let revTagRelsArr =
+    revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_tag_of',
+      REV_LOGGED_IN_ENTITY_GUID,
+    );
+
+  let revTagEntitiesArr =
+    revPersGetRevEntities_By_EntityGUIDsArr(revTagRelsArr);
+
+  let revTagValsArr = [];
+
+  for (let i = 0; i < revTagEntitiesArr.length; i++) {
+    let revTagVal = revGetMetadataValue(
+      revTagEntitiesArr[i]._revInfoEntity._revEntityMetadataList,
+      'rev_entity_name_val',
+    );
+    revTagValsArr.push(revTagVal);
+  }
+
   const [revEntityNameTxt, setRevEntityNameTxt] = useState(revFullNames);
   const [revEntityDescTxt, setRevEntityDescTxt] = useState(revEntityDesc);
   const [revAboutEntityInfoTxt, setRevAboutEntityInfoTxt] =
     useState(revAboutEntityInfo);
-  const [revTagsArr, setRevTagsArr] = useState([]);
+  const [revTagsArr, setRevTagsArr] = useState(revTagValsArr);
 
   const [revImagesDataArray, setRevImagesDataArray] = useState(
     revEntityPicsAlbumDataArr,
@@ -173,6 +197,8 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
       revEntityBannerIconPath: revEntityBannerIconPath,
 
       revSelectedMedia: [...revImagesDataArray, ...revVideosDataArray],
+
+      revTagsArr: revTagsArr.map(revVal => ({revEntityNameVal: revVal})),
     };
 
     revEditUserInfoFormAction(revPassVarArgs, async revPersResData => {

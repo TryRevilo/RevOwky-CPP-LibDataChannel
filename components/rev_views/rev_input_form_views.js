@@ -88,8 +88,8 @@ export const RevTagsInput = ({revVarArgs}) => {
         onChangeText={revHandleTextChange}
         onSubmitEditing={revHandleTextSubmit}
         onKeyPress={revHandleKeyPress}
-        placeholder=" #tags"
-        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
+        placeholder=" # tag"
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         style={revSiteStyles.revTagsInput}
       />
 
@@ -99,8 +99,57 @@ export const RevTagsInput = ({revVarArgs}) => {
           revSiteStyles.revSiteTxtSmall,
           revSiteStyles.revEnteredTags,
         ]}>
-        {`# ${revTagsArray.length} tags entered`}
+        {`# ${revTagsArray.length} entered`}
       </Text>
+    </View>
+  );
+};
+
+export const RevPasswordInput = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const {
+    revSetPasswordInput,
+    revPlaceHolderTxt = ' password',
+    revMinCharacterCount = 8,
+  } = revVarArgs;
+
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleRevOnPasswordInputChange = password => {
+    setPassword(password);
+    revSetPasswordInput(password);
+  };
+
+  return (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        revSiteStyles.revPasswordInputWrapper,
+      ]}>
+      <TextInput
+        style={[revSiteStyles.revPasswordInput]}
+        secureTextEntry={!showPassword}
+        value={password}
+        onChangeText={handleRevOnPasswordInputChange}
+        placeholder={revPlaceHolderTxt}
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
+      />
+      <TouchableOpacity onPress={toggleShowPassword}>
+        <FontAwesome
+          name="eye"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtLarge,
+            revSiteStyles.revToggleButton,
+          ]}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -148,6 +197,7 @@ export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
     revTextInputOnChangeCallBack = null,
     revPlaceHolderTxt = '',
     revMaxTxtCount = 140,
+    revContainerStyles = null,
   } = revVarArgs;
 
   const [revInputText, setRevInputText] = useState(revDefaultText);
@@ -171,6 +221,7 @@ export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
       style={[
         revSiteStyles.revFlexContainer,
         revSiteStyles.revTextInputAreaWithCountContainer,
+        revContainerStyles,
       ]}>
       <TextInput
         onChangeText={revHandleTextChange}
@@ -375,51 +426,6 @@ export const RevDateTimePicker = ({revVarArgs}) => {
           onChange={handleDateChange}
         />
       )}
-    </View>
-  );
-};
-
-export const RevPasswordInput = ({revVarArgs}) => {
-  const {revSiteStyles} = useRevSiteStyles();
-
-  const {revSetPasswordInput} = revVarArgs;
-
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleRevOnPasswordInputChange = password => {
-    setPassword(password);
-    revSetPasswordInput(password);
-  };
-
-  return (
-    <View
-      style={[
-        revSiteStyles.revFlexWrapper,
-        revSiteStyles.revPasswordInputWrapper,
-      ]}>
-      <TextInput
-        style={[revSiteStyles.revPasswordInput]}
-        secureTextEntry={!showPassword}
-        value={password}
-        onChangeText={handleRevOnPasswordInputChange}
-        placeholder="Password"
-        placeholderTextColor={revSiteStyles.revSiteTextInputNoBorder}
-      />
-      <TouchableOpacity onPress={toggleShowPassword}>
-        <FontAwesome
-          name="eye"
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtLarge,
-            revSiteStyles.revToggleButton,
-          ]}
-        />
-      </TouchableOpacity>
     </View>
   );
 };

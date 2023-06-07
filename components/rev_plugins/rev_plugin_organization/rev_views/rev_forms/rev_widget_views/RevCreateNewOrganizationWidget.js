@@ -176,7 +176,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     for (let i = 0; i < revTagsArr.length; i++) {
       let revPersVarArgs = {
         revEntityNameVal: revTagsArr[i],
-        revEntityGUID: revEntityGUID,
+        revContainerEntityGUID: revEntityGUID,
         revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       };
 

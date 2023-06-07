@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {
   StyleSheet,
@@ -11,17 +11,29 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+
 import {RevScrollView_H} from '../../../../../rev_views/rev_page_views';
 import {RevDescriptiveTitleView} from '../../../../../rev_views/rev_page_views';
 
 import {RevEntityInfoDetailsWidget} from './RevEntityInfoDetailsWidget';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {
+  revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
+  revPersGetRevEntities_By_EntityGUIDsArr,
+} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   if (
     revIsEmptyJSONObject(revVarArgs) ||
@@ -34,6 +46,25 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   if (!revIsUserEntity_WithInfo(revOwkiMemberEntity)) {
     return null;
+  }
+
+  let revTagRelsArr =
+    revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_tag_of',
+      REV_LOGGED_IN_ENTITY_GUID,
+    );
+
+  let revTagEntitiesArr =
+    revPersGetRevEntities_By_EntityGUIDsArr(revTagRelsArr);
+
+  let revTagValsArr = [];
+
+  for (let i = 0; i < revTagEntitiesArr.length; i++) {
+    let revTagVal = revGetMetadataValue(
+      revTagEntitiesArr[i]._revInfoEntity._revEntityMetadataList,
+      'rev_entity_name_val',
+    );
+    revTagValsArr.push(revTagVal);
   }
 
   const RevUserProfileMedia = () => {
@@ -103,23 +134,21 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
   const revGetTagTab = revTag => {
     return (
       <Text
-        key={revTag}
+        key={'revGetTagTab_' + revGetRandInteger()}
         style={[
           revSiteStyles.revSiteTxtColorLight,
           revSiteStyles.revSiteTxtTiny,
           revSiteStyles.revTagTab,
         ]}>
         <FontAwesome style={revSiteStyles.revSiteTxtTiny} name="hashtag" />
-        {'my_own_tag_' + revTag}
+        {' ' + revTag}
       </Text>
     );
   };
 
-  let revTags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   let revScrollViewContent = (
     <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
-      {revTags.map(revCurrTag => revGetTagTab(revCurrTag))}
+      {revTagValsArr.map(revCurrTag => revGetTagTab(revCurrTag))}
     </View>
   );
 
