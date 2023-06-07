@@ -104,7 +104,7 @@ export const RevAdCampaignTeamInputFormWidget = ({revVarArgs}) => {
           <RevInfoArea revInfoText={revCampaignTextInfoTxt} />,
           revRetView,
         ],
-        revPointerStyles: {marginTop: 11},
+        revPointerStyles: {marginTop: 15},
         revStyles: {marginTop: 8},
       }}
     />

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 
 import {
   StyleSheet,
@@ -554,6 +554,12 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     <FontAwesome name="user" style={styles.revAvailableChatPeopleNonIcon} />
   );
 
+  const [revCommentsView, setRevCommentsView] = useState(null);
+
+  useEffect(() => {
+    setRevCommentsView(<RevGenComments />);
+  }, []);
+
   return (
     <TouchableOpacity
       key={
@@ -664,7 +670,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 </TouchableOpacity>
               )}
 
-              <RevGenComments />
+              {revCommentsView}
             </View>
           </View>
         </View>

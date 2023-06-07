@@ -207,9 +207,9 @@ export const useRevSiteStyles = () => {
     revPageHeaderAreaWrapper: {
       alignItems: 'center',
       width: maxChatMessageContainerWidth,
-      borderBottomColor: '#DDD',
+      borderBottomColor: '#F7F7F7',
       borderBottomWidth: 1,
-      borderStyle: 'dotted',
+      borderStyle: 'solid',
     },
 
     /** MARGINS */

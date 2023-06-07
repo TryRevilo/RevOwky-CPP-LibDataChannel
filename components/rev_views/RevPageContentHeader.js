@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
   revPageHeaderAreaWrapper: {
     alignItems: 'center',
     width: '100%',
-    borderBottomColor: '#CCC',
+    borderBottomColor: '#F7F7F7',
     borderBottomWidth: 1,
-    borderStyle: 'dotted',
+    borderStyle: 'solid',
   },
   revHeaderTextLink: {
     marginLeft: 4,

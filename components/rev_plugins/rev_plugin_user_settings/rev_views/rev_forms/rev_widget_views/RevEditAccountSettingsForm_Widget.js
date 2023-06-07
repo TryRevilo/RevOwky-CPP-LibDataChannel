@@ -22,6 +22,7 @@ import {
 } from '../../../../../rev_views/rev_input_form_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -65,6 +66,9 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
     });
   };
 
+  let revInfoTell =
+    'Edit your account settings here. Start by first re-entering your password';
+
   return (
     <View
       style={[revSiteStyles.revFlexContainer, styles.revFormInputContainer]}>
@@ -73,6 +77,8 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
           revSiteStyles.revFlexContainer,
           styles.revPasswordInputsAreaContainer,
         ]}>
+        <RevInfoArea revInfoText={revInfoTell}></RevInfoArea>
+
         <RevPasswordInput
           revVarArgs={{
             revPlaceHolderTxt: ' confirm password',
@@ -214,7 +220,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderStyle: 'dotted',
     paddingBottom: 5,
-    marginVertical: 8,
   },
   revPasswordInputsAreaContainer: {
     paddingHorizontal: 9,

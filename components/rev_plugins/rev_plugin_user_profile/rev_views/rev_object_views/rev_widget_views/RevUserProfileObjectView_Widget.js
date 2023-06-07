@@ -59,7 +59,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
 
   const {revConnectUser_Action} = useRevConnectUser_Action();
 
-  let RevInfo = revPluginsLoader({
+  let revUserInfo = revPluginsLoader({
     revPluginName: 'rev_plugin_user_profile',
     revViewName: 'RevUserInfo',
     revVarArgs: revUserEntity,
@@ -117,6 +117,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revFlexWrapper,
               styles.revConnectTabButtonWrapper,
+              {flex: 0},
             ]}>
             <Text
               style={[
@@ -136,38 +137,40 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
 
         <View
           style={[
-            revSiteStyles.revFlexContainer,
-            styles.revConnectedUsersContainer,
+            revSiteStyles.revFlexWrapper,
+            {flex: 1, alignItems: 'center', marginLeft: 4},
           ]}>
-          <ScrollView
-            horizontal
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            style={styles.rev_H_UstoWidthScroller}>
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper,
-                styles.revConnectedUsersIconWrapper,
-              ]}>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(revCurrConnection => {
-                return (
-                  <RevConnectionProfileTab
-                    key={
-                      revGetRandInteger() +
-                      '_revCurrConnection_' +
-                      revCurrConnection
-                    }
-                    revVarArgs={revCurrConnection}
-                  />
-                );
-              })}
-            </View>
-          </ScrollView>
+          <View style={{flex: 1}}>
+            <ScrollView
+              horizontal
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}>
+              <View
+                style={[
+                  revSiteStyles.revFlexWrapper,
+                  styles.revConnectedUsersIconWrapper,
+                ]}>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(revCurrConnection => {
+                  return (
+                    <RevConnectionProfileTab
+                      key={
+                        revGetRandInteger() +
+                        '_revCurrConnection_' +
+                        revCurrConnection
+                      }
+                      revVarArgs={revCurrConnection}
+                    />
+                  );
+                })}
+              </View>
+            </ScrollView>
+          </View>
           <Text
             style={[
               revSiteStyles.revSiteTxtColorBlueLink,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revConnectionsCountTxt,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
+              {flex: 0, paddingHorizontal: 8},
             ]}>
             + 122 connections
           </Text>
@@ -204,11 +207,12 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
       <View style={styles.revPublisherMainIconArea}>
         {revProfileBannerIconView}
       </View>
-      <View style={[revSiteStyles.revFlexContainer, styles.revInfoContainer]}>
-        {RevInfo}
-      </View>
 
       <RevConnectionsView revVarArgs={revUserEntity} />
+
+      <View style={[revSiteStyles.revFlexContainer, styles.revInfoContainer]}>
+        {revUserInfo}
+      </View>
     </View>
   );
 
@@ -234,10 +238,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   revConnectionsWrapper: {
-    borderStyle: 'dotted',
-    borderTopColor: '#F7F7F7',
-    borderTopWidth: 1,
-    paddingTop: 8,
     marginTop: 8,
   },
   revConnectTabButtonWrapper: {
@@ -251,14 +251,8 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 100,
   },
-  rev_H_UstoWidthScroller: {
-    flexGrow: 0,
-  },
   revConnectedUsersIconWrapper: {
     width: 'auto',
-  },
-  revConnectedUsersContainer: {
-    marginLeft: 4,
   },
   revConnectionProfileTab: {
     backgroundColor: '#EEE',
@@ -266,8 +260,5 @@ const styles = StyleSheet.create({
     height: 22,
     marginRight: 1,
     borderRadius: 2,
-  },
-  revConnectionsCountTxt: {
-    padding: 5,
   },
 });

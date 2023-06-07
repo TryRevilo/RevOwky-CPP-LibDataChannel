@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {
   StyleSheet,
@@ -7,9 +7,12 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  Touchable,
+  TouchableOpacity,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FastImage from 'react-native-fast-image';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
@@ -33,7 +36,8 @@ import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_mo
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY, REV_LOGGED_IN_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
 
   if (
     revIsEmptyJSONObject(revVarArgs) ||
@@ -65,6 +69,88 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
       'rev_entity_name_val',
     );
     revTagValsArr.push(revTagVal);
+  }
+
+  let revN = 3;
+
+  const revColumnArrays = Array.from({length: revN}, () => []);
+
+  const getImageDimensions = uri => {
+    return new Promise((resolve, reject) => {
+      Image.getSize(
+        uri,
+        (width, height) => {
+          resolve({width, height});
+        },
+        error => {
+          reject(error);
+        },
+      );
+    });
+  };
+
+  let revPageWidth = Dimensions.get('window').width - 23;
+  let revImageWidth = revPageWidth / 3;
+
+  const RevPicContainer = ({revMediaEntity, revStyles}) => {
+    const revMediaEntityPressed = () => {
+      console.log(
+        '>>> revMediaEntity._revEntityGUID',
+        revMediaEntity._revEntityGUID,
+      );
+    };
+    let revImagePath =
+      'file:///storage/emulated/0/Documents/Owki/rev_media/' +
+      revGetMetadataValue(
+        revMediaEntity._revEntityMetadataList,
+        'rev_remote_file_name',
+      );
+
+    const [revWidth, setRevWidth] = useState();
+    const [revHeight, setRevHeight] = useState();
+
+    useEffect(() => {
+      (async () => {
+        const {width, height} = await getImageDimensions(revImagePath);
+
+        let revAspectRatio = revImageWidth / width;
+
+        setRevWidth(width);
+        setRevHeight(height * revAspectRatio);
+      })();
+    }, []);
+
+    return (
+      <TouchableOpacity
+        key={'RevPicContainer_' + revMediaEntity._revEntityGUID}
+        onPress={revMediaEntityPressed}
+        style={{
+          width: revImageWidth - 1,
+          borderColor: '#FFF',
+          borderWidth: 1,
+          marginTop: -1,
+          borderRadius: 12,
+          overflow: 'hidden',
+        }}>
+        <FastImage
+          source={{uri: revImagePath}}
+          resizeMode={FastImage.resizeMode.contain}
+          style={{
+            width: revImageWidth,
+            height: revHeight,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  let revPicsArray = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum.revPicsArray;
+
+  for (let i = 0; i < revPicsArray.length; i++) {
+    let revPicView = <RevPicContainer revMediaEntity={revPicsArray[i]} />;
+
+    let revInsertionColumn = i < revN ? i : i % revN;
+    revColumnArrays[revInsertionColumn].push(revPicView);
   }
 
   const RevUserProfileMedia = () => {
@@ -133,16 +219,23 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   const revGetTagTab = revTag => {
     return (
-      <Text
-        key={'revGetTagTab_' + revGetRandInteger()}
+      <View
         style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revFlexWrapper_WidthAuto,
           revSiteStyles.revTagTab,
         ]}>
-        <FontAwesome style={revSiteStyles.revSiteTxtTiny} name="hashtag" />
-        {' ' + revTag}
-      </Text>
+        <View style={styles.revTagBorderDivider}></View>
+        <Text
+          key={'revGetTagTab_' + revGetRandInteger()}
+          style={[
+            revSiteStyles.revSiteTxtColorBlueLink,
+            revSiteStyles.revSiteTxtTiny,
+            ,
+          ]}>
+          <FontAwesome style={revSiteStyles.revSiteTxtTiny} name="hashtag" />
+          {' ' + revTag}
+        </Text>
+      </View>
     );
   };
 
@@ -164,7 +257,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
   );
 
   return (
-    <View style={[revSiteStyles.revFlexContainer]}>
+    <View style={revSiteStyles.revFlexContainer}>
       <View
         style={[
           revSiteStyles.revFlexContainer,
@@ -183,6 +276,17 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
           revNullContentTxt: 'no stores published on this profile yet',
         }}
       />
+
+      <View
+        style={[revSiteStyles.revFlexWrapper, {width: '100%', marginTop: 12}]}>
+        {revColumnArrays.map((revCurrolumn, index) => (
+          <View
+            key={'revColumnArrays_' + index}
+            style={{flex: 1, flexDirection: 'column'}}>
+            {revCurrolumn}
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
@@ -191,6 +295,8 @@ var pageWidth = Dimensions.get('window').width - 12;
 var height = Dimensions.get('window').height;
 
 var maxChatMessageContainerWidth = pageWidth - 17;
+
+const imageWidth = pageWidth / 2 - 20;
 
 const styles = StyleSheet.create({
   revPageHeaderAreaWrapper: {
@@ -278,6 +384,15 @@ const styles = StyleSheet.create({
 
   /** */
 
-  /** START STORES */
-  /** END STORES */
+  /** START TAGS */
+  revTagBorderDivider: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#5c6bc0',
+    width: 12,
+    height: 2,
+    marginRight: -9,
+    marginBottom: 3,
+    zIndex: 100,
+  },
+  /** END TAGS */
 });
