@@ -15,6 +15,7 @@ import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../rev_db_struct_models/revEnti
 import {
   useRevPersGetRevEnty_By_EntityGUID,
   revPersGetSubjectGUID_BY_RelStr_TargetGUID,
+  revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
 } from '../rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataComponent';
@@ -245,6 +246,23 @@ export const useRevCreateMediaAlbum = () => {
         }
 
         if ('revEntityIcon' in revFile) {
+          let revCurrEntityIconGUIDsArr =
+            revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+              'rev_entity_icon_of',
+              revEntityContainerGUID,
+            );
+
+          if (revCurrEntityIconGUIDsArr.length) {
+            for (let i = 0; i < revCurrEntityIconGUIDsArr.length; i++) {
+              let revCurrEntityIconGUID = revCurrEntityIconGUIDsArr[i];
+
+              RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+                -3,
+                revCurrEntityIconGUID,
+              );
+            }
+          }
+
           let revMainEntityIconRel = REV_ENTITY_RELATIONSHIP_STRUCT();
           revMainEntityIconRel._revEntityRelationshipType =
             'rev_entity_icon_of';

@@ -11,7 +11,7 @@
  * 
  */
 
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -21,10 +21,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 
-import {revTruncateString} from '../../rev_function_libs/rev_string_function_libs';
+import {
+  revCompareStrings,
+  revTruncateString,
+} from '../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from './RevSiteStyles';
-import {RevCenteredImage} from './rev_page_views';
+import {RevCenteredImage, RevScrollView_H} from './rev_page_views';
+import {revGetRandInteger} from '../../rev_function_libs/rev_gen_helper_functions';
 
 export const RevTagsInput = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -490,6 +494,177 @@ export const RevUploadFilesTab = ({
   );
 };
 
+export const RevSelectImagesInput = ({
+  revDefaultDataArr = [],
+  revOnSelectedDataCallBack,
+  revOnRemoveDataCallBack = null,
+}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
+  const [revImagesDataArray, setRevImagesDataArray] =
+    useState(revDefaultDataArr);
+  const revImagesDataArrayRef = useRef(revDefaultDataArr);
+  const [revSelectedPicsArea, setRevSelectedPicsArea] = useState(null);
+
+  const revImagesDataArrayChangeCallBack = revNewDataArr => {
+    setRevImagesDataArray(revNewDataArr);
+    revOnSelectedDataCallBack(revNewDataArr);
+
+    const handleRevRemoveSelectedImage = revDeletedData => {
+      if (revOnRemoveDataCallBack !== null) {
+        revOnRemoveDataCallBack(revDeletedData);
+      }
+
+      setRevImagesDataArray(revCurrDataArray => {
+        let revUpdatedDataArr = revCurrDataArray.filter(
+          revCurrFilterItem =>
+            revCompareStrings(revDeletedData.uri, revCurrFilterItem.uri) !== 0,
+        );
+
+        revImagesDataArrayRef.current = revUpdatedDataArr;
+
+        setRevSelectedPicsArea(
+          <RevScrollView_H
+            revScrollViewContent={revGetSelectedImagesViewsArr(
+              revUpdatedDataArr,
+            )}
+          />,
+        );
+
+        revOnSelectedDataCallBack(revUpdatedDataArr);
+
+        return revUpdatedDataArr;
+      });
+    };
+
+    let revGetSelectedImagesViewsArr = revNewDataArr =>
+      revNewDataArr.map(revCurrData => {
+        return (
+          <View
+            key={'revSelectedPicsArea_' + revGetRandInteger()}
+            style={[
+              revSiteStyles.revFlexContainer,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 4,
+                overflow: 'hidden',
+              },
+            ]}>
+            <TouchableOpacity
+              onPress={() => {
+                handleRevRemoveSelectedImage(revCurrData);
+              }}
+              style={[{padding: 8}]}>
+              <FontAwesome
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtSmall,
+                ]}
+                name="recycle"
+              />
+            </TouchableOpacity>
+
+            <RevCenteredImage
+              revImageURI={revCurrData.uri}
+              revImageDimens={{
+                revWidth: 42,
+                revHeight: 42,
+              }}
+              revStyles={{
+                overflow: 'hidden',
+                marginRight: 2,
+                borderRadius: 3,
+              }}
+            />
+          </View>
+        );
+      });
+
+    setRevSelectedPicsArea(
+      <RevScrollView_H
+        revScrollViewContent={revGetSelectedImagesViewsArr(revNewDataArr)}
+      />,
+    );
+  };
+
+  let revAddedMediaContainer = {
+    borderStyle: 'dotted',
+    borderBottomColor: '#EEE',
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+    marginTop: 8,
+    paddingLeft: 8,
+  };
+
+  let revAddedMediaTitleWrapper = {
+    alignItems: 'center',
+    marginTop: 8,
+  };
+
+  useEffect(() => {
+    revImagesDataArrayChangeCallBack(revImagesDataArray);
+  }, []);
+
+  return (
+    <View style={[revSiteStyles.revFlexContainer, revAddedMediaContainer]}>
+      <View style={[revSiteStyles.revFlexWrapper, revAddedMediaTitleWrapper]}>
+        <FontAwesome
+          name={'camera'}
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtMedium,
+          ]}
+        />
+
+        <FontAwesome
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}
+          name="long-arrow-right"
+        />
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtSmall,
+          ]}>
+          {' Ad pics'}
+        </Text>
+
+        <RevUploadFilesTab
+          revVarArgs={{
+            revLabel: ' Select pictures',
+            revMIMETypes: DocumentPicker.types.images,
+            revOnSelectedDataCallBack: revNewDataArr => {
+              let revCurrSelectedDataArr = [
+                ...revImagesDataArrayRef.current,
+                ...revNewDataArr,
+              ];
+
+              revImagesDataArrayChangeCallBack(revCurrSelectedDataArr);
+            },
+          }}
+        />
+      </View>
+
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          {marginTop: 4, marginLeft: 4},
+        ]}>
+        <Text style={revSiteStyles.revSiteTxtBold}>
+          {revImagesDataArray.length}
+        </Text>
+        {' profile pics selected. You can upload up to 22'}
+      </Text>
+      {revSelectedPicsArea}
+    </View>
+  );
+};
+
 export const RevEntityIconCropperView = ({
   revCallBackFunc,
   revCropDimensions = {},
@@ -505,6 +680,7 @@ export const RevEntityIconCropperView = ({
     <RevCenteredImage
       revImageURI={revDefaultIconPath}
       revImageDimens={{revWidth: '100%', revHeight: '100%'}}
+      revStyles={{overflow: 'hidden', borderRadius: 3}}
     />
   );
 
@@ -526,6 +702,8 @@ export const RevEntityIconCropperView = ({
     borderColor: '#EEE',
     borderWidth: 1,
     padding: 2,
+    overflow: 'hidden',
+    borderRadius: 3,
   };
 
   return (
@@ -536,7 +714,7 @@ export const RevEntityIconCropperView = ({
             let revCroppedImageDataPath = revCroppedImageData.path;
 
             let revNewIconView = (
-              <View style={{overflow: 'hidden'}}>
+              <View style={{overflow: 'hidden', borderRadius: 3}}>
                 <RevCenteredImage
                   revImageURI={revCroppedImageDataPath}
                   revImageDimens={{
@@ -597,7 +775,12 @@ export const RevBannerCropperView = ({
   let revSavedMainEntityBannerIconView = (
     <RevCenteredImage
       revImageURI={revDefaultCropBannerIconPath}
-      revImageDimens={{revWidth: revPreviewWidth, revHeight: revPreviewHeight}}
+      revImageDimens={{
+        revWidth: revPreviewWidth,
+        revHeight: revPreviewHeight,
+        overflow: 'hidden',
+        borderRadius: 3,
+      }}
     />
   );
 
@@ -612,6 +795,8 @@ export const RevBannerCropperView = ({
     paddingBottom: 8,
     marginTop: 8,
     paddingLeft: 8,
+    overflow: 'hidden',
+    borderRadius: 3,
   };
 
   return (
@@ -629,6 +814,10 @@ export const RevBannerCropperView = ({
                     revImageDimens={{
                       revWidth: revPreviewWidth,
                       revHeight: revPreviewHeight,
+                    }}
+                    revStyles={{
+                      overflow: 'hidden',
+                      borderRadius: 3,
                     }}
                   />
                 </View>
@@ -672,7 +861,10 @@ export const RevBannerCropperView = ({
         </View>
       </TouchableOpacity>
 
-      <View style={{height: revPreviewHeight}}>{revBannerIcon}</View>
+      <View
+        style={{height: revPreviewHeight, overflow: 'hidden', borderRadius: 3}}>
+        {revBannerIcon}
+      </View>
     </View>
   );
 };

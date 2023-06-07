@@ -28,6 +28,7 @@ import {useRevConnectUser_Action} from '../../../rev_actions/rev_connect_user_ac
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
 import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {useRevGetEntityIcon} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -44,6 +45,8 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   }
 
   const {revSiteStyles} = useRevSiteStyles();
+
+  const {revGetEntityIcon} = useRevGetEntityIcon();
 
   let revAddPageHeader = true;
 
@@ -173,14 +176,14 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
     );
   };
 
-  let revMainEntityBannerIconVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
-    'rev_main_entity_banner_icon_val',
-  );
+  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
+    revEntityGUID: revUserEntity._revEntityGUID,
+    revIconRelType: 'rev_entity_banner_icon_of',
+  });
 
-  let revProfileBannerIconView = !revStringEmpty(revMainEntityBannerIconVal) ? (
+  let revProfileBannerIconView = !revStringEmpty(revMainEntityIconLocalPath) ? (
     <RevCenteredImage
-      revImageURI={revMainEntityBannerIconVal}
+      revImageURI={revMainEntityIconLocalPath}
       revImageDimens={{revWidth: '100%', revHeight: '100%'}}
     />
   ) : (

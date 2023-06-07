@@ -19,7 +19,7 @@ export const useRevCreateFlagFormAction = () => {
   const revCreateFlagFormAction = async revVarArgs => {
     const {
       revFlagEntityGUID = -1,
-      _revEntityGUID = -1,
+      revContainerEntityGUID = -1,
       revEntityOwnerGUID = -1,
       revFlagValsArr = [],
       revFlagRefLinkValsArr = [],
@@ -28,7 +28,7 @@ export const useRevCreateFlagFormAction = () => {
     } = revVarArgs;
 
     if (
-      _revEntityGUID < 1 ||
+      revContainerEntityGUID < 1 ||
       revEntityOwnerGUID < 1 ||
       !revFlagValsArr.length
     ) {
@@ -72,7 +72,7 @@ export const useRevCreateFlagFormAction = () => {
 
       let revFlagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
       revFlagRel._revEntityRelationshipType = 'rev_flag_of';
-      revFlagRel._revEntityTargetGUID = _revEntityGUID;
+      revFlagRel._revEntityTargetGUID = revContainerEntityGUID;
       revFlagRel._revEntitySubjectGUID = -1;
 
       revVarArgs['revSubjectRelsArr'] = [revFlagRel];

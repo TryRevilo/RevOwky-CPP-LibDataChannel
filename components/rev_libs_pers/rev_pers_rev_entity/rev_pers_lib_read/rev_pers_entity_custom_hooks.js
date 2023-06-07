@@ -306,9 +306,12 @@ export const useRevGetEntityIcon = () => {
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
-  const revGetEntityIcon = revEntityGUID => {
+  const revGetEntityIcon = ({
+    revEntityGUID,
+    revIconRelType = 'rev_entity_icon_of',
+  }) => {
     let revMainEntityIconGUID = revPersGetSubjectGUID_BY_RelStr_TargetGUID(
-      'rev_entity_icon_of',
+      revIconRelType,
       revEntityGUID,
     );
 

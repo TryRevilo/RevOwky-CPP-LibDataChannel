@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Dimensions,
@@ -11,7 +10,6 @@ import React, {useState, useContext, useEffect} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
-import RNFS from 'react-native-fs';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
@@ -21,11 +19,11 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
-const {RevPersLibCreate_React, RevPersLibUpdate_React} = NativeModules;
+const {RevPersLibCreate_React} = NativeModules;
 
 import {
   revGetFileNameFromPath,
-  revIsEmptyJSONObject,
+  revGetRandInteger,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
@@ -33,27 +31,22 @@ import {
   RevTextInputWithCount,
   RevTextInputAreaWithCount,
   RevUploadFilesTab,
-  revOpenCropnImagePicker,
   RevEntityIconCropperView,
   RevBannerCropperView,
+  RevSelectImagesInput,
 } from '../../../../../rev_views/rev_input_form_views';
 
-import {
-  revPersGetSubjectGUID_BY_RelStr_TargetGUID,
-  useRevGetEntityIcon,
-} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {useRevGetEntityIcon} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {RevTagsOutputListing} from '../../../../../rev_views/rev_output_form_views';
 
 import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevEditUserInfoFormAction} from '../../../rev_actions/rev_edit_user_info_action';
-import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {revGenerateVideoThumbnail} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-
 const rev_settings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
@@ -68,6 +61,27 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
   let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
 
+  let revEntityPicsAlbum = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum;
+  let revPicsArray = revEntityPicsAlbum.revPicsArray;
+
+  let revEntityPicsAlbumDataArr = [];
+
+  for (let i = 0; i < revPicsArray.length; i++) {
+    let revPicMetadataArr = revPicsArray[i]._revEntityMetadataList;
+    let revRemoteFileName = revGetMetadataValue(
+      revPicMetadataArr,
+      'rev_remote_file_name',
+    );
+
+    let revEntityIconValPath =
+      'file://' + rev_settings.revPublishedMediaDir + '/' + revRemoteFileName;
+
+    revEntityPicsAlbumDataArr.push({
+      _revEntityGUID: revPicsArray[i]._revEntityGUID,
+      uri: revEntityIconValPath,
+    });
+  }
+
   let revFullNames = revGetMetadataValue(
     revInfoEntityMetadataList,
     'rev_full_names',
@@ -81,11 +95,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     'rev_about_entity_info',
   );
 
-  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon(
-    REV_LOGGED_IN_ENTITY_GUID,
-  );
-
-  console.log('>>> revMainEntityIconLocalPath', revMainEntityIconLocalPath);
+  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
+    revEntityGUID: REV_LOGGED_IN_ENTITY_GUID,
+  });
 
   let revMainEntityBannerIconVal = revGetMetadataValue(
     revInfoEntityMetadataList,
@@ -98,7 +110,9 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     useState(revAboutEntityInfo);
   const [revTagsArr, setRevTagsArr] = useState([]);
 
-  const [revImagesDataArray, setRevImagesDataArray] = useState([]);
+  const [revImagesDataArray, setRevImagesDataArray] = useState(
+    revEntityPicsAlbumDataArr,
+  );
   const [revVideosDataArray, setRevVideosDataArray] = useState([]);
   const [revMainEntityIconPath, setRevMainEntityIconPath] = useState(
     revMainEntityIconLocalPath,
@@ -111,10 +125,6 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const [revTagsOutputView, setRevTagsOutputView] = useState(null);
 
   const {revEditUserInfoFormAction} = useRevEditUserInfoFormAction();
-
-  const revImagesDataArrayChangeCallBack = revNewDataArr => {
-    setRevImagesDataArray(revNewDataArr);
-  };
 
   const revVideosDataArrayChangeCallBack = async revNewDataArr => {
     for (let i = 0; i < revNewDataArr.length; i++) {
@@ -249,59 +259,15 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         </View>
       </View>
 
-      <View
-        style={[revSiteStyles.revFlexContainer, styles.revAddedMediaContainer]}>
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper,
-            styles.revAddedMediaTitleWrapper,
-          ]}>
-          <FontAwesome
-            name={'camera'}
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtMedium,
-            ]}
-          />
-
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
-
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}>
-            {' Ad pics'}
-          </Text>
-
-          <RevUploadFilesTab
-            revVarArgs={{
-              revLabel: ' Select pictures',
-              revMIMETypes: DocumentPicker.types.images,
-              revOnSelectedDataCallBack: revImagesDataArrayChangeCallBack,
-            }}
-          />
-        </View>
-
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revAddedMediaTell,
-            {marginLeft: 4},
-          ]}>
-          <Text style={revSiteStyles.revSiteTxtBold}>
-            {revImagesDataArray.length}
-          </Text>
-          {' profile pics selected. You can upload up to 22'}
-        </Text>
-      </View>
+      <RevSelectImagesInput
+        revDefaultDataArr={revImagesDataArray}
+        revOnSelectedDataCallBack={revNewSelectedDataArr => {
+          setRevImagesDataArray(revNewSelectedDataArr);
+        }}
+        revOnRemoveDataCallBack={revDeletedData => {
+          console.log('>>> revDeletedData', revDeletedData);
+        }}
+      />
 
       <RevEntityIconCropperView
         revCropDimensions={{revWidth: 600, revHeight: 600}}

@@ -13,13 +13,11 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {
   RevReadMoreTextView,
-  RevInfoArea,
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
@@ -43,6 +41,7 @@ import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_hel
 import {
   useRevPersGetRevEnty_By_EntityGUID,
   revPersGetRevEntities_By_EntityGUIDsArr,
+  useRevGetEntityIcon,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_update/rev_pers_entity';
 
@@ -71,6 +70,8 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   ) {
     return null;
   }
+
+  const {revGetEntityIcon} = useRevGetEntityIcon();
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
   let revPublisherInfoEntity = revPublisherEntity._revInfoEntity;
@@ -112,7 +113,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   let revInfoEntity = revVarArgs._revInfoEntity;
   let revTimePublished = revFormatLongDate(revVarArgs._revTimePublished);
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
     useContext(ReViewsContext);
 
@@ -540,14 +540,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     return revFlagItemView;
   };
 
-  let revMainEntityIconVal = revGetMetadataValue(
-    revPublisherInfoEntityMetadataList,
-    'rev_main_entity_icon_val',
-  );
+  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
+    revEntityGUID: revPublisherEntity._revEntityGUID,
+  });
 
-  let revMainEntityIconView = !revStringEmpty(revMainEntityIconVal) ? (
+  let revMainEntityIconView = !revStringEmpty(revMainEntityIconLocalPath) ? (
     <RevCenteredImage
-      revImageURI={revMainEntityIconVal}
+      revImageURI={revMainEntityIconLocalPath}
       revImageDimens={{revWidth: 19, revHeight: 29}}
       revStyles={{borderRadius: 100}}
     />
