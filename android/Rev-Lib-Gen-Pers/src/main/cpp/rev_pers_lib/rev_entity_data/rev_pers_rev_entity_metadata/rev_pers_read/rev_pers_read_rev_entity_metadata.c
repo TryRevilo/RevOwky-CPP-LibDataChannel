@@ -392,6 +392,39 @@ list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveSta
     return &list;
 }
 
+list *revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(long revEntityGUID) {
+    list list;
+    list_new(&list, sizeof(long), NULL);
+
+    sqlite3 *db = revDb();
+
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "METADATA_ID "
+                "FROM REV_ENTITY_METADATA_TABLE WHERE "
+                "METADATA_ENTITY_GUID = ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int64(stmt, 1, revEntityGUID);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadataIds_By_RevEntityGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: -revPersGetALLRevEntityMetadataIds_By_RevEntityGUID %s\n", sqlite3_errmsg(db));
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        long long revMetadataId = sqlite3_column_int64(stmt, 0);
+        list_append(&list, &revMetadataId);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return &list;
+}
+
 list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID) {
     list list;
     list_new(&list, sizeof(long), NULL);

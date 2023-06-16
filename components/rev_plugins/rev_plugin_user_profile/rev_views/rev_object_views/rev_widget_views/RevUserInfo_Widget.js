@@ -32,6 +32,7 @@ import {
   revPersGetRevEntities_By_EntityGUIDsArr,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -89,7 +90,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     });
   };
 
-  let revPageWidth = Dimensions.get('window').width - 23;
+  let revPageWidth = Dimensions.get('window').width - 20;
   let revImageWidth = revPageWidth / 3;
 
   const RevPicContainer = ({revMediaEntity, revStyles}) => {
@@ -99,24 +100,35 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
         revMediaEntity._revEntityGUID,
       );
     };
-    let revImagePath =
-      'file:///storage/emulated/0/Documents/Owki/rev_media/' +
-      revGetMetadataValue(
-        revMediaEntity._revEntityMetadataList,
-        'rev_remote_file_name',
-      );
+    let revImagePathVal = revGetMetadataValue(
+      revMediaEntity._revEntityMetadataList,
+      'rev_remote_file_name',
+    );
 
+    if (revStringEmpty(revImagePathVal)) {
+      return null;
+    }
+
+    let revImagePath =
+      'file:///storage/emulated/0/Documents/Owki/rev_media/' + revImagePathVal;
+
+    const [revImageErr, setRevImageErr] = useState(false);
     const [revWidth, setRevWidth] = useState();
     const [revHeight, setRevHeight] = useState();
 
     useEffect(() => {
       (async () => {
-        const {width, height} = await getImageDimensions(revImagePath);
+        try {
+          const {width, height} = await getImageDimensions(revImagePath);
 
-        let revAspectRatio = revImageWidth / width;
+          let revAspectRatio = revImageWidth / width;
 
-        setRevWidth(width);
-        setRevHeight(height * revAspectRatio);
+          setRevWidth(width);
+          setRevHeight(height * revAspectRatio);
+        } catch (error) {
+          console.log('*** error -RevPicContainer', error);
+          setRevImageErr(true);
+        }
       })();
     }, []);
 
@@ -125,21 +137,22 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
         key={'RevPicContainer_' + revMediaEntity._revEntityGUID}
         onPress={revMediaEntityPressed}
         style={{
-          width: revImageWidth - 1,
+          width: revImageWidth - 2,
           borderColor: '#FFF',
           borderWidth: 1,
           marginTop: -1,
-          borderRadius: 12,
           overflow: 'hidden',
         }}>
-        <FastImage
-          source={{uri: revImagePath}}
-          resizeMode={FastImage.resizeMode.contain}
-          style={{
-            width: revImageWidth,
-            height: revHeight,
-          }}
-        />
+        {revImageErr ? null : (
+          <FastImage
+            source={{uri: revImagePath}}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{
+              width: revImageWidth,
+              height: revHeight,
+            }}
+          />
+        )}
       </TouchableOpacity>
     );
   };
@@ -147,7 +160,12 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
   let revPicsArray = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum.revPicsArray;
 
   for (let i = 0; i < revPicsArray.length; i++) {
-    let revPicView = <RevPicContainer revMediaEntity={revPicsArray[i]} />;
+    let revPicView = (
+      <RevPicContainer
+        key={'RevPicContainer_' + revGetRandInteger()}
+        revMediaEntity={revPicsArray[i]}
+      />
+    );
 
     let revInsertionColumn = i < revN ? i : i % revN;
     revColumnArrays[revInsertionColumn].push(revPicView);
@@ -220,6 +238,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
   const revGetTagTab = revTag => {
     return (
       <View
+        key={'revGetTagTab_' + revGetRandInteger()}
         style={[
           revSiteStyles.revFlexWrapper_WidthAuto,
           revSiteStyles.revTagTab,
@@ -278,10 +297,19 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
       />
 
       <View
-        style={[revSiteStyles.revFlexWrapper, {width: '100%', marginTop: 12}]}>
+        style={[
+          revSiteStyles.revFlexWrapper,
+          {
+            backgroundColor: '#444',
+            width: '100%',
+            marginTop: 12,
+            borderRadius: 8,
+            overflow: 'hidden',
+          },
+        ]}>
         {revColumnArrays.map((revCurrolumn, index) => (
           <View
-            key={'revColumnArrays_' + index}
+            key={'revColumnArrays_' + index + revGetRandInteger()}
             style={{flex: 1, flexDirection: 'column'}}>
             {revCurrolumn}
           </View>

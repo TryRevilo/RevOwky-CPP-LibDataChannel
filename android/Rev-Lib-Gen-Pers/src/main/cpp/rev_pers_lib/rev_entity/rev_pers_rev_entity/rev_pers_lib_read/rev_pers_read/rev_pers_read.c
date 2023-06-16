@@ -62,6 +62,398 @@ htable_strstr_t *revGetMapped_Entity_Key_DBFieldName() {
     return revMap;
 }
 
+char *revGetWhere(const cJSON *revWhere_CJSON) {
+    char *revRetWhereStr = "*";
+
+    // Iterate over the items in the object
+    if (revWhere_CJSON != NULL && revWhere_CJSON->type == cJSON_Array) {
+        int revArrSize = cJSON_GetArraySize(revWhere_CJSON);
+
+        if (revArrSize == 0) {
+            return revRetWhereStr;
+        }
+
+        revRetWhereStr = "";
+        htable_strstr_t *revMap = revGetEntityDB_Keys();
+
+        for (int i = 0; i < revArrSize; i++) {
+            cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere_CJSON, i);
+
+            if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
+                char *revArrayElementVal = revCurrArrayElement->valuestring;
+
+                if (revArrayElementVal == "*") {
+                    return "*";
+                }
+
+                char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrayElementVal);
+
+                if (i == 0) {
+                    revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
+                } else {
+                    revRetWhereStr = revConcatStrings(revRetWhereStr, ", ");
+                    revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
+                }
+            }
+        }
+
+        htable_strstr_destroy(revMap);
+    }
+
+    return revRetWhereStr;
+}
+
+list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
+    htable_strstr_t *revMap = revGetEntityDB_Keys();
+    htable_strstr_t *revMappedEntityColNameMap = revGetMapped_Entity_Key_DBFieldName();
+
+    list revEntityList;
+    list_new(&revEntityList, sizeof(RevEntity), NULL);
+
+    char *revEntitySubType = "";
+
+    char *sql = "SELECT ";
+
+    // Parse the JSON string
+    cJSON *revJSON = cJSON_Parse(revVarArgs);
+
+    const cJSON *revSelectDistinct_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revDistinct");
+
+    if (cJSON_IsNumber(revSelectDistinct_JSON) && (revSelectDistinct_JSON->valueint != NULL)) {
+        long revSelectDistinctVal = revSelectDistinct_JSON->valueint;
+
+        if (revSelectDistinctVal == 1) {
+            sql = revConcatStrings(sql, "DISTINCT ");
+        }
+    }
+
+    const cJSON *revSelect_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelect");
+
+    char *revSelectWhere = revGetWhere(revSelect_JSON);
+    if (revSelectWhere[0] == '\0') {
+        goto revEnd;
+    }
+
+    sql = revConcatStrings(sql, revSelectWhere);
+    sql = revConcatStrings(sql, " FROM REV_ENTITY_TABLE WHERE ");
+
+    const cJSON *revWhere_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revWhere");
+
+    char **revTableRowsArr = NULL;
+
+    int revStrArrLen = 0;
+    char **revStrValsArr = NULL;
+
+    int revIntArrLen = 0;
+    int **revIntValsArr = NULL;
+
+    char *revSQL = "";
+
+    char *revIntWhereFields = "";
+    int revIntWhereArrLen = 0;
+    int **revIntWhereValsArr = NULL;
+
+    char *rev_Int_OR_Str = "";
+    char *rev_Str_OR_Str = "";
+
+    if (cJSON_IsObject(revWhere_JSON)) {
+        // Iterate over the items in the object
+        cJSON *revWhere;
+
+        for (revWhere = revWhere_JSON->child; revWhere; revWhere = revWhere->next) {
+            if (revWhere->type == cJSON_String) {
+                // Handle string type
+                char *revCurrKey = revWhere->string;
+                char *revCurrVal = revWhere->valuestring;
+
+                revEntitySubType = revCurrVal;
+
+                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
+                if (revDBTableName) {
+                    if (revSQL[0] == '\0') {
+                        revSQL = revConcatStrings(revSQL, revDBTableName);
+                        revSQL = revConcatStrings(revSQL, " = ?");
+                    } else {
+                        revSQL = revConcatStrings(revSQL, " AND ");
+                        revSQL = revConcatStrings(revSQL, revDBTableName);
+                        revSQL = revConcatStrings(revSQL, " = ?");
+                    }
+
+                    // Add another element to the array
+                    revStrArrLen++;
+                    revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                    revStrValsArr[revStrArrLen - 1] = strdup(revCurrVal);
+                } else {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
+                }
+            } else if (revWhere->type == cJSON_Array) {
+                char *revCurr_OR_Str = "";
+                char *revCurr_OR_Int = "";
+
+                char *revArrDBTableName = revWhere->string;
+                char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
+
+                // Handle array type
+                int revArrSize = cJSON_GetArraySize(revWhere);
+
+                for (int i = 0; i < revArrSize; i++) {
+                    cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere, i);
+
+                    if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
+                        if (i == 0 && revSQL[0] == '\0') {
+                            revCurr_OR_Str = "(";
+                        } else if (i == 0 && revCurr_OR_Str[0] == 0) {
+                            revCurr_OR_Str = " AND (";
+                        }
+
+                        char *revArrayElementVal = revCurrArrayElement->valuestring;
+
+                        revStrArrLen++;
+                        revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                        revStrValsArr[revStrArrLen - 1] = revArrayElementVal;
+
+                        if (i == 0) {
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, revArrayElementDBTableName);
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " = ?");
+                        } else {
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " OR ");
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, revArrayElementDBTableName);
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " = ?");
+                        }
+
+                        if (i == revArrSize - 1) {
+                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, ")");
+                        }
+                    } else if (cJSON_IsNumber(revCurrArrayElement)) {
+                        if (i == 0 && revSQL[0] == '\0') {
+                            revCurr_OR_Int = "(";
+                        } else if (i == 0 && revCurr_OR_Str[0] == '\0') {
+                            revCurr_OR_Int = " AND (";
+                        }
+
+                        int revArrayElementVal = revCurrArrayElement->valueint;
+
+                        revIntArrLen++;
+                        revIntValsArr = (int **) realloc(revIntValsArr, revIntArrLen * sizeof(int *));
+                        revIntValsArr[revIntArrLen - 1] = revArrayElementVal;
+
+                        if (i == 0) {
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, revArrayElementDBTableName);
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " = ?");
+                        } else {
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " OR ");
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, revArrayElementDBTableName);
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " = ?");
+                        }
+
+                        if (i == revArrSize - 1) {
+                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, ")");
+                        }
+                    }
+                }
+
+                rev_Str_OR_Str = revConcatStrings(rev_Str_OR_Str, revCurr_OR_Str);
+                rev_Int_OR_Str = revConcatStrings(rev_Int_OR_Str, revCurr_OR_Int);
+            } else if (cJSON_IsNumber(revWhere) && (revWhere->valueint != NULL)) {
+                // Handle string type
+                char *revCurrKey = revWhere->string;
+                char *revCurrIntVal = revWhere->valueint;
+
+                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
+
+                if (revDBTableName[0] != '\0') {
+                    if (revIntWhereFields[0] == '\0') {
+                        revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
+                        revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
+                    } else {
+                        revIntWhereFields = revConcatStrings(revIntWhereFields, " AND ");
+                        revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
+                        revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
+                    }
+
+                    // Add another element to the array>>
+                    revIntWhereArrLen++;
+                    revIntWhereValsArr = (int **) realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
+                    revIntWhereValsArr[revIntWhereArrLen - 1] = revCurrIntVal;
+                } else {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
+                }
+            } else if (revWhere->type == cJSON_Object) {
+                // Handle object type
+            }
+        }
+    }
+
+    revSQL = revConcatStrings(revSQL, rev_Str_OR_Str);
+    revSQL = revConcatStrings(revSQL, rev_Int_OR_Str);
+
+    sql = revConcatStrings(sql, revSQL);
+
+    if (revIntWhereFields[0] != '\0') {
+        if (revSelectWhere[0] == '\0') {
+            sql = revConcatStrings(sql, revIntWhereFields);
+        } else {
+            sql = revConcatStrings(sql, " AND ");
+            sql = revConcatStrings(sql, revIntWhereFields);
+        }
+    }
+
+    // sql = revConcatStrings(sql, " ORDER BY REV_ENTITY_GUID DESC");
+    sql = revConcatStrings(sql, " LIMIT ?");
+
+    sqlite3 *db = revDb();
+    sqlite3_stmt *stmt;
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, NULL);
+
+    int revBoundCount = 0;
+
+    for (int i = 0; i < revStrArrLen; i++) {
+        revBoundCount = revBoundCount + 1;
+        sqlite3_bind_text(stmt, revBoundCount, (const char *) revStrValsArr[i], -1, SQLITE_STATIC);
+    }
+
+    for (int i = 0; i < revIntArrLen; i++) {
+        revBoundCount = revBoundCount + 1;
+        sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
+    }
+
+    for (int i = 0; i < revIntWhereArrLen; i++) {
+        revBoundCount = revBoundCount + 1;
+        sqlite3_bind_int64(stmt, revBoundCount, (long) revIntWhereValsArr[i]);
+    }
+
+    int revLimit = 10;
+
+    // LIMIT
+    const cJSON *revLimit_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revLimit");
+    if (cJSON_IsNumber(revLimit_JSON) && (revLimit_JSON->valueint > 0)) {
+        revLimit = revLimit_JSON->valueint;
+    }
+
+    sqlite3_bind_int(stmt, 1 + revBoundCount, revLimit);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+    }
+
+    int num_cols = 0;
+    char **col_names = NULL;
+
+    if (rc == SQLITE_OK) {
+        num_cols = sqlite3_column_count(stmt);
+
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "num_cols : %d\n", num_cols);
+
+        col_names = (char **) malloc(num_cols * sizeof(char *));
+
+        for (int i = 0; i < num_cols; i++) {
+            col_names[i] = strdup(sqlite3_column_name(stmt, i));
+        }
+
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            RevEntity revEntity = *(revInitializedEntity());
+
+            if (&revEntity == NULL) {
+                __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> Error: Failed to allocate memory for RevEntity struct\n");
+                continue;
+            }
+
+            RevEntityKeyValuePair revEntityKeyValuePairMapping[] = {
+                    {"_isNull",                       &revEntity._isNull},
+                    {"_id",                           &revEntity._id},
+                    {"_revEntityType",                &revEntity._revEntityType},
+                    {"_revEntitySubType",             &revEntity._revEntitySubType},
+                    {"_revEntityResolveStatus",       &revEntity._revEntityResolveStatus},
+                    {"_revEntityAccessPermission",    &revEntity._revEntityAccessPermission},
+                    {"_revEntityGUID",                &revEntity._revEntityGUID},
+                    {"_remoteRevEntityGUID",          &revEntity._remoteRevEntityGUID},
+                    {"_revOwnerEntityGUID",           &revEntity._revOwnerEntityGUID},
+                    {"_revContainerEntityGUID",       &revEntity._revContainerEntityGUID},
+                    {"_remoteRevEntityContainerGUID", &revEntity._remoteRevEntityContainerGUID},
+                    {"_revEntitySiteGUID",            &revEntity._revEntitySiteGUID},
+                    {"_timeCreated",                  &revEntity._timeCreated},
+                    {"_timeUpdated",                  &revEntity._timeUpdated},
+                    {"_revTimeCreated",               &revEntity._revTimeCreated},
+                    {"_revTimePublished",             &revEntity._revTimePublished},
+                    {"_revTimePublishedUpdated",      &revEntity._revTimePublishedUpdated},
+                    {"childRevEntity",                &revEntity.childRevEntity},
+                    {"_revInfoEntity",                &revEntity._revInfoEntity},
+                    {NULL, NULL} // Sentinel value to mark the end of the array
+            };
+
+            for (int i = 0; i < num_cols; i++) {
+                const char *revColName = col_names[i];
+                char *revMappedEntityColName = htable_strstr_get_direct(revMappedEntityColNameMap, revColName);
+
+                int revType = sqlite3_column_type(stmt, i);
+
+                // Search the mapping for the given key
+                int j = 0;
+
+                while (revEntityKeyValuePairMapping[j].key != NULL) {
+                    if (revEntityKeyValuePairMapping[j].key && strcmp(revEntityKeyValuePairMapping[j].key, revMappedEntityColName) == 0) {
+                        switch (revType) {
+                            case SQLITE_INTEGER: {
+                                long revEntityIntPtrVal = sqlite3_column_int64(stmt, i);
+                                long *revEntityIntPointer = revEntityKeyValuePairMapping[j].value;
+                                *revEntityIntPointer = revEntityIntPtrVal; // Set the value using the member pointer address
+
+                                break;
+                            }
+                            case SQLITE_FLOAT:
+                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", "%.2f ", sqlite3_column_double(stmt, i));
+                                break;
+                            case SQLITE_TEXT: {
+                                const char *revEntityDbCharVal = strdup((const char *) sqlite3_column_text(stmt, i));
+
+                                char **revEntityCharPtr = revEntityKeyValuePairMapping[j].value; // Get the address of the member pointer
+                                *revEntityCharPtr = revEntityDbCharVal;                          // Set the value of the member using the member pointer address
+
+                                break;
+                            }
+                            case SQLITE_BLOB:
+                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", "<BLOB> ");
+                                break;
+                            case SQLITE_NULL:
+                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> NULL <<<");
+                                break;
+                            default: {
+                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> DEFAULT <<<");
+                            }
+                        }
+
+                        break;
+                    }
+
+                    j = j + 1;
+                }
+            }
+
+            list_append(&revEntityList, &revEntity);
+        }
+
+        for (int i = 0; i < num_cols; i++) {
+            free(col_names[i]);
+        }
+
+        free(col_names);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    free(revTableRowsArr);
+    free(revStrValsArr);
+    free(revIntValsArr);
+
+    htable_strstr_destroy(revMap);
+
+    revEnd:
+
+    return &revEntityList;
+}
+
 int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntitySubtype) {
 
     int exists = -1;
@@ -73,7 +465,8 @@ int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntity
 
     sqlite3_stmt *stmt;
 
-    char *sql = "SELECT * "
+    char *sql = "SELECT "
+                "REV_ENTITY_GUID "
                 "FROM REV_ENTITY_TABLE WHERE "
                 "REV_ENTITY_OWNER_GUID = ? AND REV_ENTITY_SUB_TYPE = ?";
 
@@ -430,6 +823,17 @@ long revEntitySubtypeExists_BY_CONTAINER_GUID(int revEntityContainerGUID, char *
 }
 
 RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
+
+    RevEntity revEntity = *(RevEntity *) malloc(sizeof(RevEntity));
+
+    // Check if the pointer is null
+    if (revEntityGUID == NULL) {
+        printf("The pointer is null.\n");
+
+        return revEntity;
+    }
+
+
     sqlite3 *db = revDb();
     sqlite3_stmt *stmt;
 
@@ -446,13 +850,12 @@ RevEntity revPersGetRevEntityByGUID(long revEntityGUID) {
                 "REV_CREATED_DATE, "
                 "REV_UPDATED_DATE "
                 "FROM REV_ENTITY_TABLE WHERE "
-                "REV_ENTITY_GUID = ?";
+                "REV_ENTITY_GUID = ? AND REV_RESOLVE_STATUS <> ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int64(stmt, 1, revEntityGUID);
-
-    RevEntity revEntity = *(RevEntity *) malloc(sizeof(RevEntity));
+    sqlite3_bind_int(stmt, 2, -3);
 
     revEntity._isNull = TRUE;
 
@@ -809,398 +1212,6 @@ list *revPersGetALLRevEntity_By_SubType(char *revEntitySubType) {
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
-    return &revEntityList;
-}
-
-char *revGetWhere(const cJSON *revWhere_CJSON) {
-    char *revRetWhereStr = "*";
-
-    // Iterate over the items in the object
-    if (revWhere_CJSON != NULL && revWhere_CJSON->type == cJSON_Array) {
-        int revArrSize = cJSON_GetArraySize(revWhere_CJSON);
-
-        if (revArrSize == 0) {
-            return revRetWhereStr;
-        }
-
-        revRetWhereStr = "";
-        htable_strstr_t *revMap = revGetEntityDB_Keys();
-
-        for (int i = 0; i < revArrSize; i++) {
-            cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere_CJSON, i);
-
-            if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
-                char *revArrayElementVal = revCurrArrayElement->valuestring;
-
-                if (revArrayElementVal == "*") {
-                    return "*";
-                }
-
-                char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrayElementVal);
-
-                if (i == 0) {
-                    revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
-                } else {
-                    revRetWhereStr = revConcatStrings(revRetWhereStr, ", ");
-                    revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
-                }
-            }
-        }
-
-        htable_strstr_destroy(revMap);
-    }
-
-    return revRetWhereStr;
-}
-
-list *revPersGetALLRevEntity_By_SubType_RevVarArgs(char *revVarArgs) {
-    htable_strstr_t *revMap = revGetEntityDB_Keys();
-    htable_strstr_t *revMappedEntityColNameMap = revGetMapped_Entity_Key_DBFieldName();
-
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
-
-    char *revEntitySubType = "";
-
-    char *sql = "SELECT ";
-
-    // Parse the JSON string
-    cJSON *revJSON = cJSON_Parse(revVarArgs);
-
-    const cJSON *revSelectDistinct_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revDistinct");
-
-    if (cJSON_IsNumber(revSelectDistinct_JSON) && (revSelectDistinct_JSON->valueint != NULL)) {
-        long revSelectDistinctVal = revSelectDistinct_JSON->valueint;
-
-        if (revSelectDistinctVal == 1) {
-            sql = revConcatStrings(sql, "DISTINCT ");
-        }
-    }
-
-    const cJSON *revSelect_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelect");
-
-    char *revSelectWhere = revGetWhere(revSelect_JSON);
-    if (revSelectWhere[0] == '\0') {
-        goto revEnd;
-    }
-
-    sql = revConcatStrings(sql, revSelectWhere);
-    sql = revConcatStrings(sql, " FROM REV_ENTITY_TABLE WHERE ");
-
-    const cJSON *revWhere_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revWhere");
-
-    char **revTableRowsArr = NULL;
-
-    int revStrArrLen = 0;
-    char **revStrValsArr = NULL;
-
-    int revIntArrLen = 0;
-    int **revIntValsArr = NULL;
-
-    char *revSQL = "";
-
-    char *revIntWhereFields = "";
-    int revIntWhereArrLen = 0;
-    int **revIntWhereValsArr = NULL;
-
-    char *rev_Int_OR_Str = "";
-    char *rev_Str_OR_Str = "";
-
-    if (cJSON_IsObject(revWhere_JSON)) {
-        // Iterate over the items in the object
-        cJSON *revWhere;
-
-        for (revWhere = revWhere_JSON->child; revWhere; revWhere = revWhere->next) {
-            if (revWhere->type == cJSON_String) {
-                // Handle string type
-                char *revCurrKey = revWhere->string;
-                char *revCurrVal = revWhere->valuestring;
-
-                revEntitySubType = revCurrVal;
-
-                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
-                if (revDBTableName) {
-                    if (revSQL[0] == '\0') {
-                        revSQL = revConcatStrings(revSQL, revDBTableName);
-                        revSQL = revConcatStrings(revSQL, " = ?");
-                    } else {
-                        revSQL = revConcatStrings(revSQL, " AND ");
-                        revSQL = revConcatStrings(revSQL, revDBTableName);
-                        revSQL = revConcatStrings(revSQL, " = ?");
-                    }
-
-                    // Add another element to the array
-                    revStrArrLen++;
-                    revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
-                    revStrValsArr[revStrArrLen - 1] = strdup(revCurrVal);
-                } else {
-                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
-                }
-            } else if (revWhere->type == cJSON_Array) {
-                char *revCurr_OR_Str = "";
-                char *revCurr_OR_Int = "";
-
-                char *revArrDBTableName = revWhere->string;
-                char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
-
-                // Handle array type
-                int revArrSize = cJSON_GetArraySize(revWhere);
-
-                for (int i = 0; i < revArrSize; i++) {
-                    cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere, i);
-
-                    if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
-                        if (i == 0 && revSQL[0] == '\0') {
-                            revCurr_OR_Str = "(";
-                        } else if (i == 0 && revCurr_OR_Str[0] == 0) {
-                            revCurr_OR_Str = " AND (";
-                        }
-
-                        char *revArrayElementVal = revCurrArrayElement->valuestring;
-
-                        revStrArrLen++;
-                        revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
-                        revStrValsArr[revStrArrLen - 1] = revArrayElementVal;
-
-                        if (i == 0) {
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, revArrayElementDBTableName);
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " = ?");
-                        } else {
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " OR ");
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, revArrayElementDBTableName);
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, " = ?");
-                        }
-
-                        if (i == revArrSize - 1) {
-                            revCurr_OR_Str = revConcatStrings(revCurr_OR_Str, ")");
-                        }
-                    } else if (cJSON_IsNumber(revCurrArrayElement)) {
-                        if (i == 0 && revSQL[0] == '\0') {
-                            revCurr_OR_Int = "(";
-                        } else if (i == 0 && revCurr_OR_Str[0] == '\0') {
-                            revCurr_OR_Int = " AND (";
-                        }
-
-                        int revArrayElementVal = revCurrArrayElement->valueint;
-
-                        revIntArrLen++;
-                        revIntValsArr = (int **) realloc(revIntValsArr, revIntArrLen * sizeof(int *));
-                        revIntValsArr[revIntArrLen - 1] = revArrayElementVal;
-
-                        if (i == 0) {
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, revArrayElementDBTableName);
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " = ?");
-                        } else {
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " OR ");
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, revArrayElementDBTableName);
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, " = ?");
-                        }
-
-                        if (i == revArrSize - 1) {
-                            revCurr_OR_Int = revConcatStrings(revCurr_OR_Int, ")");
-                        }
-                    }
-                }
-
-                rev_Str_OR_Str = revConcatStrings(rev_Str_OR_Str, revCurr_OR_Str);
-                rev_Int_OR_Str = revConcatStrings(rev_Int_OR_Str, revCurr_OR_Int);
-            } else if (cJSON_IsNumber(revWhere) && (revWhere->valueint != NULL)) {
-                // Handle string type
-                char *revCurrKey = revWhere->string;
-                char *revCurrIntVal = revWhere->valueint;
-
-                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
-
-                if (revDBTableName[0] != '\0') {
-                    if (revIntWhereFields[0] == '\0') {
-                        revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
-                        revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
-                    } else {
-                        revIntWhereFields = revConcatStrings(revIntWhereFields, " AND ");
-                        revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
-                        revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
-                    }
-
-                    // Add another element to the array>>
-                    revIntWhereArrLen++;
-                    revIntWhereValsArr = (int **) realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
-                    revIntWhereValsArr[revIntWhereArrLen - 1] = revCurrIntVal;
-                } else {
-                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
-                }
-            } else if (revWhere->type == cJSON_Object) {
-                // Handle object type
-            }
-        }
-    }
-
-    revSQL = revConcatStrings(revSQL, rev_Str_OR_Str);
-    revSQL = revConcatStrings(revSQL, rev_Int_OR_Str);
-
-    sql = revConcatStrings(sql, revSQL);
-
-    if (revIntWhereFields[0] != '\0') {
-        if (revSelectWhere[0] == '\0') {
-            sql = revConcatStrings(sql, revIntWhereFields);
-        } else {
-            sql = revConcatStrings(sql, " AND ");
-            sql = revConcatStrings(sql, revIntWhereFields);
-        }
-    }
-
-    // sql = revConcatStrings(sql, " ORDER BY REV_ENTITY_GUID DESC");
-    sql = revConcatStrings(sql, " LIMIT ?");
-
-    sqlite3 *db = revDb();
-    sqlite3_stmt *stmt;
-
-    int rc = sqlite3_prepare(db, sql, -1, &stmt, NULL);
-
-    int revBoundCount = 0;
-
-    for (int i = 0; i < revStrArrLen; i++) {
-        revBoundCount = revBoundCount + 1;
-        sqlite3_bind_text(stmt, revBoundCount, (const char *) revStrValsArr[i], -1, SQLITE_STATIC);
-    }
-
-    for (int i = 0; i < revIntArrLen; i++) {
-        revBoundCount = revBoundCount + 1;
-        sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
-    }
-
-    for (int i = 0; i < revIntWhereArrLen; i++) {
-        revBoundCount = revBoundCount + 1;
-        sqlite3_bind_int64(stmt, revBoundCount, (long) revIntWhereValsArr[i]);
-    }
-
-    int revLimit = 10;
-
-    // LIMIT
-    const cJSON *revLimit_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revLimit");
-    if (cJSON_IsNumber(revLimit_JSON) && (revLimit_JSON->valueint > 0)) {
-        revLimit = revLimit_JSON->valueint;
-    }
-
-    sqlite3_bind_int(stmt, 1 + revBoundCount, revLimit);
-
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-    }
-
-    int num_cols = 0;
-    char **col_names = NULL;
-
-    if (rc == SQLITE_OK) {
-        num_cols = sqlite3_column_count(stmt);
-
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", "num_cols : %d\n", num_cols);
-
-        col_names = (char **) malloc(num_cols * sizeof(char *));
-
-        for (int i = 0; i < num_cols; i++) {
-            col_names[i] = strdup(sqlite3_column_name(stmt, i));
-        }
-
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            RevEntity revEntity = *(revInitializedEntity());
-
-            if (&revEntity == NULL) {
-                __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> Error: Failed to allocate memory for RevEntity struct\n");
-                continue;
-            }
-
-            RevEntityKeyValuePair revEntityKeyValuePairMapping[] = {
-                    {"_isNull",                       &revEntity._isNull},
-                    {"_id",                           &revEntity._id},
-                    {"_revEntityType",                &revEntity._revEntityType},
-                    {"_revEntitySubType",             &revEntity._revEntitySubType},
-                    {"_revEntityResolveStatus",       &revEntity._revEntityResolveStatus},
-                    {"_revEntityAccessPermission",    &revEntity._revEntityAccessPermission},
-                    {"_revEntityGUID",                &revEntity._revEntityGUID},
-                    {"_remoteRevEntityGUID",          &revEntity._remoteRevEntityGUID},
-                    {"_revOwnerEntityGUID",           &revEntity._revOwnerEntityGUID},
-                    {"_revContainerEntityGUID",       &revEntity._revContainerEntityGUID},
-                    {"_remoteRevEntityContainerGUID", &revEntity._remoteRevEntityContainerGUID},
-                    {"_revEntitySiteGUID",            &revEntity._revEntitySiteGUID},
-                    {"_timeCreated",                  &revEntity._timeCreated},
-                    {"_timeUpdated",                  &revEntity._timeUpdated},
-                    {"_revTimeCreated",               &revEntity._revTimeCreated},
-                    {"_revTimePublished",             &revEntity._revTimePublished},
-                    {"_revTimePublishedUpdated",      &revEntity._revTimePublishedUpdated},
-                    {"childRevEntity",                &revEntity.childRevEntity},
-                    {"_revInfoEntity",                &revEntity._revInfoEntity},
-                    {NULL, NULL} // Sentinel value to mark the end of the array
-            };
-
-            for (int i = 0; i < num_cols; i++) {
-                const char *revColName = col_names[i];
-                char *revMappedEntityColName = htable_strstr_get_direct(revMappedEntityColNameMap, revColName);
-
-                int revType = sqlite3_column_type(stmt, i);
-
-                // Search the mapping for the given key
-                int j = 0;
-
-                while (revEntityKeyValuePairMapping[j].key != NULL) {
-                    if (revEntityKeyValuePairMapping[j].key && strcmp(revEntityKeyValuePairMapping[j].key, revMappedEntityColName) == 0) {
-                        switch (revType) {
-                            case SQLITE_INTEGER: {
-                                long revEntityIntPtrVal = sqlite3_column_int64(stmt, i);
-                                long *revEntityIntPointer = revEntityKeyValuePairMapping[j].value;
-                                *revEntityIntPointer = revEntityIntPtrVal; // Set the value using the member pointer address
-
-                                break;
-                            }
-                            case SQLITE_FLOAT:
-                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", "%.2f ", sqlite3_column_double(stmt, i));
-                                break;
-                            case SQLITE_TEXT: {
-                                const char *revEntityDbCharVal = strdup((const char *) sqlite3_column_text(stmt, i));
-
-                                char **revEntityCharPtr = revEntityKeyValuePairMapping[j].value; // Get the address of the member pointer
-                                *revEntityCharPtr = revEntityDbCharVal; // Set the value of the member using the member pointer address
-
-                                break;
-                            }
-                            case SQLITE_BLOB:
-                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", "<BLOB> ");
-                                break;
-                            case SQLITE_NULL:
-                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> NULL <<<");
-                                break;
-                            default: {
-                                __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> DEFAULT <<<");
-                            }
-                        }
-
-                        break;
-                    }
-
-                    j = j + 1;
-                }
-            }
-
-            list_append(&revEntityList, &revEntity);
-        }
-
-        for (int i = 0; i < num_cols; i++) {
-            free(col_names[i]);
-        }
-
-        free(col_names);
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    free(revTableRowsArr);
-    free(revStrValsArr);
-    free(revIntValsArr);
-
-    htable_strstr_destroy(revMap);
-
-    revEnd:
 
     return &revEntityList;
 }

@@ -39,6 +39,10 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
 
   let revFlagValsTabsArr = [];
 
+  if (!Array.isArray(revFlagEntitiesArr) || !revFlagEntitiesArr.length) {
+    return null;
+  }
+
   let revFlagEntity = revFlagEntitiesArr[0];
 
   let revFlagValsMetadataArr = revGetMetadataValuesArr(

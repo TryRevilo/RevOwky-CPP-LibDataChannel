@@ -51,6 +51,10 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
         return revPersLibUpdate.revPersUpdateSetRemoteTargetGUID((int) localTargetGUID, (int) remoteTargetGUID);
     }
 
+    /**
+     * START RELS
+     **/
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     public int revPersSetRemoteRelationshipRemoteId(Integer revEntityRelationshipId, Integer revEntityRemoteRelationshipId) {
         return revPersLibUpdate.revPersSetRemoteRelationshipRemoteId((int) revEntityRelationshipId, (int) revEntityRemoteRelationshipId);
@@ -60,6 +64,10 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     public int revPersUpdateRelResStatus_By_RelId(Integer revEntityRelationshipId, Integer resolveStatus) {
         return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) resolveStatus);
     }
+
+    /**
+     * END RELS
+     **/
 
     /**
      * START METADATA

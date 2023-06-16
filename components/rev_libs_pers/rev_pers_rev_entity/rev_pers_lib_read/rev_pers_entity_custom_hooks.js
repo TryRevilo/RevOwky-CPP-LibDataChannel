@@ -76,7 +76,6 @@ export const revPersGetRevEntities_By_EntityGUIDsArr = revEntityGUIDsArr => {
       RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
 
     let revCurrEntity = JSON.parse(revCurrEntityStr);
-    revCurrEntity['_remoteRevEntityGUID'] = -1;
 
     let revCurrInfoEntityGUIDsStr =
       RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
@@ -280,12 +279,10 @@ export function useRevPersGetALLFilledRevEntity_By_SubType(revEntitySubType) {
   return revEntitiesArr;
 }
 
-export function useRevPersGetALLRevEntity_By_SubType_RevVarArgs() {
-  const revPersGetALLRevEntity_By_SubType_RevVarArgs = revVarArgs => {
+export function useRevPersGetRevEntities_By_RevVarArgs() {
+  const revPersGetRevEntities_By_RevVarArgs = revVarArgs => {
     let revEntitiesStr =
-      RevPersLibRead_React.revPersGetALLRevEntity_By_SubType_RevVarArgs(
-        revVarArgs,
-      );
+      RevPersLibRead_React.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
 
     let revEntitiesArr = JSON.parse(revEntitiesStr);
 
@@ -299,7 +296,7 @@ export function useRevPersGetALLRevEntity_By_SubType_RevVarArgs() {
     return revEntitiesArr;
   };
 
-  return {revPersGetALLRevEntity_By_SubType_RevVarArgs};
+  return {revPersGetRevEntities_By_RevVarArgs};
 }
 
 export const useRevGetEntityIcon = () => {

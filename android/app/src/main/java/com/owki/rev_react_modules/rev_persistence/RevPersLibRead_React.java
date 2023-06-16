@@ -34,6 +34,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     String revPersGetRevEntityByGUID(Integer revEntityGUID) {
         String revEntityStr = "{}";
 
+        if (revEntityGUID == null) {
+            return revEntityStr;
+        }
+
         RevEntity revEntity = revPersLibRead.revPersGetRevEntityByGUID(revEntityGUID);
 
         if (revEntity != null) {
@@ -128,10 +132,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntity_By_SubType_RevVarArgs(String revVarArgs) {
+    public String revPersGetRevEntities_By_RevVarArgs(String revVarArgs) {
         String revEntitiesStr = "[]";
 
-        RevEntity[] revEntities = revPersLibRead.revPersGetALLRevEntity_By_SubType_RevVarArgs(revVarArgs);
+        RevEntity[] revEntities = revPersLibRead.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
 
         if (revEntities.length > 0)
             revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);

@@ -32,6 +32,8 @@ list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveSta
 
 list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus);
 
+list *revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(long revEntityGUID);
+
 list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID);
 
 RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue);

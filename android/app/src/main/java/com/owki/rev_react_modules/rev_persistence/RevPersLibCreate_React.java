@@ -151,6 +151,10 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
      * END ANNOTATIONS
      **/
 
+    private boolean revIsStringNullOrEmpty(String revString) {
+        return (revString == null || revString.trim().isEmpty());
+    }
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     public void revCURLFileUpload(String revURL, String revFiles, String revData) {
         revPersLibCreate.revCURLFileUpload(revURL, revFiles, revData);
@@ -158,6 +162,10 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public Integer revCopyFile(String revSourcePath, String revDestPath) {
+        if (revIsStringNullOrEmpty(revSourcePath) || revIsStringNullOrEmpty(revDestPath)) {
+            return -1;
+        }
+
         return revPersLibCreate.revCopyFile(revSourcePath, revDestPath);
     }
 

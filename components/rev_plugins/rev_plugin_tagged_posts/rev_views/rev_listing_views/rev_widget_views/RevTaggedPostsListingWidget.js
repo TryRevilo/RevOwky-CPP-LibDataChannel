@@ -5,7 +5,7 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 const {RevPersLibRead_React} = NativeModules;
 
-import {useRevPersGetALLRevEntity_By_SubType_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {useRevPersGetRevEntities_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -35,8 +35,8 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     return null;
   }
 
-  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
-    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
+  const {revPersGetRevEntities_By_RevVarArgs} =
+    useRevPersGetRevEntities_By_RevVarArgs();
 
   let revPassVarArgs = {
     revSelect: [
@@ -55,7 +55,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     },
     revLimit: 22,
   };
-  let revAdEntitiesArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+  let revAdEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
     JSON.stringify(revPassVarArgs),
   );
 

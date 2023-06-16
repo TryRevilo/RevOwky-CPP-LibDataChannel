@@ -139,6 +139,10 @@ export const revWriteFile = async revFile => {
   try {
     let revFilePath = await revGetFileAbsolutePath(revURI);
 
+    if (revStringEmpty(revFilePath) || revStringEmpty(revDestFilePath)) {
+      return -1;
+    }
+
     let revResStatus = RevPersLibCreate_React.revCopyFile(
       revFilePath,
       revDestFilePath,
@@ -204,16 +208,40 @@ export const useRevCreateMediaAlbum = () => {
     for (let i = 0; i < revFileObjectsArr.length; i++) {
       let revFile = revFileObjectsArr[i];
 
-      console.log('>>> revFile', revFile);
+      if (
+        revIsEmptyJSONObject(revFile) ||
+        !('uri' in revFile) ||
+        revStringEmpty(revFile.uri)
+      ) {
+        continue;
+      }
 
-      if (revStringEmpty(revFile)) {
+      let revFilePath = '';
+
+      try {
+        revFilePath = await revGetFileAbsolutePath(revFile.uri);
+      } catch (error) {
+        console.log('*** error -revFileObjectsArr.length', error);
+
+        continue;
+      }
+
+      if (revStringEmpty(revFilePath)) {
         continue;
       }
 
       let revFileType = revGetFileType(revFile);
       let revFileSubtype = revGetFileObjectSubType(revFile);
 
+      if (revIsEmptyVar(revFileType) || revIsEmptyVar(revFileSubtype)) {
+        continue;
+      }
+
       let revNewFileName = revSetNewRemoteFile(revFile, i);
+
+      if (revIsEmptyVar(revNewFileName)) {
+        continue;
+      }
 
       revFile['revNewFileName'] = revNewFileName;
 
@@ -233,7 +261,7 @@ export const useRevCreateMediaAlbum = () => {
       // START SAVE FILE OBJECT
       let revPersFileEntityGUID = revCreateNewEntity(revEntityFileObject);
 
-      if (revPersFileEntityGUID > 0) {
+      if (!revIsEmptyVar(revPersFileEntityGUID) && revPersFileEntityGUID > 0) {
         let revPicsAlbumFileRel = REV_ENTITY_RELATIONSHIP_STRUCT();
         revPicsAlbumFileRel._revEntityRelationshipType = 'rev_picture_of';
         revPicsAlbumFileRel._revEntityTargetGUID = revPicAlbumEntityGUID;

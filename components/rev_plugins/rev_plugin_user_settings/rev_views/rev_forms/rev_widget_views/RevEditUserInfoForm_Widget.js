@@ -19,7 +19,8 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
-const {RevPersLibCreate_React} = NativeModules;
+const {RevPersLibCreate_React, RevPersLibUpdate_React, RevPersLibDelete_React} =
+  NativeModules;
 
 import {
   revGetFileNameFromPath,
@@ -72,6 +73,10 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   let revEntityPicsAlbumDataArr = [];
 
   for (let i = 0; i < revPicsArray.length; i++) {
+    if (revPicsArray[i]._revEntityResolveStatus == -3) {
+      continue;
+    }
+
     let revPicMetadataArr = revPicsArray[i]._revEntityMetadataList;
     let revRemoteFileName = revGetMetadataValue(
       revPicMetadataArr,
@@ -292,6 +297,39 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         }}
         revOnRemoveDataCallBack={revDeletedData => {
           console.log('>>> revDeletedData', revDeletedData);
+
+          let revFilePath = revDeletedData.uri.replace('file://', '');
+          console.log('>>> revFilePath', revFilePath);
+
+          let revDelFileGUID =
+            '_revEntityGUID' in revDeletedData && revDeletedData._revEntityGUID
+              ? revDeletedData._revEntityGUID
+              : -1;
+
+          console.log('>>> revDelFileGUID', revDelFileGUID);
+
+          let revDeleteParams = [
+            {
+              revFileGUID: revDelFileGUID,
+              revFilePath: revFilePath,
+            },
+          ];
+
+          //   if (revDelFileGUID > 0) {
+          //     let revDelFileEntityStatus =
+          //       RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+          //         -3,
+          //         revDelFileGUID,
+          //       );
+
+          //     console.log('>>> revDelFileEntityStatus', revDelFileEntityStatus);
+          //   }
+
+          RevPersLibDelete_React.revAsyDeleteFilesFromPathsStrArr(
+            JSON.stringify({revRoot: revDeleteParams}),
+          ).then(revRes => {
+            console.log('>>> revRes', revRes);
+          });
         }}
       />
 

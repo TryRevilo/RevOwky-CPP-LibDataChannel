@@ -4,9 +4,10 @@
 
 #include "rev_gen_file_functions.h"
 
-#include "../../../../libs/rev_curl/android-21/include/curl/curl.h"
-
+#include <jni.h>
 #include <android/log.h>
+
+#include "../../../../libs/rev_curl/android-21/include/curl/curl.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,8 +20,6 @@
 #include <stdint.h>
 
 #include <pthread.h>
-
-#include "cJSON.h"
 
 #define BUFFER_SIZE (1024 * 1024) // 1 MB buffer size
 
@@ -291,33 +290,4 @@ const char *revGetFileName(const char *filepath) {
     printf("Filename: %s\n", filename);
 
     return filename;
-}
-
-void revDeleteFiles(const char *revJSONFilePaths) {
-    cJSON *jsonArray = cJSON_Parse(revJSONFilePaths);
-
-    if (jsonArray == NULL) {
-        const char *error = cJSON_GetErrorPtr();
-        printf("JSON parsing error: %s\n", error);
-        return;
-    }
-
-    int count = cJSON_GetArraySize(jsonArray);
-    const char **cFilePaths = malloc(count * sizeof(char *));
-
-    for (int i = 0; i < count; i++) {
-        cJSON *jsonFilePath = cJSON_GetArrayItem(jsonArray, i);
-        const char *filePath = jsonFilePath->valuestring;
-        cFilePaths[i] = strdup(filePath);
-    }
-
-    // Process the C array of file paths as needed
-
-    // Cleanup - free the memory
-    for (int i = 0; i < count; i++) {
-        free((void *) cFilePaths[i]);
-    }
-    free(cFilePaths);
-
-    cJSON_Delete(jsonArray);
 }

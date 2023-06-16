@@ -62,7 +62,7 @@ list *revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(long revEntityC
 
 list *revPersGetALLRevEntity_By_SubType(char *revEntitySubType);
 
-list *revPersGetALLRevEntity_By_SubType_RevVarArgs(char *revVarArgs);
+list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs);
 
 int getNumberOfUnreadRevEntites();
 

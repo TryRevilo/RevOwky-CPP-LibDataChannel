@@ -68,6 +68,8 @@ list *revPersGetALLRevEntityRelationshipsSubjectGUID_BY_TARGET_GUID(long targetG
 
 list *revPersGetALLRevEntityRelationshipsTargets(char *revEntityrelationship, long subjectGUID);
 
+list *revPersGetAllRevEntityRelsIDs_By_EntityGUID(long revEntityGUID);
+
 list *revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(char *revEntityrelationship, long remoteRevEntityGUID);
 
 list *revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
@@ -84,7 +86,7 @@ long revPersGetTargetGUID_BY_RelStr_SubjectGUID(char *revEntityrelationship, lon
 
 list *revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(char *revEntityrelationship, long subjectGUID);
 
-list *revPersGetUnresolvedRemoteTargetGUIDSRelIds() ;
+list *revPersGetUnresolvedRemoteTargetGUIDSRelIds();
 
 char *getRevRelationshipTimeCreated(long relationshipId);
 

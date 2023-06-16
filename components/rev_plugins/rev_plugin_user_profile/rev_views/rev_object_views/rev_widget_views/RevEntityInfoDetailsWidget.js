@@ -14,7 +14,10 @@ import {
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-import {RevCenteredImage} from '../../../../../rev_views/rev_page_views';
+import {
+  RevCenteredImage,
+  RevReadMoreTextView,
+} from '../../../../../rev_views/rev_page_views';
 
 export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -67,14 +70,9 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   );
 
   return (
-    <View style={revSiteStyles.revFlexContainer}>
-      <View
-        style={[revSiteStyles.revFlexWrapper, styles.revPaymentBriefContainer]}>
-        <View
-          style={[
-            revSiteStyles.revFlexContainer,
-            styles.revPPalPaymentBriefLeftContainer,
-          ]}>
+    <View style={[revSiteStyles.revFlexContainer, {width: '100%'}]}>
+      <View style={[revSiteStyles.revFlexWrapper, {width: '100%'}]}>
+        <View style={[revSiteStyles.revFlexContainer, {width: '100%'}]}>
           <View style={[revSiteStyles.revFlexWrapper]}>
             <Text
               style={[
@@ -137,23 +135,40 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
             </Text>
           </View>
 
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            <Text style={revSiteStyles.revSiteTxtBold}>brief -</Text>
-            <Text>{' ' + revEntityDescVal}</Text>
-          </Text>
-
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            <Text style={revSiteStyles.revSiteTxtBold}>about -</Text>
-            <Text>{' ' + revAboutEntityInfo}</Text>
-          </Text>
+          <View style={[revSiteStyles.revFlexWrapper]}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtBold,
+                {flex: 0},
+              ]}>
+              brief -
+            </Text>
+            <View style={{flex: 1}}>
+              <RevReadMoreTextView
+                revText={' ' + revEntityDescVal}
+                revMaxLength={144}
+              />
+            </View>
+          </View>
+          <View style={[revSiteStyles.revFlexWrapper]}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtBold,
+                {flex: 0},
+              ]}>
+              about -
+            </Text>
+            <View style={{flex: 1}}>
+              <RevReadMoreTextView
+                revText={' ' + revAboutEntityInfo}
+                revMaxLength={144}
+              />
+            </View>
+          </View>
         </View>
         <View
           style={[
@@ -181,9 +196,6 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revPPalPaymentBriefLeftContainer: {
-    width: 'auto',
-  },
   revMarginTopText: {
     marginTop: 4,
   },

@@ -14,7 +14,7 @@ import {revArrIncludesElement} from '../../../../../../rev_function_libs/rev_gen
 const {RevPersLibRead_React} = NativeModules;
 
 import {
-  useRevPersGetALLRevEntity_By_SubType_RevVarArgs,
+  useRevPersGetRevEntities_By_RevVarArgs,
   useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
@@ -28,8 +28,8 @@ export const RevChatMessageNotificationsListingWidget = () => {
   const {REV_SITE_ENTITY_GUID, REV_LOGGED_IN_ENTITY_GUID} =
     useContext(RevSiteDataContext);
 
-  const {revPersGetALLRevEntity_By_SubType_RevVarArgs} =
-    useRevPersGetALLRevEntity_By_SubType_RevVarArgs();
+  const {revPersGetRevEntities_By_RevVarArgs} =
+    useRevPersGetRevEntities_By_RevVarArgs();
 
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
@@ -60,7 +60,7 @@ export const RevChatMessageNotificationsListingWidget = () => {
       revLimit: 22,
     };
 
-    let revVarArgsEntitiesArr = revPersGetALLRevEntity_By_SubType_RevVarArgs(
+    let revVarArgsEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
       JSON.stringify(revPassVarArgs),
     );
 

@@ -179,14 +179,16 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
     );
   };
 
-  const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
-    revEntityGUID: revUserEntity._revEntityGUID,
-    revIconRelType: 'rev_entity_banner_icon_of',
-  });
+  const revMainEntityBannerIconLocalPath = revGetMetadataValue(
+    revInfoEntity._revEntityMetadataList,
+    'rev_main_entity_banner_icon_val',
+  );
 
-  let revProfileBannerIconView = !revStringEmpty(revMainEntityIconLocalPath) ? (
+  let revProfileBannerIconView = !revStringEmpty(
+    revMainEntityBannerIconLocalPath,
+  ) ? (
     <RevCenteredImage
-      revImageURI={revMainEntityIconLocalPath}
+      revImageURI={revMainEntityBannerIconLocalPath}
       revImageDimens={{revWidth: '100%', revHeight: '100%'}}
     />
   ) : (

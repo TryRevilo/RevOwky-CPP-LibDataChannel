@@ -157,10 +157,51 @@ list *getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revEntityGUID);
+    sqlite3_bind_int64(stmt, 1, revEntityGUID);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: -getAllRevEntityAnnoationIds_By_RevEntityGUID %s\n", sqlite3_errmsg(db));
+    }
+
+    rc = sqlite3_step(stmt);
+
+    while (rc == SQLITE_ROW) {
+        long long revEntityAnnotationId = sqlite3_column_int64(stmt, 0);
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntityAnnotationId %ld", revEntityAnnotationId);
+
+        list_append(&list, &revEntityAnnotationId);
+
+        rc = sqlite3_step(stmt);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    return &list;
+}
+
+list *getAllRevEntityAnnoationIds_By_OwnerGUID(long revOwnerGUID) {
+
+    list list;
+    list_new(&list, sizeof(long), NULL);
+
+    sqlite3 *db = revDb();
+
+    sqlite3_stmt *stmt;
+
+    char *sql = "SELECT "
+                "ID "
+                "FROM REV_ENTITY_ANNOTATIONS_TABLE WHERE "
+                "REV_ENTITY_OWNER_GUID = ?";
+
+    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
+
+    sqlite3_bind_int(stmt, 1, revOwnerGUID);
+
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> SQL error: -getAllRevEntityAnnoationIds_By_OwnerGUID %s\n", sqlite3_errmsg(db));
     }
 
     rc = sqlite3_step(stmt);
@@ -269,7 +310,7 @@ RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId) 
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revAnnotationId);
+    sqlite3_bind_int64(stmt, 1, revAnnotationId);
 
     RevEntityAnnotation *revEntityAnnotation = (RevEntityAnnotation *) malloc(sizeof(RevEntityAnnotation));
 

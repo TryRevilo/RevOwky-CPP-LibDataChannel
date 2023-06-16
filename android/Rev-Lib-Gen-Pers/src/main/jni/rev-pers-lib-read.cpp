@@ -875,12 +875,12 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEntity_1By_1SubType_1RevVarArgs(JNIEnv *env, jobject thiz, jstring rev_var_args) {
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntities_1By_1RevVarArgs(JNIEnv *env, jobject thiz, jstring rev_var_args) {
     const char *revVarArgs = env->GetStringUTFChars(rev_var_args, 0);
 
     REV_ENTITY_JNI_POSREC *revEntityJniPosRec = LoadRevEntityJniPosRec(env);
 
-    list revEntityTypeList = *(revPersGetALLRevEntity_By_SubType_RevVarArgs(strdup(revVarArgs)));
+    list revEntityTypeList = *(revPersGetRevEntities_By_RevVarArgs(strdup(revVarArgs)));
 
     jobjectArray jPosRecArray = env->NewObjectArray(searchRecordResultRevEntity.size(), revEntityJniPosRec->cls, NULL);
 

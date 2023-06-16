@@ -30,7 +30,7 @@ public class RevPersLibRead {
 
     public native RevEntity[] revPersGetALLRevEntity_By_SubType(String revEntitySubType);
 
-    public native RevEntity[] revPersGetALLRevEntity_By_SubType_RevVarArgs(String revVarArgs);
+    public native RevEntity[] revPersGetRevEntities_By_RevVarArgs(String revVarArgs);
 
     public native RevEntity revPersGetRevEntityByGUID(long revEntityGUID);
 

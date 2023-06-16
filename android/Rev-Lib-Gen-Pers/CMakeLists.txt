@@ -143,6 +143,8 @@ set(REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/
 set(REV_LIB_CONNECTORS_SRCS
         ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_perslib_create_init.c
         ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_perslib_create_init.h
+        ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_pers_lib_db_data_connectors.c
+        ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_pers_lib_db_data_connectors.h
         )
 add_library(rev_lib_connectors SHARED ${REV_LIB_CONNECTORS_SRCS})
 
@@ -254,6 +256,8 @@ set(REV_ENTITY_METADATA_SRCS
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_read/rev_pers_read_rev_entity_metadata.h
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update_rev_entity_metadata.c
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update_rev_entity_metadata.h
+        ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_delete/rev_pers_delete_rev_entity_metadata.h
+        ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_delete/rev_pers_delete_rev_entity_metadata.c
         )
 add_library(rev_pers_rev_entity_metadata SHARED ${REV_ENTITY_METADATA_SRCS})
 target_link_libraries(
@@ -453,6 +457,7 @@ target_link_libraries(
 
 add_library(rev-pers-lib-db-delete SHARED
         ${REV_JNI_ROOT_DIR}/rev_pers_jni_structs.h
+        ${REV_JNI_ROOT_DIR}/rev-pers-lib-delete.h
         ${REV_JNI_ROOT_DIR}/rev-pers-lib-delete.cpp)
 target_link_libraries(
         rev-pers-lib-db-delete

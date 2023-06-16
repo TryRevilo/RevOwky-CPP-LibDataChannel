@@ -18,6 +18,8 @@ int revEntityAnnotationExists_ByOwnerEntityGUID(char *revAnnotationName, long re
 
 list *getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID);
 
+list *getAllRevEntityAnnoationIds_By_OwnerGUID(long revOwnerGUID);
+
 list *revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(char *revAnnotationName, long revEntityGUID);
 
 list *revPersGetALLRevEntityAnnotationsOwnerGUID();

@@ -88,7 +88,7 @@ export const revIsEmptyVar = v => {
 };
 
 export const revGetFileType = revFile => {
-  if (revStringEmpty(revFile)) {
+  if (revIsEmptyJSONObject(revFile) || !('name' in revFile)) {
     return null;
   }
 
@@ -103,7 +103,7 @@ export const revGetFileType = revFile => {
 export const revGetFileObjectSubType = revFile => {
   let revFileType = revGetFileType(revFile);
 
-  if (!revFileType) {
+  if (revStringEmpty(revFileType)) {
     return;
   }
 
@@ -113,7 +113,7 @@ export const revGetFileObjectSubType = revFile => {
     case 'jpg':
     case 'jpeg':
     case 'png':
-      revEntitySubType = 'rev_file';
+      revEntitySubType = 'rev_image';
       break;
 
     case 'mp4':
