@@ -547,7 +547,11 @@ export const RevSelectImagesInput = ({
       revNewDataArr.map(revCurrData => {
         return (
           <View
-            key={'revSelectedPicsArea_' + revGetRandInteger()}
+            key={
+              'revSelectedPicsArea_' +
+              revGetRandInteger() +
+              revCurrData._revEntityGUID
+            }
             style={[
               revSiteStyles.revFlexContainer,
               {

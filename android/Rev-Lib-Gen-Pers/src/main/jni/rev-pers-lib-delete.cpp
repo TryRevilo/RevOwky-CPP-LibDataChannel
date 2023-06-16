@@ -49,7 +49,7 @@ bool revSetDelAnnResStatus(void *revAnnId, int revResStatus) {
 
 // Function that receives a callback function
 bool revSetDelRelResStatus(void *revRelID, int revResStatus) {
-    long revPassLong = (long) revRelID;
+    long revPassLong = *(long *) revRelID;
 
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSetDelRelResStatus -revRelID %ld", revPassLong);
 

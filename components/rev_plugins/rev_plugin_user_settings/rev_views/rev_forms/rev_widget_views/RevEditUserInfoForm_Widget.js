@@ -25,6 +25,7 @@ const {RevPersLibCreate_React, RevPersLibUpdate_React, RevPersLibDelete_React} =
 import {
   revGetFileNameFromPath,
   revGetRandInteger,
+  revIsEmptyJSONObject,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
@@ -65,6 +66,11 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const {revGetEntityIcon} = useRevGetEntityIcon();
 
   let revInfoEntity = REV_LOGGED_IN_ENTITY._revInfoEntity;
+
+  if (revIsEmptyJSONObject(revInfoEntity)) {
+    return null;
+  }
+
   let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
 
   let revEntityPicsAlbum = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum;
@@ -73,11 +79,13 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   let revEntityPicsAlbumDataArr = [];
 
   for (let i = 0; i < revPicsArray.length; i++) {
-    if (revPicsArray[i]._revEntityResolveStatus == -3) {
+    let revCurrPic = revPicsArray[i];
+
+    if (revIsEmptyJSONObject(revCurrPic)) {
       continue;
     }
 
-    let revPicMetadataArr = revPicsArray[i]._revEntityMetadataList;
+    let revPicMetadataArr = revCurrPic._revEntityMetadataList;
     let revRemoteFileName = revGetMetadataValue(
       revPicMetadataArr,
       'rev_remote_file_name',
@@ -87,7 +95,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
       'file://' + rev_settings.revPublishedMediaDir + '/' + revRemoteFileName;
 
     revEntityPicsAlbumDataArr.push({
-      _revEntityGUID: revPicsArray[i]._revEntityGUID,
+      _revEntityGUID: revCurrPic._revEntityGUID,
       uri: revEntityIconValPath,
     });
   }
@@ -314,16 +322,6 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
               revFilePath: revFilePath,
             },
           ];
-
-          //   if (revDelFileGUID > 0) {
-          //     let revDelFileEntityStatus =
-          //       RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
-          //         -3,
-          //         revDelFileGUID,
-          //       );
-
-          //     console.log('>>> revDelFileEntityStatus', revDelFileEntityStatus);
-          //   }
 
           RevPersLibDelete_React.revAsyDeleteFilesFromPathsStrArr(
             JSON.stringify({revRoot: revDeleteParams}),
