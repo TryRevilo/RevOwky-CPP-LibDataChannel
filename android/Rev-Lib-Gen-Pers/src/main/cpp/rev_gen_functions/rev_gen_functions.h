@@ -24,7 +24,7 @@ void revRemoveSpaces(char *source);
 
 char *revConcatStrings(const char *revS1, const char *revS2);
 
-struct tm* revGetTimeAndDate(long milliseconds);
+struct tm *revGetTimeAndDate(long milliseconds);
 
 char *revLocalTimer(long revMills);
 

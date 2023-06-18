@@ -50,7 +50,7 @@ function RevFooterArea() {
     let revPassVarArgs = {
       revSelect: [
         '_revEntityGUID',
-        '_revOwnerEntityGUID',
+        '_revEntityOwnerGUID',
         '_revContainerEntityGUID',
         '_revEntitySiteGUID',
         '_revEntityAccessPermission',

@@ -130,6 +130,8 @@ set(REV_DB_INIT_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/rev_db_init)
 set(REV_DB_INIT_SRCS
         ${REV_DB_INIT_PROJECT_SOURCE_DIR}/rev_db_init.c
         ${REV_DB_INIT_PROJECT_SOURCE_DIR}/rev_db_init.h
+        ${REV_DB_INIT_PROJECT_SOURCE_DIR}/rev_pers_db_mappers.c
+        ${REV_DB_INIT_PROJECT_SOURCE_DIR}/rev_pers_db_mappers.h
         )
 add_library(rev_db_init SHARED ${REV_DB_INIT_SRCS})
 target_link_libraries(

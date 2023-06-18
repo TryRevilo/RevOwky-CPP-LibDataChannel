@@ -23,10 +23,9 @@ void revRemoveSpaces(char *source) {
     *i = 0;
 }
 
-char *revConcatStrings(const char *revS1, const char *revS2)
-{
+char *revConcatStrings(const char *revS1, const char *revS2) {
     int length = strlen(revS1) + strlen(revS2);
-    char *revResultStr = (char *)malloc(length + 1);
+    char *revResultStr = (char *) malloc(length + 1);
 
     strcpy(revResultStr, revS1);
     strcat(revResultStr, revS2);

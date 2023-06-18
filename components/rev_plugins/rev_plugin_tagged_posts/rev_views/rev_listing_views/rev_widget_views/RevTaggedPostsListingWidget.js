@@ -41,7 +41,6 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revPassVarArgs = {
     revSelect: [
       '_revEntityGUID',
-      '_revOwnerEntityGUID',
       '_revContainerEntityGUID',
       '_revEntitySiteGUID',
       '_revEntityAccessPermission',

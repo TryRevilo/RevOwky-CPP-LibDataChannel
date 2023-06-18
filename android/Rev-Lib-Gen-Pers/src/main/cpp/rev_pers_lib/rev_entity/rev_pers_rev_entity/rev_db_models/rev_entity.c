@@ -4,39 +4,60 @@
 
 #include "rev_entity.h"
 
+#include <android/log.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <android/log.h>
 #include <string.h>
 
 #include "../../../rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 #include "../../../../../../../libs/cJSON/cJSON.h"
+#include "../../../../../../../libs/rev_map/rev_map.h"
+#include "../../../rev_db_init/rev_db_init.h"
 
-RevEntityKeyValuePair *revGetEntityKeyValuePairMapping(RevEntity *revEntity) {
-    RevEntityKeyValuePair *revEntityKeyValuePairMapping[] = {
-            {"_isNull",                       revEntity->_isNull},
-            {"_id",                           revEntity->_id},
-            {"_revEntityType",                revEntity->_revEntityType},
-            {"_revEntitySubType",             revEntity->_revEntitySubType},
-            {"_revEntityResolveStatus",       revEntity->_revEntityResolveStatus},
-            {"_revEntityAccessPermission",    revEntity->_revEntityAccessPermission},
-            {"_revEntityGUID",                revEntity->_revEntityGUID},
-            {"_remoteRevEntityGUID",          revEntity->_remoteRevEntityGUID},
-            {"_revOwnerEntityGUID",           revEntity->_revOwnerEntityGUID},
-            {"_revContainerEntityGUID",       revEntity->_revContainerEntityGUID},
-            {"_remoteRevEntityContainerGUID", revEntity->_remoteRevEntityContainerGUID},
-            {"_revEntitySiteGUID",            revEntity->_revEntitySiteGUID},
-            {"_timeCreated",                  revEntity->_timeCreated},
-            {"_timeUpdated",                  revEntity->_timeUpdated},
-            {"_revTimeCreated",               revEntity->_revTimeCreated},
-            {"_revTimePublished",             revEntity->_revTimePublished},
-            {"_revTimePublishedUpdated",      revEntity->_revTimePublishedUpdated},
-            {"childRevEntity",                revEntity->childRevEntity},
-            {"_revInfoEntity",                revEntity->_revInfoEntity},
-            {NULL, NULL} // Sentinel value to mark the end of the array
-    };
+htable_strstr_t *revGetEntityDB_Keys() {
+    htable_strstr_t *revMap;
 
-    return revEntityKeyValuePairMapping;
+    revMap = htable_strstr_create(HTABLE_STR_CASECMP);
+
+    htable_strstr_insert(revMap, "_revEntityType", "REV_ENTITY_TYPE");
+    htable_strstr_insert(revMap, "_revEntitySubType", "REV_ENTITY_SUB_TYPE");
+    htable_strstr_insert(revMap, "_revEntityResolveStatus", "REV_RESOLVE_STATUS");
+    htable_strstr_insert(revMap, "_revEntityChildableStatus", "REV_CHILDABLE_STATUS");
+    htable_strstr_insert(revMap, "_revEntityAccessPermission", "REV_ENTITY_ACCESS_PERMISSION");
+    htable_strstr_insert(revMap, "_revEntitySiteGUID", "REV_ENTITY_SITE_GUID");
+    htable_strstr_insert(revMap, "_revEntityGUID", "REV_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_remoteRevEntityGUID", "REMOTE_REV_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_revEntityOwnerGUID", "REV_ENTITY_OWNER_GUID");
+    htable_strstr_insert(revMap, "_revContainerEntityGUID", "REV_ENTITY_CONTAINER_GUID");
+    htable_strstr_insert(revMap, "_revTimeCreated", "REV_CREATED_DATE");
+    htable_strstr_insert(revMap, "_timeUpdated", "REV_UPDATED_DATE");
+    htable_strstr_insert(revMap, "_revTimePublished", "REV_PUBLISHED_DATE");
+    htable_strstr_insert(revMap, "revLimit", "LIMIT");
+
+    return revMap;
+}
+
+htable_strstr_t *revGetMapped_Entity_Key_DBFieldName() {
+    htable_strstr_t *revMap;
+
+    revMap = htable_strstr_create(HTABLE_STR_CASECMP);
+
+    htable_strstr_insert(revMap, "REV_ENTITY_TYPE", "_revEntityType");
+    htable_strstr_insert(revMap, "REV_ENTITY_SUB_TYPE", "_revEntitySubType");
+    htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revEntityResolveStatus");
+    htable_strstr_insert(revMap, "REV_CHILDABLE_STATUS", "_revEntityChildableStatus");
+    htable_strstr_insert(revMap, "REV_ENTITY_ACCESS_PERMISSION", "_revEntityAccessPermission");
+    htable_strstr_insert(revMap, "REV_ENTITY_SITE_GUID", "_revEntitySiteGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_GUID", "_revEntityGUID");
+    htable_strstr_insert(revMap, "REMOTE_REV_ENTITY_GUID", "_remoteRevEntityGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_OWNER_GUID", "_revEntityOwnerGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_CONTAINER_GUID", "_revContainerEntityGUID");
+    htable_strstr_insert(revMap, "REV_CREATED_DATE", "_revTimeCreated");
+    htable_strstr_insert(revMap, "REV_UPDATED_DATE", "_timeUpdated");
+    htable_strstr_insert(revMap, "REV_PUBLISHED_DATE", "_revTimePublished");
+
+    return revMap;
 }
 
 RevEntity *revInitializedEntity() {

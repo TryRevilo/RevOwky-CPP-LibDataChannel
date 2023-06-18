@@ -60,8 +60,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
-  console.log('>>> revEntityGUID', revEntityGUID);
-
   if (revEntityGUID < 1) {
     return null;
   }

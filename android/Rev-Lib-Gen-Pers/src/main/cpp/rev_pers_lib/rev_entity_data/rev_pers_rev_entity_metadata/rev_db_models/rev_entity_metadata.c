@@ -136,8 +136,7 @@ list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr)
     {
         cJSON *revEntityMetadataJSON = NULL;
 
-        cJSON_ArrayForEach(revEntityMetadataJSON, _revEntityMetadataList)
-        {
+        cJSON_ArrayForEach(revEntityMetadataJSON, _revEntityMetadataList) {
             RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *)malloc(sizeof(RevEntityMetadata));
 
             // _revMetadataName

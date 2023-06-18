@@ -11,4 +11,9 @@ void initRevDb(char *dirPath);
 
 int callback(void *NotUsed, int argc, char **argv, char **azColName);
 
+typedef struct {
+    char *revKey;
+    void *revValue;
+} RevKeyValuePair;
+
 #endif // REV_DB_INIT_H
