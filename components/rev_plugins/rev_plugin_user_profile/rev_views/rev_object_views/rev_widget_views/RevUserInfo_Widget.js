@@ -34,6 +34,8 @@ import {
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {revStringEmpty} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+const revSettings = require('../../../../../../rev_res/rev_settings.json');
+
 export const RevUserInfo_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -110,7 +112,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     }
 
     let revImagePath =
-      'file:///storage/emulated/0/Documents/Owki/rev_media/' + revImagePathVal;
+      'file://' + revSettings.revPublishedMediaDir + '/' + revImagePathVal;
 
     const [revImageErr, setRevImageErr] = useState(false);
     const [revWidth, setRevWidth] = useState();
@@ -140,7 +142,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
           width: revImageWidth - 2,
           borderColor: '#FFF',
           borderWidth: 1,
-          marginTop: -1,
+          borderBottomWidth: 0,
           overflow: 'hidden',
         }}>
         {revImageErr ? null : (

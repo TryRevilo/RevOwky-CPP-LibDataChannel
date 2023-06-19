@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   revPublisherIconContainer: {
+    flex: 0,
     marginTop: -1,
   },
   revPostTagsListWrapper: {
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   revAdContentBodyContainer: {
-    width: maxChatMessageContainerWidth - 12,
+    flex: 1,
     marginLeft: 10,
   },
   revPublisherInfoDescWrapper: {

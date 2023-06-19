@@ -243,30 +243,41 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
       <TouchableOpacity
         key={'RevCommentItem_' + revGetRandInteger(100, 1000)}
         style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
-        <TouchableOpacity>
-          <View style={styles.revCommentMsgUserIcon}>
+        <View style={styles.revCommentMsgUserIcon}>
+          <TouchableOpacity>
             <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.revChatMsgCommentContentContainer}>
-          <View style={styles.chatMsgHeaderWrapper}>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorDark,
-                revSiteStyles.revSiteTxtTiny,
-                revSiteStyles.revSiteTxtBold,
-              ]}>
-              {revPublisherEntityNames_Trunc}
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revChatMsgHeaderWrapper,
+            ]}>
+            <Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
+                {revPublisherEntityNames_Trunc}
+              </Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  styles.revChatMsgSendTime,
+                ]}>
+                {revFormatLongDate(revVarArgs._revTimePublished)}
+              </Text>
             </Text>
-            <Text
+            <View
               style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny_X,
-                styles.revChatMsgSendTime,
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                styles.revChatMsgOptionsWrapper,
               ]}>
-              {revFormatLongDate(revVarArgs._revTimePublished)}
-            </Text>
-            <View style={styles.revChatMsgOptionsWrapper}>
               <FontAwesome
                 name="retweet"
                 style={[
@@ -572,46 +583,59 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
         handleRevTaggedPostLongPressed(revVarArgs);
       }}>
       <View style={revSiteStyles.revFlexWrapper}>
-        <TouchableOpacity
-          onPress={() => {
-            handleRevUserProfileClick();
-          }}>
-          <View style={styles.revChatMsgUserIcon}>{revMainEntityIconView}</View>
-        </TouchableOpacity>
+        <View style={styles.revChatMsgUserIcon}>
+          <TouchableOpacity
+            onPress={() => {
+              handleRevUserProfileClick();
+            }}>
+            {revMainEntityIconView}
+          </TouchableOpacity>
+        </View>
         <View
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revChatMsgContentWrapper,
           ]}>
-          <View style={styles.chatMsgContentCarretView}>
+          <View style={styles.revChatMsgContentCarretView}>
             <FontAwesome
               name="caret-left"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
                 revSiteStyles.revSiteTxtLarge,
-                styles.chatMsgContentCarret,
+                styles.revChatMsgContentCarret,
               ]}
             />
           </View>
-          <View style={styles.chatMsgContentContainer}>
-            <View style={styles.chatMsgHeaderWrapper}>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorDark,
-                  revSiteStyles.revSiteTxtTiny,
-                  revSiteStyles.revSiteTxtBold,
-                ]}>
-                {revPublisherEntityNames_Trunc}
+          <View style={styles.revChatMsgContentContainer}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revChatMsgHeaderWrapper,
+              ]}>
+              <Text>
+                <Text
+                  style={[
+                    revSiteStyles.revSiteTxtColorDark,
+                    revSiteStyles.revSiteTxtTiny,
+                    revSiteStyles.revSiteTxtBold,
+                  ]}>
+                  {revPublisherEntityNames_Trunc}
+                </Text>
+                <Text
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtTiny_X,
+                    styles.revChatMsgSendTime,
+                  ]}>
+                  {revTimePublished}
+                </Text>
               </Text>
-              <Text
+              <View
                 style={[
-                  revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteTxtTiny_X,
-                  styles.revChatMsgSendTime,
+                  revSiteStyles.revFlexWrapper_WidthAuto,
+                  styles.revChatMsgOptionsWrapper,
+                  {marginRight: 4},
                 ]}>
-                {revTimePublished}
-              </Text>
-              <View style={styles.revChatMsgOptionsWrapper}>
                 <FontAwesome
                   name="retweet"
                   style={[
@@ -686,7 +710,7 @@ var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
   revChatMsgUserIcon: {
-    width: 22,
+    flex: 0,
     height: 32,
     borderStyle: 'solid',
     borderColor: '#c5e1a5',
@@ -702,49 +726,37 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   revChatMsgContentWrapper: {
-    width: maxChatMessageContainerWidth,
-    marginTop: 2,
+    flex: 1,
+    marginTop: 7,
     marginLeft: 3,
   },
-  chatMsgContentCarretView: {
+  revChatMsgContentCarretView: {
+    flex: 0,
     backgroundColor: '#FFF',
     height: 'auto',
-    marginTop: 6,
-    marginRight: 1,
-    marginLeft: 1,
-    zIndex: 1,
   },
-  chatMsgContentCarret: {
+  revChatMsgContentCarret: {
     textAlign: 'center',
   },
-  chatMsgContentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+  revChatMsgContentContainer: {
+    flex: 1,
     alignSelf: 'flex-start',
-    width: maxChatMessageContainerWidth - 7,
     paddingHorizontal: 5,
-    paddingVertical: 4,
+    marginTop: 1,
   },
-  chatMsgHeaderWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revChatMsgHeaderWrapper: {
     alignItems: 'baseline',
     borderBottomColor: '#rgba(27, 31, 35, 0.06)',
     borderBottomWidth: 1,
     borderStyle: 'dotted',
-    marginTop: 4,
-    position: 'relative',
   },
   revChatMsgSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
   revChatMsgOptionsWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 'auto',
-    marginRight: 12,
     position: 'relative',
   },
   revChatMsgOptions: {
@@ -781,25 +793,24 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   revCommentMsgUserIcon: {
-    width: 17,
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 27,
     borderStyle: 'solid',
     borderColor: '#c5e1a5',
     borderWidth: 1,
-    borderRadius: 2,
+    paddingHorizontal: 2,
     marginTop: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 2,
   },
   revChatCommentNonIcon: {
     color: '#c5e1a5',
     fontSize: 15,
   },
   revChatMsgCommentContentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+    flex: 1,
     alignSelf: 'flex-start',
-    width: maxChatMessageContainerWidth - 32,
     paddingHorizontal: 5,
     paddingVertical: 4,
   },

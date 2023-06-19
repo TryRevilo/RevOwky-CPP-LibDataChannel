@@ -14,6 +14,7 @@ import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev
 import {revGetPublisherEntity} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 
 export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -35,12 +36,18 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     return null;
   }
 
+  let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
+  let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
+
   const {revPersGetRevEntities_By_RevVarArgs} =
     useRevPersGetRevEntities_By_RevVarArgs();
+
+  let revAdsCount = Math.floor(revTimelineEntitiesArr.length / 2);
 
   let revPassVarArgs = {
     revSelect: [
       '_revEntityGUID',
+      '_revEntityOwnerGUID',
       '_revContainerEntityGUID',
       '_revEntitySiteGUID',
       '_revEntityAccessPermission',
@@ -52,7 +59,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       _revEntityType: 'rev_object',
       _revEntitySubType: 'rev_ad',
     },
-    revLimit: 22,
+    revLimit: revAdsCount,
   };
   let revAdEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
     JSON.stringify(revPassVarArgs),
@@ -86,9 +93,6 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     revAdEntitiesParsedArr.push(revAdEntity);
   }
-
-  let revEntitiesArr = revVarArgs.revTimelineEntities;
-  let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
   let revCounter = 0;
   let revCurrAdItem = 0;
@@ -145,14 +149,14 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     });
 
     return (
-      <View key={revEntityGUID + '_revRenderItem_' + revGetRandInteger()}>
+      <>
         {RevView}
         {revTaggedPostsListingItem}
-      </View>
+      </>
     );
   }
 
-  let revDisplayEntitiesArr = revEntitiesArr.slice(0, 10);
+  let revDisplayEntitiesArr = revTimelineEntitiesArr.slice(0, 10);
 
   revDisplayEntitiesArr = JSON.parse(JSON.stringify(revDisplayEntitiesArr));
 
@@ -169,14 +173,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
         maxToRenderPerBatch={10}
       />
     ) : (
-      <Text
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-          revSiteStyles.revFlexWrapper,
-        ]}>
-        You do not have any chat conversations yet
-      </Text>
+      <RevInfoArea revInfoText={'You do not have any chat conversations yet'} />
     );
   };
 

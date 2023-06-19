@@ -21,7 +21,7 @@
 #include "../../rev_pers_lib/rev_db_init/rev_db_init.h"
 #include "../../rev_gen_functions/rev_gen_functions.h"
 
-char *revGetWhere(const cJSON *revWhere_CJSON, htable_strstr_t *revMap) {
+char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap) {
     char *revRetWhereStr = "*";
 
     // Iterate over the items in the object
@@ -82,7 +82,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     const cJSON *revSelect_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelect");
 
-    char *revSelectWhere = revGetWhere(revSelect_JSON, revMap);
+    char *revSelectWhere = revGetSelectionFields(revSelect_JSON, revMap);
 
     if (revSelectWhere[0] == '\0') {
         goto revEnd;

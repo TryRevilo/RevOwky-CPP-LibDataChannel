@@ -63,8 +63,9 @@ function RevFooterArea() {
         _revEntitySubType: 'rev_kiwi',
         _revEntityResolveStatus: [0, -1, -101],
       },
-      revLimit: 10,
+      revLimit: 5,
     };
+
     let revEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
       JSON.stringify(revPassVarArgs),
     );

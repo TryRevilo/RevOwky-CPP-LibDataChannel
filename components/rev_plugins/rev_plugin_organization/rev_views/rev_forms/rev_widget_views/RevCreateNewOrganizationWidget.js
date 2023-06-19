@@ -85,7 +85,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   let revPassVarArgs = {
     revSelect: [
       '_revEntityGUID',
-      '_revOwnerEntityGUID',
+      '_revEntityOwnerGUID',
       '_revContainerEntityGUID',
       '_revEntitySiteGUID',
       '_revEntityAccessPermission',
@@ -96,7 +96,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     revWhere: {
       _revEntityType: 'rev_object',
       _revEntitySubType: 'rev_organization',
-      _revOwnerEntityGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
     },
     revLimit: 20,
   };

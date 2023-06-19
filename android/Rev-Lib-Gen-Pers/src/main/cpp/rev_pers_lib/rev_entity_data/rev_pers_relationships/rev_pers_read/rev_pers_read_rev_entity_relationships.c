@@ -1103,7 +1103,7 @@ list *revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(char 
     char *sql = "SELECT "
                 "REV_SUBJECT_GUID "
                 "FROM REV_ENTITY_RELATIONSHIPS_TABLE "
-                "WHERE REV_RELATIONSHIP_TYPE_VALUE_ID = ? AND REV_TARGET_GUID = ? AND REV_RESOLVE_STATUS <> ? ORDER BY REV_RELATIONSHIP_ID DESC LIMIT 20";
+                "WHERE REV_RELATIONSHIP_TYPE_VALUE_ID = ? AND REV_TARGET_GUID = ? AND REV_RESOLVE_STATUS <> ? ORDER BY REV_RELATIONSHIP_ID DESC LIMIT 10";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
