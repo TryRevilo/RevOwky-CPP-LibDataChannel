@@ -54,9 +54,9 @@ char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap
                 }
             }
         }
-
-        // htable_strstr_destroy(revMap);
     }
+
+    // htable_strstr_destroy(revMap);
 
     return revRetWhereStr;
 }
@@ -69,6 +69,20 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     // Parse the JSON string
     cJSON *revJSON = cJSON_Parse(revVarArgs);
+
+    /** START SET THE TABLE NAME **/
+    char revTableNameVal[] = "REV_ENTITY_TABLE";
+
+    if (cJSON_HasObjectItem(revJSON, "revTableName")) {
+        const cJSON *revTableName_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revTableName");
+
+        int revJsonStringEmpty = revIsCJsonStringEmpty(revTableName_JSON);
+
+        if (revJsonStringEmpty != 0) {
+            strcpy(revTableNameVal, revTableName_JSON->valuestring);
+        }
+    }
+    /** END SET THE TABLE NAME **/
 
     const cJSON *revSelectDistinct_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revDistinct");
 
@@ -89,7 +103,9 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     }
 
     sql = revConcatStrings(sql, revSelectWhere);
-    sql = revConcatStrings(sql, " FROM REV_ENTITY_TABLE WHERE ");
+    sql = revConcatStrings(sql, " FROM ");
+    sql = revConcatStrings(sql, revTableNameVal);
+    sql = revConcatStrings(sql, " WHERE ");
 
     const cJSON *revWhere_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revWhere");
 
@@ -115,22 +131,21 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         cJSON *revWhere;
 
         for (revWhere = revWhere_JSON->child; revWhere; revWhere = revWhere->next) {
+            char *revCurrKey = revWhere->string;
+
             if (revWhere->type == cJSON_String) {
                 // Handle string type
-                char *revCurrKey = revWhere->string;
                 char *revCurrVal = revWhere->valuestring;
 
                 char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
 
                 if (revDBTableName) {
-                    if (revSQL[0] == '\0') {
-                        revSQL = revConcatStrings(revSQL, revDBTableName);
-                        revSQL = revConcatStrings(revSQL, " = ?");
-                    } else {
+                    if (revSQL[0] != '\0') {
                         revSQL = revConcatStrings(revSQL, " AND ");
-                        revSQL = revConcatStrings(revSQL, revDBTableName);
-                        revSQL = revConcatStrings(revSQL, " = ?");
                     }
+
+                    revSQL = revConcatStrings(revSQL, revDBTableName);
+                    revSQL = revConcatStrings(revSQL, " = ?");
 
                     // Add another element to the array
                     revStrArrLen++;
@@ -139,11 +154,56 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 } else {
                     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
                 }
+            } else if (revWhere->type == cJSON_Object) {
+                // Iterate over the key-value pairs in the innerObject
+                cJSON *revQualifiedWhere = revWhere->child;
+
+                if (revQualifiedWhere == NULL) {
+                    continue;
+                }
+
+                const char *revQualifiedOperatorValue = revQualifiedWhere->string;
+
+                // Handle string type
+                char *revCurrVal = revWhere->valuestring;
+
+                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
+
+                if (revDBTableName) {
+                    if (revSQL[0] == '\0') {
+                        revSQL = revConcatStrings(revSQL, revDBTableName);
+                    } else {
+                        revSQL = revConcatStrings(revSQL, " AND ");
+                        revSQL = revConcatStrings(revSQL, revDBTableName);
+                    }
+
+                    revSQL = revConcatStrings(revSQL, " ");
+                    revSQL = revConcatStrings(revSQL, revQualifiedOperatorValue);
+                    revSQL = revConcatStrings(revSQL, " ?");
+
+                    // Add another element to the array
+                    if (revQualifiedWhere->type == cJSON_String) {
+                        revStrArrLen++;
+
+                        const char *revQualifiedStrValue = cJSON_GetStringValue(revQualifiedWhere);
+
+                        revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                        revStrValsArr[revStrArrLen - 1] = strdup(revQualifiedStrValue);
+                    } else if (revQualifiedWhere->type == cJSON_Number) {
+                        long revQualifiedIntValue = revQualifiedWhere->valueint;
+
+                        revIntWhereArrLen++;
+                        revIntWhereValsArr = (int **) realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
+                        revIntWhereValsArr[revIntWhereArrLen - 1] = revQualifiedIntValue;
+                    }
+                } else {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
+                }
             } else if (revWhere->type == cJSON_Array) {
                 char *revCurr_OR_Str = "";
                 char *revCurr_OR_Int = "";
 
-                char *revArrDBTableName = revWhere->string;
+                char *revArrDBTableName = revCurrKey;
                 char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
 
                 // Handle array type
@@ -211,7 +271,6 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> %d", 555);
 
                 // Handle string type
-                char *revCurrKey = revWhere->string;
                 int revCurrIntVal = revWhere->valueint;
                 char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
 
@@ -234,8 +293,6 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 } else {
                     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
                 }
-            } else if (revWhere->type == cJSON_Object) {
-                // Handle object type
             }
         }
     }
@@ -254,7 +311,26 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         }
     }
 
-    sql = revConcatStrings(sql, " ORDER BY REV_ENTITY_GUID DESC");
+    /** START SET SELECT DIRECTION **/
+    char revSelectDirectionVal[] = "DESC";
+
+    if (cJSON_HasObjectItem(revJSON, "revSelectDirection")) {
+        const cJSON *revSelectDirection_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelectDirection");
+
+        int revJsonStringEmpty = revIsCJsonStringEmpty(revSelectDirection_JSON);
+
+        if (revJsonStringEmpty != 0) {
+            char *revSelectDirection = revSelectDirection_JSON->valuestring;
+
+            if (strcmp(revSelectDirection, "DESC") == 0 || strcmp(revSelectDirection, "ASC") == 0) {
+                strcpy(revSelectDirectionVal, revSelectDirection);
+            }
+        }
+    }
+    /** END SET SELECT DIRECTION **/
+
+    sql = revConcatStrings(sql, " ORDER BY REV_ENTITY_GUID ");
+    sql = revConcatStrings(sql, revSelectDirectionVal);
     sql = revConcatStrings(sql, " LIMIT ?");
 
     sqlite3 *db = revDb();
@@ -269,14 +345,14 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         sqlite3_bind_text(stmt, revBoundCount, (const char *) revStrValsArr[i], -1, SQLITE_STATIC);
     }
 
+    for (int i = 0; i < revIntWhereArrLen; i++) {
+        revBoundCount = revBoundCount + 1;
+        sqlite3_bind_int64(stmt, revBoundCount, revIntWhereValsArr[i]);
+    }
+
     for (int i = 0; i < revIntArrLen; i++) {
         revBoundCount = revBoundCount + 1;
         sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
-    }
-
-    for (int i = 0; i < revIntWhereArrLen; i++) {
-        revBoundCount = revBoundCount + 1;
-        sqlite3_bind_int64(stmt, revBoundCount, (long) revIntWhereValsArr[i]);
     }
 
     int revLimit = 10;
@@ -373,6 +449,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     free(revTableRowsArr);
     free(revStrValsArr);
     free(revIntValsArr);
+    free(revIntWhereValsArr);
 
     // htable_strstr_destroy(revMap);
 

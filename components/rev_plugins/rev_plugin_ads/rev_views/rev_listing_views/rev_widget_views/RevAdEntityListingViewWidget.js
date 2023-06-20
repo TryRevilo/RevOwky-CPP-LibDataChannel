@@ -141,8 +141,6 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
     return <>{revNullAdRetView}</>;
   }
 
-  const revSettings = require('../../../../../../rev_res/rev_settings.json');
-
   let revInfoEntity = revData._revInfoEntity;
 
   let revAdTitleTxtVal = revGetMetadataValue(

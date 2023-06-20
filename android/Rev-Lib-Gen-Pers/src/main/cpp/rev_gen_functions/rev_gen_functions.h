@@ -6,6 +6,8 @@
 #include <string.h>
 #include <time.h>
 
+#include "../../../../../libs/cJSON/cJSON.h"
+
 typedef struct DateAndTime {
     int year;
     int month;
@@ -23,6 +25,8 @@ long revCurrentTimestampMillSecs();
 void revRemoveSpaces(char *source);
 
 char *revConcatStrings(const char *revS1, const char *revS2);
+
+int revIsCJsonStringEmpty(cJSON *revJson);
 
 struct tm *revGetTimeAndDate(long milliseconds);
 

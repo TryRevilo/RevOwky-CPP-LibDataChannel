@@ -46,8 +46,19 @@ function RevFooterArea() {
   const {rev_Server_DeleteEntities_By_entityGUIDsArr} =
     useRev_Server_DeleteEntities_By_entityGUIDsArr();
 
-  const revGetLocalData = () => {
+  const revGetLocalData = revLastGUID => {
+    let revWhere = {
+      _revEntityType: 'rev_object',
+      _revEntitySubType: 'rev_kiwi',
+      _revEntityResolveStatus: [0, -1, -101],
+    };
+
+    if (revLastGUID > 0) {
+      revWhere['_revEntityGUID'] = {'<': revLastGUID};
+    }
+
     let revPassVarArgs = {
+      revTableName: 'REV_ENTITY_TABLE',
       revSelect: [
         '_revEntityGUID',
         '_revEntityOwnerGUID',
@@ -58,12 +69,9 @@ function RevFooterArea() {
         '_revEntitySubType',
         '_revTimeCreated',
       ],
-      revWhere: {
-        _revEntityType: 'rev_object',
-        _revEntitySubType: 'rev_kiwi',
-        _revEntityResolveStatus: [0, -1, -101],
-      },
-      revLimit: 5,
+      revWhere: revWhere,
+      revLimit: 2,
+      revSelectDirection: 'DESC',
     };
 
     let revEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
@@ -140,10 +148,11 @@ function RevFooterArea() {
 
     revGetServerData_JSON(revURL, revRetData => {
       if (revRetData.hasOwnProperty('revError')) {
-        revRetData = revGetLocalData();
+        revRetData = revGetLocalData(0);
         revRetData = {
           revTimelineEntities: revRetData,
           revEntityPublishersArr: [],
+          revGetData: revGetLocalData,
         };
       }
 

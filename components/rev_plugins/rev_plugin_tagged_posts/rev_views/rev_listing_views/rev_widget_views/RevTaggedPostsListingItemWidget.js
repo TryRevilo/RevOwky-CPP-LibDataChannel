@@ -39,7 +39,6 @@ import {
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
-  useRevPersGetRevEnty_By_EntityGUID,
   revPersGetRevEntities_By_EntityGUIDsArr,
   useRevGetEntityIcon,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
@@ -54,9 +53,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   revVarArgs = revVarArgs.revVarArgs;
-
-  const {revPersGetRevEnty_By_EntityGUID} =
-    useRevPersGetRevEnty_By_EntityGUID();
 
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
 
@@ -111,7 +107,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   }
 
   let revInfoEntity = revVarArgs._revInfoEntity;
-  let revTimePublished = revFormatLongDate(revVarArgs._revTimePublished);
+  let revTimePublished = revFormatLongDate(revVarArgs._revTimeCreated);
 
   const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
     useContext(ReViewsContext);
@@ -196,123 +192,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     revViewName: 'RevLikeInlineForm',
     revVarArgs: revVarArgs,
   });
-
-  let RevCommentItem = ({revVarArgs}) => {
-    if (
-      !revVarArgs.hasOwnProperty('_revInfoEntity') ||
-      revIsEmptyJSONObject(revVarArgs._revInfoEntity)
-    ) {
-      return null;
-    }
-
-    let revCommentInfoEntity = revVarArgs._revInfoEntity;
-
-    let revCommentTxtVal = revGetMetadataValue(
-      revCommentInfoEntity._revEntityMetadataList,
-      'rev_comment_value',
-    );
-
-    if (revIsEmptyVar(revCommentTxtVal)) {
-      return null;
-    }
-
-    if (
-      !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
-      revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
-    ) {
-      return null;
-    }
-
-    let revPublisherEntity = revVarArgs._revPublisherEntity;
-
-    if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
-      return null;
-    }
-
-    let revPublisherEntityNames = revGetMetadataValue(
-      revPublisherInfoEntityMetadataList,
-      'rev_full_names',
-    );
-    let revPublisherEntityNames_Trunc = revTruncateString(
-      revSplitStringToArray(revPublisherEntityNames)[0],
-      3,
-      false,
-    );
-
-    return (
-      <TouchableOpacity
-        key={'RevCommentItem_' + revGetRandInteger(100, 1000)}
-        style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
-        <View style={styles.revCommentMsgUserIcon}>
-          <TouchableOpacity>
-            <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.revChatMsgCommentContentContainer}>
-          <View
-            style={[
-              revSiteStyles.revFlexWrapper,
-              styles.revChatMsgHeaderWrapper,
-            ]}>
-            <Text>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorDark,
-                  revSiteStyles.revSiteTxtTiny,
-                  revSiteStyles.revSiteTxtBold,
-                ]}>
-                {revPublisherEntityNames_Trunc}
-              </Text>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteTxtTiny_X,
-                  styles.revChatMsgSendTime,
-                ]}>
-                {revFormatLongDate(revVarArgs._revTimePublished)}
-              </Text>
-            </Text>
-            <View
-              style={[
-                revSiteStyles.revFlexWrapper_WidthAuto,
-                styles.revChatMsgOptionsWrapper,
-              ]}>
-              <FontAwesome
-                name="retweet"
-                style={[
-                  revSiteStyles.revSiteTxtNormal,
-                  styles.revChatMsgOptions,
-                ]}
-              />
-
-              <FontAwesome
-                name="flag-o"
-                style={[
-                  revSiteStyles.revSiteTxtSmall,
-                  styles.revChatMsgOptions,
-                ]}
-              />
-              <FontAwesome
-                name="list"
-                style={[
-                  revSiteStyles.revSiteTxtSmall,
-                  styles.revChatMsgOptions,
-                ]}
-              />
-            </View>
-          </View>
-          <View
-            style={[
-              revSiteStyles.revFlexContainer,
-              styles.revChatMsgCommentContentTxtContainer,
-            ]}>
-            {revChatMessageText(revCommentTxtVal)}
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
 
   const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
@@ -422,52 +301,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let RevVideoPlayerView = RevVideoPlayer();
 
-  let RevGenComments = () => {
-    let revCommentsArr = [];
-
-    let revCommentGUIDsArrStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_comment',
-        revEntityGUID,
-      );
-
-    let revCommentGUIDsArr = JSON.parse(revCommentGUIDsArrStr);
-
-    for (let i = 0; i < revCommentGUIDsArr.length; i++) {
-      let revCurrCommentGUID = revCommentGUIDsArr[i];
-
-      let revCurrCommentStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrCommentGUID);
-      let revCurrComment = JSON.parse(revCurrCommentStr);
-
-      let revCommentPublisher = revPersGetRevEnty_By_EntityGUID(
-        revCurrComment._revEntityOwnerGUID,
-      );
-      revCurrComment['_revPublisherEntity'] = revCommentPublisher;
-
-      let revCommentView = <RevCommentItem revVarArgs={revCurrComment} />;
-
-      if (revCommentView == null) {
-        continue;
-      }
-
-      revCommentsArr.push(revCommentView);
-    }
-
-    return (
-      <View>
-        {revCommentsArr.map(revItem => {
-          return (
-            <View
-              key={'RevGenComments_' + revItem + revGetRandInteger(10, 1000)}>
-              {revItem}
-            </View>
-          );
-        })}
-      </View>
-    );
-  };
-
   const handleRevUserProfileClick = () => {
     let RevUserProfileObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_user_profile',
@@ -568,7 +401,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const [revCommentsView, setRevCommentsView] = useState(null);
 
   useEffect(() => {
-    setRevCommentsView(<RevGenComments />);
+    let revCommentItemsListingView = revPluginsLoader({
+      revPluginName: 'rev_plugin_comments',
+      revViewName: 'RevCommentItemsListingView',
+      revVarArgs: revVarArgs,
+    });
+
+    setRevCommentsView(revCommentItemsListingView);
   }, []);
 
   return (
@@ -612,23 +451,21 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 revSiteStyles.revFlexWrapper,
                 styles.revChatMsgHeaderWrapper,
               ]}>
-              <Text>
-                <Text
-                  style={[
-                    revSiteStyles.revSiteTxtColorDark,
-                    revSiteStyles.revSiteTxtTiny,
-                    revSiteStyles.revSiteTxtBold,
-                  ]}>
-                  {revPublisherEntityNames_Trunc}
-                </Text>
-                <Text
-                  style={[
-                    revSiteStyles.revSiteTxtColorLight,
-                    revSiteStyles.revSiteTxtTiny_X,
-                    styles.revChatMsgSendTime,
-                  ]}>
-                  {revTimePublished}
-                </Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
+                {revPublisherEntityNames_Trunc}
+              </Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  styles.revChatMsgSendTime,
+                ]}>
+                {revTimePublished}
               </Text>
               <View
                 style={[
@@ -791,31 +628,6 @@ const styles = StyleSheet.create({
   },
   revCommentItemWrapper: {
     marginTop: 4,
-  },
-  revCommentMsgUserIcon: {
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 27,
-    borderStyle: 'solid',
-    borderColor: '#c5e1a5',
-    borderWidth: 1,
-    paddingHorizontal: 2,
-    marginTop: 2,
-    borderRadius: 2,
-  },
-  revChatCommentNonIcon: {
-    color: '#c5e1a5',
-    fontSize: 15,
-  },
-  revChatMsgCommentContentContainer: {
-    flex: 1,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 5,
-    paddingVertical: 4,
-  },
-  revChatMsgCommentContentTxtContainer: {
-    paddingRight: 5,
   },
   revImagesMediaViewContainer: {
     flex: 1,

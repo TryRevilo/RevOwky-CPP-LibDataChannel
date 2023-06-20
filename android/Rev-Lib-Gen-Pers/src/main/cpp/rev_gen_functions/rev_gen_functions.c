@@ -2,6 +2,8 @@
 
 #include <android/log.h>
 
+#include "../../../../../libs/cJSON/cJSON.h"
+
 const char *revGetCurrentTime() {
     time_t rawtime;
     struct tm *timeinfo;
@@ -33,18 +35,29 @@ char *revConcatStrings(const char *revS1, const char *revS2) {
     return revResultStr;
 }
 
+int revIsCJsonStringEmpty(cJSON *revJson) {
+    if (revJson != NULL && cJSON_IsString(revJson)) {
+        const char *value = revJson->valuestring;
+
+        if (value != NULL && strlen(value) > 0) {
+            return 1; // String is NOT empty
+        }
+    }
+
+    return 0; // String is empty or not a string
+}
+
 long revCurrentTimestampMillSecs() {
     struct timeval te;
     gettimeofday(&te, NULL); // get current time
-    long long milliseconds = te.tv_sec * 1000LL + te.tv_usec / 1000; // calculate milliseconds
-    // printf("milliseconds: %lld\n", milliseconds);
-    return milliseconds;
+    long long revMilliseconds = te.tv_sec * 1000LL + te.tv_usec / 1000; // calculate milliseconds
+    return revMilliseconds;
 }
 
-struct tm *revGetTimeAndDate(long milliseconds) {
-    time_t seconds = (time_t) (milliseconds / 1000);
+struct tm *revGetTimeAndDate(long revMilliseconds) {
+    time_t seconds = (time_t) (revMilliseconds / 1000);
 
-    if ((unsigned long long) seconds * 1000 <= milliseconds)
+    if ((unsigned long long) seconds * 1000 <= revMilliseconds)
         return localtime(&seconds);
     return NULL; // milliseconds >= 4G*1000
 }

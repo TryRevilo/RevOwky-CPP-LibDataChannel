@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, Text, View, FlatList, NativeModules} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {StyleSheet, FlatList, NativeModules} from 'react-native';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
@@ -39,10 +39,37 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
   let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
+  const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr); // Array to hold the loaded data
+  const [revPage, setRevPage] = useState(1); // Current revPage number
+  const [revLoading, setRevLoading] = useState(false); // Flag to indicate if data is being loaded
+
+  const revFetchData = async () => {
+    try {
+      setRevLoading(true); // Set revLoading flag to true while fetching data
+      const revNewData = revVarArgs.revGetData(
+        revListingData[revListingData.length - 1]._revEntityGUID,
+      );
+
+      if (!revNewData.length) {
+        return;
+      }
+
+      setRevListingData(revPrevListingData => [
+        ...revPrevListingData,
+        ...revNewData,
+      ]); // Append new data to the existing data array
+      setRevPage(prevrevPage => prevrevPage + 1); // Increment the revPage number
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRevLoading(false); // Set revLoading flag to false after data is fetched
+    }
+  };
+
   const {revPersGetRevEntities_By_RevVarArgs} =
     useRevPersGetRevEntities_By_RevVarArgs();
 
-  let revAdsCount = Math.floor(revTimelineEntitiesArr.length / 2);
+  let revAdsCount = Math.floor(5 / 2);
 
   let revPassVarArgs = {
     revSelect: [
@@ -156,14 +183,10 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     );
   }
 
-  let revDisplayEntitiesArr = revTimelineEntitiesArr.slice(0, 10);
-
-  revDisplayEntitiesArr = JSON.parse(JSON.stringify(revDisplayEntitiesArr));
-
   let RevDisplay = () => {
-    return revDisplayEntitiesArr.length > 0 ? (
+    return revListingData.length > 0 ? (
       <FlatList
-        data={revDisplayEntitiesArr}
+        data={revListingData}
         renderItem={revRenderItem}
         keyExtractor={item => {
           let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
@@ -171,6 +194,8 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
+        onEndReached={revFetchData} // Call the revFetchData function when the end of the list is reached
+        onEndReachedThreshold={0.5} // Adjust this value based on your needs (e.g., 0.5 means triggering when 50% of the list is scrolled)
       />
     ) : (
       <RevInfoArea revInfoText={'You do not have any chat conversations yet'} />
