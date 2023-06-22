@@ -47,6 +47,8 @@ function RevFooterArea() {
     useRev_Server_DeleteEntities_By_entityGUIDsArr();
 
   const revGetLocalData = revLastGUID => {
+    console.log('>>> revLastGUID', revLastGUID);
+
     let revWhere = {
       _revEntityType: 'rev_object',
       _revEntitySubType: 'rev_kiwi',
@@ -70,7 +72,7 @@ function RevFooterArea() {
         '_revTimeCreated',
       ],
       revWhere: revWhere,
-      revLimit: 2,
+      revLimit: 55,
       revSelectDirection: 'DESC',
     };
 

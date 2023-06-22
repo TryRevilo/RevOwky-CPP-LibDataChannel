@@ -8,63 +8,109 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 let RevContactItemsDraw = ({revContactsArr}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   let revContactsArrLen = revContactsArr.length;
 
   if (revContactsArrLen == 1) {
     let revContactItem = revContactsArr[0];
-    return <Text key={Math.random().toString()}>{revContactItem.number}</Text>;
+    return (
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {revContactItem.number}
+      </Text>
+    );
   }
 
-  return revContactsArr.map(revContactItem => {
-    return (
-      <Text key={Math.random().toString()}>{revContactItem.number} / </Text>
-    );
-  });
+  return (
+    <Text
+      style={[
+        revSiteStyles.revSiteTxtColorLight,
+        revSiteStyles.revSiteTxtTiny,
+      ]}>
+      {revContactsArr.map(
+        (revContactItem, index) =>
+          revContactItem.number +
+          (index == revContactsArr.length - 1 ? '' : ' / '),
+      )}
+    </Text>
+  );
 };
 
 export function RevContact({revVarArgs}) {
+  const {revSiteStyles} = useRevSiteStyles();
+
   let revPhoneNumbers = revVarArgs.phoneNumbers;
   let revDisplayName = revVarArgs.displayName;
-  let revRawContactId = revVarArgs.rawContactId;
+
+  const handleRevContactPressed = () => {
+    console.log('>>> handleRevContactPressed', JSON.stringify(revPhoneNumbers));
+  };
 
   return (
-    <TouchableOpacity key={Math.random().toString()}>
-      <View style={styles.contactWrapper}>
-        <View style={styles.contactUserIcon}>
-          <FontAwesome name="user" style={styles.availableChatPeopleNonIcon} />
+    <TouchableOpacity onPress={handleRevContactPressed}>
+      <View style={[revSiteStyles.revFlexWrapper, styles.revContactWrapper]}>
+        <View style={styles.revContactUserIcon}>
+          <FontAwesome
+            name="user"
+            style={[
+              revSiteStyles.revSiteTxtLarge,
+              styles.revAvailableChatPeopleNonIcon,
+            ]}
+          />
         </View>
-        <View style={styles.contactContentWrapper}>
-          <View style={styles.contactContentCarretView}>
+        <View style={styles.revContactContentWrapper}>
+          <View style={styles.revrevContactContentCarretView}>
             <FontAwesome
               name="caret-left"
-              style={styles.contactContentCarret}
+              style={[
+                revSiteStyles.revSiteTxtColorLight_X,
+                revSiteStyles.revSiteTxtLarge,
+              ]}
             />
           </View>
-          <View style={styles.contactContentContainer}>
-            <View style={styles.contactHeaderWrapper}>
-              <Text style={styles.contactOwnerTxt}>{revDisplayName}</Text>
-              <Text style={styles.contactSendTime}>10:40 Jun 14, 2022</Text>
-              <View style={styles.contactOptionsWrapper}>
-                <Text style={styles.contactOptions}>
+          <View style={styles.revContactContentContainer}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revContactHeaderWrapper,
+              ]}>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revSiteTxtTiny,
+                ]}>
+                {revDisplayName}
+              </Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  styles.revContactSendTime,
+                ]}>
+                10:40 Jun 14, 2022
+              </Text>
+              <View style={styles.revrevContactOptionsWrapper}>
+                <Text style={styles.revContactOptions}>
                   <FontAwesome name="quote-right" />
                 </Text>
-                <Text style={styles.contactOptions}>
+                <Text style={styles.revContactOptions}>
                   <FontAwesome name="phone" />
                 </Text>
-                <Text style={styles.contactOptions}>
+                <Text style={styles.revContactOptions}>
                   <FontAwesome name="video-camera" />
                 </Text>
               </View>
             </View>
-            <View style={styles.contactContentTxtContainer}>
-              <Text style={styles.contactContentTxt}>
-                <RevContactItemsDraw
-                  key={Math.random().toString()}
-                  revContactsArr={revPhoneNumbers}
-                />
-              </Text>
+            <View style={styles.revContactContentTxtContainer}>
+              <RevContactItemsDraw revContactsArr={revPhoneNumbers} />
             </View>
           </View>
         </View>
@@ -77,50 +123,41 @@ var pageWidth = Dimensions.get('window').width;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  contactWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revContactWrapper: {
     alignItems: 'flex-start',
-    width: 'auto',
   },
-  contactUserIcon: {
-    width: 22,
-    height: 32,
+  revContactUserIcon: {
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderStyle: 'solid',
     borderColor: '#c5e1a5',
     borderWidth: 1,
-    borderRadius: 100,
     marginTop: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderRadius: 100,
   },
-  availableChatPeopleNonIcon: {
+  revAvailableChatPeopleNonIcon: {
     color: '#c5e1a5',
-    fontSize: 17,
   },
-  contactContentWrapper: {
-    display: 'flex',
+  revContactContentWrapper: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-start',
     width: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
   },
-  contactContentCarretView: {
+  revrevContactContentCarretView: {
+    flex: 0,
     backgroundColor: '#FFF',
-    height: 'auto',
-    marginTop: 6,
+    marginTop: 7,
     marginRight: 1,
     marginLeft: 1,
-    zIndex: 1,
   },
-  contactContentCarret: {
-    color: '#DDD',
-    textAlign: 'center',
-    fontSize: 15,
-  },
-  contactContentContainer: {
-    display: 'flex',
+  revContactContentContainer: {
+    flex: 1,
     flexDirection: 'column',
     alignSelf: 'flex-start',
     backgroundColor: '#F7F7F7',
@@ -129,9 +166,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 2,
   },
-  contactHeaderWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revContactHeaderWrapper: {
     alignItems: 'baseline',
     borderBottomColor: '#rgba(27, 31, 35, 0.06)',
     borderBottomWidth: 1,
@@ -139,20 +174,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  contactOwnerTxt: {
-    color: '#666',
-    fontSize: 11,
-    lineHeight: 11,
-    fontWeight: 'bold',
-  },
-  contactSendTime: {
-    color: '#8d8d8d',
-    fontSize: 9,
-    lineHeight: 9,
+  revContactSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
-  contactOptionsWrapper: {
+  revrevContactOptionsWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -160,12 +186,12 @@ const styles = StyleSheet.create({
     marginRight: 12,
     position: 'relative',
   },
-  contactOptions: {
+  revContactOptions: {
     color: '#bdbdbd',
     fontSize: 12,
     paddingHorizontal: 8,
   },
-  contactContentTxtContainer: {
+  revContactContentTxtContainer: {
     color: '#444',
     fontSize: 10,
     display: 'flex',
@@ -173,12 +199,5 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingBottom: 4,
     marginTop: 2,
-  },
-  contactContentTxt: {
-    color: '#777',
-    fontSize: 9,
-    lineHeight: 10,
-    fontWeight: 'bold',
-    paddingTop: 5,
   },
 });

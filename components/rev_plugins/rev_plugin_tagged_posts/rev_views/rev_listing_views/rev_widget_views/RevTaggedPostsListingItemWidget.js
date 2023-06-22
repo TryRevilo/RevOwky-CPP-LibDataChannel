@@ -21,11 +21,7 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
-import {
-  revIsEmptyJSONObject,
-  revIsEmptyVar,
-  revGetRandInteger,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {
   revGetLocal_OR_RemoteGUID,
@@ -136,7 +132,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   let revChatMessageText = _revKiwiTxtVal => {
     return (
       <View
-        key={'revChatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
         style={[
           revSiteStyles.revFlexWrapper,
           styles.revChatMsgContentTxtContainer,
@@ -224,13 +219,8 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
             }
           : null;
 
-      let revImageEntityGUID = revGetLocal_OR_RemoteGUID(revPic);
-
-      let RevImage = (
+      let revImage = (
         <TouchableOpacity
-          key={
-            'RevImage_' + revImageEntityGUID + '_' + revGetRandInteger(10, 1000)
-          }
           style={[styles.revImageTouchableOpacity, revLastImageStyle]}>
           <Image
             style={styles.revEntityImageStyle}
@@ -241,10 +231,10 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
         </TouchableOpacity>
       );
 
-      revImagesViews.push(RevImage);
+      revImagesViews.push(revImage);
     }
 
-    let RevRetView =
+    let revRetView =
       revImagesViews.length < 1 ? null : (
         <ScrollView
           horizontal
@@ -252,17 +242,17 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
           showsHorizontalScrollIndicator={false}
           style={styles.revProfileImagesScroller}>
           <View style={[revSiteStyles.revFlexWrapper]}>
-            {revImagesViews.map(RevImage => {
-              return RevImage;
+            {revImagesViews.map((revImage, index) => {
+              return <View key={index}>{revImage}</View>;
             })}
           </View>
         </ScrollView>
       );
 
-    return RevRetView;
+    return revRetView;
   };
 
-  let RevImagesMediaView = null;
+  let revImagesMediaView = null;
 
   if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
     let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
@@ -271,7 +261,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     );
 
     if (revPicsAlbumArr && revPicsAlbumArr.length) {
-      RevImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
+      revImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
     }
   }
 
@@ -361,11 +351,11 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
       <View
         style={[
-          RevImagesMediaView || RevVideoPlayerView
+          revImagesMediaView || RevVideoPlayerView
             ? styles.revImagesMediaViewContainer
             : null,
         ]}>
-        {RevImagesMediaView}
+        {revImagesMediaView}
         {RevVideoPlayerView}
       </View>
     </>
@@ -412,12 +402,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   return (
     <TouchableOpacity
-      key={
-        'RevTaggedPostsListingItemWidget_' +
-        revEntityGUID +
-        '_' +
-        revGetRandInteger(10, 1000)
-      }
       onLongPress={() => {
         handleRevTaggedPostLongPressed(revVarArgs);
       }}>

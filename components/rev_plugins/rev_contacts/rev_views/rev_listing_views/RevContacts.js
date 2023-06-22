@@ -4,7 +4,6 @@ import {
   Text,
   PermissionsAndroid,
   FlatList,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
@@ -17,27 +16,19 @@ import {RevContact} from './rev_entity_views/RevContact';
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
 import RevCustomLoadingView from '../../../../rev_views/rev_loaders/RevCustomLoadingView';
+import {revConvertNumberToDecimal} from '../../../../../rev_function_libs/rev_string_function_libs';
 
 export function RevContacts({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const [revTotContactsCount, setRevTotContactsCount] = useState(null);
-  const [revContactsData, setRevContactsData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const revIncrementals = 10;
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [revTotDataCount, setRevTotDataCount] = useState(0);
+  const [revListingData, setRevListingData] = useState([]);
+  const [revPage, setRevPage] = useState(1);
+  const [revPageSize, setRevPageSize] = useState(revIncrementals);
 
-  const handleGetContacts = async () => {
-    let revPermissionGranted = await requestContactsPermission();
-    if (revPermissionGranted) {
-      await getAllContacts();
-    }
-  };
-
-  useEffect(() => {
-    handleGetContacts();
-  }, []);
+  const [revIsLoading, setRevIsLoading] = useState(false);
 
   const requestContactsPermission = async () => {
     try {
@@ -64,50 +55,44 @@ export function RevContacts({revVarArgs}) {
     }
   };
 
-  const getAllContacts = async () => {
-    try {
-      const contacts = await Contacts.getAll();
-      setRevContactsData(contacts);
+  const revAsyncFetchData = async () => {
+    let revPermissionGranted = await requestContactsPermission();
 
-      setRevTotContactsCount(contacts.length);
-    } catch (err) {
-      console.warn(err);
+    if (revPermissionGranted) {
+      try {
+        let revContacts = await Contacts.getAll();
+
+        if (revContacts.length) {
+          setRevIsLoading(true);
+        } else {
+          return;
+        }
+
+        setRevListingData(revContacts);
+        setRevTotDataCount(revContacts.length);
+      } catch (err) {
+        console.warn('*** revAsyncFetchData -ERR', err);
+      }
     }
   };
 
-  const loadMoreContacts = () => {
-    if (revContactsData.length > page * pageSize) {
-      setPage(page + 1);
+  const revLoadMoreData = () => {
+    if (revListingData.length > revPage * revPageSize) {
+      setRevPage(revPage + 1);
+      setRevPageSize(revPageSize + revIncrementals);
+    } else {
+      setRevIsLoading(false);
     }
   };
 
-  const renderItem = ({item}) => {
-    if (revContactsData.length > page * pageSize) {
-      setIsLoading(true);
-    }
-
-    return (
-      <View key={item.recordID}>
-        <RevContact revVarArgs={item} />
-      </View>
-    );
+  const revRenderFLItem = ({item}) => {
+    return <RevContact revVarArgs={item} />;
   };
 
   const renderFooter = () => {
-    if (!isLoading) {
+    if (!revIsLoading) {
       return null;
     }
-
-    let revCurrPageSize = page * pageSize;
-    let revNextPageSize = page * pageSize + pageSize;
-
-    let revCurrLoadCount =
-      'loading ' +
-      revCurrPageSize +
-      ' to ' +
-      revNextPageSize +
-      ' of ' +
-      revTotContactsCount;
 
     return (
       <View
@@ -115,43 +100,53 @@ export function RevContacts({revVarArgs}) {
           revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revFooterLoadingWrapper,
         ]}>
-        <RevCustomLoadingView backgroundColor={'#FFF'} />
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColor,
-            revSiteStyles.revSiteTxtSmall,
-            styles.revLoadingTxt,
-          ]}>
-          {revCurrLoadCount}
-        </Text>
+        <RevCustomLoadingView revLoadintText="Loading contacts" />
       </View>
     );
   };
 
+  useEffect(() => {
+    revAsyncFetchData();
+  }, []);
+
   return (
     <View style={revSiteStyles.revFlexContainer}>
-      <Text style={styles.revContentBodyTtlTellTxt}>
-        <FontAwesome name="hashtag" />
-        {revTotContactsCount} <FontAwesome name="dot-circle-o" />
-        <FontAwesome name="long-arrow-right" /> Connections 27{' '}
-        <FontAwesome name="dot-circle-o" />
-        <FontAwesome name="long-arrow-right" /> Find
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revContentBodyTtlTellTxt,
+        ]}>
+        <FontAwesome name="hashtag" style={revSiteStyles.revSiteTxtTiny} />{' '}
+        {revConvertNumberToDecimal(revTotDataCount) + ' '}
+        <FontAwesome name="dot-circle-o" style={revSiteStyles.revSiteTxtTiny} />
+        <FontAwesome
+          name="long-arrow-right"
+          style={revSiteStyles.revSiteTxtTiny}
+        />{' '}
+        Connections 27{' '}
+        <FontAwesome name="dot-circle-o" style={revSiteStyles.revSiteTxtTiny} />
+        <FontAwesome
+          name="long-arrow-right"
+          style={revSiteStyles.revSiteTxtTiny}
+        />{' '}
+        Find
       </Text>
-      {revTotContactsCount > 0 ? (
+      {revTotDataCount > 0 ? (
         <FlatList
-          data={revContactsData.slice(0, page * pageSize)}
-          renderItem={renderItem}
+          data={revListingData.slice(0, revPage * revPageSize)}
+          renderItem={revRenderFLItem}
           keyExtractor={item => item.recordID}
           removeClippedSubviews={true}
           updateCellsBatchingPeriod={50}
-          onEndReached={loadMoreContacts}
+          onEndReached={revLoadMoreData}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
-          initialNumToRender={pageSize}
-          maxToRenderPerBatch={pageSize}
+          initialNumToRender={2}
+          maxToRenderPerBatch={revPageSize}
         />
       ) : (
-        <RevCustomLoadingView text="loading contacts" />
+        <RevCustomLoadingView revLoadintText="Loading contacts" />
       )}
     </View>
   );
@@ -159,9 +154,6 @@ export function RevContacts({revVarArgs}) {
 
 const styles = StyleSheet.create({
   revContentBodyTtlTellTxt: {
-    color: '#009688',
-    fontSize: 11,
-    lineHeight: 11,
     borderBottomColor: '#CCC',
     borderBottomWidth: 1,
     borderStyle: 'dotted',
@@ -171,24 +163,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingLeft: 38,
   },
-  channelOptionItem: {
-    color: '#999',
-    fontSize: 11,
-    lineHeight: 11,
-    borderBottomColor: '#CCC',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
-    paddingHorizontal: 2,
-    marginRight: 8,
-  },
   revFooterLoadingWrapper: {
     alignItems: 'center',
     height: 55,
     overflow: 'visible',
     marginLeft: 40,
-    marginTop: 12,
-  },
-  revLoadingTxt: {
-    paddingLeft: 3,
+    marginBottom: 32,
   },
 });

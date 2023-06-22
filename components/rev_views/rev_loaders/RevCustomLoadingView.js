@@ -9,8 +9,11 @@ import {
 } from 'react-native';
 
 import {revIsEmptyVar} from '../../../rev_function_libs/rev_gen_helper_functions';
+import {useRevSiteStyles} from '../RevSiteStyles';
 
-const RevCustomLoadingView = ({text, backgroundColor}) => {
+const RevCustomLoadingView = ({revLoadintText, backgroundColor}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const spinValue = new Animated.Value(0);
 
   Animated.loop(
@@ -30,45 +33,53 @@ const RevCustomLoadingView = ({text, backgroundColor}) => {
   return (
     <View
       style={[
-        styles.container,
+        styles.revContainer,
         {
           backgroundColor: revIsEmptyVar(backgroundColor)
-            ? '#F8FAFF'
+            ? '#FFF'
             : backgroundColor,
         },
       ]}>
       <Animated.View
-        style={[styles.spinnerContainer, {transform: [{rotate: spin}]}]}>
-        <ActivityIndicator size="large" color="#FFD700" />
+        style={[styles.revSpinnerContainer, {transform: [{rotate: spin}]}]}>
+        <ActivityIndicator size={12} color="#FFD700" />
       </Animated.View>
 
-      {revIsEmptyVar(text) ? null : <Text style={styles.text}>{text}</Text>}
+      {revIsEmptyVar(revLoadintText) ? null : (
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny_X,
+            revSiteStyles.revSiteTxtBold,
+            styles.revPromptTextStyles,
+          ]}>
+          {revLoadintText}
+        </Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  revContainer: {
+    flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 4,
-    height: '100%',
+    marginTop: 12,
   },
-  spinnerContainer: {
+  revSpinnerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 37,
+    width: 22,
     height: 4,
     borderRadius: 60,
     borderWidth: 1,
-    borderColor: '#FFD700',
-    backgroundColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(255, 215, 0, 0.3)',
+    backgroundColor: '#FFF',
   },
-  text: {
-    marginTop: 20,
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: '#999',
+  revPromptTextStyles: {
+    marginTop: 12,
   },
 });
 

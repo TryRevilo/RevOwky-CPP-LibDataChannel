@@ -1,10 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 
-import {
-  revGetRandInteger,
-  revIsEmptyJSONObject,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
@@ -38,8 +35,7 @@ export const RevTagItemViewWidget = ({revVarArgs}) => {
   );
 
   return (
-    <TouchableOpacity
-      key={'RevTagItemViewWidget_' + revGetRandInteger(100, 1000)}>
+    <TouchableOpacity>
       <Text
         style={[
           revSiteStyles.revSiteTxtColorLight,

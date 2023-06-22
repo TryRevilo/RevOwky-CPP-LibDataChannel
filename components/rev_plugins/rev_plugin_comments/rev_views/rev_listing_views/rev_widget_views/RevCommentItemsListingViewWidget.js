@@ -54,12 +54,8 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
 
   return (
     <>
-      {revCommentsArr.map(revItem => {
-        return (
-          <View key={'RevGenComments_' + revItem + revGetRandInteger(10, 1000)}>
-            {revItem}
-          </View>
-        );
+      {revCommentsArr.map((revItem, index) => {
+        return <View key={index}>{revItem}</View>;
       })}
     </>
   );

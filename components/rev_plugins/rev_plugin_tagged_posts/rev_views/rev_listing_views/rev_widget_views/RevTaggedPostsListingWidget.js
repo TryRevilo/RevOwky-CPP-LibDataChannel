@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {StyleSheet, FlatList, NativeModules} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {StyleSheet, View, FlatList, NativeModules} from 'react-native';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
@@ -8,13 +8,13 @@ const {RevPersLibRead_React} = NativeModules;
 import {useRevPersGetRevEntities_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
-import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetPublisherEntity} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
+import RevCustomLoadingView from '../../../../../rev_views/rev_loaders/RevCustomLoadingView';
 
 export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -39,30 +39,36 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
   let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
-  const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr); // Array to hold the loaded data
-  const [revPage, setRevPage] = useState(1); // Current revPage number
-  const [revLoading, setRevLoading] = useState(false); // Flag to indicate if data is being loaded
+  const revIncrementals = 2;
 
-  const revFetchData = async () => {
-    try {
-      setRevLoading(true); // Set revLoading flag to true while fetching data
-      const revNewData = revVarArgs.revGetData(
-        revListingData[revListingData.length - 1]._revEntityGUID,
-      );
+  const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr);
+  const [revPage, setRevPage] = useState(1);
+  const [revPageSize, setRevPageSize] = useState(revIncrementals);
 
-      if (!revNewData.length) {
-        return;
-      }
+  const revIsLoadingRef = useRef(false);
 
-      setRevListingData(revPrevListingData => [
-        ...revPrevListingData,
-        ...revNewData,
-      ]); // Append new data to the existing data array
-      setRevPage(prevrevPage => prevrevPage + 1); // Increment the revPage number
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setRevLoading(false); // Set revLoading flag to false after data is fetched
+  const revAsyncFetchData = async () => {
+    let revLastGUID = 0;
+
+    if (revListingData.length) {
+      revLastGUID = revListingData[revListingData.length - 1]._revEntityGUID;
+    }
+
+    let revNewData = revVarArgs.revGetData(revLastGUID);
+
+    console.log('>>> revNewData', revNewData.length);
+
+    if (revNewData.length) {
+      setRevListingData([...revListingData, ...revNewData]); // Append new data to the existing data array
+    }
+  };
+
+  const revLoadMoreData = () => {
+    if (revListingData.length > revPage * revPageSize) {
+      setRevPage(revPage + 1);
+      setRevPageSize(revPageSize + revIncrementals);
+    } else {
+      revIsLoadingRef.current = false;
     }
   };
 
@@ -124,7 +130,28 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revCounter = 0;
   let revCurrAdItem = 0;
 
-  function revRenderItem({item}) {
+  const renderFooter = () => {
+    console.log('>>> revIsLoading', revIsLoadingRef.current);
+
+    if (!revIsLoadingRef.current) {
+      return null;
+    }
+
+    return (
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revFooterLoadingWrapper,
+        ]}>
+        <RevCustomLoadingView
+          backgroundColor={'#FFF'}
+          revLoadintText={'Loading'}
+        />
+      </View>
+    );
+  };
+
+  const revRenderItem = ({item}) => {
     let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
 
     if (revEntityGUID < 0) {
@@ -150,6 +177,8 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       revVarArgs.revEntityPublishersArr.push(revPublisherEntity);
     }
 
+    revIsLoadingRef.current = true;
+
     item['_revPublisherEntity'] = revPublisherEntity;
 
     let RevAdEntityListingView = revPluginsLoader({
@@ -159,7 +188,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     });
 
     let revAddAd = revCounter % 2 == 0;
-    let RevView = revAddAd == true ? RevAdEntityListingView : null;
+    let revAdView = revAddAd == true ? RevAdEntityListingView : null;
     revCounter++;
 
     if (revAddAd) {
@@ -175,32 +204,43 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       revVarArgs: item,
     });
 
+    let revIsLastItem =
+      revListingData[revListingData.length - 1]._revEntityGUID == revEntityGUID;
+
+    if (revIsLastItem) {
+      revIsLoadingRef.current = false;
+    }
+
     return (
-      <>
-        {RevView}
+      <View>
+        {revAdView}
         {revTaggedPostsListingItem}
-      </>
+      </View>
     );
-  }
+  };
 
   let RevDisplay = () => {
     return revListingData.length > 0 ? (
       <FlatList
-        data={revListingData}
+        data={revListingData.slice(0, revPage * revPageSize)}
         renderItem={revRenderItem}
-        keyExtractor={item => {
-          let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
-          return revEntityGUID + '_rev_tagged_post_L' + revGetRandInteger();
-        }}
-        initialNumToRender={10}
-        maxToRenderPerBatch={10}
-        onEndReached={revFetchData} // Call the revFetchData function when the end of the list is reached
-        onEndReachedThreshold={0.5} // Adjust this value based on your needs (e.g., 0.5 means triggering when 50% of the list is scrolled)
+        keyExtractor={item => revGetLocal_OR_RemoteGUID(item)}
+        removeClippedSubviews={true}
+        updateCellsBatchingPeriod={50}
+        onEndReached={revLoadMoreData}
+        ListFooterComponent={renderFooter}
+        onEndReachedThreshold={0.1}
+        initialNumToRender={2}
+        maxToRenderPerBatch={revPageSize}
       />
     ) : (
-      <RevInfoArea revInfoText={'You do not have any chat conversations yet'} />
+      <RevInfoArea revInfoText={'No posts to display yet'} />
     );
   };
+
+  useEffect(() => {
+    revAsyncFetchData();
+  }, []);
 
   return (
     <>
@@ -210,4 +250,12 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  revFooterLoadingWrapper: {
+    alignItems: 'center',
+    height: 55,
+    overflow: 'visible',
+    marginLeft: 40,
+    marginTop: 12,
+  },
+});
