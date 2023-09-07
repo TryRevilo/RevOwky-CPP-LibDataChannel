@@ -11,7 +11,6 @@ import com.owki.rev_react_modules.rev_gen_function_libs.RevReactNativeEvents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 public class RevGenFunctionLibs implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
@@ -246,23 +247,38 @@ export function ChatMessageInputComposer({revVarArgs}) {
     );
   };
 
+  let revNextUserIcon = (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper_WidthAuto,
+        styles.revRecipientNextWrapperTouchable,
+      ]}>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}>
+        NExT
+      </Text>
+      <AntDesign
+        name="adduser"
+        style={[
+          revSiteStyles.revSiteTxtLarge,
+          revSiteStyles.revSiteTxtColor,
+          styles.recipientNextUserIcon,
+        ]}
+      />
+    </View>
+  );
+
   const RevHeaderNextStrangerTab = () => {
     return (
       <TouchableOpacity
         onPress={() => {
           revHandleNextStrangerChat(isRevShowComposer);
-        }}
-        style={styles.recipientNextWrapperTouchable}>
-        <View style={styles.recipientNextWrapper}>
-          <Text style={styles.recipientNextTxt}>NExT</Text>
-          <View style={styles.recipientNextUserIconWrapper}>
-            <FontAwesome name="user" style={styles.recipientNextUserIcon} />
-          </View>
-          <FontAwesome
-            name="arrow-right"
-            style={styles.recipientNextpointerIcon}
-          />
-        </View>
+        }}>
+        {revNextUserIcon}
       </TouchableOpacity>
     );
   };
@@ -301,7 +317,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
             }></ScrollView>
         </View>
         <View style={[styles.revChatHeaderAreaRightView]}>
-          <View style={styles.revChatHeaderAreaRightWrapper}>
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revChatHeaderAreaRightWrapper,
+            ]}>
             {revChatSettingsTab()}
             {revRandLoggedInUserTabs}
             <RevHeaderNextStrangerTab />
@@ -328,7 +348,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
         <RevChatHeaderArea />
         <TextInput
           ref={revTextInputRef}
-          style={styles.revChatInputArea}
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revChatInputArea,
+          ]}
           placeholder={` Chat away with ${
             revSplitStringToArray(revFullNames)[0]
           } !`}
@@ -381,7 +405,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   let RevChatSubmitOptions = () => {
     return (
-      <View style={styles.footerSubmitOptionsLeftWrapper}>
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revFooterSubmitOptionsLeftWrapper,
+        ]}>
         {isRevShowComposer ? (
           revSubmitChatOptionsMenuArea(revRetData => {
             if (
@@ -397,7 +425,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
               revHandleNextStrangerChat(true);
               setIsRevShowComposer(true);
             }}>
-            <View style={[styles.cancelComposeChatMsg]}>
+            <View
+              style={[
+                revSiteStyles.revSiteTxtBold,
+                styles.revCancelComposeChatMsg,
+              ]}>
               <FontAwesome
                 name="quote-left"
                 style={[
@@ -412,7 +444,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
           onPress={async () => {
             revWebRTCSendFile(2);
           }}>
-          <View style={[styles.cancelComposeChatMsg]}>
+          <View
+            style={[
+              revSiteStyles.revSiteTxtBold,
+              styles.revCancelComposeChatMsg,
+            ]}>
             <FontAwesome
               name="image"
               style={[
@@ -425,7 +461,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
           onPress={() => {
             revHandleHideComposingForm(isRevShowComposer);
           }}>
-          <View style={[styles.cancelComposeChatMsg]}>
+          <View
+            style={[
+              revSiteStyles.revSiteTxtBold,
+              styles.revCancelComposeChatMsg,
+            ]}>
             <FontAwesome
               name={isRevShowComposer ? 'times' : 'expand'}
               style={[
@@ -479,18 +519,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
         onPress={() => {
           setIsRevShowComposer(true);
           revHandleNextStrangerChat(true);
-        }}
-        style={styles.recipientNextWrapperTouchable}>
-        <View style={styles.recipientNextWrapper}>
-          <Text style={styles.recipientNextTxt}>NExT</Text>
-          <View style={styles.recipientNextUserIconWrapper}>
-            <FontAwesome name="user" style={styles.recipientNextUserIcon} />
-          </View>
-          <FontAwesome
-            name="arrow-right"
-            style={styles.recipientNextpointerIcon}
-          />
-        </View>
+        }}>
+        {revNextUserIcon}
       </TouchableOpacity>
     );
   };
@@ -504,7 +534,6 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
 const styles = StyleSheet.create({
   revChatHeaderAreaWrapper: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -520,7 +549,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   revChatHeaderAreaRightWrapper: {
-    flexDirection: 'row',
     alignItems: 'center',
   },
   revChatHeaderAreaScrollView: {
@@ -564,8 +592,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   revChatInputArea: {
-    color: '#444',
-    fontSize: 11,
     textAlignVertical: 'top',
     paddingHorizontal: 5,
     paddingTop: 7,
@@ -573,55 +599,38 @@ const styles = StyleSheet.create({
     borderColor: '#F7F7F7',
     borderWidth: 1,
   },
-  recipientNextWrapperTouchable: {
-    display: 'flex',
-    marginRight: 22,
-    // marginLeft: 'auto',
+  revRecipientNextWrapperTouchable: {
+    alignItems: 'flex-end',
+    paddingBottom: 2,
+    paddingHorizontal: 12,
   },
-  recipientNextWrapper: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+  revRecipientNextWrapper: {
+    alignItems: 'flex-end',
     marginLeft: 4,
-  },
-  recipientNextTxt: {
-    color: '#757575',
-    fontSize: 9,
-    fontWeight: 'bold',
-    marginTop: 7,
   },
   recipientNextUserIconWrapper: {
     backgroundColor: '#FFF',
   },
   recipientNextUserIcon: {
-    color: '#757575',
-    fontSize: 22,
-    textAlign: 'center',
     marginLeft: 1,
   },
-  recipientNextpointerIcon: {
-    color: '#757575',
-    fontSize: 11,
+  revRecipientNextpointerIcon: {
     textAlign: 'center',
-    marginTop: 7,
+    marginTop: 5,
   },
 
   /** */
 
-  chatFooterWrapper: {
+  revChatFooterWrapper: {
     backgroundColor: '#FFF',
     flex: 0,
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
-  footerSubmitOptionsLeftWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revFooterSubmitOptionsLeftWrapper: {
     alignItems: 'center',
   },
-  cancelComposeChatMsg: {
-    fontWeight: 'bold',
+  revCancelComposeChatMsg: {
     marginTop: 2,
     paddingHorizontal: 8,
   },

@@ -9,7 +9,11 @@ import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_hel
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   revVarArgs = revVarArgs.revVarArgs;
 
   const {revPersGetRevEnty_By_EntityGUID} =
@@ -49,7 +53,19 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
       continue;
     }
 
-    revCommentsArr.push(revCommentItemListingView);
+    let revBackgroundColor = i % 2 !== 0 || i == 0 ? '#FFFFFF' : '#F7F7F7';
+
+    revCommentsArr.push(
+      <View
+        key={'RevCommentItem_' + i + '_' + revGetRandInteger(100, 1000)}
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revCommentItemWrapper,
+          {backgroundColor: revBackgroundColor},
+        ]}>
+        {revCommentItemListingView}
+      </View>,
+    );
   }
 
   return (
@@ -61,4 +77,9 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  revCommentItemWrapper: {
+    paddingLeft: 7,
+    marginTop: 5,
+  },
+});

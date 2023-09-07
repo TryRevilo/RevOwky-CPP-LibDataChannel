@@ -62,7 +62,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
               style={[
                 revSiteStyles.revSiteTxtColorBlueLink,
                 revSiteStyles.revSiteTxtBold,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
                 {paddingVertical: 5},
               ]}>
               Read More
@@ -78,7 +78,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
   return (
     <View style={revSiteStyles.revFlexContainer}>
       <Text
-        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
+        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny_X]}>
         {revRenderText()}
       </Text>
       {revRenderReadMoreButton()}
@@ -299,7 +299,7 @@ export const RevInfoArea = ({revInfoText, revStyles = null}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {revInfoText}
         </Text>

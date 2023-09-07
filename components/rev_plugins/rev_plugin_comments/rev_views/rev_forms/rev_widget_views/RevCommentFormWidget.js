@@ -12,6 +12,7 @@ import {
 import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
 
@@ -22,7 +23,11 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevCommentFormWidget = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   revVarArgs = revVarArgs.revVarArgs;
 
   let revIsCommentUpdate = false;
@@ -139,7 +144,11 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
   let revBtnTxt = revIsCommentUpdate ? 'Update' : 'Publish';
 
   return (
-    <View style={[styles.revFlexContainer, styles.revSitePublisherContainer]}>
+    <View
+      style={[
+        revSiteStyles.revFlexContainer,
+        styles.revSitePublisherContainer,
+      ]}>
       <TextInput
         style={styles.revCommentTextInput}
         placeholder=" . . ."
@@ -153,10 +162,13 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
       />
 
       <View
-        style={[styles.revFlexWrapper, styles.revSitePublisherFooterWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revSitePublisherFooterWrapper,
+        ]}>
         <View
           style={[
-            styles.revFlexWrapper,
+            revSiteStyles.revFlexWrapper,
             styles.revSitePublisherSubmitTabWrapper,
           ]}>
           <TouchableOpacity
@@ -165,7 +177,7 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
             }}>
             <Text
               style={[
-                styles.revSiteTxtSmall,
+                revSiteStyles.revSiteTxtTiny_X,
                 styles.revSitePublisherSubmitTab,
               ]}>
               {revBtnTxt}
@@ -174,16 +186,18 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
         </View>
 
         <TouchableOpacity
+          style={[{marginLeft: 5}]}
           onPress={() => {
             revHandleOnMediaSelectTab();
           }}>
-          <FontAwesome
+          <Feather
             name="upload"
             style={[
-              styles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtColorBlueLink,
               styles.revSiteTxtMedium,
               styles.revSitePublisherUpload,
-            ]}></FontAwesome>
+            ]}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -192,25 +206,24 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
           }}>
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtTiny,
-              styles.revSiteFontBold,
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.revSitePublisherCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteTxtTiny,
-                styles.revSiteFontWeightNormal,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteTxtTiny,
-                styles.revSiteFontWeightNormal,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Cancel
@@ -222,38 +235,6 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteFontWeightNormal: {
-    fontWeight: '100',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  revSiteTxtMediumLarge: {
-    fontSize: 14,
-  },
   chatFooterWrapper: {
     backgroundColor: '#FFF',
     flex: 0,
@@ -337,7 +318,6 @@ const styles = StyleSheet.create({
   },
   revSitePublisherUpload: {
     paddingHorizontal: 8,
-    marginLeft: 5,
   },
   revSitePublisherCancelTab: {
     paddingHorizontal: 5,

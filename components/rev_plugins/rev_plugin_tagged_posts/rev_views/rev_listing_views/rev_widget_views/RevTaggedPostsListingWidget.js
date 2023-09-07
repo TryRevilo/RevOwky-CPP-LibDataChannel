@@ -181,14 +181,18 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     item['_revPublisherEntity'] = revPublisherEntity;
 
-    let RevAdEntityListingView = revPluginsLoader({
-      revPluginName: 'rev_plugin_ads',
-      revViewName: 'RevAdEntityListingView',
-      revVarArgs: {revData: revAdEntitiesParsedArr[revCurrAdItem]},
-    });
-
     let revAddAd = revCounter % 2 == 0;
-    let revAdView = revAddAd == true ? RevAdEntityListingView : null;
+
+    let revAdView = revAddAd ? (
+      <View style={{marginTop: 12}}>
+        {revPluginsLoader({
+          revPluginName: 'rev_plugin_ads',
+          revViewName: 'RevAdEntityListingView',
+          revVarArgs: {revData: revAdEntitiesParsedArr[revCurrAdItem]},
+        })}
+      </View>
+    ) : null;
+
     revCounter++;
 
     if (revAddAd) {

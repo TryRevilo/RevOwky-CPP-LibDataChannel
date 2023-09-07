@@ -50,7 +50,15 @@ const RevSiteLoading = () => {
 
   const [REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW] = useState(
     <View style={styles.revSiteLoadingContainer}>
-      <Text style={styles.revSiteLoadingTxt}>Owki Loading . . .</Text>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+          styles.revSiteLoadingTxt,
+        ]}>
+        Owki Loading . . .
+      </Text>
     </View>,
   );
 
@@ -91,9 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   revSiteLoadingTxt: {
-    color: '#777',
-    fontSize: 12,
-    fontWeight: 'bold',
     marginTop: '25%',
     textAlign: 'center',
     alignSelf: 'center',

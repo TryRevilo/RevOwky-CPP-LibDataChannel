@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
     flex: 7,
     position: 'relative',
     height: 'auto',
+    marginBottom: 12,
   },
 });
 

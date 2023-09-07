@@ -67,7 +67,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
           key={'rev_nudity_flag_' + revGetRandInteger()}
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {' Nudity / '}
         </Text>,
@@ -80,7 +80,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
           key={'rev_violence_flag_' + revGetRandInteger()}
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {' Inciting Violence / '}
         </Text>,
@@ -93,7 +93,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
           key={'rev_misleading_flag_' + revGetRandInteger()}
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {' Misleading / '}
         </Text>,
@@ -112,12 +112,12 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorBlueLink,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.revFlagLinkTab,
           ]}>
           <FontAwesome
             name={'external-link'}
-            style={[revSiteStyles.revSiteTxtTiny]}
+            style={[revSiteStyles.revSiteTxtTiny_X]}
           />
           {'    ' + revFlagLinkValMetadata}
         </Text>
@@ -134,7 +134,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
     <Text
       style={[
         revSiteStyles.revSiteTxtColor,
-        revSiteStyles.revSiteTxtTiny,
+        revSiteStyles.revSiteTxtTiny_X,
         {
           backgroundColor: '#FFF',
           paddingHorizontal: 10,
@@ -217,7 +217,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revSiteTxtColorBlueLink,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               {paddingHorizontal: 10, paddingVertical: 8},
             ]}>
             {revIsReadContent ? 'Hide' : 'continue reading'}

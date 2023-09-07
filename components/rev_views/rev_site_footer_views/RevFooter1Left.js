@@ -16,32 +16,12 @@ export function RevFooter1Left() {
   const {REV_FOOTER_1_CENTER} = useContext(ReViewsContext);
 
   return (
-    <View style={revSiteStyles.revFlexContainer}>
-      <View style={[revSiteStyles.revFlexWrapper, styles.revChatFooterWrapper]}>
-        <RevNextStrangerChatTab revVarArgs={{_remoteRevEntityGUID: 1055}} />
+    <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'flex-end'}]}>
+      <RevNextStrangerChatTab revVarArgs={{_remoteRevEntityGUID: 1055}} />
 
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper,
-            styles.revSitePublisherTabWrapper,
-          ]}>
-          {REV_FOOTER_1_CENTER}
-        </View>
+      {REV_FOOTER_1_CENTER}
 
-        <RevFooter_1_Right />
-      </View>
+      <RevFooter_1_Right />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  revChatFooterWrapper: {
-    backgroundColor: '#FFF',
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  revSitePublisherTabWrapper: {
-    marginLeft: '4%',
-  },
-});

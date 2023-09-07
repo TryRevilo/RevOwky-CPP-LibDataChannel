@@ -2,6 +2,7 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React, {useContext} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
 import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
@@ -41,24 +42,34 @@ const RevFooter1_Center = () => {
     SET_REV_SITE_BODY(RevStoresListingView);
   };
 
+  const revFooterTab = ({revIcon, revCallback}) => (
+    <TouchableOpacity onPress={revCallback}>
+      <Feather
+        name={revIcon}
+        style={[
+          revSiteStyles.revSiteTxtColorWhite,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revSitePublisherTab,
+        ]}
+      />
+    </TouchableOpacity>
+  );
   return (
-    <View
-      style={[revSiteStyles.revFlexWrapper, styles.revFooter1_Center_Wrapper]}>
-      <TouchableOpacity
-        onPress={() => {
-          revHandleShowSitePublisherInputForm();
-        }}>
-        <FontAwesome name="plus" style={styles.revSitePublisherTab} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => {}}>
-        <FontAwesome name="camera" style={styles.revSitePublisherTab} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          revHandleShowStorePublisherInputForm();
-        }}>
-        <FontAwesome name="shopping-bag" style={styles.revSitePublisherTab} />
-      </TouchableOpacity>
+    <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+      {revFooterTab({
+        revIcon: 'plus',
+        revCallback: revHandleShowSitePublisherInputForm,
+      })}
+
+      {revFooterTab({
+        revIcon: 'camera',
+        revCallback: () => {},
+      })}
+
+      {revFooterTab({
+        revIcon: 'shopping-cart',
+        revCallback: revHandleShowStorePublisherInputForm,
+      })}
     </View>
   );
 };
@@ -66,16 +77,11 @@ const RevFooter1_Center = () => {
 export default RevFooter1_Center;
 
 const styles = StyleSheet.create({
-  revFooter1_Center_Wrapper: {
-    width: 'auto',
-  },
   revSitePublisherTab: {
-    color: '#FFF',
-    fontSize: 12,
     backgroundColor: '#757575',
     paddingHorizontal: 12,
-    paddingVertical: 3,
-    marginLeft: 1,
+    paddingVertical: 2,
+    marginLeft: 2,
     borderRadius: 55,
   },
 });

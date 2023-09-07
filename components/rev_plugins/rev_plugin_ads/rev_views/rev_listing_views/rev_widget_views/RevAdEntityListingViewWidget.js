@@ -64,7 +64,8 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           Promoted
         </Text>

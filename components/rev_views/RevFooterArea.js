@@ -30,7 +30,11 @@ import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/r
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {useRevSiteStyles} from './RevSiteStyles';
+
 function RevFooterArea() {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
 
@@ -335,69 +339,132 @@ function RevFooterArea() {
     SET_REV_SITE_BODY(revPurchaseReceipt);
   };
 
+  let revRightTabs = (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper_WidthAuto,
+        styles.revChannelsOptionsWrapper,
+      ]}>
+      <TouchableOpacity
+        onPress={() => {
+          revHandleTaggedPostsTabPress();
+        }}>
+        <FontAwesome
+          name="hashtag"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revChannelOptionItem,
+          ]}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          revHandleGetSiteUsersTabPress();
+        }}>
+        <FontAwesome
+          name="flash"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revChannelOptionItem,
+          ]}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          handleDocumentSelection();
+        }}>
+        <FontAwesome
+          name="folder"
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revChannelOptionItem,
+          ]}></FontAwesome>
+      </TouchableOpacity>
+
+      <FontAwesome
+        name="object-ungroup"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revChannelOptionItem,
+        ]}
+      />
+      <FontAwesome
+        name="asterisk"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revChannelOptionItem,
+        ]}
+      />
+
+      <TouchableOpacity onPress={handleRevShowUserAdsTabPress}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            styles.revChannelOptionItem,
+          ]}>
+          ads
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View>
-      <View style={styles.chatAreaContainer}>
-        <View style={styles.chatChannelsOptionsWrapper}>
-          <View style={styles.currentChatOptionsWrapper}>
+      <View
+        style={[revSiteStyles.revFlexContainer, styles.revChatAreaContainer]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revChatrevChannelsOptionsWrapper,
+          ]}>
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revCurrentChatOptionsWrapper,
+            ]}>
             <RevVideoCallModal />
 
             <TouchableOpacity onPress={() => handleEndVideoCall()}>
-              <View style={styles.currentChatOptionTab}>
+              <View
+                style={[
+                  revSiteStyles.revFlexWrapper_WidthAuto,
+                  styles.revCurrentChatOptionTab,
+                ]}>
                 <FontAwesome
                   name="phone"
-                  style={styles.currentChatOptionTabIcon}
+                  style={[
+                    revSiteStyles.revSiteTxtNormal,
+                    styles.revCurrentChatOptionTabIcon,
+                  ]}
                 />
               </View>
             </TouchableOpacity>
 
-            <View style={styles.currentChatOptionTab}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                styles.revCurrentChatOptionTab,
+              ]}>
               <FontAwesome
                 name="user-plus"
-                style={styles.currentChatOptionTabIcon}
+                style={[
+                  revSiteStyles.revSiteTxtNormal,
+                  styles.revCurrentChatOptionTabIcon,
+                ]}
               />
             </View>
           </View>
-          <View style={styles.channelsContainer}>
-            <View style={styles.channelsOptionsWrapper}>
-              <TouchableOpacity
-                onPress={() => {
-                  revHandleTaggedPostsTabPress();
-                }}>
-                <FontAwesome name="hashtag" style={styles.channelOptionItem} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => {
-                  revHandleGetSiteUsersTabPress();
-                }}>
-                <FontAwesome name="flash" style={styles.channelOptionItem} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => {
-                  handleDocumentSelection();
-                }}>
-                <FontAwesome
-                  name="folder"
-                  style={[
-                    styles.revSiteTxtColorLight,
-                    styles.revSiteTxtSmall,
-                    styles.channelOptionItem,
-                  ]}></FontAwesome>
-              </TouchableOpacity>
-
-              <FontAwesome
-                name="object-ungroup"
-                style={styles.channelOptionItem}
-              />
-              <FontAwesome name="asterisk" style={styles.channelOptionItem} />
-
-              <TouchableOpacity onPress={handleRevShowUserAdsTabPress}>
-                <Text style={styles.channelOptionItem}>ads</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          {revRightTabs}
         </View>
         {RevFooter3}
         {RevFooter2}
@@ -419,51 +486,27 @@ function RevFooterArea() {
 export default RevFooterArea;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  chatAreaContainer: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: 5,
+  revChatAreaContainer: {
+    backgroundColor: '#F7F7F7',
     borderTopWidth: 1,
-    borderTopColor: '#F7F7F7',
-    borderStyle: 'dotted',
+    borderTopColor: '#EEEEEE',
+    borderStyle: 'solid',
+    paddingTop: 5,
     paddingHorizontal: 5,
     marginHorizontal: -12,
   },
-  chatChannelsOptionsWrapper: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'row',
+  revChatrevChannelsOptionsWrapper: {
     alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    borderStyle: 'solid',
+    paddingBottom: 5,
   },
-  currentChatOptionsWrapper: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'row',
+  revCurrentChatOptionsWrapper: {
     marginLeft: 8,
   },
-  currentChatOptionTab: {
+  revCurrentChatOptionTab: {
     backgroundColor: '#ffebee',
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
@@ -471,30 +514,16 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     opacity: 0.5,
   },
-  currentChatOptionTabIcon: {
+  revCurrentChatOptionTabIcon: {
     color: '#ec407a',
     textAlign: 'center',
-    fontSize: 11,
   },
-  channelsContainer: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'column',
+  revChannelsOptionsWrapper: {
     alignItems: 'flex-end',
     marginLeft: 'auto',
     marginRight: 12,
   },
-  channelsOptionsWrapper: {
-    backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 'auto',
-  },
-  channelOptionItem: {
-    color: '#999',
-    fontSize: 11,
-    lineHeight: 11,
+  revChannelOptionItem: {
     borderBottomColor: '#CCC',
     borderBottomWidth: 1,
     borderStyle: 'dotted',
@@ -505,7 +534,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     flex: 0,
     flexDirection: 'column',
-    marginTop: 8,
-    marginBottom: 12,
+    paddingVertical: 12,
   },
 });

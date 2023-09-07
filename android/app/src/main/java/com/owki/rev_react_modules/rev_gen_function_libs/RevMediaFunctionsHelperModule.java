@@ -1,5 +1,7 @@
 package com.owki.rev_react_modules.rev_gen_function_libs;
 
+import android.net.Uri;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -20,6 +22,12 @@ public class RevMediaFunctionsHelperModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return TAG;
+    }
+
+    @ReactMethod
+    public String revPathResolver(String revURIStr) {
+        Uri revURI = Uri.parse(revURIStr);
+        return RevPathResolver_React.getRealPathFromURI(reactContext, revURI);
     }
 
     @ReactMethod

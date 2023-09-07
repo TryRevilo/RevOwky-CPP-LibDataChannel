@@ -124,7 +124,7 @@ const RevFooter_1_Right = () => {
   return (
     <View
       style={[
-        revSiteStyles.revFlexWrapper,
+        revSiteStyles.revFlexWrapper_WidthAuto,
         styles.rightFooterSubmitOptionsWrapper,
       ]}>
       <TouchableOpacity onPress={revHandleUserSettingsPressed}>
@@ -162,15 +162,14 @@ const RevFooter_1_Right = () => {
 export default RevFooter_1_Right;
 
 const styles = StyleSheet.create({
+  rightFooterSubmitOptionsWrapper: {
+    alignItems: 'center',
+    marginRight: 14,
+    marginLeft: 'auto',
+  },
   rightFooterOptionTab: {
     paddingHorizontal: 10,
     paddingBottom: 3,
-  },
-  rightFooterSubmitOptionsWrapper: {
-    alignItems: 'center',
-    width: 'auto',
-    marginRight: 14,
-    marginLeft: 'auto',
   },
   rightFooterHelpTab: {
     paddingBottom: 1,

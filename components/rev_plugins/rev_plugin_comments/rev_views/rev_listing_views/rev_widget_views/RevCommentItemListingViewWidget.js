@@ -103,14 +103,10 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   };
 
   return (
-    <TouchableOpacity
-      key={'RevCommentItem_' + revGetRandInteger(100, 1000)}
-      style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
-      <View style={styles.revCommentMsgUserIcon}>
-        <TouchableOpacity>
-          <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
-        </TouchableOpacity>
-      </View>
+    <TouchableOpacity style={revSiteStyles.revFlexWrapper}>
+      <TouchableOpacity style={styles.revCommentMsgUserIcon}>
+        <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
+      </TouchableOpacity>
 
       <View style={styles.revChatMsgCommentContentContainer}>
         <View
@@ -141,16 +137,20 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
             ]}>
             <FontAwesome
               name="retweet"
-              style={[revSiteStyles.revSiteTxtNormal, styles.revChatMsgOptions]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtNormal,
+                styles.revChatMsgOptions,
+              ]}
             />
 
             <FontAwesome
               name="flag-o"
-              style={[revSiteStyles.revSiteTxtSmall, styles.revChatMsgOptions]}
-            />
-            <FontAwesome
-              name="list"
-              style={[revSiteStyles.revSiteTxtSmall, styles.revChatMsgOptions]}
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtSmall,
+                styles.revChatMsgOptions,
+              ]}
             />
           </View>
         </View>
@@ -165,11 +165,6 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
     </TouchableOpacity>
   );
 };
-
-var pageWidth = Dimensions.get('window').width - 12;
-var height = Dimensions.get('window').height;
-
-var maxChatMessageContainerWidth = pageWidth - 75;
 
 const styles = StyleSheet.create({
   revCommentMsgUserIcon: {
@@ -210,7 +205,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   revChatMsgOptions: {
-    color: '#bdbdbd',
     paddingHorizontal: 8,
   },
   revChatMsgCommentContentTxtContainer: {

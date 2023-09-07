@@ -460,6 +460,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 <FontAwesome
                   name="retweet"
                   style={[
+                    revSiteStyles.revSiteTxtColorLight,
                     revSiteStyles.revSiteTxtNormal,
                     styles.revChatMsgOptions,
                   ]}
@@ -469,19 +470,12 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                   <FontAwesome
                     name="flag-o"
                     style={[
+                      revSiteStyles.revSiteTxtColorLight,
                       revSiteStyles.revSiteTxtSmall,
                       styles.revChatMsgOptions,
                     ]}
                   />
                 </TouchableOpacity>
-
-                <FontAwesome
-                  name="list"
-                  style={[
-                    revSiteStyles.revSiteTxtSmall,
-                    styles.revChatMsgOptions,
-                  ]}
-                />
               </View>
             </View>
 
@@ -507,7 +501,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                     style={[
                       revSiteStyles.revSiteTxtColorLight,
                       revSiteStyles.revSiteTxtBold,
-                      revSiteStyles.revSiteTxtTiny,
+                      revSiteStyles.revSiteTxtTiny_X,
                       styles.revPostCommentTab,
                     ]}>
                     your comment
@@ -581,7 +575,6 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   revChatMsgOptions: {
-    color: '#bdbdbd',
     paddingHorizontal: 8,
   },
   revPostTagsListWrapper: {
@@ -597,7 +590,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   revCommentsContainer: {
-    backgroundColor: '#F7F7F7',
     paddingHorizontal: 3,
     paddingVertical: 5,
     marginTop: 8,
