@@ -35,6 +35,7 @@
     "react-native-keep-awake": "^4.0.0",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.8.0",
+    "react-native-sms": "^1.11.0",
     "react-native-svg": "^13.9.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-vector-icons": "^9.2.0",

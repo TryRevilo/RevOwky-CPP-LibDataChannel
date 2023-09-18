@@ -79,6 +79,7 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
 
 const styles = StyleSheet.create({
   revCommentItemWrapper: {
+    paddingTop: 3,
     paddingLeft: 7,
     marginTop: 5,
   },

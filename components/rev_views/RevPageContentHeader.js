@@ -37,7 +37,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
 
   let RevHeaderLinks = () => {
     return (
-      <View style={revSiteStyles.revFlexWrapper}>
+      <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
         <RevHeaderLink revLinkText={'mine'} />
         <RevHeaderLink revLinkText={'contacts'} />
         <RevHeaderLink revLinkText={<FontAwesome name="shopping-bag" />} />
@@ -74,9 +74,8 @@ const RevPageContentHeader = ({revVarArgs}) => {
           />{' '}
           All
         </Text>
-        <View>
-          <RevHeaderLinks />
-        </View>
+
+        <RevHeaderLinks />
 
         <View
           style={[
@@ -86,14 +85,15 @@ const RevPageContentHeader = ({revVarArgs}) => {
           <FontAwesome
             style={[
               revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}
             name="dot-circle-o"
           />
           <Text
             style={[
               revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.revHeaderOnlineStateTextLink,
             ]}>
             onLiNE

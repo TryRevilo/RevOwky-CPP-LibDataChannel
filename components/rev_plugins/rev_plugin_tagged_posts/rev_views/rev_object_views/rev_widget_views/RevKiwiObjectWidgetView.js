@@ -11,12 +11,13 @@ import {
 import React, {useContext, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {LoremIpsum} from 'lorem-ipsum';
 
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
-import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revFormatLongDate,
+  revGetRandInteger,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
@@ -24,15 +25,22 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revGetEntityChildren_By_Subtype} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
-import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revGenLoreumIpsumText,
+  revTruncateString,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
+import RevChatMessageOptions from '../../../../rev_plugin_text_chat/rev_views/RevChatMessageOptions';
 
 const {RevPersLibRead_React} = NativeModules;
 
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   revVarArgs = revVarArgs.revVarArgs;
 
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
@@ -63,33 +71,12 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     22,
   );
 
-  const {revSiteStyles} = useRevSiteStyles();
-
   let revInfoEntity = revVarArgs._revInfoEntity;
-  let revTimeCreated = revVarArgs._timeCreated;
+  let revTimeCreated = revVarArgs._revTimeCreated;
 
-  const {
-    REV_PAGE_HEADER_CONTENT_VIEWER,
-    SET_REV_PAGE_HEADER_CONTENT_VIEWER,
-    REV_SITE_BODY,
-    SET_REV_SITE_BODY,
-  } = useContext(ReViewsContext);
+  const [revIsEditting, setRevIsEditting] = useState(false);
 
-  [revIsEditting, setRevIsEditting] = useState(false);
-
-  let minMessageLen = 1;
-  let maxMessageLen = 200;
-
-  const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-      max: 8,
-      min: 4,
-    },
-    wordsPerSentence: {
-      max: revGetRandInteger(minMessageLen, maxMessageLen),
-      min: revGetRandInteger(1, 2),
-    },
-  });
+  let revMaxMessageLen = 200;
 
   let chatMsg = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
@@ -100,73 +87,93 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     return null;
   }
 
-  let chatMessageText = (chatMsg, revTxtStyle = {}) => {
-    let chatMessageView = (
-      <Text
-        key={revGetRandInteger(100, 1000)}
-        style={[styles.chatMsgContentTxt, revTxtStyle]}>
-        {chatMsg.length > maxMessageLen
-          ? chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : chatMsg}
-      </Text>
-    );
-
-    return (
-      <View key={revEntityGUID} style={styles.chatMsgContentTxtContainer}>
-        {chatMessageView}
-        {chatMsg.length > maxMessageLen ? (
-          <Text style={styles.readMoreTextTab}>Read more</Text>
-        ) : null}
-      </View>
-    );
-  };
+  const revChatMsgOptionsStylesArr = [
+    revSiteStyles.revSiteTxtColorLight,
+    revSiteStyles.revSiteTxtTiny,
+    styles.revChatMsgOptions,
+  ];
 
   let revPostTagsArr = [1, 2, 3, 4];
 
   let RevPostTagItem = () => {
     return (
       <TouchableOpacity key={revGetRandInteger(100, 1000)}>
-        <Text style={styles.revPostTagsListItem}>hello_world</Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny_X,
+            styles.revPostTagsListItem,
+          ]}>
+          hello_world
+        </Text>
       </TouchableOpacity>
     );
   };
 
   let RevCommentItem = () => {
+    const revParagraphs = revGenLoreumIpsumText({
+      revMinSentences: 1,
+      revMaxSentences: 7,
+      revMinWordsPerSentence: 2,
+      revMaxWordsPerSentence: 12,
+      revParagraphLowerBound: 1,
+      revParagraphUpperBound: 7,
+      revCount: 4,
+    });
+
     return (
       <TouchableOpacity
-        key={revGetRandInteger(100, 1000).toString()}
         style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
         <TouchableOpacity>
           <View style={styles.revCommentMsgUserIcon}>
             <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
           </View>
         </TouchableOpacity>
-        <View style={styles.revChatMsgCommentContentContainer}>
-          <View style={styles.chatMsgHeaderWrapper}>
-            <Text style={styles.chatMsgOwnerTxt}>
+        <View
+          style={[
+            revSiteStyles.revFlexContainer,
+            styles.revChatMsgCommentContentContainer,
+          ]}>
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              styles.revChatMsgHeaderWrapper,
+            ]}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
+                revSiteStyles.revSiteTxtBold,
+              ]}>
               {revPublisherEntityNames_Trunc}
             </Text>
-            <Text style={styles.chatMsgSendTime}>10:40 Jun 14, 2022</Text>
-            <View style={styles.chatMsgOptionsWrapper}>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="reply" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="retweet" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="list" />
-              </Text>
-              <Text style={styles.chatMsgOptions}>
-                <FontAwesome name="flag-o" />
-              </Text>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+                styles.revChatMsgSendTime,
+              ]}>
+              10:40 Jun 14, 2022
+            </Text>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                styles.revChatMsgOptionsWrapper,
+              ]}>
+              <FontAwesome style={revChatMsgOptionsStylesArr} name="reply" />
+              <FontAwesome style={revChatMsgOptionsStylesArr} name="retweet" />
+              <FontAwesome style={revChatMsgOptionsStylesArr} name="flag-o" />
             </View>
           </View>
-          <View style={styles.revChatMsgCommentContentTxtContainer}>
-            {chatMessageText(
-              lorem.generateSentences(revGetRandInteger(1, 5)),
-              styles.revChatMsgCommentContentTxt,
-            )}
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              styles.revChatMsgCommentContentTxtContainer,
+            ]}>
+            <RevReadMoreTextView
+              revText={revParagraphs}
+              revMaxLength={revMaxMessageLen}
+            />
           </View>
         </View>
       </TouchableOpacity>
@@ -242,7 +249,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     return RevRetView;
   };
 
-  let RevImagesMediaView = null;
+  let revImagesMediaView = null;
 
   if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
     let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
@@ -251,54 +258,50 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     );
 
     if (revPicsAlbumArr && revPicsAlbumArr.length) {
-      RevImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
+      revImagesMediaView = RevCreateImagesMediaView(revPicsAlbumArr[0]);
     }
   }
 
   const RevVideoPlayer = () => {
-    let revVidPathsArr = [
-      'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/1.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/2.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/3.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/4.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/5.mp4',
-      '/storage/emulated/0/Documents/Owki/rev_sample_media/6.mp4',
-    ];
-    const randomIndex = Math.floor(Math.random() * revVidPathsArr.length);
-    const randomElement = revVidPathsArr[randomIndex];
-
+    let revVidPath = '/storage/emulated/0/Documents/rev_sample_media/1.mp4';
     let RevInlineVideoPlayer = revPluginsLoader({
       revPluginName: 'rev_plugin_video',
       revViewName: 'RevInlineVideoPlayer',
       revVarArgs: {
-        revURL: randomElement,
+        revURL: revVidPath,
       },
     });
 
     return RevInlineVideoPlayer;
   };
 
-  let RevVideoPlayerView = RevVideoPlayer();
+  let revVideoPlayerView = RevVideoPlayer();
 
   let RevGenComments = () => {
     let revCommentsArr = [];
-    let revRand = revGetRandInteger(0, 4);
+    let revRand = revGetRandInteger(0, 22);
 
     for (let i = 0; i < revRand; i++) {
       revCommentsArr.push(i);
     }
 
     return (
-      <View>
-        {revCommentsArr.map(revItem => {
-          return <RevCommentItem key={revItem} />;
+      <>
+        {revCommentsArr.map((revItem, index) => {
+          return <RevCommentItem key={index} />;
         })}
-      </View>
+      </>
     );
   };
 
   let RevLikes = () => {
+    const revLikesStylesArr = [
+      revSiteStyles.revSiteTxtColor,
+      revSiteStyles.revSiteTxtBold,
+      revSiteStyles.revSiteTxtTiny_X,
+      styles.revLikesTab,
+    ];
+
     return (
       <View
         style={[
@@ -306,11 +309,18 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
           styles.revLikesTabsWrapper,
         ]}>
         <TouchableOpacity>
-          <FontAwesome name="arrow-up" style={styles.revLikesTab} />
+          <FontAwesome name="arrow-up" style={revLikesStylesArr} />
         </TouchableOpacity>
-        <Text style={styles.revLikesText}>{revGetRandInteger(1, 100)}</Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+          ]}>
+          {revGetRandInteger(1, 100)}
+        </Text>
         <TouchableOpacity>
-          <FontAwesome name="arrow-down" style={styles.revLikesTab} />
+          <FontAwesome name="arrow-down" style={revLikesStylesArr} />
         </TouchableOpacity>
       </View>
     );
@@ -335,133 +345,165 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
 
   const RevKiwiContainer = () => {
     return (
-      <TouchableOpacity key={revEntityGUID.toString()}>
-        <View style={revSiteStyles.revFlexContainer}>
-          <View style={styles.revPublisherMainNonIconArea}>
-            <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
-          </View>
-          <View style={styles.chatMsgContentWrapper}>
-            <View style={styles.chatMsgContentContainer}>
-              <View style={styles.chatMsgHeaderWrapper}>
-                <Text style={styles.chatMsgOwnerTxt}>
-                  {revPublisherEntityNames_Trunc}
-                </Text>
-                <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
-                <View style={styles.chatMsgOptionsWrapper}>
-                  <Text style={styles.chatMsgOptions}>
-                    <FontAwesome name="reply" />
-                  </Text>
-                  <Text style={styles.chatMsgOptions}>
-                    <FontAwesome name="retweet" />
-                  </Text>
-                  <Text style={styles.chatMsgOptions}>
-                    <FontAwesome name="list" />
-                  </Text>
-                  <Text style={styles.chatMsgOptions}>
-                    <FontAwesome name="flag-o" />
-                  </Text>
-                </View>
-              </View>
+      <View style={revSiteStyles.revFlexContainer}>
+        <View style={styles.revPublisherMainNonIconArea}>
+          <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
+        </View>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revChatMsgContentWrapper,
+          ]}>
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              styles.revChatMsgContentContainer,
+            ]}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revChatMsgHeaderWrapper,
+              ]}>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColor,
+                  revSiteStyles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
+                {revPublisherEntityNames_Trunc}
+              </Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  styles.revChatMsgSendTime,
+                ]}>
+                {revFormatLongDate(revTimeCreated)}
+              </Text>
               <View
                 style={[
-                  revSiteStyles.revFlexWrapper,
-                  styles.revPostTagsListWrapper,
+                  revSiteStyles.revFlexWrapper_WidthAuto,
+                  styles.revChatMsgOptionsWrapper,
                 ]}>
+                <FontAwesome style={revChatMsgOptionsStylesArr} name="reply" />
                 <FontAwesome
-                  name="hashtag"
-                  style={styles.revPostTagsListIcon}
+                  style={revChatMsgOptionsStylesArr}
+                  name="retweet"
                 />
-                <View style={[revSiteStyles.revFlexWrapper]}>
-                  {revPostTagsArr.map(revItem => {
-                    let revKey =
-                      'RevPostTagItem_' +
-                      revItem +
-                      '_' +
-                      revGetRandInteger(10, 1000);
-                    return <RevPostTagItem key={revKey} />;
-                  })}
-                </View>
+                <FontAwesome name="list" />
+                <FontAwesome style={revChatMsgOptionsStylesArr} name="flag-o" />
               </View>
-              <View style={styles.chatMsgContentTxtContainer}>
-                {chatMessageText(chatMsg)}
+            </View>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revPostTagsListWrapper,
+              ]}>
+              <FontAwesome
+                name="hashtag"
+                style={[
+                  revSiteStyles.revSiteTxtColor,
+                  revSiteStyles.revSiteTxtSmall,
+                ]}
+              />
+              <View style={[revSiteStyles.revFlexWrapper]}>
+                {revPostTagsArr.map(revItem => {
+                  let revKey =
+                    'RevPostTagItem_' +
+                    revItem +
+                    '_' +
+                    revGetRandInteger(10, 1000);
+                  return <RevPostTagItem key={revKey} />;
+                })}
               </View>
+            </View>
+            <View style={styles.revChatMsgContentTxtContainer}>
+              <RevReadMoreTextView
+                revText={chatMsg}
+                revMaxLength={revMaxMessageLen}
+              />
+            </View>
 
+            <View
+              style={[
+                revImagesMediaView || revVideoPlayerView
+                  ? styles.revImagesMediaViewContainer
+                  : null,
+              ]}>
+              {revImagesMediaView}
+              {revVideoPlayerView}
+            </View>
+
+            <View
+              style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
+              <RevLikes />
               <View
                 style={[
-                  RevImagesMediaView || RevVideoPlayerView
-                    ? styles.revImagesMediaViewContainer
-                    : null,
+                  revSiteStyles.revFlexWrapper_WidthAuto,
+                  styles.revLikesTabsWrapper,
                 ]}>
-                {RevImagesMediaView}
-                {RevVideoPlayerView}
-              </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    handleRevHideEditKiwiTabPress();
+                  }}>
+                  <Text
+                    style={[
+                      revSiteStyles.revSiteTxtColorLight,
+                      revSiteStyles.revSiteTxtBold,
+                      revSiteStyles.revSiteTxtTiny_X,
+                      styles.revLikesTab,
+                    ]}>
+                    Edit
+                  </Text>
+                </TouchableOpacity>
 
-              <View style={revSiteStyles.revFlexWrapper_WidthAuto}>
-                <RevLikes />
-                <View
-                  style={[
-                    revSiteStyles.revFlexWrapper,
-                    styles.revLikesTabsWrapper,
-                  ]}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      handleRevHideEditKiwiTabPress();
-                    }}>
-                    <Text
-                      style={[
-                        revSiteStyles.revSiteTxtColorLight,
-                        revSiteStyles.revSiteTxtSmall,
-                        styles.revLikesTab,
-                      ]}>
-                      Edit
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity>
-                    <Text
-                      style={[
-                        revSiteStyles.revSiteTxtColorLight,
-                        revSiteStyles.revSiteTxtSmall,
-                        styles.revLikesTab,
-                      ]}>
-                      Delete
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              {revIsEditting ? RevGetKiwiEditForm() : null}
-
-              <View
-                style={[
-                  revSiteStyles.revFlexContainer,
-                  styles.revCommentsContainer,
-                ]}>
                 <TouchableOpacity>
                   <Text
                     style={[
                       revSiteStyles.revSiteTxtColorLight,
                       revSiteStyles.revSiteTxtBold,
-                      revSiteStyles.revSiteTxtTiny,
-                      styles.revPostCommentTab,
+                      revSiteStyles.revSiteTxtTiny_X,
+                      styles.revLikesTab,
                     ]}>
-                    your comment
+                    Delete
                   </Text>
                 </TouchableOpacity>
-                <RevGenComments />
               </View>
+            </View>
+
+            {revIsEditting ? RevGetKiwiEditForm() : null}
+
+            <View
+              style={[
+                revSiteStyles.revFlexContainer,
+                styles.revCommentsContainer,
+              ]}>
+              <TouchableOpacity>
+                <Text
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtBold,
+                    revSiteStyles.revSiteTxtTiny_X,
+                    styles.revPostCommentTab,
+                  ]}>
+                  Your comment
+                </Text>
+              </TouchableOpacity>
+              <RevGenComments />
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   return (
-    <ScrollView style={revSiteStyles.revFlexContainer}>
+    <>
       <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
-      <RevKiwiContainer />
-    </ScrollView>
+      <ScrollView style={revSiteStyles.revFlexContainer}>
+        <RevKiwiContainer />
+      </ScrollView>
+    </>
   );
 };
 
@@ -488,32 +530,19 @@ const styles = StyleSheet.create({
     fontSize: 22,
     paddingVertical: 2,
   },
-  chatMsgContentWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revChatMsgContentWrapper: {
     alignItems: 'flex-start',
     width: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
   },
-  chatMsgContentWrapperInbox: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: '100%',
-    marginTop: 2,
-  },
-  chatMsgContentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+  revChatMsgContentContainer: {
     alignSelf: 'flex-start',
     width: maxChatMessageContainerWidth - 7,
     paddingHorizontal: 5,
     paddingVertical: 4,
   },
-  chatMsgHeaderWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revChatMsgHeaderWrapper: {
     alignItems: 'baseline',
     borderBottomColor: '#rgba(27, 31, 35, 0.06)',
     borderBottomWidth: 1,
@@ -521,54 +550,29 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  chatMsgOwnerTxt: {
-    color: '#444',
-    fontSize: 10,
-    lineHeight: 10,
-    fontWeight: 'bold',
-  },
-  chatMsgSendTime: {
-    color: '#8d8d8d',
-    fontSize: 9,
-    lineHeight: 9,
+  revChatMsgSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
-  chatMsgOptionsWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
+  revChatMsgOptionsWrapper: {
     alignItems: 'center',
     marginLeft: 'auto',
     marginRight: 12,
     position: 'relative',
   },
-  chatMsgOptions: {
-    color: '#bdbdbd',
-    fontSize: 12,
+  revChatMsgOptions: {
     paddingHorizontal: 8,
   },
   revPostTagsListWrapper: {
     alignItems: 'flex-end',
     paddingVertical: 5,
   },
-  revPostTagsListIcon: {
-    color: '#999',
-    fontSize: 10,
-  },
   revPostTagsListItem: {
-    color: '#999',
-    fontSize: 10,
-    lineHeight: 10,
     borderBottomColor: '#999',
     borderBottomWidth: 1,
     marginHorizontal: 4,
   },
-  chatMsgContentTxtContainer: {
-    color: '#444',
-    fontSize: 10,
-    display: 'flex',
-    alignItems: 'flex-start',
-    width: '100%',
+  revChatMsgContentTxtContainer: {
     paddingRight: 5,
     marginTop: 2,
   },
@@ -614,30 +618,18 @@ const styles = StyleSheet.create({
   },
   revLikesTabsWrapper: {
     alignItems: 'center',
-    marginTop: 4,
   },
   revLikesTab: {
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  revLikesText: {
-    color: '#999',
-    fontSize: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
   },
   revCommentsContainer: {
     backgroundColor: '#F7F7F7',
-    paddingHorizontal: 3,
+    paddingHorizontal: 8,
     paddingVertical: 5,
-    marginTop: 8,
     marginHorizontal: -4,
   },
   revPostCommentTab: {
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 9,
     backgroundColor: '#FFF',
     borderColor: '#F7F7F7',
     borderWidth: 1,
@@ -645,7 +637,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   revCommentItemWrapper: {
-    marginTop: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 5,
   },
   revCommentMsgUserIcon: {
     width: 17,
@@ -663,25 +656,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   revChatMsgCommentContentContainer: {
-    display: 'flex',
-    flexDirection: 'column',
     alignSelf: 'flex-start',
     width: maxChatMessageContainerWidth - 32,
     paddingHorizontal: 5,
-    paddingVertical: 4,
   },
   revChatMsgCommentContentTxtContainer: {
-    color: '#444',
-    fontSize: 8,
-    display: 'flex',
     alignItems: 'flex-start',
-    width: '100%',
     paddingRight: 5,
     marginTop: 2,
-  },
-  revChatMsgCommentContentTxt: {
-    color: '#444',
-    fontSize: 9,
   },
   profileImagesScroller: {
     flexGrow: 0,

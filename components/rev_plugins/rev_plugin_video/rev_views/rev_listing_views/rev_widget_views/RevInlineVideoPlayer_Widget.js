@@ -12,14 +12,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import NetInfo from '@react-native-community/netinfo';
 
-import {
-  revGetRandInteger,
-  revIsEmptyJSONObject,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
-
-import {revPingOnMobile} from '../../../../../../rev_function_libs/rev_network_functions';
 
 export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -28,49 +23,65 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
 
   let revURL = revVarArgs.revURL;
 
-  const videoRef = useRef(null);
-  const videoProgressVall = useRef(0);
+  const revVideoRef = useRef(null);
+  const revVideoProgressVall = useRef(0);
+  const [revVideoDuration, setRevVideoDuration] = useState(0);
 
-  const [paused, setPaused] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [aspectRatio, setAspectRatio] = useState(null);
+  const [revPaused, setRevPaused] = useState(true);
+  const [revAspectRatio, setRevAspectRatio] = useState(null);
 
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [isRevVideoLoaded, setIsRevVideoLoaded] = useState(false);
+  const [isRevInternetReachable, setIsRevInternetReachable] = useState(true);
 
-  const handleProgress = ({currentTime, seekableDuration}) => {
-    setCurrentTime(currentTime);
+  const [revCurrentTime, setRevCurrentTime] = useState(0);
 
+  const handleRevProgress = ({currentTime, seekableDuration}) => {
     let revCuurPlayPos = currentTime / seekableDuration;
-    if (videoProgressVall.current) {
-      videoProgressVall.current.setNativeProps({
-        style: {width: `${revCuurPlayPos * 100}%`},
+
+    if (revVideoProgressVall.current) {
+      revVideoProgressVall.current.setNativeProps({
+        style: {
+          width: `${revCuurPlayPos * 100}%`,
+          backgroundColor: 'green',
+        },
       });
+    }
+
+    if (revCurrentTime > 0 && Math.floor(currentTime) >= revVideoDuration) {
+      revVideoRef.current.seek(0);
+      setRevCurrentTime(0);
+      handleRevTogglePlayback();
+
+      revVideoProgressVall.current.setNativeProps({
+        style: {
+          width: `${revCuurPlayPos * 0}%`,
+        },
+      });
+    } else {
+      setRevCurrentTime(currentTime);
     }
   };
 
-  const handleLoad = event => {
-    setIsVideoLoaded(true);
+  const handleRevLoad = event => {
+    setRevVideoDuration(Math.floor(event.duration));
+
+    setIsRevVideoLoaded(true);
 
     const {naturalSize} = event;
     const {width, height} = naturalSize;
-    const videoAspectRatio = width / height;
-    setAspectRatio(videoAspectRatio);
-
-    setDuration(event.duration);
+    const revVideorevAspectRatio = width / height;
+    setRevAspectRatio(revVideorevAspectRatio);
   };
 
-  const revHandleTogglePlayback = () => {
-    setPaused(!paused);
+  const handleRevTogglePlayback = () => {
+    setRevPaused(!revPaused);
   };
 
-  const handleForward = () => {
-    videoRef.current.seek(currentTime + 10);
-  };
-
-  const ForwardButton = () => {
+  const RevForwardButton = () => {
     return (
-      <TouchableOpacity onPress={handleForward} style={styles.revVidMoveBtn}>
+      <TouchableOpacity
+        onPress={handleRevForwardTabPressed}
+        style={styles.revVidMoveBtn}>
         <FontAwesome
           name="fast-forward"
           style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
@@ -79,13 +90,29 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
     );
   };
 
-  const handleRewind = () => {
-    videoRef.current.seek(currentTime - 10);
+  const handleRevForwardTabPressed = () => {
+    setRevCurrentTime(prev => {
+      let revNewVal = prev + 10;
+      revVideoRef.current.seek(revNewVal);
+
+      return revNewVal;
+    });
   };
 
-  const RewindButton = () => {
+  const handleRevRewindTabPressed = () => {
+    setRevCurrentTime(prev => {
+      let revNewVal = prev - 10;
+      revVideoRef.current.seek(revNewVal);
+
+      return revNewVal;
+    });
+  };
+
+  const RevRewindButton = () => {
     return (
-      <TouchableOpacity onPress={handleRewind} style={styles.revVidMoveBtn}>
+      <TouchableOpacity
+        onPress={handleRevRewindTabPressed}
+        style={styles.revVidMoveBtn}>
         <FontAwesome
           name="fast-backward"
           style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
@@ -97,10 +124,10 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   const RevPauseButton = () => {
     return (
       <TouchableOpacity
-        onPress={revHandleTogglePlayback}
+        onPress={handleRevTogglePlayback}
         style={styles.revVidMoveBtn}>
         <FontAwesome
-          name={paused ? 'play' : 'pause'}
+          name={revPaused ? 'play' : 'pause'}
           style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
         />
       </TouchableOpacity>
@@ -119,83 +146,100 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
     );
   };
 
-  const formatTime = time => {
+  const revFormatTime = time => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   };
 
-  const TimeDisplay = () => {
+  const RevTimeDisplay = () => {
     return (
       <Text
         style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtSmall]}>
-        {formatTime(currentTime)} / {formatTime(duration)}
+        {revFormatTime(revCurrentTime)} / {revFormatTime(revVideoDuration)}
       </Text>
     );
   };
 
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [isInternetReachable, setIsInternetReachable] = useState(true);
-
-  const handleVideoError = error => {
+  const handleRevVideoError = error => {
     if (error.message.includes('Network request failed')) {
-      setIsInternetReachable(false);
+      setIsRevInternetReachable(false);
     }
   };
 
   NetInfo.fetch().then(state => {
-    setIsInternetReachable(state.isInternetReachable);
+    setIsRevInternetReachable(state.isRevInternetReachable);
   });
 
-  const revVideoView = () => {
-    return (
-      <View
-        key={'rev_video_' + revGetRandInteger(100, 1000)}
-        style={styles.revVideoContainer}>
-        <TouchableWithoutFeedback onPress={revHandleTogglePlayback}>
-          <View style={{flex: 1}}>
-            <Video
-              ref={videoRef}
-              source={{
-                uri: revURL,
-              }}
-              paused={paused}
-              style={[styles.revVideo, {aspectRatio}]}
-              onLoad={handleLoad}
-              onProgress={handleProgress}
-              onError={handleVideoError}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-        <View style={styles.revProgressContainer}>
-          <View
-            ref={videoProgressVall}
-            style={[
-              styles.revProgressBar,
-              {width: `${videoProgressVall.current * 100}%`},
-            ]}
-          />
-        </View>
+  const revRewindTabRef = useRef(null);
+  const revForwardTabRef = useRef(null);
 
-        <View style={[revSiteStyles.revFlexWrapper, styles.revVidMoveWrapper]}>
-          <ForwardButton />
-          <RevPauseButton />
-          <RewindButton />
-          <TimeDisplay />
-        </View>
-      </View>
-    );
-  };
+  useEffect(() => {
+    revRewindTabRef.current = <RevRewindButton />;
+    revForwardTabRef.current = <RevForwardButton />;
+  }, []);
 
   return (
     <View style={revSiteStyles.revFlexContainer}>
-      {isInternetReachable && (
+      {
         <>
-          {!isVideoLoaded && <Text>Loading video...</Text>}
-          {revVideoView()}
+          {!isRevVideoLoaded && (
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtBold,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}>
+              Loading video...
+            </Text>
+          )}
+          <View style={styles.revVideoContainer}>
+            <TouchableWithoutFeedback onPress={handleRevTogglePlayback}>
+              <View style={{flex: 1}}>
+                <Video
+                  ref={revVideoRef}
+                  source={{
+                    uri: revURL,
+                  }}
+                  paused={revPaused}
+                  style={[styles.revVideo, {aspectRatio: revAspectRatio}]}
+                  onLoad={handleRevLoad}
+                  onProgress={handleRevProgress}
+                  onError={handleRevVideoError}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+            <View style={styles.revProgressContainer}>
+              <View
+                ref={revVideoProgressVall}
+                style={[
+                  styles.revProgressBar,
+                  {width: `${revVideoProgressVall.current * 100}%`},
+                ]}
+              />
+            </View>
+
+            <View
+              style={[revSiteStyles.revFlexWrapper, styles.revVidMoveWrapper]}>
+              {revRewindTabRef.current}
+              <RevPauseButton />
+              {revForwardTabRef.current}
+              <RevTimeDisplay />
+            </View>
+          </View>
         </>
+      }
+      {!isRevVideoLoaded && !isRevInternetReachable && (
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+            {paddingHorizontal: 9, paddingVertical: 5},
+          ]}>
+          Unable to connect to the server.
+        </Text>
       )}
-      {!isInternetReachable && <Text>Unable to connect to the server.</Text>}
     </View>
   );
 };
@@ -229,12 +273,12 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   revProgressContainer: {
-    height: 4,
+    height: 1,
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
   revProgressBar: {
     height: '100%',
-    backgroundColor: 'red',
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   revVidMoveWrapper: {
     alignItems: 'center',

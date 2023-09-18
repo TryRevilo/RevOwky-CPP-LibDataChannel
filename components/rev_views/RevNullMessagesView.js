@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revPluginsLoader} from '../rev_plugins_loader';
 
 import {useRevSiteStyles} from './RevSiteStyles';
+import RevPageContentHeader from './RevPageContentHeader';
 
 const RevNullMessagesView = () => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -92,7 +93,7 @@ const RevNullMessagesView = () => {
 
   return (
     <View>
-      <RevHeader />
+      <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
 
       <ScrollView
         horizontal
