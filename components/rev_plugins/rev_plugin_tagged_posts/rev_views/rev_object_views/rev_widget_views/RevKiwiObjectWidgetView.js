@@ -346,7 +346,11 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
   const RevKiwiContainer = () => {
     return (
       <View style={revSiteStyles.revFlexContainer}>
-        <View style={styles.revPublisherMainNonIconArea}>
+        <View
+          style={[
+            revSiteStyles.revFlexContainer,
+            styles.revPublisherMainNonIconArea,
+          ]}>
           <FontAwesome name="user" style={styles.revPublisherMainNonIcon} />
         </View>
         <View
@@ -516,12 +520,9 @@ const styles = StyleSheet.create({
   revPublisherMainNonIconArea: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#444',
+    backgroundColor: '#EEEEEE',
     width: '100%',
     height: 100,
-    borderStyle: 'solid',
-    borderColor: '#F9F9F9',
-    borderWidth: 1,
     marginTop: 1,
     borderRadius: 2,
   },

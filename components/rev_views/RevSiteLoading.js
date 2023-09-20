@@ -54,7 +54,7 @@ const RevSiteLoading = () => {
         style={[
           revSiteStyles.revSiteTxtColor,
           revSiteStyles.revSiteTxtBold,
-          revSiteStyles.revSiteTxtTiny_X,
+          revSiteStyles.revSiteTxtTiny,
           styles.revSiteLoadingTxt,
         ]}>
         Owki Loading . . .
@@ -86,7 +86,7 @@ const RevSiteLoading = () => {
 
   setTimeout(() => {
     setRevPageReady(true);
-  }, 1000);
+  }, 3000);
 
   return REV_SITE_INIT_VIEW;
 };

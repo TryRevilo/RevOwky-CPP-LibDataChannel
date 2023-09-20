@@ -254,6 +254,12 @@ export const useRevCreateMediaAlbum = () => {
       revEntityFileObject._revEntityMetadataList.push(
         REV_METADATA_FILLER(revFileType, revFileType),
       );
+      revEntityFileObject._revEntityMetadataList.push(
+        REV_METADATA_FILLER('revFileName', revFile.name),
+      );
+      revEntityFileObject._revEntityMetadataList.push(
+        REV_METADATA_FILLER('revFileSize', revFile.size.toString()),
+      );
 
       revEntityFileObject._revEntityGUID = i;
       revEntityGUIDs.push(i);
@@ -494,12 +500,6 @@ export const useRevSaveNewEntity = () => {
         } else {
           revPersEntityInfoMetadata['_revMetadataEntityGUID'] =
             revPersinfoEntityGUID;
-
-          console.log(
-            revMetadataId,
-            'revPersEntityInfoMetadata',
-            revPersEntityInfoMetadata,
-          );
 
           let revPersMetedataStatus =
             RevPersLibCreate_React.revPersSaveEntityMetadataJSONStr(

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "../../../../../libs/cJSON/cJSON.h"
+#include "../../../../libs/cJSON/cJSON.h"
 
 typedef struct DateAndTime {
     int year;

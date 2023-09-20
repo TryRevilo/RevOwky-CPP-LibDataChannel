@@ -74,30 +74,36 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
 
   let revEntityPicsAlbum = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum;
-  let revPicsArray = revEntityPicsAlbum.revPicsArray;
 
   let revEntityPicsAlbumDataArr = [];
 
-  for (let i = 0; i < revPicsArray.length; i++) {
-    let revCurrPic = revPicsArray[i];
+  if (
+    !revIsEmptyJSONObject(revEntityPicsAlbum) &&
+    revEntityPicsAlbum.hasOwnProperty('revPicsArray')
+  ) {
+    let revPicsArray = revEntityPicsAlbum.revPicsArray;
 
-    if (revIsEmptyJSONObject(revCurrPic)) {
-      continue;
+    for (let i = 0; i < revPicsArray.length; i++) {
+      let revCurrPic = revPicsArray[i];
+
+      if (revIsEmptyJSONObject(revCurrPic)) {
+        continue;
+      }
+
+      let revPicMetadataArr = revCurrPic._revEntityMetadataList;
+      let revRemoteFileName = revGetMetadataValue(
+        revPicMetadataArr,
+        'rev_remote_file_name',
+      );
+
+      let revEntityIconValPath =
+        'file://' + rev_settings.revPublishedMediaDir + '/' + revRemoteFileName;
+
+      revEntityPicsAlbumDataArr.push({
+        _revEntityGUID: revCurrPic._revEntityGUID,
+        uri: revEntityIconValPath,
+      });
     }
-
-    let revPicMetadataArr = revCurrPic._revEntityMetadataList;
-    let revRemoteFileName = revGetMetadataValue(
-      revPicMetadataArr,
-      'rev_remote_file_name',
-    );
-
-    let revEntityIconValPath =
-      'file://' + rev_settings.revPublishedMediaDir + '/' + revRemoteFileName;
-
-    revEntityPicsAlbumDataArr.push({
-      _revEntityGUID: revCurrPic._revEntityGUID,
-      uri: revEntityIconValPath,
-    });
   }
 
   let revFullNames = revGetMetadataValue(

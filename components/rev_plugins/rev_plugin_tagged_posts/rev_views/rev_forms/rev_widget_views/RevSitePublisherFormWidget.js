@@ -90,8 +90,8 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
     let revVaArgs = {
       _revEntityGUID: revEntityGUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revSitePostText: revSitePostText,
-      revSelectedMedia: revSelectedMedia,
+      revSitePostText,
+      revSelectedMedia,
     };
 
     revCreateSitePostAction(revVaArgs, revRetData => {
@@ -184,9 +184,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
 
         <TouchableOpacity
           style={[{marginLeft: 5}]}
-          onPress={() => {
-            revHandleOnMediaSelectTab();
-          }}>
+          onPress={revHandleOnMediaSelectTab}>
           <Feather
             name="upload"
             style={[
@@ -197,10 +195,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            revHandleOnMediaSelectTab();
-          }}>
+        <TouchableOpacity onPress={revHandleOnMediaSelectTab}>
           <FontAwesome
             name="flag-o"
             style={[

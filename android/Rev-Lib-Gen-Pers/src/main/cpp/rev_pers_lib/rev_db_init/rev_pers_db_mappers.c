@@ -39,8 +39,9 @@ char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap
 
             if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
                 char *revArrayElementVal = revCurrArrayElement->valuestring;
+                char revAll[] = "*";
 
-                if (revArrayElementVal == "*") {
+                if (revArrayElementVal == revAll) {
                     return "*";
                 }
 
@@ -381,12 +382,15 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
         char **col_names = (char **) malloc(num_cols * sizeof(char *));
 
+        __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
+
         for (int i = 0; i < num_cols; i++) {
             col_names[i] = strdup(sqlite3_column_name(stmt, i));
         }
 
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
+        __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
 
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
             cJSON *revCurrJsonObject = cJSON_CreateObject();
 
             for (int i = 0; i < num_cols; i++) {
@@ -436,15 +440,23 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
             cJSON_AddItemToArray(revRetJSonArray, revCurrJsonObject);
         }
 
+        __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
+
         for (int i = 0; i < num_cols; i++) {
             free(col_names[i]);
         }
 
+        __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
+
         free(col_names);
     }
 
+    __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
+
     sqlite3_finalize(stmt);
     sqlite3_close(db);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
 
     free(revTableRowsArr);
     free(revStrValsArr);
@@ -452,6 +464,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     free(revIntWhereValsArr);
 
     // htable_strstr_destroy(revMap);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "MyApp", ">>> revRetJSonArray <<<");
 
     revEnd:
 

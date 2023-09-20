@@ -72,6 +72,7 @@ export const revPersGetRevEntities_By_EntityGUIDsArr = revEntityGUIDsArr => {
 
   for (let i = 0; i < revEntityGUIDsArr.length; i++) {
     let revCurrEntityGUID = revEntityGUIDsArr[i];
+
     let revCurrEntityStr =
       RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
 

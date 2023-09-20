@@ -22,9 +22,8 @@
 #include "../../../../rev_db_init/rev_pers_db_mappers.h"
 
 list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
-
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     htable_strstr_t *revEntityDB_Keys = revGetEntityDB_Keys();
     htable_strstr_t *revMap = revGetMapped_Entity_Key_DBFieldName();
@@ -37,7 +36,7 @@ list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
         cJSON_ArrayForEach(revEntityMetadataJSON, revJsonArr) {
             char *revCurrEntityStrVal = cJSON_Print(revEntityMetadataJSON);
             RevEntity *revEntity = revJSONEntityFiller(revCurrEntityStrVal);
-            list_append(&revEntityList, revEntity);
+            list_append(&revList, revEntity);
 
             free(revCurrEntityStrVal);
         }
@@ -45,15 +44,12 @@ list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
 
     cJSON_Delete(revJsonArr);
 
-    return &revEntityList;
+    return &revList;
 }
 
 int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntitySubtype) {
 
     int exists = -1;
-
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -169,8 +165,8 @@ long revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID) {
 }
 
 list *revPersGet_ALL_RevEntity_By_SiteGUID_SubType(long revSiteEntityGUID, char *revEntitySubType) {
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -221,20 +217,20 @@ list *revPersGet_ALL_RevEntity_By_SiteGUID_SubType(long revSiteEntityGUID, char 
         revEntity->_revTimeCreated = _revTimeCreated;
         revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-        list_append(&revEntityList, revEntity);
+        list_append(&revList, revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(const char *revDBTableFieldName_, long revSiteEntityGUID, const char *revEntitySubType) {
     htable_strstr_t *revMap = revGetEntityDB_Keys();
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -259,7 +255,7 @@ list *revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(const char *revD
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
@@ -267,7 +263,7 @@ list *revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(const char *revD
 
     htable_strstr_destroy(revMap);
 
-    return &list;
+    return &revList;
 }
 
 int totalLocalRevUserEntites() {
@@ -555,8 +551,8 @@ RevEntity revPersGetRevEntity_By_RemoteRevEntityGUID(long remoteRevEntityGUID) {
 }
 
 list *revPersGetALLRevEntityGUIDs_By_RevEntityType(char *revEntityType) {
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -577,19 +573,19 @@ list *revPersGetALLRevEntityGUIDs_By_RevEntityType(char *revEntityType) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDs_By_ContainerGUID(long revEntityContainerGUID) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -610,19 +606,19 @@ list *revPersGetALLRevEntityGUIDs_By_ContainerGUID(long revEntityContainerGUID) 
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityTYPE(char *revEntityType) {
 
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -676,18 +672,18 @@ list *revPersGetALLRevEntityTYPE(char *revEntityType) {
         revEntity->_revTimeCreated = _revTimeCreated;
         revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-        list_append(&revEntityList, revEntity);
+        list_append(&revList, revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(long revEntityContainerGUID, char *revEntitySubType) {
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -738,19 +734,19 @@ list *revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(long revEntityC
         revEntity->_revTimeCreated = _revTimeCreated;
         revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-        list_append(&revEntityList, revEntity);
+        list_append(&revList, revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGetALLRevEntity_By_SubType(char *revEntitySubType) {
 
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -800,18 +796,18 @@ list *revPersGetALLRevEntity_By_SubType(char *revEntitySubType) {
         revEntity->_revTimeCreated = _revTimeCreated;
         revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-        list_append(&revEntityList, revEntity);
+        list_append(&revList, revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDs_By_ResStatus(int resolveStatus) {
-    list list;
-    list_new(&list, sizeof(long long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -831,19 +827,19 @@ list *revPersGetALLRevEntityGUIDs_By_ResStatus(int resolveStatus) {
     } else {
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             long long revEntityGUID = sqlite3_column_int64(stmt, 0);
-            list_append(&list, &revEntityGUID);
+            list_append(&revList, &revEntityGUID);
         }
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRemoteRevEntityGUIDs_By_ResStatus(int resolveStatus) {
-    list list;
-    list_new(&list, sizeof(long long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -863,19 +859,19 @@ list *revPersGetALLRemoteRevEntityGUIDs_By_ResStatus(int resolveStatus) {
     } else {
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             long long revEntityGUID = sqlite3_column_int64(stmt, 0);
-            list_append(&list, &revEntityGUID);
+            list_append(&revList, &revEntityGUID);
         }
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(int resolveStatus, char *revEntitySubtype) {
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -897,19 +893,19 @@ list *revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(int resolveStatus, ch
     } else {
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             long revEntityGUID = sqlite3_column_int64(stmt, 0);
-            list_append(&list, &revEntityGUID);
+            list_append(&revList, &revEntityGUID);
         }
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityUnSyched() {
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -967,20 +963,20 @@ list *revPersGetALLRevEntityUnSyched() {
 
             revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-            list_append(&revEntityList, revEntity);
+            list_append(&revList, revEntity);
         }
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityUnSychedByType(char *revEntityType) {
 
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1038,19 +1034,19 @@ list *revPersGetALLRevEntityUnSychedByType(char *revEntityType) {
         revEntity._timeCreated = strdup(revLocalTimer(_revTimeCreated));
         revEntity._revTimeCreated = _revTimeCreated;
 
-        list_append(&revEntityList, &revEntity);
+        list_append(&revList, &revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGetALLEntitySubtypeGUIDsByOwnerGUID(char *revEntitySubtype, long ownerGUID) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1072,19 +1068,19 @@ list *revPersGetALLEntitySubtypeGUIDsByOwnerGUID(char *revEntitySubtype, long ow
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityByOwnerGUIDType(char *revEntityType, long ownerGUID) {
 
-    list revEntityList;
-    list_new(&revEntityList, sizeof(RevEntity), NULL);
+    list revList;
+    list_new(&revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1139,19 +1135,19 @@ list *revPersGetALLRevEntityByOwnerGUIDType(char *revEntityType, long ownerGUID)
         revEntity->_revTimeCreated = _revTimeCreated;
         revEntity->_timeCreated = strdup(revLocalTimer(_revTimeCreated));
 
-        list_append(&revEntityList, revEntity);
+        list_append(&revList, revEntity);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &revEntityList;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDsByOwnerGUID_Type(char *revEntityType, long ownerGUID) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1173,19 +1169,19 @@ list *revPersGetALLRevEntityGUIDsByOwnerGUID_Type(char *revEntityType, long owne
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDs_SQL_IN(char *sql_IN) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1200,19 +1196,19 @@ list *revPersGetALLRevEntityGUIDs_SQL_IN(char *sql_IN) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDsByOwnerGUID(long ownerGUID) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1233,20 +1229,20 @@ list *revPersGetALLRevEntityGUIDsByOwnerGUID(long ownerGUID) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 list *revPersGetALLRevEntityGUIDs_By_ContainerEntityGUID(long revContainerEntityGUID,
                                                          char *revEntityType) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1268,13 +1264,13 @@ list *revPersGetALLRevEntityGUIDs_By_ContainerEntityGUID(long revContainerEntity
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 int getNumberOfUnreadRevEntites() {
@@ -1306,8 +1302,8 @@ int getNumberOfUnreadRevEntites() {
 
 list *revPersGetALLRevEntitySubTYPEs(char *revEntitySubtype) {
 
-    list list;
-    list_new(&list, sizeof(long), NULL);
+    list revList;
+    list_new(&revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
 
@@ -1328,13 +1324,13 @@ list *revPersGetALLRevEntitySubTYPEs(char *revEntitySubtype) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityGUID = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityGUID);
+        list_append(&revList, &revEntityGUID);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return &list;
+    return &revList;
 }
 
 long getRevEntityGUID_By_RevEntityOwnerGUID_Subtype(int revEntityOwnerGUID, char *revEntitySubtype) {

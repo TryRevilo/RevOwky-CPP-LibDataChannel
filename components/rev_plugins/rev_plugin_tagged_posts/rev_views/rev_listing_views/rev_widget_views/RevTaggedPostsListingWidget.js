@@ -39,15 +39,15 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
   let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
-  const revIncrementals = 2;
+  const REV_INCREMENTALS = 2;
 
   const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr);
   const [revPage, setRevPage] = useState(1);
-  const [revPageSize, setRevPageSize] = useState(revIncrementals);
+  const [revPageSize, setRevPageSize] = useState(REV_INCREMENTALS);
 
   const revIsLoadingRef = useRef(false);
 
-  const revAsyncFetchData = async () => {
+  const revFetchData = async () => {
     let revLastGUID = 0;
 
     if (revListingData.length) {
@@ -56,17 +56,15 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     let revNewData = revVarArgs.revGetData(revLastGUID);
 
-    console.log('>>> revNewData', revNewData.length);
-
     if (revNewData.length) {
-      setRevListingData([...revListingData, ...revNewData]); // Append new data to the existing data array
+      setRevListingData([...revListingData, ...revNewData]);
     }
   };
 
   const revLoadMoreData = () => {
     if (revListingData.length > revPage * revPageSize) {
       setRevPage(revPage + 1);
-      setRevPageSize(revPageSize + revIncrementals);
+      setRevPageSize(revPageSize + REV_INCREMENTALS);
     } else {
       revIsLoadingRef.current = false;
     }
@@ -131,8 +129,6 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   let revCurrAdItem = 0;
 
   const renderFooter = () => {
-    console.log('>>> revIsLoading', revIsLoadingRef.current);
-
     if (!revIsLoadingRef.current) {
       return null;
     }
@@ -223,33 +219,29 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     );
   };
 
-  let RevDisplay = () => {
-    return revListingData.length > 0 ? (
-      <FlatList
-        data={revListingData.slice(0, revPage * revPageSize)}
-        renderItem={revRenderItem}
-        keyExtractor={item => revGetLocal_OR_RemoteGUID(item)}
-        removeClippedSubviews={true}
-        updateCellsBatchingPeriod={50}
-        onEndReached={revLoadMoreData}
-        ListFooterComponent={renderFooter}
-        onEndReachedThreshold={0.1}
-        initialNumToRender={2}
-        maxToRenderPerBatch={revPageSize}
-      />
-    ) : (
-      <RevInfoArea revInfoText={'No posts to display yet'} />
-    );
-  };
-
   useEffect(() => {
-    revAsyncFetchData();
+    revFetchData();
   }, []);
 
   return (
     <>
       <RevPageContentHeader />
-      <RevDisplay />
+      {revListingData.length > 0 ? (
+        <FlatList
+          data={revListingData.slice(0, revPage * revPageSize)}
+          renderItem={revRenderItem}
+          keyExtractor={item => revGetLocal_OR_RemoteGUID(item)}
+          updateCellsBatchingPeriod={5000}
+          onEndReached={revLoadMoreData}
+          ListFooterComponent={renderFooter}
+          onEndReachedThreshold={0.5}
+          windowSize={5}
+          initialNumToRender={2}
+          maxToRenderPerBatch={revPageSize}
+        />
+      ) : (
+        <RevInfoArea revInfoText={'No posts to display yet'} />
+      )}
     </>
   );
 };

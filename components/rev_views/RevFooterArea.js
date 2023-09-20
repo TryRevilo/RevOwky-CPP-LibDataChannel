@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, useCallback} from 'react';
+import React, {useContext, useState, useCallback} from 'react';
 
 import {
   StyleSheet,
@@ -51,8 +51,6 @@ function RevFooterArea() {
     useRev_Server_DeleteEntities_By_entityGUIDsArr();
 
   const revGetLocalData = revLastGUID => {
-    console.log('>>> revLastGUID', revLastGUID);
-
     let revWhere = {
       _revEntityType: 'rev_object',
       _revEntitySubType: 'rev_kiwi',

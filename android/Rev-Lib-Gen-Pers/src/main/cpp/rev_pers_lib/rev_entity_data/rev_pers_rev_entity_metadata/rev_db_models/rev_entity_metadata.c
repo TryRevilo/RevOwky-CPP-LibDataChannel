@@ -20,8 +20,7 @@ void revFreeMetadata(void *data)
     free(*(RevEntityMetadata **)data);
 }
 
-RevEntityMetadata *revInitializedMetadata()
-{
+RevEntityMetadata *revInitializedMetadata() {
     RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *)malloc(sizeof(RevEntityMetadata));
 
     revEntityMetadata->_resolveStatus = -1;
@@ -44,8 +43,7 @@ RevEntityMetadata *revInitializedMetadata()
     return revEntityMetadata;
 }
 
-RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJSONStr)
-{
+RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJSONStr) {
 
     cJSON *rev_entity_metadata_json = cJSON_Parse(revEntityMetadataJSONStr);
 
@@ -124,8 +122,7 @@ end:
     return revEntityMetadata;
 }
 
-list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr)
-{
+list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr) {
     list list;
     list_new(&list, sizeof(RevEntityMetadata), revFreeMetadata);
 

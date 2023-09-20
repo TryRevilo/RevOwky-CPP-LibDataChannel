@@ -2,7 +2,7 @@
 
 #include <android/log.h>
 
-#include "../../../../../libs/cJSON/cJSON.h"
+#include "../../../../libs/cJSON/cJSON.h"
 
 const char *revGetCurrentTime() {
     time_t rawtime;

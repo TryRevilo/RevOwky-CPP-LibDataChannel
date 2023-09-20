@@ -12,8 +12,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import NetInfo from '@react-native-community/netinfo';
 
-import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
@@ -28,12 +26,26 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   const [revVideoDuration, setRevVideoDuration] = useState(0);
 
   const [revPaused, setRevPaused] = useState(true);
-  const [revAspectRatio, setRevAspectRatio] = useState(null);
+  const [revAspectRatio, setRevAspectRatio] = useState(0);
+  const [revVidWidth, setRevVidWidth] = useState(1);
+  const [revVidHeight, setRevVidHeight] = useState(1);
 
   const [isRevVideoLoaded, setIsRevVideoLoaded] = useState(false);
   const [isRevInternetReachable, setIsRevInternetReachable] = useState(true);
 
   const [revCurrentTime, setRevCurrentTime] = useState(0);
+
+  // State variable to store dimensions
+  const [revContainerDimensions, setRevContainerDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  const revVidFooterTabStylesArr = [
+    revSiteStyles.revSiteTxtColor,
+    revSiteStyles.revSiteTxtBold,
+    revSiteStyles.revSiteTxtTiny_X,
+  ];
 
   const handleRevProgress = ({currentTime, seekableDuration}) => {
     let revCuurPlayPos = currentTime / seekableDuration;
@@ -69,34 +81,13 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
 
     const {naturalSize} = event;
     const {width, height} = naturalSize;
-    const revVideorevAspectRatio = width / height;
-    setRevAspectRatio(revVideorevAspectRatio);
+
+    setRevVidWidth(width);
+    setRevVidHeight(height);
   };
 
   const handleRevTogglePlayback = () => {
     setRevPaused(!revPaused);
-  };
-
-  const RevForwardButton = () => {
-    return (
-      <TouchableOpacity
-        onPress={handleRevForwardTabPressed}
-        style={styles.revVidMoveBtn}>
-        <FontAwesome
-          name="fast-forward"
-          style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
-        />
-      </TouchableOpacity>
-    );
-  };
-
-  const handleRevForwardTabPressed = () => {
-    setRevCurrentTime(prev => {
-      let revNewVal = prev + 10;
-      revVideoRef.current.seek(revNewVal);
-
-      return revNewVal;
-    });
   };
 
   const handleRevRewindTabPressed = () => {
@@ -108,41 +99,68 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
     });
   };
 
-  const RevRewindButton = () => {
-    return (
-      <TouchableOpacity
-        onPress={handleRevRewindTabPressed}
-        style={styles.revVidMoveBtn}>
-        <FontAwesome
-          name="fast-backward"
-          style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
-        />
-      </TouchableOpacity>
-    );
+  const handleRevForwardTabPressed = () => {
+    setRevCurrentTime(prev => {
+      let revNewVal = prev + 10;
+      revVideoRef.current.seek(revNewVal);
+
+      return revNewVal;
+    });
   };
 
   const RevPauseButton = () => {
     return (
       <TouchableOpacity
         onPress={handleRevTogglePlayback}
-        style={styles.revVidMoveBtn}>
+        style={styles.revVidFooterTab}>
         <FontAwesome
           name={revPaused ? 'play' : 'pause'}
-          style={[revSiteStyles.revSiteTxtBold, revSiteStyles.revSiteTxtMedium]}
+          style={revVidFooterTabStylesArr}
         />
+      </TouchableOpacity>
+    );
+  };
+
+  const RevRewindButton = () => {
+    return (
+      <TouchableOpacity
+        onPress={handleRevRewindTabPressed}
+        style={styles.revVidFooterTab}>
+        <FontAwesome name="fast-backward" style={revVidFooterTabStylesArr} />
+      </TouchableOpacity>
+    );
+  };
+
+  const RevForwardButton = () => {
+    return (
+      <TouchableOpacity
+        onPress={handleRevForwardTabPressed}
+        style={styles.revVidFooterTab}>
+        <FontAwesome name="fast-forward" style={revVidFooterTabStylesArr} />
       </TouchableOpacity>
     );
   };
 
   const RevOverLayPlayBtn = () => {
     return (
-      <View
-        key={'revOverlayButton_' + revGetRandInteger()}
-        style={styles.revOverlayButton}>
-        <View style={styles.revPlayButton}>
-          <Text style={styles.revPlayButtonText}>Play</Text>
-        </View>
-      </View>
+      <>
+        {revPaused ? (
+          <TouchableOpacity
+            onPress={handleRevTogglePlayback}
+            style={styles.revOverlayButton}>
+            <View style={styles.revPlayButton}>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revSiteTxtTiny_X,
+                ]}>
+                Play
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : null}
+      </>
     );
   };
 
@@ -155,7 +173,11 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
   const RevTimeDisplay = () => {
     return (
       <Text
-        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtSmall]}>
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}>
         {revFormatTime(revCurrentTime)} / {revFormatTime(revVideoDuration)}
       </Text>
     );
@@ -179,6 +201,18 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
     revForwardTabRef.current = <RevForwardButton />;
   }, []);
 
+  useEffect(() => {
+    if (revVidWidth && revVidHeight) {
+      setRevAspectRatio(revVidWidth / revVidHeight);
+    }
+  }, [revVidWidth, revVidHeight]);
+
+  // Callback function to update dimensions when layout changes
+  const handleRevLayout = event => {
+    const {width, height} = event.nativeEvent.layout;
+    setRevContainerDimensions({width, height});
+  };
+
   return (
     <View style={revSiteStyles.revFlexContainer}>
       {
@@ -194,21 +228,29 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
             </Text>
           )}
           <View style={styles.revVideoContainer}>
-            <TouchableWithoutFeedback onPress={handleRevTogglePlayback}>
-              <View style={{flex: 1}}>
-                <Video
-                  ref={revVideoRef}
-                  source={{
-                    uri: revURL,
-                  }}
-                  paused={revPaused}
-                  style={[styles.revVideo, {aspectRatio: revAspectRatio}]}
-                  onLoad={handleRevLoad}
-                  onProgress={handleRevProgress}
-                  onError={handleRevVideoError}
-                />
-              </View>
+            <TouchableWithoutFeedback
+              onPress={handleRevTogglePlayback}
+              onLayout={handleRevLayout}
+              style={{flex: 1}}>
+              <Video
+                ref={revVideoRef}
+                source={{
+                  uri: revURL,
+                }}
+                paused={revPaused}
+                onLoad={handleRevLoad}
+                onProgress={handleRevProgress}
+                onError={handleRevVideoError}
+                resizeMode={'contain'}
+                style={{
+                  height:
+                    (revContainerDimensions.width / revVidWidth) * revVidHeight,
+                }}
+              />
             </TouchableWithoutFeedback>
+
+            <RevOverLayPlayBtn />
+
             <View style={styles.revProgressContainer}>
               <View
                 ref={revVideoProgressVall}
@@ -220,7 +262,10 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
             </View>
 
             <View
-              style={[revSiteStyles.revFlexWrapper, styles.revVidMoveWrapper]}>
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revVidFooterTabsWrapper,
+              ]}>
               {revRewindTabRef.current}
               <RevPauseButton />
               {revForwardTabRef.current}
@@ -247,30 +292,24 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
 const styles = StyleSheet.create({
   revVideoContainer: {
     flex: 1,
-    backgroundColor: '#000',
-  },
-  revVideo: {
-    flex: 1,
+    backgroundColor: '#EEEEEE',
+    position: 'relative',
   },
   revOverlayButton: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
+    top: '35%',
+    left: '44%',
   },
   revPlayButton: {
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#fff',
-    borderRadius: 32,
-    width: 32,
-    height: 32,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#fff',
+    width: 32,
+    height: 32,
     opacity: 0.7,
-  },
-  revPlayButtonText: {
-    color: '#444',
-    fontSize: 10,
+    borderRadius: 32,
   },
   revProgressContainer: {
     height: 1,
@@ -280,10 +319,11 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
-  revVidMoveWrapper: {
+  revVidFooterTabsWrapper: {
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
-  revVidMoveBtn: {
+  revVidFooterTab: {
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
