@@ -295,6 +295,9 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     SET_REV_SITE_BODY(RevUserProfileObjectView);
   };
 
+  const [revPressing, setRevPressing] = useState(false);
+  const [revLongPressTimeout, setRevLongPressTimeout] = useState(null);
+
   const handleRevTaggedPostLongPressed = _revVarArgs => {
     let RevKiwiObjectView = revPluginsLoader({
       revPluginName: 'rev_plugin_tagged_posts',
@@ -307,6 +310,29 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     } else {
       console.log('Error openning object');
     }
+  };
+
+  const handleRevPressIn = _revVarArgs => {
+    setRevPressing(true);
+
+    // Long press duration here (in milliseconds)
+    const revCustomLongPressDuration = 1000;
+
+    // Set a timeout to trigger the custom long press
+    const revTimeoutId = setTimeout(() => {
+      if (revPressing) {
+        handleRevTaggedPostLongPressed(_revVarArgs);
+      }
+    }, revCustomLongPressDuration);
+
+    setRevLongPressTimeout(revTimeoutId);
+  };
+
+  const handleRevPressOut = () => {
+    setRevPressing(false);
+
+    // Clear the timeout if the user releases the button before the custom duration
+    clearTimeout(revLongPressTimeout);
   };
 
   const handleRevCommentFormPressed = () => {
@@ -398,6 +424,10 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     <TouchableOpacity
       onLongPress={() => {
         handleRevTaggedPostLongPressed(revVarArgs);
+      }}
+      onPressIn={handleRevPressIn}
+      onPressOut={() => {
+        handleRevPressOut(revVarArgs);
       }}>
       <View style={revSiteStyles.revFlexWrapper}>
         <View style={styles.revChatMsgUserIcon}>
