@@ -47,17 +47,11 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
   const revIsLoadingRef = useRef(false);
 
-  const revFetchData = async () => {
+  const revFetchData = () => {
     let revLastGUID = 0;
 
     if (revListingData.length) {
       revLastGUID = revListingData[revListingData.length - 1]._revEntityGUID;
-    }
-
-    let revNewData = revVarArgs.revGetData(revLastGUID);
-
-    if (revNewData.length) {
-      setRevListingData([...revListingData, ...revNewData]);
     }
   };
 

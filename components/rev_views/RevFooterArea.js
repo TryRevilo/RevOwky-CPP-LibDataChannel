@@ -151,6 +151,8 @@ function RevFooterArea() {
       '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
 
     revGetServerData_JSON(revURL, revRetData => {
+      revRetData['revGetData'] = revLastGUID => {};
+
       if (revRetData.hasOwnProperty('revError')) {
         revRetData = revGetLocalData(0);
         revRetData = {

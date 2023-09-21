@@ -395,7 +395,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   };
 
   const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
-    revEntityGUID: revPublisherEntity._revEntityGUID,
+    revEntityGUID: -1, // revPublisherEntity._revEntityGUID,
   });
 
   let revMainEntityIconView = !revStringEmpty(revMainEntityIconLocalPath) ? (
