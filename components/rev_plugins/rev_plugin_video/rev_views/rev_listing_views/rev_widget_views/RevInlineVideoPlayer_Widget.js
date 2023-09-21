@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Video from 'react-native-video';
 import NetInfo from '@react-native-community/netinfo';
 
@@ -151,7 +152,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
             <View style={styles.revPlayButton}>
               <Text
                 style={[
-                  revSiteStyles.revSiteTxtColorDark,
+                  revSiteStyles.revSiteTxtColor,
                   revSiteStyles.revSiteTxtBold,
                   revSiteStyles.revSiteTxtTiny_X,
                 ]}>
@@ -179,6 +180,29 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
           revSiteStyles.revSiteTxtTiny_X,
         ]}>
         {revFormatTime(revCurrentTime)} / {revFormatTime(revVideoDuration)}
+      </Text>
+    );
+  };
+
+  const RevViewsCountDisplay = () => {
+    return (
+      <Text style={{marginLeft: 12}}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+          ]}>
+          {'Views ~ '}
+        </Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+          ]}>
+          2
+        </Text>
       </Text>
     );
   };
@@ -249,6 +273,17 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
               />
             </TouchableWithoutFeedback>
 
+            {revPaused && (
+              <Ionicons
+                name="tv-outline"
+                style={[
+                  revSiteStyles.revSiteTxtColorLight_X,
+                  styles.revOverlayScreen,
+                  {fontSize: 105},
+                ]}
+              />
+            )}
+
             <RevOverLayPlayBtn />
 
             <View style={styles.revProgressContainer}>
@@ -270,6 +305,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
               <RevPauseButton />
               {revForwardTabRef.current}
               <RevTimeDisplay />
+              <RevViewsCountDisplay />
             </View>
           </View>
         </>
@@ -297,19 +333,23 @@ const styles = StyleSheet.create({
   },
   revOverlayButton: {
     ...StyleSheet.absoluteFillObject,
-    top: '35%',
+    top: '31%',
     left: '44%',
+  },
+  revOverlayScreen: {
+    ...StyleSheet.absoluteFillObject,
+    top: '15%',
+    left: '32%',
   },
   revPlayButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#fff',
     width: 32,
     height: 32,
     opacity: 0.7,
-    borderRadius: 32,
+    borderRadius: 8,
   },
   revProgressContainer: {
     height: 1,
