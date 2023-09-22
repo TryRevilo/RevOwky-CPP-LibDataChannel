@@ -225,11 +225,10 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
           data={revListingData.slice(0, revPage * revPageSize)}
           renderItem={revRenderItem}
           keyExtractor={item => revGetLocal_OR_RemoteGUID(item)}
-          updateCellsBatchingPeriod={50}
+          updateCellsBatchingPeriod={5000}
           onEndReached={revLoadMoreData}
           ListFooterComponent={renderFooter}
-          onEndReachedThreshold={0.5}
-          windowSize={5}
+          onEndReachedThreshold={0.1}
           initialNumToRender={2}
           maxToRenderPerBatch={revPageSize}
         />

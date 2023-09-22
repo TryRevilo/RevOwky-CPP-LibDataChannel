@@ -110,7 +110,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     );
   };
 
-  let RevCommentItem = () => {
+  let RevCommentItem = ({revIndex}) => {
     const revParagraphs = revGenLoreumIpsumText({
       revMinSentences: 1,
       revMaxSentences: 7,
@@ -121,9 +121,15 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
       revCount: 4,
     });
 
+    let revBackgroundColor = revIndex % 2 == 0 ? '#FFFFFF' : '#F7F7F7';
+
     return (
       <TouchableOpacity
-        style={[revSiteStyles.revFlexWrapper, styles.revCommentItemWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revCommentItemWrapper,
+          {backgroundColor: revBackgroundColor},
+        ]}>
         <TouchableOpacity>
           <View style={styles.revCommentMsgUserIcon}>
             <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
@@ -288,7 +294,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
     return (
       <>
         {revCommentsArr.map((revItem, index) => {
-          return <RevCommentItem key={index} />;
+          return <RevCommentItem key={index} revIndex={index} />;
         })}
       </>
     );
@@ -625,10 +631,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   revCommentsContainer: {
-    backgroundColor: '#F7F7F7',
-    paddingHorizontal: 8,
     paddingVertical: 5,
-    marginHorizontal: -4,
+    marginHorizontal: 4,
   },
   revPostCommentTab: {
     backgroundColor: '#FFF',
@@ -657,9 +661,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   revChatMsgCommentContentContainer: {
-    alignSelf: 'flex-start',
     width: maxChatMessageContainerWidth - 32,
     paddingHorizontal: 5,
+    marginTop: 3,
+    marginBottom: 5,
   },
   revChatMsgCommentContentTxtContainer: {
     alignItems: 'flex-start',

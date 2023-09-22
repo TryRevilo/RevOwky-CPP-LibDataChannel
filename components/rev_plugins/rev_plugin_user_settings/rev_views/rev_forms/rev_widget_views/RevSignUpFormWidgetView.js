@@ -1,7 +1,6 @@
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
   TouchableOpacity,
   Dimensions,
@@ -13,8 +12,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {revRegisterUserEntity} from '../../../rev_actions/rev_sign_up_action';
 
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+import {
+  RevPasswordInput,
+  RevTextInput,
+} from '../../../../../rev_views/rev_input_form_views';
+
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
 export const RevSignUpFormWidgetView = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const RevSignUpPage = () => {
     const [revUserId, setRevUserId] = useState('');
     const [revFullNames, setRevFullNames] = useState('');
@@ -33,101 +40,131 @@ export const RevSignUpFormWidgetView = () => {
     };
 
     return (
-      <View style={[styles.revFlexContainer, styles.revLoginFormContainer]}>
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" Phone #"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevUserId(newText);
+      <View
+        style={[revSiteStyles.revFlexContainer, styles.revLoginFormContainer]}>
+        <RevTextInput
+          revVarArgs={{
+            revPlaceHolderTxt: 'Phone #',
+            revTextInputOnChangeCallBack: newText => {
+              setRevUserId(newText);
+            },
+            revDefaultText: revUserId,
           }}
-          defaultValue={revUserId}
         />
 
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" Full names"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevFullNames(newText);
+        <View style={{marginTop: 8}}>
+          <RevTextInput
+            revVarArgs={{
+              revPlaceHolderTxt: 'Full names',
+              revTextInputOnChangeCallBack: newText => {
+                setRevFullNames(newText);
+              },
+              revDefaultText: revFullNames,
+            }}
+          />
+        </View>
+
+        <RevPasswordInput
+          revVarArgs={{
+            revSetPasswordInput: setRevPassword1,
+            revPlaceHolderTxt: 'Password',
           }}
-          defaultValue={revFullNames}
         />
 
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" Password"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevPassword1(newText);
+        <RevPasswordInput
+          revVarArgs={{
+            revSetPasswordInput: setRevUPassword2,
+            revPlaceHolderTxt: 'Confirm password',
           }}
-          defaultValue={revPassword1}
         />
 
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" Confirm password"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevUPassword2(newText);
-          }}
-          defaultValue={revPassword2}
-        />
+        <View style={{marginTop: 8}}>
+          <RevTextInput
+            revVarArgs={{
+              revPlaceHolderTxt: 'EMail (optional)',
+              revTextInputOnChangeCallBack: newText => {
+                setRevEMail(newText);
+              },
+              revDefaultText: revEMail,
+            }}
+          />
+        </View>
 
-        <TextInput
-          style={styles.revUserIdInput}
-          placeholder=" EMail (optional)"
-          placeholderTextColor="#999"
-          onChangeText={newText => {
-            setRevEMail(newText);
-          }}
-          defaultValue={revEMail}
-        />
-
-        <View style={[styles.revFlexWrapper, styles.revLoginFormFooterWrapper]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revLoginFormFooterWrapper,
+          ]}>
           <TouchableOpacity onPress={revHandleSignUpInTabPress}>
-            <Text style={[styles.revSiteTxtSmall, styles.revSignUpTab]}>
+            <Text
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
+                revSiteStyles.revSaveTab,
+              ]}>
               Sign Up
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={revHandleLogInTabPress}>
+          <TouchableOpacity
+            onPress={revHandleLogInTabPress}
+            style={[
+              revSiteStyles.revFlexWrapper_WidthAuto,
+              styles.revFooterOptionsTab,
+              {alignItems: 'center'},
+            ]}>
+            <FontAwesome
+              name="dot-circle-o"
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />
+            <FontAwesome
+              name="long-arrow-right"
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />
             <Text
               style={[
-                styles.revSiteTxtColor,
-                styles.revSiteTxtSmall,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
                 styles.revSiteFontBold,
-                styles.revFooterOptionsTab,
               ]}>
-              <FontAwesome
-                name="dot-circle-o"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
-              />
-              <FontAwesome
-                name="long-arrow-right"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
-              />{' '}
-              Log In
+              {' Log In'}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={revHandleTermsTabPress}>
+          <TouchableOpacity
+            onPress={revHandleTermsTabPress}
+            style={[
+              revSiteStyles.revFlexWrapper_WidthAuto,
+              styles.revFooterOptionsTab,
+              {alignItems: 'center'},
+            ]}>
+            <FontAwesome
+              name="dot-circle-o"
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />
+            <FontAwesome
+              name="long-arrow-right"
+              style={[
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />
             <Text
               style={[
-                styles.revSiteTxtColor,
-                styles.revSiteTxtSmall,
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
                 styles.revSiteFontBold,
-                styles.revFooterOptionsTab,
               ]}>
-              <FontAwesome
-                name="dot-circle-o"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
-              />
-              <FontAwesome
-                name="long-arrow-right"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
-              />{' '}
-              Terms
+              {' Terms'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -158,37 +195,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  revSiteContainer: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
   revlogInContainer: {
     alignSelf: 'center',
     width: maxChatMessageContainerWidth,
@@ -230,26 +236,10 @@ const styles = StyleSheet.create({
     height: 'auto',
     paddingBottom: 22,
   },
-  revUserIdInput: {
-    color: '#444',
-    fontSize: 11,
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    marginTop: 8,
-  },
   revLoginFormFooterWrapper: {
     alignItems: 'center',
     marginTop: 22,
     marginLeft: 7,
-  },
-  revSignUpTab: {
-    color: '#F7F7F7',
-    backgroundColor: '#444',
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 55,
   },
   revFooterOptionsTab: {
     alignItems: 'center',

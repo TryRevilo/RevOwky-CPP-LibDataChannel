@@ -42,10 +42,7 @@ export function useRevPersSyncDataComponent() {
         let revRetData = JSON.parse(revRetDataStr);
 
         if (!revRetData.hasOwnProperty('revFilterSuccess')) {
-          console.log(
-            '>>> rev_curl_file_upload_ret_data_event <<< revRetDataStr ' +
-              revRetDataStr,
-          );
+          console.log('>>> rev_curl <<< revRetDataStr ' + revRetDataStr);
           return;
         }
 
@@ -62,7 +59,6 @@ export function useRevPersSyncDataComponent() {
             );
 
           let revMetadata = JSON.parse(revMetadataStr);
-
           let revMetadataId = revMetadata.revMetadataId;
 
           if (revMetadataId > 0) {
@@ -83,7 +79,6 @@ export function useRevPersSyncDataComponent() {
             );
           let revMetadataId = revMetadata._metadataId;
 
-          z;
           if (revMetadataId > 0) {
             RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
               0,
@@ -262,11 +257,10 @@ export function useRevPersSyncDataComponent() {
             );
 
           if (revRelRemoteIdUpdateStatus > 0) {
-            let revRelUpdateStatus =
-              RevPersLibUpdate_React.revPersUpdateRelResStatus_By_RelId(
-                revEntityRelationshipId,
-                0,
-              );
+            RevPersLibUpdate_React.revPersUpdateRelResStatus_By_RelId(
+              revEntityRelationshipId,
+              0,
+            );
           }
         }
 
@@ -449,8 +443,6 @@ export function useRevPersSyncDataComponent() {
         return _revCallBack(revRetDada);
       }
 
-      revPersGetALLRevEntityGUIDs_By_ResStatus(_revResStatus);
-
       let revUnresolvedEntitiesArr =
         revPersGetALLRevEntityGUIDs_By_ResStatus(_revResStatus);
 
@@ -462,10 +454,6 @@ export function useRevPersSyncDataComponent() {
         );
 
       for (let i = 0; i < revUnresolvedEntitiesArr.length; i++) {
-        if (revUploadEntitiesArr.length >= 10) {
-          break;
-        }
-
         let revCurrUpdateEntity = revUnresolvedEntitiesArr[i];
 
         let revCurrUpdateEntityType = revCurrUpdateEntity._revEntityType;
@@ -474,15 +462,25 @@ export function useRevPersSyncDataComponent() {
         let revIsSiteEntity =
           revCurrUpdateEntity._revEntitySubType === 'rev_site';
 
+        if (revIsSiteEntity) {
+          console.log('>>> revIsSiteEntity', revCurrUpdateEntity);
+        }
+
         // Prevent conflict trying to set the site's remote entity guid before remote push
         if (!revIsUser && !revIsSiteEntity && revSiteRemoteEntityGUID < 1) {
+          console.log('>>> RET ', 1);
           continue;
+        }
+
+        if (revUploadEntitiesArr.length >= 10) {
+          break;
         }
 
         // Make sure that all entities have an owner except if user
         let revEntityOwnerGUID = revCurrUpdateEntity._revEntityOwnerGUID;
 
         if (!revIsUser && revEntityOwnerGUID < 1) {
+          console.log('>>> RET ', 2);
           continue;
         }
 
@@ -493,6 +491,7 @@ export function useRevPersSyncDataComponent() {
 
         // Skip all unowned non-user entitiees
         if (!revIsUser && revOwnerRemoteEntityGUID < 1) {
+          console.log('>>> RET ', 3);
           continue;
         }
 
@@ -503,6 +502,7 @@ export function useRevPersSyncDataComponent() {
 
         // Info enties are already attached so skip
         if (revCurrUpdateEntity._revEntitySubType == 'rev_entity_info') {
+          console.log('>>> RET ', 4);
           continue;
         }
 
@@ -534,6 +534,7 @@ export function useRevPersSyncDataComponent() {
             );
 
           if (revCurrRemoteContainerGUID < 1) {
+            console.log('>>> RET ', 5);
             continue;
           }
 
@@ -547,6 +548,11 @@ export function useRevPersSyncDataComponent() {
         revUploadEntitiesArr.push(revCurrUpdateEntity);
       }
 
+      console.log(
+        '>>> revUploadEntitiesArr',
+        JSON.stringify(revUploadEntitiesArr),
+      );
+
       /**
        * {"result":{"revPersOptions":{"revPersType":"rev_create"},"filter":[{"_remoteRevEntityGUID":534,"_revEntityMetadataList":[{"localMetadataId":794,"metadataId":794}]}]}}
        */
@@ -557,7 +563,7 @@ export function useRevPersSyncDataComponent() {
     };
 
     let revPingVarArgs = {
-      revInterval: 5000,
+      revInterval: 1000,
       revIP: REV_ROOT_URL,
       revCallBack: revPingServerCallBack,
     };

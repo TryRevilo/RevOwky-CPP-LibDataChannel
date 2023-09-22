@@ -663,9 +663,7 @@ export const useRevSaveNewEntity = () => {
     // END Save Tags
 
     revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-      console.log(
-        '>>> NEW -revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
-      );
+      console.log('>>> revPersSyncData', JSON.stringify(revSynchedGUIDsArr));
     });
 
     return revPersEntityGUID;

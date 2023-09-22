@@ -184,33 +184,9 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
-          <FontAwesome
-            name={'camera'}
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtMedium,
-            ]}
-          />
-
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
-
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}>
-            {' Ad pics'}
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
-              revLabel: ' Select pictures',
+              revLabel: ' Select Ad pictures',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack:
                 revSelectedImagesDataArrayChangeCallBack,
@@ -287,7 +263,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           <FontAwesome
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}
             name="long-arrow-right"
           />
@@ -295,7 +271,8 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}>
             {' Select main campaign Pic'}
           </Text>
@@ -310,17 +287,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
-            {marginLeft: 2},
           ]}>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Video{'  '}
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
               revLabel: ' Select videos',
@@ -367,7 +334,8 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSaveTab,
             ]}>
             Save
@@ -377,21 +345,21 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Go Back
@@ -459,6 +427,7 @@ const styles = StyleSheet.create({
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
+    marginLeft: -15,
   },
   revAddMeadiaTab: {
     paddingHorizontal: 8,

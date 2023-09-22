@@ -396,17 +396,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
-            {marginLeft: 2},
           ]}>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Video{'  '}
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
               revLabel: ' Select videos',
@@ -439,7 +429,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSaveTab,
             ]}>
             Save
@@ -449,21 +439,21 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Cancel

@@ -308,8 +308,15 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const RevChatHeaderArea = () => {
     return (
-      <View style={styles.revChatHeaderAreaWrapper}>
-        <View style={styles.revChatHeaderAreaLeftView}>{revActivePeerTab}</View>
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revChatHeaderAreaWrapper]}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            styles.revChatHeaderAreaLeftView,
+          ]}>
+          {revActivePeerTab}
+        </View>
         <View style={styles.revChatHeaderAreaCenterView}>
           <ScrollView
             contentContainerStyle={

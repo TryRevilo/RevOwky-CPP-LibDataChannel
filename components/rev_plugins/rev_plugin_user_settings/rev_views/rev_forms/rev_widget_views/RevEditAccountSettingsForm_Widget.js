@@ -173,7 +173,7 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSaveTab,
             ]}>
             Save
@@ -183,21 +183,21 @@ export const RevEditAccountSettingsForm_Widget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Cancel

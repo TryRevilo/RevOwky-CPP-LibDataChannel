@@ -154,32 +154,9 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="camera"
-          />
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' '}
-            Products pics
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
-              revLabel: ' Select pics',
+              revLabel: ' Select product pics',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack: setRevSelectedImagesDataArray,
             }}
@@ -211,29 +188,6 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
           ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="dot-circle-o"
-          />
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' '}
-            Video{'  '}
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
               revLabel: ' Select videos',
@@ -266,7 +220,8 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSaveTab,
             ]}>
             NexT
@@ -276,21 +231,21 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Go Back
@@ -336,6 +291,7 @@ const styles = StyleSheet.create({
   },
   revAddedMediaTitleWrapper: {
     alignItems: 'center',
+    marginLeft: -15,
   },
   revAddedMediaTell: {
     marginTop: 4,

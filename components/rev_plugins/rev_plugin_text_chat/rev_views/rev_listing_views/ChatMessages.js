@@ -123,7 +123,7 @@ export function useChatMessages() {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny,
             ]}>
             {revUseBriefrInfoTxt}
           </Text>

@@ -133,11 +133,15 @@ export const RevPasswordInput = ({revVarArgs}) => {
         revSiteStyles.revPasswordInputWrapper,
       ]}>
       <TextInput
-        style={[revSiteStyles.revPasswordInput]}
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revPasswordInput,
+        ]}
         secureTextEntry={!showPassword}
         value={password}
         onChangeText={handleRevOnPasswordInputChange}
-        placeholder={revPlaceHolderTxt}
+        placeholder={'  ' + revPlaceHolderTxt}
         placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
       />
       <TouchableOpacity onPress={toggleShowPassword}>
@@ -179,8 +183,13 @@ export const RevTextInput = React.memo(({revVarArgs}) => {
       <TextInput
         value={revInputText}
         defaultValue={revInputText}
-        style={[revSiteStyles.revSiteTextInput, {width: '100%'}]}
-        placeholder={revPlaceHolderTxt}
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTextInput,
+          {width: '100%'},
+        ]}
+        placeholder={'  ' + revPlaceHolderTxt}
         placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         onChangeText={revHandleTextChange}
         keyboardType={revKeyboardType}
@@ -238,7 +247,7 @@ export const RevTextInputWithCount = React.memo(({revVarArgs}) => {
       <Text
         style={[
           revTextCountStatusStyle,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTxtTiny_X,
           revSiteStyles.revTextInputCountStyle,
         ]}>
         total characters : {revMaxTxtCount - revInputText.length}
@@ -296,7 +305,7 @@ export const RevTextInputAreaWithCount = React.memo(({revVarArgs}) => {
       <Text
         style={[
           revTextCountStatusStyle,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTxtTiny_X,
           revSiteStyles.revTextInputCountStyle,
         ]}>
         total characters : {revMaxTxtCount - revInputText.length}
@@ -463,25 +472,20 @@ export const RevUploadFilesTab = ({
       <View
         style={[
           revSiteStyles.revFlexWrapper_WidthAuto,
-          {alignItems: 'center'},
+          {alignItems: 'center', paddingHorizontal: 8},
         ]}>
+        <FontAwesome
+          name={'plus'}
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtSmall,
+          ]}
+        />
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}>
-          <FontAwesome
-            name={'plus'}
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtNormal,
-              {paddingHorizontal: 8},
-            ]}></FontAwesome>
-        </Text>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {' ' + revLabel}
         </Text>
@@ -604,7 +608,6 @@ export const RevSelectImagesInput = ({
     borderBottomWidth: 1,
     paddingBottom: 8,
     marginTop: 8,
-    paddingLeft: 8,
   };
 
   let revAddedMediaTitleWrapper = {
@@ -619,33 +622,9 @@ export const RevSelectImagesInput = ({
   return (
     <View style={[revSiteStyles.revFlexContainer, revAddedMediaContainer]}>
       <View style={[revSiteStyles.revFlexWrapper, revAddedMediaTitleWrapper]}>
-        <FontAwesome
-          name={'camera'}
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtMedium,
-          ]}
-        />
-
-        <FontAwesome
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-          ]}
-          name="long-arrow-right"
-        />
-
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
-          ]}>
-          {' Ad pics'}
-        </Text>
-
         <RevUploadFilesTab
           revVarArgs={{
-            revLabel: ' Select pictures',
+            revLabel: 'Select pictures',
             revMIMETypes: DocumentPicker.types.images,
             revOnSelectedDataCallBack: revNewDataArr => {
               let revCurrSelectedDataArr = [
@@ -762,7 +741,8 @@ export const RevEntityIconCropperView = ({
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {' Select main profile Pic'}
         </Text>
@@ -790,6 +770,7 @@ export const RevBannerCropperView = ({
         revHeight: revPreviewHeight,
         overflow: 'hidden',
         borderRadius: 3,
+        borderTopWidth: 5,
       }}
     />
   );
@@ -805,8 +786,6 @@ export const RevBannerCropperView = ({
     paddingBottom: 8,
     marginTop: 8,
     paddingLeft: 8,
-    overflow: 'hidden',
-    borderRadius: 3,
   };
 
   return (
@@ -818,19 +797,14 @@ export const RevBannerCropperView = ({
               let revCroppedImageDataPath = revCroppedImageData.path;
 
               let revMainEntityIconViewView = (
-                <View style={{marginTop: 4, overflow: 'hidden'}}>
-                  <RevCenteredImage
-                    revImageURI={revCroppedImageDataPath}
-                    revImageDimens={{
-                      revWidth: revPreviewWidth,
-                      revHeight: revPreviewHeight,
-                    }}
-                    revStyles={{
-                      overflow: 'hidden',
-                      borderRadius: 3,
-                    }}
-                  />
-                </View>
+                <RevCenteredImage
+                  revImageURI={revCroppedImageDataPath}
+                  revImageDimens={{
+                    revWidth: revPreviewWidth,
+                    revHeight: revPreviewHeight,
+                  }}
+                  revStyles={{}}
+                />
               );
 
               setRevBannerIcon(revMainEntityIconViewView);
@@ -864,7 +838,8 @@ export const RevBannerCropperView = ({
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}>
             {' Select banner Pic'}
           </Text>
@@ -872,7 +847,12 @@ export const RevBannerCropperView = ({
       </TouchableOpacity>
 
       <View
-        style={{height: revPreviewHeight, overflow: 'hidden', borderRadius: 3}}>
+        style={{
+          height: revPreviewHeight,
+          overflow: 'hidden',
+          marginTop: 4,
+          borderRadius: 2,
+        }}>
         {revBannerIcon}
       </View>
     </View>

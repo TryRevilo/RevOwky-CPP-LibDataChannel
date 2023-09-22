@@ -18,6 +18,7 @@ import RevWalledGarden from './RevWalledGarden';
 import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
+import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 const {RevPersLibCreate_React} = NativeModules;
 
@@ -30,6 +31,8 @@ const RevSiteLoading = () => {
   const [revPageReady, setRevPageReady] = useState(false);
 
   const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+
+  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   let revAppRootDir = revSettings.revAppRootDir;
   const DirectoryPath = revAppRootDir + '/rev_media';
@@ -61,6 +64,12 @@ const RevSiteLoading = () => {
       </Text>
     </View>,
   );
+
+  useEffect(() => {
+    revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
+      console.log('>>> revPersSyncData', JSON.stringify(revSynchedGUIDsArr));
+    });
+  }, []);
 
   useEffect(() => {
     if (Platform.OS === 'android') {

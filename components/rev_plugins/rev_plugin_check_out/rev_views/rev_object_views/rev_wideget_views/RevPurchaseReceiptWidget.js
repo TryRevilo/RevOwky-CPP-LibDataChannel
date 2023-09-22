@@ -30,7 +30,7 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}>
             Payment sent to
           </Text>
@@ -139,7 +139,7 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
       <Text
         style={[
           revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTxtTiny_X,
           revSiteStyles.revSiteTxtBold,
         ]}>
         Shipping address
@@ -197,7 +197,7 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.orderDetails,
             ]}>
             Your Payment
@@ -206,21 +206,21 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.quantity,
             ]}></Text>
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.price,
             ]}></Text>
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.subtotal,
             ]}></Text>
         </View>
@@ -387,8 +387,8 @@ export const RevPurchaseReceiptWidget = ({revVarArgs}) => {
     <Text
       style={[
         revSiteStyles.revSiteTxtColorLight,
-        revSiteStyles.revSiteTxtTiny,
         revSiteStyles.revSiteTxtBold,
+        revSiteStyles.revSiteTxtTiny_X,
         styles.revPPalReceiptHeader,
       ]}>
       Transaction details

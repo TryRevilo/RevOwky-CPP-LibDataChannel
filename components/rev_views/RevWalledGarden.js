@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {
   StyleSheet,
@@ -13,77 +13,97 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
-import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 import RevSiteContainer from './RevSiteContainer';
 
+import {useRevSiteStyles} from './RevSiteStyles';
+
 const RevWalledGarden = () => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
+  const [revLogInFormState, setRevLogInFormState] = useState(null);
 
-  const RevLogInForm = revPluginsLoader({
-    revPluginName: 'rev_plugin_user_settings',
-    revViewName: 'RevLogInForm',
-    revData: 'Hello World!',
-  });
+  useEffect(() => {
+    const revLogInForm = revPluginsLoader({
+      revPluginName: 'rev_plugin_user_settings',
+      revViewName: 'RevLogInForm',
+      revData: {},
+    });
 
-  //   revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-  //     console.log('>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr));
-  //   });
+    setRevLogInFormState(revLogInForm);
+  }, []);
 
   const RevLogInPage = () => {
     return (
-      <View style={[styles.revFlexContainer, styles.revlogInContainer]}>
-        <View style={[styles.revFlexContainer, styles.revHeaderContainer]}>
-          <View style={[styles.revFlexWrapper, styles.revSiteLogoWrapper]}>
-            <Text style={[styles.revSiteTxtColor, styles.revSiteLogoTxt]}>
+      <View style={[revSiteStyles.revFlexContainer, styles.revlogInContainer]}>
+        <View
+          style={[revSiteStyles.revFlexContainer, styles.revHeaderContainer]}>
+          <View
+            style={[revSiteStyles.revFlexWrapper, styles.revSiteLogoWrapper]}>
+            <Text
+              style={[revSiteStyles.revSiteTxtColor, styles.revSiteLogoTxt]}>
               Owki
             </Text>
             <Text
               style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteFontBold,
-                styles.revSiteTxtSmall,
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteFontBold,
+                revSiteStyles.revSiteTxtTiny_X,
                 styles.revSiteVersion,
               ]}>
               {'  '}
               <FontAwesome
                 name="dot-circle-o"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny,
+                ]}
               />
               <FontAwesome
                 name="long-arrow-right"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny,
+                ]}
               />{' '}
               Version{' : '}
             </Text>
             <Text
               style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtTiny,
                 styles.revSiteVersion,
               ]}>
               natalie-1.0.0{' '}
               <FontAwesome
                 name="copyright"
-                style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny,
+                ]}
               />{' '}
               2023
             </Text>
           </View>
-          <Text style={[styles.revSiteTxtColorLight, styles.revSiteTxtTiny]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}>
             Chat with people from around the world !
           </Text>
         </View>
 
-        {RevLogInForm}
+        {revLogInFormState}
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={[styles.revFlexContainer, styles.revSiteContainer]}>
+    <SafeAreaView
+      style={[revSiteStyles.revFlexContainer, styles.revSiteContainer]}>
       <StatusBar backgroundColor="#F7F7F7" barStyle={'dark-content'} />
       {REV_LOGGED_IN_ENTITY_GUID < 1 ? <RevLogInPage /> : <RevSiteContainer />}
     </SafeAreaView>
@@ -98,33 +118,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   revSiteContainer: {
     flex: 1,
     backgroundColor: '#FFF',

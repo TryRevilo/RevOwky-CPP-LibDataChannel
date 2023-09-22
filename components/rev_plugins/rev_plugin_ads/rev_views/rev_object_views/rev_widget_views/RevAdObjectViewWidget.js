@@ -28,7 +28,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
     <Text
       style={[
         revSiteStyles.revSiteTxtColorLight,
-        revSiteStyles.revSiteTxtTiny,
+        revSiteStyles.revSiteTxtTiny_X,
       ]}>
       <Text style={revSiteStyles.revSiteTxtBold}>Brief</Text>
       <Text>{' ' + revGenLoreumIpsumText({revMaxCharCount: 155})}</Text>
@@ -39,7 +39,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
     <Text
       style={[
         revSiteStyles.revSiteTxtColorLight,
-        revSiteStyles.revSiteTxtTiny,
+        revSiteStyles.revSiteTxtTiny_X,
       ]}>
       <Text style={revSiteStyles.revSiteTxtBold}>About us</Text>
       <Text>
@@ -73,7 +73,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
                 style={[
                   revSiteStyles.revSiteTxtColorLight,
                   revSiteStyles.revSiteTxtBold,
-                  styles.revSiteProductLineTxtTiny,
+                  revSiteStyles.revSiteTxtTiny_X,
                 ]}>
                 My Product
               </Text>
@@ -93,7 +93,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {'     Product line'}
         </Text>
@@ -139,7 +139,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.revTeamMemberTxt,
             ]}>
             <Text style={[revSiteStyles.revSiteTxtBold]}>Oliver Muchai</Text>
@@ -190,7 +190,7 @@ export const RevAdObjectViewWidget = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             revSiteStyles.revSiteTxtBold,
             styles.revTeamTtlText,
           ]}>
@@ -225,9 +225,6 @@ const styles = StyleSheet.create({
   },
   revProductLineItemDescContainer: {
     marginTop: 4,
-  },
-  revSiteProductLineTxtTiny: {
-    fontSize: 8,
   },
   revOrgPiscArrWrapper: {
     marginTop: 10,

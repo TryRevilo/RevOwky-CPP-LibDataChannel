@@ -302,33 +302,11 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
+            {marginLeft: -15},
           ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="camera"
-          />
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}>
-            {' '}
-            Company pics
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
-              revLabel: ' Select pictures',
+              revLabel: ' Select company pictures',
               revMIMETypes: DocumentPicker.types.images,
               revOnSelectedDataCallBack:
                 revSelectedImagesDataArrayChangeCallBack,
@@ -415,7 +393,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}>
             {' Select main Icon'}
           </Text>
@@ -430,17 +409,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revFlexWrapper,
             styles.revAddedMediaTitleWrapper,
-            {marginLeft: 1},
+            {marginLeft: -15},
           ]}>
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
-            ]}>
-            <FontAwesome name="dot-circle-o" />
-            <FontAwesome name="long-arrow-right" /> Video{'  '}
-          </Text>
-
           <RevUploadFilesTab
             revVarArgs={{
               revLabel: ' Select videos',
@@ -473,7 +443,8 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSaveTab,
             ]}>
             NexT
@@ -483,21 +454,21 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColor,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revCancelTab,
             ]}>
             <FontAwesome
               name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />
             <FontAwesome
               name="long-arrow-right"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revSiteTxtTiny_X,
               ]}
             />{' '}
             Go Back
@@ -547,7 +518,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   let revSelectOrganizationViewPointed = (
     <RevSectionPointedContent
       revContent={revSelectOrganizationViewContent}
-      revStyles={{marginLeft: -1}}
+      revStyles={{marginLeft: -2}}
     />
   );
 

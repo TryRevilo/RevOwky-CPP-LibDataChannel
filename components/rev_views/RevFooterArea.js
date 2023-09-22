@@ -8,6 +8,7 @@ import {
   NativeModules,
 } from 'react-native';
 
+import DocumentPicker from 'react-native-document-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
@@ -21,12 +22,11 @@ import {
   revPersGetRevEntities_By_EntityGUIDsArr,
 } from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-import {RevScrollView_V} from './rev_page_views';
 import RevVideoCallModal from '../rev_plugins/rev_plugin_video_call/rev_views/rev_object_views/rev_wideget_views/RevVideoCallModal';
 
 import ChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
 
-import {useRev_Server_DeleteEntities_By_entityGUIDsArr} from '../rev_libs_pers/rev_server/rev_pers_lib_delete';
+import {RevSendFile} from '../../rev_webrtc_libs/RevSendFile';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -47,8 +47,6 @@ function RevFooterArea() {
 
   const {revPersGetRevEntities_By_RevVarArgs} =
     useRevPersGetRevEntities_By_RevVarArgs();
-  const {rev_Server_DeleteEntities_By_entityGUIDsArr} =
-    useRev_Server_DeleteEntities_By_entityGUIDsArr();
 
   const revGetLocalData = revLastGUID => {
     let revWhere = {
@@ -173,51 +171,6 @@ function RevFooterArea() {
   };
 
   const revHandleGetSiteUsersTabPress = async () => {
-    // let revURL =
-    //   REV_ROOT_URL +
-    //   REV_GET_REV_ENTITIES_BY_SUBTYPE_URL +
-    //   '?rev_entity_subtype=rev_user_entity';
-
-    // let revData = await revGetServerData_JSON_Async(revURL);
-
-    // console.log('>>> revData ' + revData.filter.length);
-
-    // let revUpdateMetadataArrStr =
-    //   RevPersLibRead_React.revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(
-    //     101,
-    //     'revPostText',
-    //   );
-
-    // let revUpdateMetadataArr = JSON.parse(revUpdateMetadataArrStr);
-
-    // let revPostUpdateMetadataArr = [];
-
-    // for (let i = 0; i < revUpdateMetadataArr.length; i++) {
-    //   let revCurrMetadata = revUpdateMetadataArr[i];
-    //   revPostUpdateMetadataArr.push({
-    //     remoteRevMetadataId: revCurrMetadata.remoteRevMetadataId,
-    //     _metadataValue: revCurrMetadata._metadataValue,
-    //   });
-    // }
-
-    // let revServData = {
-    //   filter: revPostUpdateMetadataArr,
-    // };
-
-    // rev_Server_UpdateMetadata(revServData, revMetadataUpdateRetData => {
-    //   console.log(
-    //     '>>> revMetadataUpdateRetData ' +
-    //       JSON.stringify(revMetadataUpdateRetData),
-    //   );
-    // });
-
-    // revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-    //   console.log(
-    //     '>>> revSynchedGUIDsArr ' + JSON.stringify(revSynchedGUIDsArr),
-    //   );
-    // });
-
-    /**** */
     let revURL =
       REV_ROOT_URL +
       '/rev_api?' +
@@ -239,70 +192,20 @@ function RevFooterArea() {
   };
 
   const handleDocumentSelection = useCallback(async () => {
-    // try {
-    //   const response = await DocumentPicker.pick({
-    //     presentationStyle: 'fullScreen',
-    //     allowMultiSelection: true,
-    //   });
-
-    //   for (let i = 0; i < response.length; i++) {
-    //     new RevSendFile(peerConnections[2].dataChannel).transferFile(
-    //       response[i],
-    //     );
-    //   }
-    // } catch (err) {
-    //   console.warn(err);
-    // }
-
-    let revDeleEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(-3);
-
-    console.log('>>> revDeleEntityGUIDsStr ' + revDeleEntityGUIDsStr);
-
-    let revDeleEntityGUIDsArr = [];
-
     try {
-      revDeleEntityGUIDsArr = JSON.parse(revDeleEntityGUIDsStr);
-    } catch (error) {
-      console.log('>>> error ' + error);
-    }
+      const response = await DocumentPicker.pick({
+        presentationStyle: 'fullScreen',
+        allowMultiSelection: true,
+      });
 
-    let revPostDelEntityGUIDsArr = [];
-
-    for (let i = 0; i < revDeleEntityGUIDsArr.length; i++) {
-      if (i > 2) {
-        break;
-      }
-
-      let revCurrEntityGUID = revDeleEntityGUIDsArr[i];
-      let revCurrEntityStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
-
-      let revCurRemoteEntityGUID =
-        JSON.parse(revCurrEntityStr)._remoteRevEntityGUID;
-
-      if (revCurRemoteEntityGUID && revCurRemoteEntityGUID >= 0)
-        revPostDelEntityGUIDsArr.push(revCurRemoteEntityGUID);
-    }
-
-    console.log(
-      '>>> revPostDelEntityGUIDsArr ' +
-        JSON.stringify(revPostDelEntityGUIDsArr),
-    );
-
-    let revServData = {
-      filter: revPostDelEntityGUIDsArr,
-    };
-
-    rev_Server_DeleteEntities_By_entityGUIDsArr(
-      revServData,
-      revDelEnitityGUIDsRetData => {
-        console.log(
-          '>>> revDelEnitityGUIDsRetData ' +
-            JSON.stringify(revDelEnitityGUIDsRetData),
+      for (let i = 0; i < response.length; i++) {
+        new RevSendFile(peerConnections[2].dataChannel).transferFile(
+          response[i],
         );
-      },
-    );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   }, []);
 
   let revChatMessageTxt = '';

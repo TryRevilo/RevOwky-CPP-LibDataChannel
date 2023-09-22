@@ -1,13 +1,14 @@
-import React, {useContext, useRef, useEffect} from 'react';
+import React, {useContext} from 'react';
 
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
 import {revPostServerData} from './rev_pers_lib_create';
-import {revGetServerData_JSON} from './rev_pers_lib_read';
 
 import {REV_DELETE_REV_ENTITIES_URL} from './rev_pers_urls';
 
+const {RevPersLibRead_React} = NativeModules;
+
 export const useRev_Server_DeleteEntities_By_entityGUIDsArr = () => {
-  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const rev_Server_DeleteEntities_By_entityGUIDsArr = (
     revEntityGUIDsArr,
@@ -22,5 +23,59 @@ export const useRev_Server_DeleteEntities_By_entityGUIDsArr = () => {
     );
   };
 
-  return {rev_Server_DeleteEntities_By_entityGUIDsArr};
+  const revSyncDeleteServerData = revCallBack => {
+    let revDeleEntityGUIDsStr =
+      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(-3);
+
+    let revDeleEntityGUIDsArr = [];
+
+    try {
+      revDeleEntityGUIDsArr = JSON.parse(revDeleEntityGUIDsStr);
+    } catch (error) {
+      console.log('>>> error ' + error);
+    }
+
+    let revPostDelEntityGUIDsArr = [];
+
+    if (!revDeleEntityGUIDsArr.length) {
+      return revCallBack();
+    }
+
+    for (let i = 0; i < revDeleEntityGUIDsArr.length; i++) {
+      if (i > 2) {
+        break;
+      }
+
+      let revCurrEntityGUID = revDeleEntityGUIDsArr[i];
+      let revCurrEntityStr =
+        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
+
+      let revCurRemoteEntityGUID =
+        JSON.parse(revCurrEntityStr)._remoteRevEntityGUID;
+
+      if (revCurRemoteEntityGUID && revCurRemoteEntityGUID >= 0)
+        revPostDelEntityGUIDsArr.push(revCurRemoteEntityGUID);
+    }
+
+    console.log(
+      '>>> revPostDelEntityGUIDsArr ' +
+        JSON.stringify(revPostDelEntityGUIDsArr),
+    );
+
+    let revServData = {
+      filter: revPostDelEntityGUIDsArr,
+    };
+
+    rev_Server_DeleteEntities_By_entityGUIDsArr(
+      revServData,
+      revDelEnitityGUIDsRetData => {
+        console.log(
+          '>>> revDelEnitityGUIDsRetData ' +
+            JSON.stringify(revDelEnitityGUIDsRetData),
+        );
+      },
+    );
+  };
+
+  return {revSyncDeleteServerData};
 };

@@ -252,8 +252,6 @@ export const useRevSiteStyles = () => {
 
     /** START TEXT INPUT */
     revTextInput: {
-      color: '#444',
-      fontSize: 9,
       borderColor: '#F7F7F7',
       borderWidth: 1,
       paddingHorizontal: 5,
@@ -272,8 +270,6 @@ export const useRevSiteStyles = () => {
       marginTop: 8,
     },
     revPasswordInput: {
-      color: '#444',
-      fontSize: 9,
       flex: 1,
       paddingVertical: 0,
     },
@@ -370,7 +366,6 @@ export const useRevSiteStyles = () => {
     revAddMeadiaTab: {
       paddingHorizontal: 8,
       paddingVertical: 4,
-      marginLeft: 22,
     },
   });
 

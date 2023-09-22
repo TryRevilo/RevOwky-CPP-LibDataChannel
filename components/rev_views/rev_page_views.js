@@ -256,7 +256,7 @@ export const RevDescriptiveTitleView = ({
           style={[
             revSiteStyles.revSiteTxtColor,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           {revTitle}
         </Text>

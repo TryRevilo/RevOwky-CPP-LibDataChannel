@@ -13,7 +13,7 @@ export const RevOrderDetailsWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.orderDetails,
           ]}>
           Order details
@@ -22,7 +22,7 @@ export const RevOrderDetailsWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.quantity,
           ]}>
           Quantity
@@ -31,7 +31,7 @@ export const RevOrderDetailsWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.price,
           ]}>
           Price
@@ -40,7 +40,7 @@ export const RevOrderDetailsWidget = ({revVarArgs}) => {
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.subtotal,
           ]}>
           Subtotal
@@ -51,7 +51,7 @@ export const RevOrderDetailsWidget = ({revVarArgs}) => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.revOrderDetailsTd,
             ]}>
             Ad Impressions

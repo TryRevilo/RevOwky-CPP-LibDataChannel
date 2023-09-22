@@ -40,7 +40,11 @@ export const RevCheckOutFormWidget = () => {
         <RevInfoArea revInfoText={revInfoText} />
         <RevInfoArea revInfoText={revStartStopInfoText} />
         <TextInput
-          style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+          style={[
+            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revTextInput,
+            styles.revCheckOutTextInput,
+          ]}
           placeholderTextColor="#999"
           placeholder="Card Number"
           value={cardNumber}
@@ -48,7 +52,11 @@ export const RevCheckOutFormWidget = () => {
           keyboardType="numeric"
         />
         <TextInput
-          style={[revSiteStyles.revTextInput, styles.revCheckOutTextInput]}
+          style={[
+            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revTextInput,
+            styles.revCheckOutTextInput,
+          ]}
           placeholderTextColor="#999"
           placeholder="Card Holder Name"
           value={cardHolderName}
@@ -57,7 +65,11 @@ export const RevCheckOutFormWidget = () => {
         <View style={styles.revRow}>
           <TextInput
             style={[
-              [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+              [
+                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revTextInput,
+                styles.revCheckOutTextInput,
+              ],
               styles.revHalfInput,
             ]}
             placeholderTextColor="#999"
@@ -68,7 +80,11 @@ export const RevCheckOutFormWidget = () => {
           />
           <TextInput
             style={[
-              [revSiteStyles.revTextInput, styles.revCheckOutTextInput],
+              [
+                revSiteStyles.revSiteTxtTiny,
+                revSiteStyles.revTextInput,
+                styles.revCheckOutTextInput,
+              ],
               styles.revHalfInputLast,
             ]}
             placeholderTextColor="#999"
@@ -88,7 +104,7 @@ export const RevCheckOutFormWidget = () => {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorWhite,
-              revSiteStyles.revSiteTxtTiny,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSiteTxtBold,
               styles.revCheckOutTab,
             ]}>
