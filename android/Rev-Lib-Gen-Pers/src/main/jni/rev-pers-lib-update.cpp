@@ -14,7 +14,7 @@
 
 #include "rev_pers_jni_structs.h"
 
-#include "rev-pers-lib-read.h"
+#include "rev-pers-lib-read.hpp"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
 
 extern "C" {

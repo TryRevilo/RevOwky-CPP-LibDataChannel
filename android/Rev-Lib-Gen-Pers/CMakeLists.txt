@@ -427,15 +427,20 @@ target_link_libraries(
 
 add_library(rev-pers-lib-db-read SHARED
         ${REV_JNI_ROOT_DIR}/rev_pers_jni_structs.h
-        ${REV_JNI_ROOT_DIR}/rev-pers-lib-read.h
-        ${REV_JNI_ROOT_DIR}/rev-pers-lib-read.cpp)
+        ${REV_JNI_ROOT_DIR}/rev-pers-lib-read.hpp
+        ${REV_JNI_ROOT_DIR}/rev-pers-lib-read.cpp
+        ${REV_JNI_ROOT_DIR}/rev_metadata_jni_loader.h
+        ${REV_JNI_ROOT_DIR}/rev_metadata_jni_loader.cpp)
 target_link_libraries(
         rev-pers-lib-db-read
         rev-pers-lib-db-create
 
-        rev_pers_rev_entity_metadata
-
         rev_pers_lib_includes
+        rev_pers_lib_includes
+        rev_lib_connectors
+        rev_pers_rev_entity
+
+        rev_db_init
 
         ${log-lib})
 

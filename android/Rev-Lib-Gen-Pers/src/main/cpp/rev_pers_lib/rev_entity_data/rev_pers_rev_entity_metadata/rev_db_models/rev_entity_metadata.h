@@ -31,7 +31,7 @@ htable_strstr_t *revGetMapped_Metadata_Key_DBFieldName();
 
 RevEntityMetadata *revInitializedMetadata();
 
-RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJSONStr);
+RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr);
 
 list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr);
 

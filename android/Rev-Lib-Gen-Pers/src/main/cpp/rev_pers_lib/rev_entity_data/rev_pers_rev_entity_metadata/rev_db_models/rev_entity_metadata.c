@@ -96,8 +96,7 @@ RevEntityMetadata *revInitializedMetadata() {
     return revEntityMetadata;
 }
 
-RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJSONStr) {
-
+RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr) {
     cJSON *rev_entity_metadata_json = cJSON_Parse(revEntityMetadataJSONStr);
 
     RevEntityMetadata *revEntityMetadata = revInitializedMetadata();
@@ -108,7 +107,7 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJ
             __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error -revJSONStrMetadataFiller %s\n", error_ptr);
         }
 
-        goto end;
+        return revEntityMetadata;
     }
 
     // _revMetadataName
@@ -162,8 +161,6 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *const revEntityMetadataJ
 
     // _revTimePublishedUpdated
     revEntityMetadata->_revTimePublishedUpdated = revCurrentTimestampMillSecs();
-
-    end:
 
     return revEntityMetadata;
 }

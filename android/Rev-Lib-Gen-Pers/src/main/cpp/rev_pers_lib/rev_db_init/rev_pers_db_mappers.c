@@ -450,6 +450,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     if (rc == SQLITE_OK) {
         int num_cols = sqlite3_column_count(stmt);
 
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> num_cols %d", num_cols);
+
         char **col_names = (char **) malloc(num_cols * sizeof(char *));
 
         for (int i = 0; i < num_cols; i++) {
@@ -477,6 +479,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                         break;
                     case SQLITE_TEXT: {
                         const char *revEntityDbCharVal = strdup((const char *) sqlite3_column_text(stmt, i));  // The new string value you want to set
+
+                        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revMappedEntityColName %s revEntityDbCharVal %s", revMappedEntityColName, revEntityDbCharVal);
 
                         // Allocate memory for the new string value
                         char *revNewString = malloc(strlen(revEntityDbCharVal) + 1);  // +1 for the null terminator
