@@ -19,8 +19,9 @@ import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
 import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
+import {useRevPersGetRevEntities_By_RevVarArgs} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-const {RevPersLibCreate_React} = NativeModules;
+const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
 
 const revSettings = require('../../rev_res/rev_settings.json');
 
@@ -30,9 +31,13 @@ const RevSiteLoading = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [revPageReady, setRevPageReady] = useState(false);
 
-  const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
 
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
+
+  const {revPersGetRevEntities_By_RevVarArgs} =
+    useRevPersGetRevEntities_By_RevVarArgs();
 
   let revAppRootDir = revSettings.revAppRootDir;
   const DirectoryPath = revAppRootDir + '/rev_media';
@@ -66,10 +71,26 @@ const RevSiteLoading = () => {
   );
 
   useEffect(() => {
+    let revPassVarArgs = {
+      revTableName: 'REV_ENTITY_METADATA_TABLE',
+      revSelect: ['_revMetadataName', '_remoteRevMetadataId'],
+      revWhere: {
+        _revMetadataName: 'jpg',
+      },
+      revLimit: 1,
+    };
+
+    let revMetadataArr = RevPersLibRead_React.revPersQuery_By_RevVarArgs(
+      'REV_ENTITY_METADATA_TABLE',
+      JSON.stringify(revPassVarArgs),
+    );
+
+    console.log('>>> revMetadataArr', JSON.stringify(revMetadataArr));
+
     revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
       console.log('>>> revPersSyncData', JSON.stringify(revSynchedGUIDsArr));
     });
-  }, []);
+  }, [REV_SITE_ENTITY_GUID]);
 
   useEffect(() => {
     if (Platform.OS === 'android') {

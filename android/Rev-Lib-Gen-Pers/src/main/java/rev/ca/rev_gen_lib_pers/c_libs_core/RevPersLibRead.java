@@ -32,6 +32,8 @@ public class RevPersLibRead {
 
     public native RevEntity[] revPersGetRevEntities_By_RevVarArgs(String revVarArgs);
 
+    public native List revPersQuery_By_RevVarArgs(String revTableName, String revVarArgs);
+
     public native RevEntity revPersGetRevEntityByGUID(long revEntityGUID);
 
     public native RevEntity revPersGetRevEntity_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
@@ -204,6 +206,4 @@ public class RevPersLibRead {
 
 
     public native String revGetConvertedTimeFromMills(long revMillisecsTime);
-
-
 }

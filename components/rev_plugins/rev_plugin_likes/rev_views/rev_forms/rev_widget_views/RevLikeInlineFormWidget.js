@@ -193,9 +193,9 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
   let revViewAllTab = (
     <View
       style={[
-        revSiteStyles.revFlexWrapper_WidthAuto,
         {
           flex: 0,
+          flexDirection: 'row',
           alignItems: 'center',
           marginRight: 'auto',
           paddingHorizontal: 12,
@@ -204,9 +204,10 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       <Text
         style={[
           revSiteStyles.revSiteTxtColorBlueLink,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
         ]}>
-        View all
+        ViEw aLL
       </Text>
       <FontAwesome
         name="long-arrow-right"
@@ -224,7 +225,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       key={'RevLikeInlineFormWidget_' + revEntityGUID}
       style={[revSiteStyles.revFlexWrapper, styles.revAdStatsFooterWrapper]}>
       <RevLikes key={'RevLikes_' + revEntityGUID + revGetRandInteger()} />
-      <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {flex: 1}]}>
+      <View style={[{flex: 0}]}>
         <RevScrollView_H
           revScrollViewContent={revLikeEntityGUIDsArr.map(revCommentEntity => {
             return (

@@ -26,6 +26,8 @@ void revRemoveSpaces(char *source);
 
 char *revConcatStrings(const char *revS1, const char *revS2);
 
+char *revConcatStringsVariad(const char *revS1, ...);
+
 int revIsCJsonStringEmpty(cJSON *revJson);
 
 struct tm *revGetTimeAndDate(long milliseconds);

@@ -26,11 +26,61 @@ void revRemoveSpaces(char *source) {
 }
 
 char *revConcatStrings(const char *revS1, const char *revS2) {
+    if (revS1 == NULL || revS2 == NULL) {
+        // Handle NULL pointer input gracefully
+        return NULL;
+    }
+
     int length = strlen(revS1) + strlen(revS2);
     char *revResultStr = (char *) malloc(length + 1);
 
+    if (revResultStr == NULL) {
+        // Handle memory allocation failure
+        return NULL;
+    }
+
     strcpy(revResultStr, revS1);
     strcat(revResultStr, revS2);
+
+    return revResultStr;
+}
+
+char *revConcatStringsVariad(const char *revS1, ...) {
+    va_list revArgs;
+    va_start(revArgs, revS1);
+
+    // Calculate the total length needed for the result
+    int revTotalLength = strlen(revS1);
+    const char *revNextString = va_arg(revArgs, const char *);
+
+    while (revNextString != NULL) {
+        revTotalLength += strlen(revNextString);
+        revNextString = va_arg(revArgs, const char *);
+    }
+
+    va_end(revArgs);
+
+    // Allocate memory for the result
+    char *revResultStr = (char *) malloc(revTotalLength + 1);
+
+    if (revResultStr == NULL) {
+        // Handle memory allocation failure
+        return NULL;
+    }
+
+    // Copy the first string into the result
+    strcpy(revResultStr, revS1);
+
+    // Concatenate the rest of the strings
+    va_start(revArgs, revS1);
+    revNextString = va_arg(revArgs, const char *);
+
+    while (revNextString != NULL) {
+        strcat(revResultStr, revNextString);
+        revNextString = va_arg(revArgs, const char *);
+    }
+
+    va_end(revArgs);
 
     return revResultStr;
 }

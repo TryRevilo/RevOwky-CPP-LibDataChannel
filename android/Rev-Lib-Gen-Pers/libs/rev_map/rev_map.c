@@ -401,9 +401,22 @@ bool htable_strstr_get(htable_strstr_t *ht, const char *key, const char **val) {
     return htable_get((htable_t *) ht, (void *) key, (void **) val);
 }
 
+/**
 const char *htable_strstr_get_direct(htable_strstr_t *ht, const char *key) {
     return htable_get_direct((htable_t *) ht, (void *) key);
 }
+ **/
+
+const char *htable_strstr_get_direct(htable_strstr_t *ht, const char *key) {
+    const char *val = NULL;
+
+    if (htable_strstr_get(ht, key, &val)) {
+        return val; // Key found, return the value.
+    } else {
+        return NULL; // Key not found, return NULL or another appropriate value.
+    }
+}
+
 
 htable_strstr_enum_t *htable_strstr_enum_create(htable_strstr_t *ht) {
     return (htable_strstr_enum_t *) htable_enum_create((htable_t *) ht);

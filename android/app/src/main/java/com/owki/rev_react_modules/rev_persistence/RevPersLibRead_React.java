@@ -1,7 +1,5 @@
 package com.owki.rev_react_modules.rev_persistence;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -139,6 +137,23 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         if (revEntities.length > 0)
             revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+
+        return revEntitiesStr;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersQuery_By_RevVarArgs(String revTableName, String revVarArgs) {
+        String revEntitiesStr = "[]";
+
+        if (revTableName.equals("REV_ENTITY_TABLE")) {
+            RevEntity[] revEntities = revPersLibRead.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
+
+            if (revEntities.length > 0)
+                revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+        } else {
+            List revdata = revPersLibRead.revPersQuery_By_RevVarArgs(revTableName, revVarArgs);
+            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revdata);
+        }
 
         return revEntitiesStr;
     }

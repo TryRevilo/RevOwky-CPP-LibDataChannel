@@ -112,27 +112,28 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
         <TouchableOpacity
           onPress={() => {
             handleRevConnectTabPressed(revVarArgs);
-          }}>
-          <View
+          }}
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revConnectTabButtonWrapper,
+            {flex: 0},
+          ]}>
+          <Text
             style={[
-              revSiteStyles.revFlexWrapper,
-              styles.revConnectTabButtonWrapper,
-              {flex: 0},
+              revSiteStyles.revSiteTxtColorWhite,
+              revSiteStyles.revSiteTxtTiny_X,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSaveTab,
             ]}>
-            <Text
-              style={[
-                revSiteStyles.revSiteTxtColorWhite,
-                revSiteStyles.revSiteTxtTiny,
-                revSiteStyles.revSiteTxtBold,
-                styles.revConnectTabButton,
-              ]}>
-              connect
-            </Text>
-            <FontAwesome
-              name="long-arrow-right"
-              style={revSiteStyles.revSiteTxtColor}
-            />
-          </View>
+            Connect
+          </Text>
+          <FontAwesome
+            name="long-arrow-right"
+            style={[
+              revSiteStyles.revSiteTxtTiny_X,
+              revSiteStyles.revSiteTxtColor,
+            ]}
+          />
         </TouchableOpacity>
 
         <View
@@ -246,12 +247,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 'auto',
     marginTop: 2,
-  },
-  revConnectTabButton: {
-    backgroundColor: '#444',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 100,
   },
   revConnectedUsersIconWrapper: {
     width: 'auto',

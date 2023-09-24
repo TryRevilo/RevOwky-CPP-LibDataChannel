@@ -7,6 +7,7 @@
 
 #include "../../rev_db_models/rev_entity.h"
 #include "../../../../../../../../libs/rev_list/rev_linked_list.h"
+#include "../../../../../../../../libs/cJSON/cJSON.h"
 
 list *revPersGetALLRevEntityGUIDsByOwnerGUID(long ownerGUID);
 
@@ -63,6 +64,8 @@ list *revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(long revEntityC
 list *revPersGetALLRevEntity_By_SubType(char *revEntitySubType);
 
 list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs);
+
+cJSON *revPersGetData_By_RevVarArgs(char *revTableName, char *revVarArgs);
 
 int getNumberOfUnreadRevEntites();
 

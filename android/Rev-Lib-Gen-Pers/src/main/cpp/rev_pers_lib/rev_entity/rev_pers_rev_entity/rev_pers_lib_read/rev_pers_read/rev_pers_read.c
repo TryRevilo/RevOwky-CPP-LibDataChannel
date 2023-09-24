@@ -20,6 +20,7 @@
 #include "../../../../../../../../libs/cJSON/cJSON.h"
 #include "../../../../../../../../libs/rev_map/rev_map.h"
 #include "../../../../rev_db_init/rev_pers_db_mappers.h"
+#include "../../../../rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 
 list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
     list revList;
@@ -45,6 +46,32 @@ list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
     cJSON_Delete(revJsonArr);
 
     return &revList;
+}
+
+cJSON *revPersGetData_By_RevVarArgs(char *revTableName, char *revVarArgs) {
+    cJSON *revJsonArr = NULL;
+
+    htable_strstr_t *revEntityDB_Keys;
+    htable_strstr_t *revMap;
+
+    char *revEntityTableName = "REV_ENTITY_TABLE";
+    char *revMetadataTableName = "REV_ENTITY_METADATA_TABLE";
+
+    if (strcmp(revTableName, revEntityTableName) == 0) {
+        revEntityDB_Keys = revGetEntityDB_Keys();
+        revMap = revGetMapped_Entity_Key_DBFieldName();
+    } else if (strcmp(revTableName, revMetadataTableName) == 0) {
+        revEntityDB_Keys = revGetMetadataDB_Keys();
+        revMap = revGetMapped_Metadata_Key_DBFieldName();
+    } else {
+        goto revEnd;
+    }
+
+    revJsonArr = revPersGetQuery_By_RevVarArgs(revVarArgs, revEntityDB_Keys, revMap);
+
+    revEnd:
+
+    return revJsonArr;
 }
 
 int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntitySubtype) {

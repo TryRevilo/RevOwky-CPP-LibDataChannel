@@ -17,13 +17,28 @@ import {revPluginsLoader} from '../rev_plugins_loader';
 import RevSiteContainer from './RevSiteContainer';
 
 import {useRevSiteStyles} from './RevSiteStyles';
+import {
+  useRevCreateSiteEntity,
+  useRevGetSiteEntity,
+} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
+import {useRevPersGetRevEntities_By_ResolveStatus_SubType} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 const RevWalledGarden = () => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {
+    REV_LOGGED_IN_ENTITY_GUID,
+    SET_REV_LOGGED_IN_ENTITY_GUID,
+    SET_REV_SITE_ENTITY_GUID,
+  } = useContext(RevSiteDataContext);
 
   const [revLogInFormState, setRevLogInFormState] = useState(null);
+
+  const {revCreateSiteEntity} = useRevCreateSiteEntity();
+  const {revGetSiteEntity} = useRevGetSiteEntity();
+  const {revPersGetRevEntities_By_ResolveStatus_SubType} =
+    useRevPersGetRevEntities_By_ResolveStatus_SubType();
 
   useEffect(() => {
     const revLogInForm = revPluginsLoader({
@@ -100,6 +115,41 @@ const RevWalledGarden = () => {
       </View>
     );
   };
+
+  useEffect(() => {
+    if (REV_LOGGED_IN_ENTITY_GUID < 1) {
+      let revSiteEntitiesArr = revPersGetRevEntities_By_ResolveStatus_SubType(
+        2,
+        'rev_site',
+      );
+
+      if (!Array.isArray(revSiteEntitiesArr) || !revSiteEntitiesArr.length) {
+        return;
+      }
+
+      let revSiteEntity = revSiteEntitiesArr[0];
+
+      let revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
+
+      if (revSiteEntityOwnerGUID) {
+        SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);
+      }
+
+      return;
+    }
+
+    let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
+
+    let revSiteEntityGUID = -1;
+
+    if (revIsEmptyJSONObject(revSiteEntity)) {
+      revSiteEntityGUID = revCreateSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
+    } else {
+      revSiteEntityGUID = revSiteEntity._revEntityGUID;
+    }
+
+    SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
+  }, [REV_LOGGED_IN_ENTITY_GUID]);
 
   return (
     <SafeAreaView

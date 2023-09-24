@@ -51,12 +51,12 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
 
   let RevHeaderLink = ({revLinkText, revOnPress}) => {
     return (
-      <TouchableOpacity onPress={revOnPress}>
+      <TouchableOpacity onPress={revOnPress} style={styles.revHeaderTextLink}>
         <Text
           style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revHeaderTextLink,
+            revSiteStyles.revSiteTxtColor,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
           / {'  '}
           {revLinkText}
@@ -79,7 +79,10 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
   let RevHeaderLinks = () => {
     return (
       <View
-        style={[revSiteStyles.revFlexWrapper, styles.revHeaderLinksWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          {alignItems: 'center'},
+        ]}>
         <RevHeaderLink
           revLinkText={'info'}
           revOnPress={() => {
@@ -116,28 +119,34 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
           revSiteStyles.revFlexWrapper,
           revSiteStyles.revPageHeaderAreaWrapper,
         ]}>
-        <TouchableOpacity onPress={revHandleOnLogOutTabPressed}>
+        <TouchableOpacity
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            styles.revHeaderTextLink,
+            {alignItems: 'center'},
+          ]}
+          onPress={revHandleOnLogOutTabPressed}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}
+            name="dot-circle-o"
+          />
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}
+            name="long-arrow-right"
+          />
           <Text
             style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-              styles.revContentBodyTtlTellTxt,
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
             ]}>
-            <FontAwesome
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-              ]}
-              name="dot-circle-o"
-            />
-            <FontAwesome
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtTiny,
-              ]}
-              name="long-arrow-right"
-            />{' '}
-            Log out
+            {'  Log out'}
           </Text>
         </TouchableOpacity>
 
@@ -176,56 +185,56 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
 
   const RevGetEditTab = () => {
     return (
-      <TouchableOpacity onPress={revHandleEditInfoTabPressed}>
+      <TouchableOpacity
+        onPress={revHandleEditInfoTabPressed}
+        style={[styles.revHeaderTextLink]}>
         <Text
           style={[
             revSiteStyles.revSiteTxtColor,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revEditTab,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
-          <FontAwesome name="edit" style={revSiteStyles.revSiteTxtTiny} /> -
-          Edit
+          {'/   Edit'}
         </Text>
       </TouchableOpacity>
     );
   };
 
-  const RevGetBackTab = () => {
-    return (
-      <TouchableOpacity onPress={revHandleEditInfoTabPressed}>
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
-            styles.revEditTab,
-          ]}>
-          <FontAwesome
-            name="long-arrow-left"
-            style={[
-              revSiteStyles.revSiteTxtSmall,
-              styles.revSiteTxtWeightNormal,
-            ]}
-          />
-          <FontAwesome
-            name="dot-circle-o"
-            style={[
-              revSiteStyles.revSiteTxtSmall,
-              styles.revSiteTxtWeightNormal,
-            ]}
-          />{' '}
-          BacK
-        </Text>
-      </TouchableOpacity>
-    );
-  };
+  const RevGetBackTab = () => (
+    <TouchableOpacity
+      onPress={revHandleEditInfoTabPressed}
+      style={[
+        revSiteStyles.revFlexWrapper_WidthAuto,
+        styles.revHeaderTextLink,
+        {alignItems: 'center'},
+      ]}>
+      <FontAwesome
+        name="long-arrow-left"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtSmall,
+        ]}
+      />
+      <FontAwesome
+        name="dot-circle-o"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}
+      />
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}>
+        {' BacK'}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <View
-      style={[
-        revSiteStyles.revFlexContainer,
-        styles.revSearchResultsContainer,
-      ]}>
+    <View style={[revSiteStyles.revFlexContainer, styles.revContentContainer]}>
       <RevHeader />
       <RevScrollView_V revScrollViewContent={RevSettingsBody}></RevScrollView_V>
     </View>
@@ -238,38 +247,11 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 17;
 
 const styles = StyleSheet.create({
-  revHeaderLinksWrapper: {
-    alignItems: 'baseline',
-  },
   revHeaderTextLink: {
-    paddingLeft: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
-  revContentBodyTtlTellTxt: {
-    paddingHorizontal: 2,
-    paddingTop: 8,
-    paddingRight: 12,
-    marginBottom: 5,
-    paddingLeft: 15,
-  },
-  revSearchResultsContainer: {
+  revContentContainer: {
     width: maxChatMessageContainerWidth,
-  },
-  revUserInfoSettingsContainer: {
-    marginTop: 0,
-  },
-  revEditTab: {
-    paddingHorizontal: 15,
-  },
-  revUserInfoWrapper: {
-    alignItems: 'flex-start',
-    marginBottom: 4,
-  },
-  revUserInfoLabel: {
-    textAlign: 'right',
-    width: 55,
-  },
-  revUserInfoVal: {
-    width: maxChatMessageContainerWidth - 55,
-    marginLeft: 4,
   },
 });

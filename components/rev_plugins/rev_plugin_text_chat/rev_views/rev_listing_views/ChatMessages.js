@@ -27,8 +27,6 @@ import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 export function useChatMessages() {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {REV_SITE_BODY} = useContext(ReViewsContext);
-
   const {revGetLocalChatMessages} = useRevChatMessagesHelperFunctions();
 
   const [revMessagesArr, setRevMessagesArr] = useState([]);
@@ -254,7 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffde7',
     paddingHorizontal: 9,
     paddingVertical: 4,
-    marginTop: 3,
+    marginTop: 4,
     borderRadius: 5,
   },
   revChatMessagesCounterTxt: {

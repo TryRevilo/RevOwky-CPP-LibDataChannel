@@ -35,7 +35,8 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 export const RevLogInFormWidgetView = () => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {SET_REV_LOGGED_IN_ENTITY_GUID, SET_REV_SITE_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
 
   const {revLogin} = useRevLogin();
   const {revCreateSiteEntity} = useRevCreateSiteEntity();
@@ -51,10 +52,10 @@ export const RevLogInFormWidgetView = () => {
 
     let revLoggedInEntityGUID = await revLogin(revUserId, revPassword);
 
+    let revSiteEntityGUID = -1;
+
     if (revLoggedInEntityGUID > 0) {
       let revSiteEntity = revGetSiteEntity(revLoggedInEntityGUID);
-
-      let revSiteEntityGUID = -1;
 
       if (revIsEmptyJSONObject(revSiteEntity)) {
         revSiteEntityGUID = revCreateSiteEntity(revLoggedInEntityGUID);
@@ -68,7 +69,7 @@ export const RevLogInFormWidgetView = () => {
             revSiteEntityGUID,
           );
 
-        let revSiteEntityResStatus = -1;
+        let revSiteEntityResStatus = 2;
 
         if (revRemoteSiteEntityGUID < 0) {
           revSiteEntityResStatus = 2;
@@ -89,13 +90,17 @@ export const RevLogInFormWidgetView = () => {
         2,
         'rev_site',
       );
+
       let revSiteEntity = revSiteEntitiesArr[0];
+
       let revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
 
       if (revSiteEntityOwnerGUID) {
         SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);
       }
     }
+
+    SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
   };
 
   const RevLogInPage = () => {

@@ -5,11 +5,15 @@ import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext
 
 import {useRevHandleSendMsgAction} from '../../rev_actions.js/rev_stranger_chat_submit_actions';
 
+import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+
 export function RevSubmitChatTab({
   revGetCurrentChatTarget,
   revGetChatTextImput,
   revCallback,
 }) {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {revHandleSendMsgAction} = useRevHandleSendMsgAction();
 
@@ -30,8 +34,17 @@ export function RevSubmitChatTab({
       onPress={() => {
         handleRevSendChatMsg();
       }}>
-      <View style={styles.revSubmitChatTabWrapper}>
-        <Text style={styles.revSubmitChatTab}>Send</Text>
+      <View
+        style={[revSiteStyles.revFlexWrapper, styles.revSubmitChatTabWrapper]}>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorWhite,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+            styles.revSubmitChatTab,
+          ]}>
+          Send
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -40,14 +53,10 @@ export function RevSubmitChatTab({
 const styles = StyleSheet.create({
   revSubmitChatTabWrapper: {
     backgroundColor: '#FFF',
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     marginRight: 5,
   },
   revSubmitChatTab: {
-    color: '#FFF',
-    fontSize: 10,
     backgroundColor: '#444',
     paddingHorizontal: 17,
     paddingVertical: 3,

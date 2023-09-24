@@ -9,12 +9,7 @@ import {revGetMetadataValue} from '../../rev_db_struct_models/revEntityMetadata'
 
 const rev_settings = require('../../../../rev_res/rev_settings.json');
 
-const {
-  RevPersLibCreate_React,
-  RevPersLibRead_React,
-  RevPersLibUpdate_React,
-  RevGenLibs_Server_React,
-} = NativeModules;
+const {RevPersLibRead_React} = NativeModules;
 
 export function useRevPersGetRevEnty_By_EntityGUID() {
   const revPersGetRevEnty_By_EntityGUID = revEntityGUID => {

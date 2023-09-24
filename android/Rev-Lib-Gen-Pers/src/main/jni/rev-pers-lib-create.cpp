@@ -18,8 +18,6 @@
 #include "rev_init_jni_lib.hpp"
 #include "rev_pers_react_native_events.hpp"
 
-using namespace std;
-
 extern "C"
 {
 #include "../../../libs/rev_list/rev_linked_list.h"
@@ -36,6 +34,8 @@ extern "C"
 #include "../cpp/rev_gen_functions/rev_gen_functions.h"
 #include "../cpp/rev_files/rev_gen_file_functions.h"
 }
+
+using namespace std;
 
 JavaVM *gJvm = nullptr;
 static jobject gClassLoader;

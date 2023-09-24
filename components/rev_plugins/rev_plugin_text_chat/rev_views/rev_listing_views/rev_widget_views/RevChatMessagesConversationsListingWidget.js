@@ -11,8 +11,6 @@ import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev
 import InboxMessage from '../rev_entity_views/InboxMessage';
 import OutboxChatMessage from '../rev_entity_views/OutboxChatMessage';
 
-const {RevPersLibRead_React} = NativeModules;
-
 import {useRevPersGetRevEntities_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';

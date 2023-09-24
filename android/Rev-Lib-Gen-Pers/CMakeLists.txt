@@ -433,6 +433,8 @@ target_link_libraries(
         rev-pers-lib-db-read
         rev-pers-lib-db-create
 
+        rev_pers_rev_entity_metadata
+
         rev_pers_lib_includes
 
         ${log-lib})

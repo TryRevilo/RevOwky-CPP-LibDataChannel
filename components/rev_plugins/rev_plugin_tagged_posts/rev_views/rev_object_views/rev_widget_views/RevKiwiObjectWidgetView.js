@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   revChatMsgCommentContentContainer: {
-    width: maxChatMessageContainerWidth - 32,
+    width: maxChatMessageContainerWidth - 45,
     paddingHorizontal: 5,
     marginTop: 3,
     marginBottom: 5,
