@@ -447,7 +447,11 @@ export function useRevPersSyncDataComponent() {
   const revPersSyncMetadata = revCallBack => {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
-      revSelect: ['_metadataId', 'revMetadataOwnerGUID', 'remoteRevMetadataId'],
+      revSelect: [
+        '_metadataId',
+        '_revMetadataEntityGUID',
+        'remoteRevMetadataId',
+      ],
       revWhere: {
         _resolveStatus: {'<': 0},
       },
