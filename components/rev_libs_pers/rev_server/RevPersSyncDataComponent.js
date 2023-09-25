@@ -448,7 +448,7 @@ export function useRevPersSyncDataComponent() {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
       revSelect: [
-        '_metadataId',
+        'revMetadataId',
         '_revMetadataEntityGUID',
         'remoteRevMetadataId',
       ],
