@@ -275,24 +275,38 @@ export function useRevPersGetALLFilledRevEntity_By_SubType(revEntitySubType) {
   return revEntitiesArr;
 }
 
-export function useRevPersGetRevEntities_By_RevVarArgs() {
-  const revPersGetRevEntities_By_RevVarArgs = revVarArgs => {
-    let revEntitiesStr =
-      RevPersLibRead_React.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
+export function useRevPersQuery_By_RevVarArgs() {
+  const revPersQuery_By_RevVarArgs = (
+    revVarArgs,
+    revTableName = 'REV_ENTITY_TABLE',
+  ) => {
+    let revDataStr = RevPersLibRead_React.revPersQuery_By_RevVarArgs(
+      revTableName,
+      JSON.stringify(revVarArgs),
+    );
 
-    let revEntitiesArr = JSON.parse(revEntitiesStr);
+    let revDataArr = JSON.parse(revDataStr);
 
-    for (let i = 0; i < revEntitiesArr.length; i++) {
-      let revCurrEntity = revEntitiesArr[i];
-      let revEntityGUID = revCurrEntity._revEntityGUID;
-
-      revEntitiesArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
-    }
-
-    return revEntitiesArr;
+    return revDataArr;
   };
 
-  return {revPersGetRevEntities_By_RevVarArgs};
+  const revPersQueryRevEntities_By_RevVarArgs = (
+    revVarArgs,
+    revTableName = 'REV_ENTITY_TABLE',
+  ) => {
+    let revDataArr = revPersQuery_By_RevVarArgs(revVarArgs, revTableName);
+
+    for (let i = 0; i < revDataArr.length; i++) {
+      let revCurrEntity = revDataArr[i];
+      let revEntityGUID = revCurrEntity._revEntityGUID;
+
+      revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+    }
+
+    return revDataArr;
+  };
+
+  return {revPersQuery_By_RevVarArgs, revPersQueryRevEntities_By_RevVarArgs};
 }
 
 export const useRevGetEntityIcon = () => {

@@ -26,7 +26,7 @@ htable_strstr_t *revGetMetadataDB_Keys() {
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
     htable_strstr_insert(revMap, "_resolveStatus", "REV_RESOLVE_STATUS");
-    htable_strstr_insert(revMap, "_metadataId", "METADATA_ID");
+    htable_strstr_insert(revMap, "revMetadataId", "METADATA_ID");
     htable_strstr_insert(revMap, "_revEntityResolveStatus", "REV_RESOLVE_STATUS");
     htable_strstr_insert(revMap, "_remoteRevMetadataId", "REMOTE_METADATA_ID");
     htable_strstr_insert(revMap, "_metadataOwnerGUID", "METADATA_ENTITY_GUID");
@@ -51,7 +51,7 @@ htable_strstr_t *revGetMapped_Metadata_Key_DBFieldName() {
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
     htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_resolveStatus");
-    htable_strstr_insert(revMap, "METADATA_ID", "_metadataId");
+    htable_strstr_insert(revMap, "METADATA_ID", "revMetadataId");
     htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revEntityResolveStatus");
     htable_strstr_insert(revMap, "REMOTE_METADATA_ID", "_remoteRevMetadataId");
     htable_strstr_insert(revMap, "METADATA_ENTITY_GUID", "_metadataOwnerGUID");

@@ -75,13 +75,13 @@ jobject revGetFilledRevMetadataJniObject(JNIEnv *env, RevEntityMetadata revEntit
     char *metadataName = revEntityMetadata._metadataName;
     char *metadataValue = revEntityMetadata._metadataValue;
 
-    if (metadataName[0] == '\0') {
+    if (metadataName[0] != '\0') {
         jstring revJMetadataName = revGetJString(env, metadataName);
         env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revMetadataName, revJMetadataName);
         env->DeleteLocalRef(revJMetadataName);
     }
 
-    if (metadataValue[0] == '\0') {
+    if (metadataValue[0] != '\0') {
         jstring revJMetadataValue = revGetJString(env, metadataValue);
         env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_metadataValue, revJMetadataValue);
         env->DeleteLocalRef(revJMetadataValue);

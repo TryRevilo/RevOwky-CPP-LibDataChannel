@@ -17,7 +17,7 @@ import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
 import {
-  useRevPersGetRevEntities_By_RevVarArgs,
+  useRevPersQuery_By_RevVarArgs,
   revPersGetFilledRevEntity_By_GUID,
   revPersGetRevEntities_By_EntityGUIDsArr,
 } from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
@@ -43,10 +43,10 @@ function RevFooterArea() {
 
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
-  const [revChatStatus, setRevChatStatus] = useState(false);
+  const [revChatStatus] = useState(false);
 
-  const {revPersGetRevEntities_By_RevVarArgs} =
-    useRevPersGetRevEntities_By_RevVarArgs();
+  const {revPersQueryRevEntities_By_RevVarArgs} =
+    useRevPersQuery_By_RevVarArgs();
 
   const revGetLocalData = revLastGUID => {
     let revWhere = {
@@ -72,12 +72,13 @@ function RevFooterArea() {
         '_revTimeCreated',
       ],
       revWhere: revWhere,
-      revLimit: 55,
+      revLimit: 10,
       revSelectDirection: 'DESC',
     };
 
-    let revEntitiesArr = revPersGetRevEntities_By_RevVarArgs(
-      JSON.stringify(revPassVarArgs),
+    let revEntitiesArr = revPersQueryRevEntities_By_RevVarArgs(
+      revPassVarArgs,
+      'REV_ENTITY_TABLE',
     );
 
     for (let i = 0; i < revEntitiesArr.length; i++) {

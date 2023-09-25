@@ -160,7 +160,7 @@ REV_ENTITY_JNI_POSREC *LoadRevEntityJniPosRec(JNIEnv *env) {
 REV_ENTITY_RELATIONSHIP_JNI_POSREC *LoadRevEntityRelationshipJniPosRec(JNIEnv *env) {
     REV_ENTITY_RELATIONSHIP_JNI_POSREC *revEntityRelationshipJniPosrec = new REV_ENTITY_RELATIONSHIP_JNI_POSREC;
 
-    revEntityRelationshipJniPosrec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels$RevEntityRelationship");
+    revEntityRelationshipJniPosrec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels/RevEntityRelationship");
 
     if (revEntityRelationshipJniPosrec->cls != NULL) {
         printf("sucessfully created class");
@@ -853,40 +853,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
     return jPosRecArray;
 }
 
-extern "C" JNIEXPORT jobjectArray JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetRevEntities_1By_1RevVarArgs(JNIEnv *env, jobject thiz, jstring rev_var_args) {
-    const char *revVarArgs = env->GetStringUTFChars(rev_var_args, 0);
-
-    REV_ENTITY_JNI_POSREC *revEntityJniPosRec = LoadRevEntityJniPosRec(env);
-
-    list revList = *revPersGetRevEntities_By_RevVarArgs(strdup(revVarArgs));
-
-    jobjectArray jPosRecArray = env->NewObjectArray(searchRecordResultRevEntity.size(), revEntityJniPosRec->cls, NULL);
-
-    if (list_size(&revList) < 1) {
-        return jPosRecArray;
-    }
-
-    list_for_each(&revList, revPersGetRevEntityDataRevEntity);
-
-    jPosRecArray = env->NewObjectArray(searchRecordResultRevEntity.size(), revEntityJniPosRec->cls, NULL);
-
-    for (size_t i = 0; i < searchRecordResultRevEntity.size(); i++) {
-        REV_ENTITY_JNI_POSREC *revCurrEntityJniPosRec = LoadRevEntityJniPosRec(env);
-        jobject jPosRec = env->NewObject(revCurrEntityJniPosRec->cls, revCurrEntityJniPosRec->constructortor_ID);
-        FillDataRecValuesToJni(env, jPosRec, searchRecordResultRevEntity[i], revCurrEntityJniPosRec);
-        env->SetObjectArrayElement(jPosRecArray, i, jPosRec);
-
-        env->DeleteLocalRef(jPosRec);
-    }
-
-    searchRecordResultRevEntity.clear();
-
-    env->ReleaseStringUTFChars(rev_var_args, revVarArgs);
-
-    return jPosRecArray;
-}
-
 extern "C"
 JNIEXPORT jobject JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersQuery_1By_1RevVarArgs(JNIEnv *env, jobject thiz, jstring rev_table_name, jstring rev_var_args) {
@@ -895,10 +861,9 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersQuery_1By_1R
 
     searchRecordResultRevEntityMetadata.clear();
 
-    REV_ENTITY_JNI_POSREC *revEntityJniPosRec = LoadRevEntityJniPosRec(env);
-
     cJSON *revJsonArr = revPersGetData_By_RevVarArgs(strdup(revTableName), strdup(revVarArgs));
 
+    char revEntityTableName[] = "REV_ENTITY_TABLE";
     char revMetadataTableName[] = "REV_ENTITY_METADATA_TABLE";
 
     // First, get all the methods we need:
@@ -915,7 +880,16 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersQuery_1By_1R
         cJSON_ArrayForEach(revEntityMetadataJSON, revJsonArr) {
             char *revCurrEntityStrVal = cJSON_Print(revEntityMetadataJSON);
 
-            if (strcmp(revMetadataTableName, revTableName) == 0) {
+            if (strcmp(revEntityTableName, strdup(revTableName)) == 0) {
+                RevEntity revEntity = *revJSONEntityFiller(revCurrEntityStrVal);
+
+                REV_ENTITY_JNI_POSREC *revEntityJniPosRec = LoadRevEntityJniPosRec(env);
+                jobject jPosRec = env->NewObject(revEntityJniPosRec->cls, revEntityJniPosRec->constructortor_ID);
+                FillDataRecValuesToJni(env, jPosRec, &revEntity, revEntityJniPosRec);
+
+                env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
+                env->DeleteLocalRef(jPosRec);
+            } else if (strcmp(revMetadataTableName, strdup(revTableName)) == 0) {
                 jobject jPosRec = revGetFilledRevMetadataJniObjectFromJsonStr(env, revCurrEntityStrVal);
                 env->CallBooleanMethod(revRetJObjectArrayList, addMethod, jPosRec);
                 env->DeleteLocalRef(jPosRec);
@@ -2596,7 +2570,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibRead_revPersGetALLRevEnt
         // Create a object of type Long.
         obj = env->NewObject(cls, longConstructor, (jlong) searchRecordResultLong[i]);
         env->CallBooleanMethod(revRetJObjectArrayList, addMethod, obj);
-        //
     }
 
     searchRecordResultLong.clear();

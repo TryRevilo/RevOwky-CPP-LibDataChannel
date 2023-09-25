@@ -130,29 +130,13 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetRevEntities_By_RevVarArgs(String revVarArgs) {
-        String revEntitiesStr = "[]";
-
-        RevEntity[] revEntities = revPersLibRead.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
-
-        if (revEntities.length > 0)
-            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
-
-        return revEntitiesStr;
-    }
-
-    @ReactMethod(isBlockingSynchronousMethod = true)
     public String revPersQuery_By_RevVarArgs(String revTableName, String revVarArgs) {
         String revEntitiesStr = "[]";
 
-        if (revTableName.equals("REV_ENTITY_TABLE")) {
-            RevEntity[] revEntities = revPersLibRead.revPersGetRevEntities_By_RevVarArgs(revVarArgs);
+        List revResDataList = revPersLibRead.revPersQuery_By_RevVarArgs(revTableName, revVarArgs);
 
-            if (revEntities.length > 0)
-                revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
-        } else {
-            List revdata = revPersLibRead.revPersQuery_By_RevVarArgs(revTableName, revVarArgs);
-            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revdata);
+        if (revResDataList.size() > 0) {
+            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revResDataList);
         }
 
         return revEntitiesStr;
@@ -201,8 +185,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
         return revRelSubjectGuidsList.toString();
     }
 
-    @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(String revEntityRelationship, Integer revEntitySubjectGUID) {
+    @ReactMethod(isBlockingSynchronousMethod = true) public String revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(String revEntityRelationship, Integer revEntitySubjectGUID) {
         List<Long> revRelSubjectGuidsList = revPersLibRead.revPersGetALLRevEntityRelationshipsTargets(revEntityRelationship, revEntitySubjectGUID);
 
         return revRelSubjectGuidsList.toString();

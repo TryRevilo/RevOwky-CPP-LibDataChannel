@@ -28,7 +28,7 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
-import {useRevPersGetRevEntities_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {useRevPersQuery_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {revCompareStrings} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
@@ -49,8 +49,7 @@ import {revGetRandInteger} from '../../../../../../rev_function_libs/rev_gen_hel
 export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {revPersGetRevEntities_By_RevVarArgs} =
-    useRevPersGetRevEntities_By_RevVarArgs();
+  const {revPersQuery_By_RevVarArgs} = useRevPersQuery_By_RevVarArgs();
 
   revVarArgs = revVarArgs.revVarArgs;
 
@@ -100,9 +99,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     },
     revLimit: 20,
   };
-  let revMyOrganizationsArr = revPersGetRevEntities_By_RevVarArgs(
-    JSON.stringify(revPassVarArgs),
-  );
+  let revMyOrganizationsArr = revPersQuery_By_RevVarArgs(revPassVarArgs);
 
   let revOrgsSelectionOptionsArr = [];
 

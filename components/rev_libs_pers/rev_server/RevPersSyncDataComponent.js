@@ -16,7 +16,7 @@ import {useRevSetMetadataArrayRemoteID} from '../rev_pers_metadata/rev_update/Re
 import {useRevSetRemoteRelGUID} from '../rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 import {
   useRevPersGetRevEnty_By_EntityGUID,
-  useRevPersGetRevEntities_By_RevVarArgs,
+  useRevPersQuery_By_RevVarArgs,
 } from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {REV_CREATE_NEW_REV_ENTITY_URL} from './rev_pers_urls';
@@ -39,8 +39,7 @@ export function useRevPersSyncDataComponent() {
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
 
-  const {revPersGetRevEntities_By_RevVarArgs} =
-    useRevPersGetRevEntities_By_RevVarArgs();
+  const {revPersQuery_By_RevVarArgs} = useRevPersQuery_By_RevVarArgs();
 
   DeviceEventEmitter.addListener(
     'rev_curl_file_upload_ret_data_event',
@@ -448,18 +447,19 @@ export function useRevPersSyncDataComponent() {
   const revPersSyncMetadata = revCallBack => {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
-      revSelect: ['_revMetadataName'],
+      revSelect: ['_metadataId', 'revMetadataOwnerGUID', 'remoteRevMetadataId'],
       revWhere: {
-        _resolveStatus: [0, -1, -101],
+        _resolveStatus: {'<': 0},
       },
-      revLimit: 1,
+      revLimit: 22,
     };
 
-    let revMetadataArr = revPersGetRevEntities_By_RevVarArgs(
-      JSON.stringify(revPassVarArgs),
+    let revMetadataArr = revPersQuery_By_RevVarArgs(
+      revPassVarArgs,
+      'REV_ENTITY_METADATA_TABLE',
     );
 
-    console.log('>>> revMetadataArr', JSON.stringify(revMetadataArr));
+    console.log('>>> revMetadataArr ++', JSON.stringify(revMetadataArr));
 
     return revCallBack();
   };

@@ -22,32 +22,6 @@
 #include "../../../../rev_db_init/rev_pers_db_mappers.h"
 #include "../../../../rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 
-list *revPersGetRevEntities_By_RevVarArgs(char *revVarArgs) {
-    list revList;
-    list_new(&revList, sizeof(RevEntity), NULL);
-
-    htable_strstr_t *revEntityDB_Keys = revGetEntityDB_Keys();
-    htable_strstr_t *revMap = revGetMapped_Entity_Key_DBFieldName();
-
-    cJSON *revJsonArr = revPersGetQuery_By_RevVarArgs(revVarArgs, revEntityDB_Keys, revMap);
-
-    if (revJsonArr != NULL && cJSON_IsArray(revJsonArr)) {
-        cJSON *revEntityMetadataJSON = NULL;
-
-        cJSON_ArrayForEach(revEntityMetadataJSON, revJsonArr) {
-            char *revCurrEntityStrVal = cJSON_Print(revEntityMetadataJSON);
-            RevEntity *revEntity = revJSONEntityFiller(revCurrEntityStrVal);
-            list_append(&revList, revEntity);
-
-            free(revCurrEntityStrVal);
-        }
-    }
-
-    cJSON_Delete(revJsonArr);
-
-    return &revList;
-}
-
 cJSON *revPersGetData_By_RevVarArgs(char *revTableName, char *revVarArgs) {
     cJSON *revJsonArr = NULL;
 
