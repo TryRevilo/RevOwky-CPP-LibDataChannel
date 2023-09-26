@@ -6,8 +6,6 @@
 #include <android/log.h>
 #include "../../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../../rev_db_init/rev_db_init.h"
-#include "../../../rev_pers_rev_entity_metastrings/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metastrings.h"
-#include "../../../rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.h"
 #include "../../rev_db_models/rev_entity_annotation.h"
 #include "../../../../../rev_gen_functions/rev_gen_functions.h"
 
@@ -28,7 +26,7 @@ long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationV
     const char *pzTest;
 
     szSQL = "INSERT INTO REV_ENTITY_ANNOTATIONS_TABLE ("
-            "ANNOTATION_NAME_ID, "
+            "ANNOTATION_NAME, "
             "ANNOTATION_VALUE, "
             "REV_ENTITY_GUID, "
             "REV_ENTITY_OWNER_GUID, "
@@ -39,7 +37,7 @@ long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationV
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, &pzTest);
 
     if (rc == SQLITE_OK) {
-        sqlite3_bind_int(stmt, 1, revPersGetAnnNameID(revEntityAnnotationName));
+        sqlite3_bind_text(stmt, 1, (const char *) revEntityAnnotationName, -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, (const char *) revEntityAnnotationValue, -1, SQLITE_STATIC);
 
         sqlite3_bind_int(stmt, 3, _revEntityGUID);
@@ -92,8 +90,6 @@ long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation) {
     if (!db)
         return -1;
 
-    const char *currTime = revGetCurrentTime();
-
     int rc;
     char *szSQL;
 
@@ -103,7 +99,7 @@ long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation) {
     szSQL = "INSERT INTO REV_ENTITY_ANNOTATIONS_TABLE ("
             "REV_RESOLVE_STATUS, "
             "REMOTE_ANNOTATION_ID, "
-            "ANNOTATION_NAME_ID, "
+            "ANNOTATION_NAME, "
             "ANNOTATION_VALUE, "
             "REV_ENTITY_GUID, "
             "REMOTE_REV_ENTITY_GUID, "
@@ -120,11 +116,7 @@ long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation) {
         sqlite3_bind_int(stmt, 1, _revAnnotationResStatus);
         sqlite3_bind_int(stmt, 2, _revAnnotationRemoteId);
 
-        if (revEntityMetastringExists(_revAnnotationName) < 0) {
-            sqlite3_bind_int(stmt, 3, revPersRevEntityMetastrings(_revAnnotationName));
-        } else {
-            sqlite3_bind_int(stmt, 3, getRevEntityMetaStringValueId(_revAnnotationName));
-        }
+        sqlite3_bind_text(stmt, 3, (const char *) _revAnnotationName, -1, SQLITE_STATIC);
 
         sqlite3_bind_text(stmt, 4, (const char *) _revAnnotationValue, -1, SQLITE_STATIC);
 

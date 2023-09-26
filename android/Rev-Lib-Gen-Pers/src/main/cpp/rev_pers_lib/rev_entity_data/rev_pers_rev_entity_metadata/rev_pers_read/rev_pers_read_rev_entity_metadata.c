@@ -9,7 +9,6 @@
 
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../rev_db_models/rev_entity_metadata.h"
-#include "../../rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.h"
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 
@@ -71,7 +70,6 @@ long revGetRevEntityMetadataId_By_RevMetadataName_RevEntityGUID(char *revMetadat
 }
 
 char *revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID) {
-
     char *metadataValue = "";
 
     sqlite3 *db = revDb();
@@ -129,10 +127,10 @@ RevEntityMetadata revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(char 
         char *revMetadataValue = strdup((const char *) sqlite3_column_text(stmt, 2));
         long revTimeCreated = sqlite3_column_int64(stmt, 3);
 
-        revEntityMetadata._metadataId = metadataId;
-        revEntityMetadata._metadataOwnerGUID = revEntityGUID;
-        revEntityMetadata._metadataName = revMetadataName;
-        revEntityMetadata._metadataValue = revMetadataValue;
+        revEntityMetadata._revMetadataID = metadataId;
+        revEntityMetadata._revMetadataEntityGUID = revEntityGUID;
+        revEntityMetadata._revMetadataName = revMetadataName;
+        revEntityMetadata._revMetadataValue = revMetadataValue;
         revEntityMetadata._revTimeCreated = revTimeCreated;
     }
 
@@ -174,10 +172,10 @@ list *revPersGetALLRevEntityRevEntityMetadataByOwnerGUID(long revEntityGUID) {
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
 
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_metadataName = metadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
-        revEntityMetadata->_metadataOwnerGUID = revEntityGUID;
+        revEntityMetadata->_revMetadataID = metadataId;
+        revEntityMetadata->_revMetadataName = metadataName;
+        revEntityMetadata->_revMetadataValue = metadataValue;
+        revEntityMetadata->_revMetadataEntityGUID = revEntityGUID;
         revEntityMetadata->_revTimeCreated = _revTimeCreated;
 
         list_append(&revList, revEntityMetadata);
@@ -189,7 +187,7 @@ list *revPersGetALLRevEntityRevEntityMetadataByOwnerGUID(long revEntityGUID) {
     return &revList;
 }
 
-list *revPersGetALLRevEntityMetadataByResolveStatus(int resolveStatus) {
+list *revPersGetALLRevEntityMetadataByResolveStatus(int revResolveStatus) {
     list revList;
     list_new(&revList, sizeof(RevEntityMetadata), NULL);
 
@@ -207,7 +205,7 @@ list *revPersGetALLRevEntityMetadataByResolveStatus(int resolveStatus) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadataByResolveStatus %s", sqlite3_errmsg(db));
@@ -220,10 +218,10 @@ list *revPersGetALLRevEntityMetadataByResolveStatus(int resolveStatus) {
         char *metadataValue = strdup((const char *) sqlite3_column_text(stmt, 3));
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_metadataOwnerGUID = metadataOwnerGUID;
-        revEntityMetadata->_metadataName = metadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
+        revEntityMetadata->_revMetadataID = metadataId;
+        revEntityMetadata->_revMetadataEntityGUID = metadataOwnerGUID;
+        revEntityMetadata->_revMetadataName = metadataName;
+        revEntityMetadata->_revMetadataValue = metadataValue;
 
         list_append(&revList, revEntityMetadata);
     }
@@ -234,51 +232,7 @@ list *revPersGetALLRevEntityMetadataByResolveStatus(int resolveStatus) {
     return &revList;
 }
 
-list *revPersGetALLRevEntityMetadata_By_ResolveStatus_RevEntityGUID(int resolveStatus, long revEntityGUID) {
-
-    list revList;
-    list_new(&revList, sizeof(RevEntityMetadata), NULL);
-
-    sqlite3 *db = revDb();
-
-    sqlite3_stmt *stmt;
-
-    char *sql = "SELECT "
-                "METADATA_ID, "
-                "METADATA_NAME, "
-                "METADATA_VALUE "
-                "FROM REV_ENTITY_METADATA_TABLE WHERE "
-                "METADATA_ENTITY_GUID = ? AND REV_RESOLVE_STATUS = ?";
-
-    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-
-    sqlite3_bind_int64(stmt, 1, revEntityGUID);
-    sqlite3_bind_int(stmt, 2, resolveStatus);
-
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadata_By_ResolveStatus_RevEntityGUID %s", sqlite3_errmsg(db));
-    }
-
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        long metadataId = sqlite3_column_int64(stmt, 0);
-        char *metadataName = strdup((const char *) sqlite3_column_text(stmt, 1));
-        char *metadataValue = strdup((const char *) sqlite3_column_text(stmt, 2));
-
-        RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_metadataName = metadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
-
-        list_append(&revList, revEntityMetadata);
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return &revList;
-}
-
-list *revPersGetALLRevEntityMetadataId_By_MetadataName_ResolveStatus(char *metadataName, int resolveStatus) {
+list *revPersGetALLRevEntityMetadataId_By_revMetadataName_revResolveStatus(char *metadataName, int revResolveStatus) {
     list revList;
     list_new(&revList, sizeof(long), NULL);
 
@@ -294,10 +248,10 @@ list *revPersGetALLRevEntityMetadataId_By_MetadataName_ResolveStatus(char *metad
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_text(stmt, 1, (const char *) metadataName, -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 2, resolveStatus);
+    sqlite3_bind_int(stmt, 2, revResolveStatus);
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadata_By_metadataName_ResolveStatus %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadata_By_revMetadataName_revResolveStatus %s", sqlite3_errmsg(db));
     }
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -311,7 +265,7 @@ list *revPersGetALLRevEntityMetadataId_By_MetadataName_ResolveStatus(char *metad
     return &revList;
 }
 
-list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus) {
+list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int revResolveStatus) {
     list revList;
     list_new(&revList, sizeof(long), NULL);
 
@@ -326,7 +280,7 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadataIds_By_ResStatus %s", sqlite3_errmsg(db));
@@ -343,7 +297,7 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus) {
     return &revList;
 }
 
-list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveStatus, char *revMetadataName) {
+list *revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName(int revResolveStatus, char *revMetadataName) {
     list revList;
     list_new(&revList, sizeof(RevEntityMetadata), NULL);
 
@@ -365,7 +319,7 @@ list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveSta
     sqlite3_bind_text(stmt, 2, (const char *) revMetadataName, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName %s", sqlite3_errmsg(db));
     }
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -376,12 +330,12 @@ list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveSta
         char *metadataValue = strdup((const char *) sqlite3_column_text(stmt, 3));
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_remoteRevMetadataId = revRemoteRevMetadataId;
-        revEntityMetadata->_metadataOwnerGUID = metadataOwnerGUID;
+        revEntityMetadata->_revMetadataID = metadataId;
+        revEntityMetadata->_revRemoteMetadataId = revRemoteRevMetadataId;
+        revEntityMetadata->_revMetadataEntityGUID = metadataOwnerGUID;
 
-        revEntityMetadata->_metadataName = revMetadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
+        revEntityMetadata->_revMetadataName = revMetadataName;
+        revEntityMetadata->_revMetadataValue = metadataValue;
 
         list_append(&revList, revEntityMetadata);
     }
@@ -425,7 +379,7 @@ list *revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(long revEntityGUID) {
     return &revList;
 }
 
-list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID) {
+list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int revResolveStatus, long revEntityGUID) {
     list revList;
     list_new(&revList, sizeof(long), NULL);
 
@@ -440,7 +394,7 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveSt
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
     sqlite3_bind_int64(stmt, 2, revEntityGUID);
 
     if (rc != SQLITE_OK) {
@@ -458,7 +412,7 @@ list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveSt
     return &revList;
 }
 
-RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue) {
+RevEntityMetadata revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(char *revMetadataName, char *revMetadataValue) {
     RevEntityMetadata revEntityMetadata = *revInitializedMetadata();
 
     sqlite3 *db = revDb();
@@ -477,17 +431,17 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *re
     sqlite3_bind_text(stmt, 2, (const char *) revMetadataValue, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_MetadataName_MetadataValue %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_revMetadataName_revMetadataValue %s", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
         long metadataId = sqlite3_column_int64(stmt, 0);
         long revEntityGUID = sqlite3_column_int64(stmt, 1);
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> metadataId %ld", metadataId);
 
-        revEntityMetadata._metadataId = metadataId;
-        revEntityMetadata._metadataName = revMetadataName;
-        revEntityMetadata._metadataValue = revMetadataValue;
-        revEntityMetadata._metadataOwnerGUID = revEntityGUID;
+        revEntityMetadata._revMetadataID = metadataId;
+        revEntityMetadata._revMetadataName = revMetadataName;
+        revEntityMetadata._revMetadataValue = revMetadataValue;
+        revEntityMetadata._revMetadataEntityGUID = revEntityGUID;
     }
 
     sqlite3_finalize(stmt);
@@ -496,7 +450,7 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *re
     return revEntityMetadata;
 }
 
-RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID) {
+RevEntityMetadata revGetRevEntityMetadata_By_revMetadataName_revMetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID) {
     RevEntityMetadata revEntityMetadata = *revInitializedMetadata();
 
     sqlite3 *db = revDb();
@@ -515,14 +469,14 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGU
     sqlite3_bind_int64(stmt, 3, revEntityGUID);
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revGetRevEntityMetadata_By_revMetadataName_revMetadataValue_EntityGUID %s", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
         long metadataId = sqlite3_column_int64(stmt, 0);
 
-        revEntityMetadata._metadataId = metadataId;
-        revEntityMetadata._metadataOwnerGUID = revEntityGUID;
-        revEntityMetadata._metadataName = revMetadataName;
-        revEntityMetadata._metadataValue = revMetadataValue;
+        revEntityMetadata._revMetadataID = metadataId;
+        revEntityMetadata._revMetadataEntityGUID = revEntityGUID;
+        revEntityMetadata._revMetadataName = revMetadataName;
+        revEntityMetadata._revMetadataValue = revMetadataValue;
     }
 
     sqlite3_finalize(stmt);
@@ -531,7 +485,7 @@ RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGU
     return revEntityMetadata;
 }
 
-long revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue) {
+long revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(char *revMetadataName, char *revMetadataValue) {
     long revEntityGUID = -1;
 
     list revList;
@@ -627,14 +581,14 @@ list *revPersGetALLRevEntityMetadataUnsynched() {
         strcpy(metadataValue, strdup((const char *) sqlite3_column_text(stmt, 3)));
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_metadataOwnerGUID = metadataOwnerGUID;
-        revEntityMetadata->_metadataName = metadataName;
+        revEntityMetadata->_revMetadataID = metadataId;
+        revEntityMetadata->_revMetadataEntityGUID = metadataOwnerGUID;
+        revEntityMetadata->_revMetadataName = metadataName;
 
         if (metadataValue[0] == '\0') {
             strcpy(metadataValue, "rev_null_val");
         }
-        revEntityMetadata->_metadataValue = metadataValue;
+        revEntityMetadata->_revMetadataValue = metadataValue;
 
         list_append(&revList, revEntityMetadata);
 
@@ -680,16 +634,16 @@ RevEntityMetadata *revPersGetRevEntityMetadata_By_MetadataId(long long revMetada
         strcpy(metadataValue, strdup((const char *) sqlite3_column_text(stmt, 3)));
         long _revTimeCreated = sqlite3_column_int64(stmt, 4);
 
-        revEntityMetadata._metadataId = metadataId;
-        revEntityMetadata._metadataOwnerGUID = metadataOwnerGUID;
-        revEntityMetadata._metadataName = metadataName;
+        revEntityMetadata._revMetadataID = metadataId;
+        revEntityMetadata._revMetadataEntityGUID = metadataOwnerGUID;
+        revEntityMetadata._revMetadataName = metadataName;
         revEntityMetadata._revTimeCreated = _revTimeCreated;
 
         if (metadataValue[0] == '\0') {
             strcpy(metadataValue, "rev_null_val");
         }
 
-        revEntityMetadata._metadataValue = metadataValue;
+        revEntityMetadata._revMetadataValue = metadataValue;
 
         free(metadataValue);
     }
@@ -730,9 +684,9 @@ list *revPersGetALLRevEntityMetadataUnsynched_By_RevEntityGUID(long revEntityGUI
         char *metadataValue = strdup((const char *) sqlite3_column_text(stmt, 2));
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataId = metadataId;
-        revEntityMetadata->_metadataName = metadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
+        revEntityMetadata->_revMetadataID = metadataId;
+        revEntityMetadata->_revMetadataName = metadataName;
+        revEntityMetadata->_revMetadataValue = metadataValue;
 
         list_append(&revList, revEntityMetadata);
     }
@@ -744,7 +698,7 @@ list *revPersGetALLRevEntityMetadataUnsynched_By_RevEntityGUID(long revEntityGUI
 }
 
 
-list *revPersGetALLRevEntityRevEntityMetadataBy_MetadataName_OwnerGUID(char *metadataName, long revEntityGUID) {
+list *revPersGetALLRevEntityRevEntityMetadataBy_revMetadataName_OwnerGUID(char *metadataName, long revEntityGUID) {
     list revList;
     list_new(&revList, sizeof(RevEntityMetadata), NULL);
 
@@ -770,8 +724,8 @@ list *revPersGetALLRevEntityRevEntityMetadataBy_MetadataName_OwnerGUID(char *met
         char *metadataValue = strdup((const char *) sqlite3_column_text(stmt, 0));
 
         RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
-        revEntityMetadata->_metadataName = metadataName;
-        revEntityMetadata->_metadataValue = metadataValue;
+        revEntityMetadata->_revMetadataName = metadataName;
+        revEntityMetadata->_revMetadataValue = metadataValue;
 
         list_append(&revList, revEntityMetadata);
     }

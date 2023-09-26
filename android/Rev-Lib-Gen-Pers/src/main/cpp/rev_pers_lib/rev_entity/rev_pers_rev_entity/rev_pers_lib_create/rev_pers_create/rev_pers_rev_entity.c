@@ -16,7 +16,7 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
     if (!db)
         return -1;
 
-    long remoteRevEntityGUID = revEntity->_remoteRevEntityGUID;
+    long revRemoteEntityGUID = revEntity->_revRemoteEntityGUID;
     long revEntityResolveStatus = revEntity->_revEntityResolveStatus;
     long revEntityChildableStatus = revEntity->_revEntityChildableStatus;
     long revEntityOwnerGUID = revEntity->_revOwnerEntityGUID;
@@ -51,7 +51,7 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
             "REV_UPDATED_DATE"
             " ) "
             " values ("
-            "@remoteRevEntityGUID, "
+            "@revRemoteEntityGUID, "
             "@revEntityResolveStatus, "
             "@_revEntityChildableStatus, "
             "@revEntityOwnerGUID, "
@@ -67,8 +67,8 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, 0);
 
     if (rc == SQLITE_OK) {
-        int remoteRevEntityGUID_idx = sqlite3_bind_parameter_index(stmt, "@remoteRevEntityGUID");
-        sqlite3_bind_int64(stmt, remoteRevEntityGUID_idx, remoteRevEntityGUID);
+        int revRemoteEntityGUID_idx = sqlite3_bind_parameter_index(stmt, "@revRemoteEntityGUID");
+        sqlite3_bind_int64(stmt, revRemoteEntityGUID_idx, revRemoteEntityGUID);
 
         int revEntityChildableStatus_idx = sqlite3_bind_parameter_index(stmt, "@_revEntityChildableStatus");
         sqlite3_bind_int64(stmt, revEntityChildableStatus_idx, revEntityChildableStatus);

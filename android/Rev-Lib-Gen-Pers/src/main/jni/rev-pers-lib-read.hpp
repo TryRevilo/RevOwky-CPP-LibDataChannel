@@ -15,8 +15,8 @@ extern "C" {
 
 bool revPersGetRevEntityAnnotation(void *data);
 
-REV_ENTITY_JNI_POSREC *LoadRevEntityJniPosRec(JNIEnv *env);
+REV_ENTITY_JNI_POSREC *revLoadRevEntityJniPosRec(JNIEnv *env);
 
-void FillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, REV_ENTITY_JNI_POSREC *revEntityJniPosRec);
+void revFillDataRecValuesToJni(JNIEnv *env, jobject jPosRec, RevEntity *cPosRec, REV_ENTITY_JNI_POSREC *revEntityJniPosRec);
 
 #endif //REVCAMPANN_REV_PERS_LIB_READ_H

@@ -63,7 +63,7 @@ export const useRevCreateCommentAction = () => {
       );
 
       let revMetadataId = revCurrMetadata.revMetadataId;
-      let revCurrMetadataVal = revCurrMetadata._metadataValue;
+      let revCurrMetadataVal = revCurrMetadata._revMetadataValue;
 
       if (revCurrMetadataVal.localeCompare(revCommentText) !== 0) {
         let revMetadataUpdateStatus =

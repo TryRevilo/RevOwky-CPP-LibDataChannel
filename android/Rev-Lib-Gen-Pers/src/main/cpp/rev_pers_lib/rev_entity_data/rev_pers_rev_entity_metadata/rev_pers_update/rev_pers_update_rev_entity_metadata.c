@@ -9,7 +9,7 @@
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 
-int setRemoteRevEntityMetadataId(long revMetadataId, long remoteRevMetadataId) {
+int setRemoteRevEntityMetadataId(long revMetadataId, long _revRemoteMetadataId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -20,7 +20,7 @@ int setRemoteRevEntityMetadataId(long revMetadataId, long remoteRevMetadataId) {
                 "WHERE METADATA_ID = ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int(stmt, 1, remoteRevMetadataId);
+    sqlite3_bind_int(stmt, 1, _revRemoteMetadataId);
     sqlite3_bind_int(stmt, 2, 0);
     sqlite3_bind_int(stmt, 3, revMetadataId);
 
@@ -71,7 +71,7 @@ int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long revMetada
     return revReturnVal;
 }
 
-int setMetadataResolveStatus_BY_MetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus) {
+int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();

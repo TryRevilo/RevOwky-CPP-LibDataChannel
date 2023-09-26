@@ -21,9 +21,9 @@ list *revPersGetALLRevEntityGUIDs_SQL_IN(char *sql_IN);
 
 int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntitySubtype);
 
-int revEntityExistsByLocalEntityGUID(long remoteRevEntityGUID);
+int revEntityExistsByLocalEntityGUID(long revRemoteEntityGUID);
 
-int revEntityExistsByRemoteEntityGUID(long remoteRevEntityGUID);
+int revEntityExistsByRemoteEntityGUID(long revRemoteEntityGUID);
 
 long revGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
 
@@ -33,27 +33,27 @@ list *revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(const char *revD
 
 long revEntitySubtypeExists_BY_CONTAINER_GUID(int revEntityContainerGUID, char *revEntitySubtype);
 
-long revGetPublicationDate(long localRevEntityGUID);
+long revGetPublicationDate(long revLocalEntityGUID);
 
-long revGetRemoteEntityGUID_BY_LocalEntityGUID(long localRevEntityGUID);
+long revGetRemoteEntityGUID_BY_LocalEntityGUID(long revLocalEntityGUID);
 
-long getLocalRevEntityGUID_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
+long revGetLocalEntityGUID_By_RemoteEntityGUID(long revRemoteEntityGUID);
 
 RevEntity revPersGetRevEntityByGUID(long revEntityGUID);
 
-RevEntity revPersGetRevEntity_By_RemoteRevEntityGUID(long remoteRevEntityGUID);
+RevEntity revPersGetEntity_By_RemoteEntityGUID(long revRemoteEntityGUID);
 
 list *revPersGetALLEntitySubtypeGUIDsByOwnerGUID(char *revEntitySubtype, long ownerGUID);
 
-list *revPersGetALLRevEntityGUIDs_By_ResStatus(int resolveStatus);
+list *revPersGetALLRevEntityGUIDs_By_ResStatus(int revResolveStatus);
 
-list *revPersGetALLRemoteRevEntityGUIDs_By_ResStatus(int resolveStatus);
+list *revPersGetALLrevRemoteEntityGUIDs_By_ResStatus(int revResolveStatus);
 
-list *revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(int resolveStatus, char *revEntitySubtype);
+list *revPersGetALLRevEntityGUIDs_By_revResolveStatus_SubType(int revResolveStatus, char *revEntitySubtype);
 
-long getRevEntityGUID_By_RevEntityOwnerGUID_Subtype(int revEntityOwnerGUID, char *revEntitySubtype);
+long revGetRevEntityGUID_By_RevEntityOwnerGUID_Subtype(int revEntityOwnerGUID, char *revEntitySubtype);
 
-long getRevEntityGUIDByRevEntityContainerEntityGUID_Subtype(int revEntityContainerGUID, char *revEntitySubtype);
+long revGetRevEntityGUID_By_RevEntityContainerEntityGUID_Subtype(int revEntityContainerGUID, char *revEntitySubtype);
 
 list *revPersGetALLRevEntityGUIDs_By_RevEntityType(char *revEntityType);
 
@@ -73,8 +73,8 @@ list *revPersGetALLRevEntityUnSychedByType(char *revEntityType);
 
 list *revPersGetALLRevEntitySubTYPEs(char *revEntitySubtype);
 
-char *getRevEntityTypeByRevEntityGUID(int revEntityGUID);
+char *revGetRevEntityType_By_RevEntityGUID(int revEntityGUID);
 
-char *getRevEntitySubtypeByRevEntityGUID(int revEntityGUID);
+char *revGetRevEntitySubType_By_RevEntityGUID(int revEntityGUID);
 
 #endif //REVCAMPANN_REV_PERS_READ_H

@@ -123,7 +123,7 @@ export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
     revEntitySubType,
   ) => {
     let revUnresolvedEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(
+      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_revResolveStatus_SubType(
         revResStatus,
         revEntitySubType,
       );

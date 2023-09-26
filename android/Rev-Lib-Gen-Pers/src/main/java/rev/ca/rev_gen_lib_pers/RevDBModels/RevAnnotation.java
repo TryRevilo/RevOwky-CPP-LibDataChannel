@@ -7,17 +7,12 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
 public class RevAnnotation {
 
 
-    int _revAnnotationResStatus, _revAnnotationNameId;
+    int _revAnnotationResStatus;
 
-    private String _revAnnotationName, _revAnnotationValue, _revAnnotationTimeCreated, _revAnnotationTimeUpdated;
-    private Long _revAnnotationId, _revAnnotationRemoteId, _revAnnotationEntityGUID, _revAnnotationRemoteEntityGUID, _revAnnOwnerEntityGUID, _revAnnRemoteOwnerEntityGUID;
-
-    private long _revTimeCreated = -1;
-    private long _revTimePublished = -1;
-    private long _revTimePublishedUpdated = -1;
+    private String _revAnnotationName, _revAnnotationValue;
+    private Long _revAnnotationId, _revAnnotationRemoteId, _revAnnotationEntityGUID, _revAnnotationRemoteEntityGUID, _revAnnOwnerEntityGUID, _revAnnRemoteOwnerEntityGUID, _revTimeCreated, _revTimePublished, _revTimePublishedUpdated = -1L;
 
     public RevAnnotation() {
-        _revAnnotationResStatus = _revAnnotationNameId = -1;
         _revAnnotationId = _revAnnotationRemoteId = _revAnnOwnerEntityGUID = _revAnnotationEntityGUID = _revAnnRemoteOwnerEntityGUID = _revAnnotationRemoteEntityGUID = -1L;
     }
 
@@ -27,14 +22,6 @@ public class RevAnnotation {
 
     public void set_revAnnotationResStatus(int _revAnnotationResStatus) {
         this._revAnnotationResStatus = _revAnnotationResStatus;
-    }
-
-    public int get_revAnnotationNameId() {
-        return _revAnnotationNameId;
-    }
-
-    public void set_revAnnotationNameId(int _revAnnotationNameId) {
-        this._revAnnotationNameId = _revAnnotationNameId;
     }
 
     public String get_revAnnotationName() {
@@ -51,22 +38,6 @@ public class RevAnnotation {
 
     public void set_revAnnotationValue(String _revAnnotationValue) {
         this._revAnnotationValue = _revAnnotationValue;
-    }
-
-    public String get_revAnnotationTimeCreated() {
-        return _revAnnotationTimeCreated;
-    }
-
-    public void set_revAnnotationTimeCreated(String _revAnnotationTimeCreated) {
-        this._revAnnotationTimeCreated = _revAnnotationTimeCreated;
-    }
-
-    public String get_revAnnotationTimeUpdated() {
-        return _revAnnotationTimeUpdated;
-    }
-
-    public void set_revAnnotationTimeUpdated(String _revAnnotationTimeUpdated) {
-        this._revAnnotationTimeUpdated = _revAnnotationTimeUpdated;
     }
 
     public Long get_revAnnotationId() {
@@ -117,27 +88,27 @@ public class RevAnnotation {
         this._revAnnRemoteOwnerEntityGUID = _revAnnRemoteOwnerEntityGUID;
     }
 
-    public long get_revTimeCreated() {
+    public Long get_revTimeCreated() {
         return _revTimeCreated;
     }
 
-    public void set_revTimeCreated(long _revTimeCreated) {
+    public void set_revTimeCreated(Long _revTimeCreated) {
         this._revTimeCreated = _revTimeCreated;
     }
 
-    public long get_revTimePublished() {
+    public Long get_revTimePublished() {
         return _revTimePublished;
     }
 
-    public void set_revTimePublished(long _revTimePublished) {
+    public void set_revTimePublished(Long _revTimePublished) {
         this._revTimePublished = _revTimePublished;
     }
 
-    public long get_revTimePublishedUpdated() {
+    public Long get_revTimePublishedUpdated() {
         return _revTimePublishedUpdated;
     }
 
-    public void set_revTimePublishedUpdated(long _revTimePublishedUpdated) {
+    public void set_revTimePublishedUpdated(Long _revTimePublishedUpdated) {
         this._revTimePublishedUpdated = _revTimePublishedUpdated;
     }
 }

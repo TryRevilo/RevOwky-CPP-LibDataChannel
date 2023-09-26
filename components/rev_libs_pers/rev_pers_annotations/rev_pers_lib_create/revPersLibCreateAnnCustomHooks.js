@@ -50,7 +50,7 @@ export const useRevSaveNewAnnotation = () => {
 
       let revLikesStatsMetadata = JSON.parse(revLikesStatsMetadataStr);
       let revCurrMetadataStasValInt = Number(
-        revLikesStatsMetadata._metadataValue,
+        revLikesStatsMetadata._revMetadataValue,
       );
 
       if (revAnnotationId < 1) {

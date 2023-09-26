@@ -7,11 +7,11 @@
 
 #include "../rev_db_models/rev_entity.h"
 
-int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long remoteRevEntityGUID);
+int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID);
 
 int setRevPublishedDate_By_RevEntityGUID(long revEntityGUID, long revPublishedDate);
 
-int setRemoteRevEntityGUID_By_RevCreationDate(long long revTimeCreated, long remoteRevEntityGUID);
+int setrevRemoteEntityGUID_By_RevCreationDate(long long revTimeCreated, long revRemoteEntityGUID);
 
 int setResStatus_By_RevCreationDate(long revTimeCreated, int revResStatus);
 
@@ -19,8 +19,8 @@ int resetRevEntityOwnerGUIG(long revEntityGUID, long revEntityOwnerGUID);
 
 int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContainerGUID);
 
-int setRemoteRevEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long remoteRevEntityGUID, long revMetadataId, long remoteRevMetadataId);
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long revMetadataId, long _revRemoteMetadataId);
 
-int setRevEntityResolveStatusByRevEntityGUID(int resolveStatus, long revEntityGUID);
+int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID);
 
 #endif //REVCAMPANN_REV_PERS_UPDATE_H

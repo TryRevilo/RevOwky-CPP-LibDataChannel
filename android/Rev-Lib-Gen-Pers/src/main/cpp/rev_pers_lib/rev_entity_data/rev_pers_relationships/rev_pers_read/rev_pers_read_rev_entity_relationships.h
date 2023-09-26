@@ -52,25 +52,25 @@ list *revPersGetRevEntityRels_By_RelTypeValueId_SubjectGUID(long relTypeValueId,
 
 list *revPersGetRevEntityRels_By_RelTypeValueId_TargetGUID(long relTypeValueId, long revEntityTargetGUID);
 
-list *revPersGetRevEntityRels_By_RelTypeValueId_SubjectGUID_TargetGUID_ResolveStatus(int relTypeValueId, long revEntityTargetGUID, int revEntityResolveStatus);
+list *revPersGetRevEntityRels_By_RelTypeValueId_SubjectGUID_TargetGUID_revResolveStatus(int relTypeValueId, long revEntityTargetGUID, int revEntityResolveStatus);
 
-list *revPersGetRemoteRelsGUIDs_By_RelTypeValueId_RevEntityGUID_ResolveStatus(int relTypeValueId, long revEntityGUID, int revEntityResolveStatus);
+list *revPersGetRemoteRelsGUIDs_By_RelTypeValueId_RevEntityGUID_revResolveStatus(int relTypeValueId, long revEntityGUID, int revEntityResolveStatus);
 
-list *revPersGetAllRevEntityRels_By_RelType_ValueId_ResolveStatus(int relTypeValueId, long revEntityGUID, int revResolveStatus);
+list *revPersGetAllRevEntityRels_By_RelType_ValueId_revResolveStatus(int relTypeValueId, long revEntityGUID, int revResolveStatus);
 
 list *revPersGetALLRevEntityRelationshipsSubjectGUID();
 
-list *revPersGetALLRevRels_RemoteRelId_By_ResolveStatus(int revRelResolveStatus);
+list *revPersGetALLRevRels_RemoteRelId_By_revResolveStatus(int revRelResolveStatus);
 
-list *revPersGetALLRevRels_RemoteRelId_By_ResolveStatus_RemoteTargetGUID(int revRelResolveStatus, long remoteTargetGUID);
+list *revPersGetALLRevRels_RemoteRelId_By_revResolveStatus_RemoteTargetGUID(int revRelResolveStatus, long remoteTargetGUID);
 
 list *revPersGetALLRevEntityRelationshipsSubjectGUID_BY_TARGET_GUID(long targetGUID);
 
-list *revPersGetALLRevEntityRelationshipsTargets(char *revEntityrelationship, long subjectGUID);
+list *revPersGetALLRevEntityRelationshipsTargets(char *revEntityRelationship, long subjectGUID);
 
 list *revPersGetAllRevEntityRelsIDs_By_EntityGUID(long revEntityGUID);
 
-list *revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(char *revEntityrelationship, long remoteRevEntityGUID);
+list *revPersGetALLRevEntityRelGUIDs_By_RelType_revRemoteEntityGUID(char *revEntityRelationship, long revRemoteEntityGUID);
 
 list *revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
 
@@ -80,11 +80,9 @@ list *revGetRels_By_RelType_RemoteGUIDs(const char *revRelType, long revRemoteSu
 
 list *revPersGetALLRelSubjectGUIDs_By_TargetGUID(long revTargetGUID);
 
-long revPersGetSubjectGUID_BY_RelStr_TargetGUID(char *revEntityrelationship, long revTargetGUID);
+long revPersGetSubjectGUID_BY_RelStr_TargetGUID(char *revEntityRelationship, long revTargetGUID);
 
-long revPersGetTargetGUID_BY_RelStr_SubjectGUID(char *revEntityrelationship, long revSubjectGUID);
-
-list *revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(char *revEntityrelationship, long subjectGUID);
+list *revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(char *revEntityRelationship, long subjectGUID);
 
 list *revPersGetUnresolvedRemoteTargetGUIDSRelIds();
 

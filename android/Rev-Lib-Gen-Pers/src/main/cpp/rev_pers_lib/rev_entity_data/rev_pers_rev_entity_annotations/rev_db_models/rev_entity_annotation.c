@@ -14,7 +14,6 @@ RevEntityAnnotation *revInitializedAnnotation() {
 
     revEntityAnnotation->_revAnnotationResStatus = -1;
 
-    revEntityAnnotation->_revAnnotationNameId = -1;
     revEntityAnnotation->_revAnnotationName = "";
 
     revEntityAnnotation->_revAnnotationValue = "";
@@ -28,22 +27,9 @@ RevEntityAnnotation *revInitializedAnnotation() {
     revEntityAnnotation->_revAnnOwnerEntityGUID = -1;
     revEntityAnnotation->_revAnnRemoteOwnerEntityGUID = -1;
 
-    revEntityAnnotation->_revAnnotationTimeCreated = "";
-    revEntityAnnotation->_revAnnotationTimeUpdated = "";
-
     revEntityAnnotation->_revTimeCreated = -1;
     revEntityAnnotation->_revTimePublished = -1;
     revEntityAnnotation->_revTimePublishedUpdated = -1;
 
     return revEntityAnnotation;
-}
-
-int revPersGetAnnNameID(char *revEntityAnnotationName) {
-    int revAnnNameID = -1;
-
-    if (strcmp(revEntityAnnotationName, "rev_like") == 0) {
-        revAnnNameID = 1;
-    }
-
-    return revAnnNameID;
 }

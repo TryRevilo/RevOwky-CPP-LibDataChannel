@@ -18,33 +18,33 @@ char *revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(char *revMet
 
 RevEntityMetadata revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID);
 
-long revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue);
+long revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(char *revMetadataName, char *revMetadataValue);
 
 list *revPersGetALLRevEntityRevEntityMetadataByOwnerGUID(long revEntityGUID);
 
-list *revPersGetALLRevEntityMetadataByResolveStatus(int resolveStatus);
+list *revPersGetALLRevEntityMetadataByResolveStatus(int revResolveStatus);
 
-list *revPersGetALLRevEntityMetadataId_By_MetadataName_ResolveStatus(char *metadataName, int resolveStatus);
+list *revPersGetALLRevEntityMetadataId_By_revMetadataName_revResolveStatus(char *metadataName, int revResolveStatus);
 
-list *revPersGetALLRevEntityMetadata_By_ResStatus(int resolveStatus);
+list *revPersGetALLRevEntityMetadata_By_ResStatus(int revResolveStatus);
 
-list *revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(int revResolveStatus, char *revMetadataName);
+list *revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName(int revResolveStatus, char *revMetadataName);
 
-list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int resolveStatus);
+list *revPersGetALLRevEntityMetadataIds_By_ResStatus(int revResolveStatus);
 
 list *revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(long revEntityGUID);
 
-list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int resolveStatus, long revEntityGUID);
+list *revPersGetALLRevEntityMetadataIds_By_ResStatus_RevEntityGUID(int revResolveStatus, long revEntityGUID);
 
-RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue(char *revMetadataName, char *revMetadataValue);
+RevEntityMetadata revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(char *revMetadataName, char *revMetadataValue);
 
-RevEntityMetadata revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID);
+RevEntityMetadata revGetRevEntityMetadata_By_revMetadataName_revMetadataValue_EntityGUID(char *revMetadataName, char *revMetadataValue, long revEntityGUID);
 
 list *revPersGetALLRevEntityMetadataUnsynched();
 
 list *revPersGetALLRevEntityMetadataUnsynched_By_RevEntityGUID(long revEntityGUID);
 
-list *revPersGetALLRevEntityRevEntityMetadataBy_MetadataName_OwnerGUID(char *metadataName, long revEntityGUID);
+list *revPersGetALLRevEntityRevEntityMetadataBy_revMetadataName_OwnerGUID(char *metadataName, long revEntityGUID);
 
 long revGetRevEntityMetadataOwnerGUID(long metadataId);
 

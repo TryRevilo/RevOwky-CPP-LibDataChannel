@@ -9,7 +9,7 @@ import {useRevPersGetRevEntities_By_ResolveStatus_SubType} from './rev_pers_lib_
 export const useRevGetSiteEntity = () => {
   const revGetSiteEntity = revLoggedInEntityGUID => {
     let revEntitiesStr =
-      RevPersLibRead_React.getRevEntityByRevEntityOwnerGUID_Subtype(
+      RevPersLibRead_React.revGetEntity_By_RevEntityOwnerGUID_Subtype(
         revLoggedInEntityGUID,
         'rev_site',
       );

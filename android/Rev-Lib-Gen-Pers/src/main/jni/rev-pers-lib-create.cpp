@@ -62,8 +62,7 @@ bool revPersGetRevEntityMetadata(void *data) {
     return true;
 }
 
-extern "C"
-JNIEXPORT void JNICALL
+extern "C" JNIEXPORT void JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_initRevDb(JNIEnv *env, jobject instance, jstring dirPath_) {
     const char *dirPath = env->GetStringUTFChars(dirPath_, 0);
 
@@ -127,9 +126,9 @@ list *revPersSetRevObjectEntityDescBaseMetadata(JNIEnv *env, jobject revEntity) 
         RevEntityMetadata revEntityMetadata;
 
         /** SET METADATA RESOLVE STATUS **/
-        jmethodID get_resolveStatus_MID = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "get_resolveStatus", "()I");
-        long _resolveStatus = env->CallIntMethod(obj_RevEntityMetadata, get_resolveStatus_MID);
-        revEntityMetadata._resolveStatus = _resolveStatus;
+        jmethodID get_revResolveStatus_MID = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "get_revResolveStatus", "()I");
+        long _revResolveStatus = env->CallIntMethod(obj_RevEntityMetadata, get_revResolveStatus_MID);
+        revEntityMetadata._revResolveStatus = _revResolveStatus;
 
         /** End METADATA RESOLVE STATUS **/
 
@@ -139,20 +138,20 @@ list *revPersSetRevObjectEntityDescBaseMetadata(JNIEnv *env, jobject revEntity) 
 
         if (s_revMetadataName != NULL) {
             const char *char_revMetadataName = env->GetStringUTFChars(s_revMetadataName, 0);
-            revEntityMetadata._metadataName = strdup(char_revMetadataName);
+            revEntityMetadata._revMetadataName = strdup(char_revMetadataName);
             env->ReleaseStringUTFChars(s_revMetadataName, char_revMetadataName);
         }
 
         /** End METADATA Name **/
 
         /** Start METADATA Value **/
-        jmethodID methodId_get_metadataValue = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "get_metadataValue", "()Ljava/lang/String;");
-        jstring s_metadataValue = (jstring) env->CallObjectMethod(obj_RevEntityMetadata, methodId_get_metadataValue);
+        jmethodID methodId_get_revMetadataValue = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "get_revMetadataValue", "()Ljava/lang/String;");
+        jstring s_revMetadataValue = (jstring) env->CallObjectMethod(obj_RevEntityMetadata, methodId_get_revMetadataValue);
 
-        if (s_metadataValue != NULL) {
-            const char *char_metadataValue = env->GetStringUTFChars(s_metadataValue, 0);
-            revEntityMetadata._metadataValue = strdup(char_metadataValue);
-            env->ReleaseStringUTFChars(s_metadataValue, char_metadataValue);
+        if (s_revMetadataValue != NULL) {
+            const char *char_revMetadataValue = env->GetStringUTFChars(s_revMetadataValue, 0);
+            revEntityMetadata._revMetadataValue = strdup(char_revMetadataValue);
+            env->ReleaseStringUTFChars(s_revMetadataValue, char_revMetadataValue);
         }
 
         /** End METADATA Value **/
@@ -164,12 +163,12 @@ list *revPersSetRevObjectEntityDescBaseMetadata(JNIEnv *env, jobject revEntity) 
 
         jmethodID methodId_getRemoteRevMetadataId = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "getRemoteRevMetadataId", "()Ljava/lang/Long;");
         jobject revRemoteRevMetadataId_JOB = env->CallObjectMethod(obj_RevEntityMetadata, methodId_getRemoteRevMetadataId);
-        long remoteRevMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
+        long _revRemoteMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
 
-        if (remoteRevMetadataId > 0) {
-            revEntityMetadata._remoteRevMetadataId = remoteRevMetadataId;
+        if (_revRemoteMetadataId > 0) {
+            revEntityMetadata._revRemoteMetadataId = _revRemoteMetadataId;
         } else {
-            revEntityMetadata._remoteRevMetadataId = -1l;
+            revEntityMetadata._revRemoteMetadataId = -1l;
         }
 
         /** SET REV CREATED DATE TIME **/
@@ -214,11 +213,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInit(JNIEn
     jmethodID longGetLongValue = (env)->GetMethodID(clsLong, "longValue", "()J");
 
     /** SET REMOTE ENTITY GUID **/
-    jmethodID get_remoteRevEntityGUID_MID = env->GetMethodID(revEntityClazz, "get_remoteRevEntityGUID", "()Ljava/lang/Long;");
-    jobject remoteRevEntityGUID_JOB = env->CallObjectMethod(revEntity, get_remoteRevEntityGUID_MID);
-    long remoteRevEntityGUID = (env)->CallLongMethod(remoteRevEntityGUID_JOB, longGetLongValue);
+    jmethodID get_revRemoteEntityGUID_MID = env->GetMethodID(revEntityClazz, "get_revRemoteEntityGUID", "()Ljava/lang/Long;");
+    jobject revRemoteEntityGUID_JOB = env->CallObjectMethod(revEntity, get_revRemoteEntityGUID_MID);
+    long revRemoteEntityGUID = (env)->CallLongMethod(revRemoteEntityGUID_JOB, longGetLongValue);
 
-    c_revEntity._remoteRevEntityGUID = remoteRevEntityGUID;
+    c_revEntity._revRemoteEntityGUID = revRemoteEntityGUID;
 
     /** SET ENTITY RESOLVE STATUS **/
     jmethodID get_revEntityResolveStatus_MID = env->GetMethodID(revEntityClazz, "get_revEntityResolveStatus", "()I");
@@ -373,10 +372,10 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
         /** SET METADATA RESOLVE STATUS **/
 
-        jmethodID get_resolveStatus_MID = env->GetMethodID(revEntityMetadataClazz, "get_resolveStatus", "()I");
-        long _resolveStatus = env->CallIntMethod(obj_RevEntityMetadata, get_resolveStatus_MID);
+        jmethodID get_revResolveStatus_MID = env->GetMethodID(revEntityMetadataClazz, "get_revResolveStatus", "()I");
+        long _revResolveStatus = env->CallIntMethod(obj_RevEntityMetadata, get_revResolveStatus_MID);
 
-        revEntityMetadata._resolveStatus = _resolveStatus;
+        revEntityMetadata._revResolveStatus = _revResolveStatus;
 
         /** End METADATA RESOLVE STATUS **/
 
@@ -387,7 +386,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
         if (s_revMetadataName != NULL) {
             const char *char_revMetadataName = env->GetStringUTFChars(s_revMetadataName, 0);
-            revEntityMetadata._metadataName = strdup(char_revMetadataName);
+            revEntityMetadata._revMetadataName = strdup(char_revMetadataName);
             env->ReleaseStringUTFChars(s_revMetadataName, char_revMetadataName);
         }
 
@@ -395,13 +394,13 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
         /** Start METADATA Value **/
 
-        jmethodID methodId_get_metadataValue = env->GetMethodID(revEntityMetadataClazz, "get_metadataValue", "()Ljava/lang/String;");
-        jstring s_metadataValue = (jstring) env->CallObjectMethod(obj_RevEntityMetadata, methodId_get_metadataValue);
+        jmethodID methodId_get_revMetadataValue = env->GetMethodID(revEntityMetadataClazz, "get_revMetadataValue", "()Ljava/lang/String;");
+        jstring s_revMetadataValue = (jstring) env->CallObjectMethod(obj_RevEntityMetadata, methodId_get_revMetadataValue);
 
-        if (s_metadataValue != NULL) {
-            const char *char_metadataValue = env->GetStringUTFChars(s_metadataValue, 0);
-            revEntityMetadata._metadataValue = strdup(char_metadataValue);
-            env->ReleaseStringUTFChars(s_metadataValue, char_metadataValue);
+        if (s_revMetadataValue != NULL) {
+            const char *char_revMetadataValue = env->GetStringUTFChars(s_revMetadataValue, 0);
+            revEntityMetadata._revMetadataValue = strdup(char_revMetadataValue);
+            env->ReleaseStringUTFChars(s_revMetadataValue, char_revMetadataValue);
         }
 
         /** End METADATA Value **/
@@ -416,12 +415,12 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
         long revEntityMetadataOwnerGUID = (env)->CallLongMethod(revEntityMetadataOwnerGUID_JOB, longGetLongValue);
 
         if (revEntityMetadataOwnerGUID > 0) {
-            revEntityMetadata._metadataOwnerGUID = revEntityMetadataOwnerGUID;
+            revEntityMetadata._revMetadataEntityGUID = revEntityMetadataOwnerGUID;
         }
 
         /** End METADATA CONTAINER ENTITY GUID **/
 
-        revEntityMetadata._metadataId = revPersSaveRevEntityMetadata(&revEntityMetadata);
+        revEntityMetadata._revMetadataID = revPersSaveRevEntityMetadata(&revEntityMetadata);
 
         list_append(&list, &revEntityMetadata);
 
@@ -465,9 +464,9 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
     RevEntityMetadata c_revEntityMetadata;
 
     /** SET METADATA RESOLVE STATUS **/
-    jmethodID get_resolveStatus_MID = env->GetMethodID(revEntityMetadataClazz, "get_resolveStatus", "()I");
-    long _resolveStatus = env->CallIntMethod(revEntityMetadata, get_resolveStatus_MID);
-    c_revEntityMetadata._resolveStatus = _resolveStatus;
+    jmethodID get_revResolveStatus_MID = env->GetMethodID(revEntityMetadataClazz, "get_revResolveStatus", "()I");
+    long _revResolveStatus = env->CallIntMethod(revEntityMetadata, get_revResolveStatus_MID);
+    c_revEntityMetadata._revResolveStatus = _revResolveStatus;
 
     /** End METADATA RESOLVE STATUS **/
 
@@ -477,20 +476,20 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
     if (s_revMetadataName != NULL) {
         const char *char_revMetadataName = env->GetStringUTFChars(s_revMetadataName, 0);
-        c_revEntityMetadata._metadataName = strdup(char_revMetadataName);
+        c_revEntityMetadata._revMetadataName = strdup(char_revMetadataName);
         env->ReleaseStringUTFChars(s_revMetadataName, char_revMetadataName);
     }
 
     /** End METADATA Name **/
 
     /** Start METADATA Value **/
-    jmethodID methodId_get_metadataValue = env->GetMethodID(revEntityMetadataClazz, "get_metadataValue", "()Ljava/lang/String;");
-    jstring s_metadataValue = (jstring) env->CallObjectMethod(revEntityMetadata, methodId_get_metadataValue);
+    jmethodID methodId_get_revMetadataValue = env->GetMethodID(revEntityMetadataClazz, "get_revMetadataValue", "()Ljava/lang/String;");
+    jstring s_revMetadataValue = (jstring) env->CallObjectMethod(revEntityMetadata, methodId_get_revMetadataValue);
 
-    if (s_metadataValue != NULL) {
-        const char *char_metadataValue = env->GetStringUTFChars(s_metadataValue, 0);
-        c_revEntityMetadata._metadataValue = strdup(char_metadataValue);
-        env->ReleaseStringUTFChars(s_metadataValue, char_metadataValue);
+    if (s_revMetadataValue != NULL) {
+        const char *char_revMetadataValue = env->GetStringUTFChars(s_revMetadataValue, 0);
+        c_revEntityMetadata._revMetadataValue = strdup(char_revMetadataValue);
+        env->ReleaseStringUTFChars(s_revMetadataValue, char_revMetadataValue);
     }
 
     /** End METADATA Value **/
@@ -504,12 +503,12 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
                                                                  "getRemoteRevMetadataId",
                                                                  "()Ljava/lang/Long;");
     jobject revRemoteRevMetadataId_JOB = env->CallObjectMethod(revEntityMetadata, methodId_getRemoteRevMetadataId);
-    long remoteRevMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
+    long _revRemoteMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
 
-    if (remoteRevMetadataId > 0) {
-        c_revEntityMetadata._remoteRevMetadataId = remoteRevMetadataId;
+    if (_revRemoteMetadataId > 0) {
+        c_revEntityMetadata._revRemoteMetadataId = _revRemoteMetadataId;
     } else {
-        c_revEntityMetadata._remoteRevMetadataId = -1l;
+        c_revEntityMetadata._revRemoteMetadataId = -1l;
     }
 
     /** End REMOTE METADATA ID **/
@@ -525,7 +524,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
                                                             longGetLongValue);
 
     if (revEntityMetadataOwnerGUID > 0) {
-        c_revEntityMetadata._metadataOwnerGUID = revEntityMetadataOwnerGUID;
+        c_revEntityMetadata._revMetadataEntityGUID = revEntityMetadataOwnerGUID;
     }
 
     /** End METADATA CONTAINER ENTITY GUID **/
@@ -602,11 +601,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRelationsh
 
     /** START GET REMOTE SUBJECT GUID **/
 
-    jmethodID get_remoteRevevEntitySubjectGUID_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_remoteRevEntitySubjectGUID", "()Ljava/lang/Long;");
+    jmethodID get_remoteRevevEntitySubjectGUID_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_revRemoteEntitySubjectGUID", "()Ljava/lang/Long;");
     jobject _remoteRevevEntitySubjectGUID_JOB = env->CallObjectMethod(revEntityRelationship, get_remoteRevevEntitySubjectGUID_MethodID);
     long _remoteRevevEntitySubjectGUID = (env)->CallLongMethod(_remoteRevevEntitySubjectGUID_JOB, longGetLongValue);
 
-    c_RevEntityRelationship._remoteRevEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
+    c_RevEntityRelationship._revRemoteEntitySubjectGUID = _remoteRevevEntitySubjectGUID;
 
     /** END GET REMOTE SUBJECT GUID **/
 
@@ -622,12 +621,12 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRelationsh
 
     /** START GET REMOTE TARGET GUID **/
 
-    jmethodID get_remoteRevEntityTargetGUID_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_remoteRevEntityTargetGUID", "()Ljava/lang/Long;");
-    jobject _remoteRevEntityTargetGUID_JOB = env->CallObjectMethod(revEntityRelationship, get_remoteRevEntityTargetGUID_MethodID);
+    jmethodID get_revRemoteEntityTargetGUID_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_revRemoteEntityTargetGUID", "()Ljava/lang/Long;");
+    jobject _revRemoteEntityTargetGUID_JOB = env->CallObjectMethod(revEntityRelationship, get_revRemoteEntityTargetGUID_MethodID);
 
-    long _remoteRevEntityTargetGUID = (env)->CallLongMethod(_remoteRevEntityTargetGUID_JOB, longGetLongValue);
+    long _revRemoteEntityTargetGUID = (env)->CallLongMethod(_revRemoteEntityTargetGUID_JOB, longGetLongValue);
 
-    c_RevEntityRelationship._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+    c_RevEntityRelationship._revRemoteEntityTargetGUID = _revRemoteEntityTargetGUID;
 
     /** END GET REMOTE TARGET GUID **/
 
@@ -643,28 +642,32 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRelationsh
 
     /** START GET REMOTE VALUE ID GUID **/
 
-    jmethodID get_remoteRevEntityRelationshipId_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_remoteRevEntityRelationshipId", "()Ljava/lang/Long;");
-    jobject remoteRevEntityRelationshipId_Obj = env->CallObjectMethod(revEntityRelationship, get_remoteRevEntityRelationshipId_MethodID);
-    long _remoteRevEntityRelationshipId = (env)->CallLongMethod(remoteRevEntityRelationshipId_Obj, longGetLongValue);
+    jmethodID get_revRemoteEntityRelationshipId_MethodID = env->GetMethodID(revEntityRelationshipClazz, "get_revRemoteEntityRelationshipId", "()Ljava/lang/Long;");
+    jobject remoteRevEntityRelationshipId_Obj = env->CallObjectMethod(revEntityRelationship, get_revRemoteEntityRelationshipId_MethodID);
+    long _revRemoteEntityRelationshipId = (env)->CallLongMethod(remoteRevEntityRelationshipId_Obj, longGetLongValue);
 
-    c_RevEntityRelationship._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+    c_RevEntityRelationship._revRemoteEntityRelationshipId = _revRemoteEntityRelationshipId;
 
     /** END GET REMOTE VALUE ID **/
 
     /** SET REV CREATED DATE TIME **/
-    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimeCreated", "()J");
-    long _revTimeCreated = (env)->CallLongMethod(revEntityRelationship, get_revTimeCreated_MID);
-    c_RevEntityRelationship._revTimeCreated = _revTimeCreated;
+    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimeCreated", "()Ljava/lang/Long;");
+    jobject _revTimeCreated_Obj = (env)->CallObjectMethod(revEntityRelationship, get_revTimeCreated_MID);
+    long _revTimeCreated_Id = (env)->CallLongMethod(_revTimeCreated_Obj, longGetLongValue);
+    c_RevEntityRelationship._revTimeCreated = _revTimeCreated_Id;
 
     /** SET REV TIME PUBLISHED TIME **/
-    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimePublished", "()J");
-    long _revTimePublished = (env)->CallLongMethod(revEntityRelationship, get_revTimePublished_MID);
-    c_RevEntityRelationship._revTimePublished = _revTimePublished;
+    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimePublished", "()Ljava/lang/Long;");
+    jobject _revTimePublished_Obj = (env)->CallObjectMethod(revEntityRelationship, get_revTimePublished_MID);
+    long _revTimePublishedId = (env)->CallLongMethod(_revTimePublished_Obj, longGetLongValue);
+
+    c_RevEntityRelationship._revTimePublished = _revTimePublishedId;
 
     /** SET PUBLISHED UPDATED TIME **/
-    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimePublishedUpdated", "()J");
-    long _revTimePublishedUpdated = (env)->CallLongMethod(revEntityRelationship, get_revTimePublishedUpdated_MID);
-    c_RevEntityRelationship._revTimePublishedUpdated = _revTimePublishedUpdated;
+    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityRelationshipClazz, "get_revTimePublishedUpdated", "()Ljava/lang/Long;");
+    jobject _revTimePublishedUpdated_Obj = (env)->CallObjectMethod(revEntityRelationship, get_revTimePublishedUpdated_MID);
+    long _revTimePublishedUpdated_Id = (env)->CallLongMethod(_revTimePublishedUpdated_Obj, longGetLongValue);
+    c_RevEntityRelationship._revTimePublishedUpdated = _revTimePublishedUpdated_Id;
 
     /** END REV SETS**/
 
@@ -706,15 +709,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
     c_RevAnnotation._revAnnotationResStatus = _revResolveStatus;
 
     /** START GET RESOLVE STATUS **/
-
-    /** END GET REV ANN NAME ID **/
-
-    jmethodID get_revAnnotationNameId_MethodID = env->GetMethodID(revEntityAnnotationClazz, "get_revAnnotationNameId", "()I");
-    jint _revAnnotationNameId = env->CallIntMethod(revAnnotation, get_revAnnotationNameId_MethodID);
-
-    c_RevAnnotation._revAnnotationNameId = (int) _revAnnotationNameId;
-
-    /** END GET REV ANN NAME ID **/
 
     /** START Set Rev Entity Annotation Name **/
 
@@ -838,35 +832,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
     env->ReleaseStringUTFChars(_revAnnotationValue_, _revAnnotationValue);
 
     return revAnnotationId;
-}
-
-// Define the JNI function
-JNIEXPORT void JNICALL
-Java_com_example_yourpackage_yourclass_openFile(JNIEnv *env, jobject thiz, jstring uriString) {
-    const char *uri = (env)->GetStringUTFChars(uriString, 0);
-
-    // Get the content URI as a Java object
-    jclass uriClass = (env)->FindClass("android/net/Uri");
-    jmethodID parseMethod = (env)->GetStaticMethodID(uriClass, "parse",
-                                                     "(Ljava/lang/String;)Landroid/net/Uri;");
-    jobject contentUri = (env)->CallStaticObjectMethod(uriClass, parseMethod, uri);
-
-    // Get the ContentResolver from the current context
-    jclass contextClass = (env)->GetObjectClass(thiz);
-    jmethodID getContentResolverMethod = (env)->GetMethodID(contextClass, "getContentResolver", "()Landroid/content/ContentResolver;");
-    jobject contentResolver = (env)->CallObjectMethod(thiz, getContentResolverMethod);
-
-    // Open an InputStream for the content URI
-    jclass openableClass = (env)->FindClass("android/os/ParcelFileDescriptor");
-    jmethodID openMethod = (env)->GetStaticMethodID(openableClass, "open", "(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;");
-    jobject fileDescriptor = (env)->CallStaticObjectMethod(openableClass, openMethod, contentUri, "r");
-
-    // Use the file descriptor or convert it to a regular file descriptor using ParcelFileDescriptor.getFileDescriptor() if needed
-
-    // Clean up
-    (env)->ReleaseStringUTFChars(uriString, uri);
-    (env)->DeleteLocalRef(contentUri);
-    (env)->DeleteLocalRef(fileDescriptor);
 }
 
 extern "C"

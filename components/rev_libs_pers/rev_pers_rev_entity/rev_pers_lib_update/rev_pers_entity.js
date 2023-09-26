@@ -32,12 +32,12 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
     for (let i = 0; i < revSavedMetadataDuplicatesArr.length; i++) {
       let revCurrDuplicateMetadata = revSavedMetadataDuplicatesArr[i];
       let revCurrDuplicateMetadataRemId =
-        revCurrDuplicateMetadata.remoteRevMetadataId;
+        revCurrDuplicateMetadata._revRemoteMetadataId;
 
       /** REV START GET LAST ONES ADDED */
       for (let j = 0; j < revSavedMetadataDuplicatesArr.length; j++) {
         let revSavedMetadataDuplicatesArrRemId =
-          revSavedMetadataDuplicatesArr[j].remoteRevMetadataId;
+          revSavedMetadataDuplicatesArr[j]._revRemoteMetadataId;
 
         if (
           revCurrDuplicateMetadataRemId == revSavedMetadataDuplicatesArrRemId
@@ -55,10 +55,10 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         }
 
         let revCurrDuplicateMetadataDate = Number(
-          revCurrDuplicateMetadata._revPublishedDate,
+          revCurrDuplicateMetadata._revTimePublished,
         );
         let revSavedMetadataDuplicateDate = Number(
-          revSavedMetadataDuplicatesArr[j]._revPublishedDate,
+          revSavedMetadataDuplicatesArr[j]._revTimePublished,
         );
 
         if (
@@ -79,7 +79,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
 
       let revMetadataName = revUpdateMetadata._revMetadataName;
 
-      let revUpdateMetadataValue = revUpdateMetadata._metadataValue;
+      let revUpdateMetadataValue = revUpdateMetadata._revMetadataValue;
       let revOriginalMetadataValue = revGetMetadataValue(
         revOriginalMetatadataArr,
         revMetadataName,
@@ -88,7 +88,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       if (!revOriginalMetadataValue || !revUpdateMetadata._revIsUnique) {
         let revIsInOriginalMetadataList = revArrIncludesElement(
           revGetMetadataValuesArr(revOriginalMetatadataArr, revMetadataName),
-          revUpdateMetadata._metadataValue,
+          revUpdateMetadata._revMetadataValue,
         );
         let revIsUpdateDuplicateVal = revIsDuplicateMetadata(
           revEntityUpdateMetaDataArr,
@@ -104,13 +104,13 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         revOriginalMetadataValue &&
         revOriginalMetadataValue.localeCompare(revUpdateMetadataValue) !== 0
       ) {
-        let remoteRevMetadataId = revGetRemoteMetadataId(
+        let _revRemoteMetadataId = revGetRemoteMetadataId(
           revOriginalMetatadataArr,
           revMetadataName,
         );
 
-        if (remoteRevMetadataId && remoteRevMetadataId > 0) {
-          revUpdateMetadata.remoteRevMetadataId = remoteRevMetadataId;
+        if (_revRemoteMetadataId && _revRemoteMetadataId > 0) {
+          revUpdateMetadata._revRemoteMetadataId = _revRemoteMetadataId;
           revEntityUpdateMetaDataArr.push(revUpdateMetadata);
         }
       }
@@ -136,7 +136,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
           if (
             !revArrIncludesElement(
               revUpdateMetadataValuesArr,
-              revOriginalMetatadata._metadataValue,
+              revOriginalMetatadata._revMetadataValue,
             )
           ) {
             revEntityDeleteMetadataArr.push(revOriginalMetatadata);
@@ -155,15 +155,15 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       for (let dup = 0; dup < revMetadataDuplicatesArr.length; dup++) {
         let revMetadata = revMetadataDuplicatesArr[dup];
 
-        if (revMetadata.remoteRevMetadataId < 1) {
+        if (revMetadata._revRemoteMetadataId < 1) {
           continue;
         }
 
         /** REV START GET LAST ONES ADDED */
         for (let i = 0; i < revMetadataDuplicatesArr.length; i++) {
           if (
-            revMetadata._revPublishedDate &&
-            revMetadata._revPublishedDate <
+            revMetadata._revTimePublished &&
+            revMetadata._revTimePublished <
               revMetadataDuplicatesArr[i]._revTimePublished
           ) {
             continue;

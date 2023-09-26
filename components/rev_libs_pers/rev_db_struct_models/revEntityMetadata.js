@@ -1,20 +1,20 @@
 var REV_ENTITY_METADATA_STRUCT = () => {
   return {
-    _resolveStatus: -1,
-    remoteRevMetadataId: -1,
+    _revResolveStatus: -1,
+    _revRemoteMetadataId: -1,
     _revMetadataEntityGUID: -1,
     _revMetadataName: '',
-    _metadataValue: '',
-    _timeCreated: '',
+    _revMetadataValue: '',
     _revTimeCreated: '',
-    _revPublishedDate: '',
+    _revTimeCreated: '',
+    _revTimePublished: '',
   };
 };
 
 var REV_METADATA_FILLER = (revMetadataName, revMetadataVal) => {
   let revMetadata = REV_ENTITY_METADATA_STRUCT();
   revMetadata._revMetadataName = revMetadataName;
-  revMetadata._metadataValue = revMetadataVal;
+  revMetadata._revMetadataValue = revMetadataVal;
 
   return revMetadata;
 };
@@ -37,8 +37,8 @@ var revGetMetadataValue = (revEntityMetadataList, revMetadataName) => {
     let revIsinfo =
       revCurrMetadata._revMetadataName.localeCompare(revMetadataName);
 
-    if (revIsinfo == 0 && revCurrMetadata._metadataValue) {
-      revMetadataValue = revCurrMetadata._metadataValue;
+    if (revIsinfo == 0 && revCurrMetadata._revMetadataValue) {
+      revMetadataValue = revCurrMetadata._revMetadataValue;
       break;
     }
   }
@@ -62,8 +62,8 @@ export var revGetMetadataValuesArr = (
         revMetadataName,
       ) == 0;
 
-    if (revIsinfo && revEntityMetadataList[i]._metadataValue) {
-      revMetadataValuesArr.push(revEntityMetadataList[i]._metadataValue);
+    if (revIsinfo && revEntityMetadataList[i]._revMetadataValue) {
+      revMetadataValuesArr.push(revEntityMetadataList[i]._revMetadataValue);
     }
   }
 

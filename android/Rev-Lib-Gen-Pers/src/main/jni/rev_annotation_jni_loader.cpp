@@ -25,7 +25,6 @@ REV_ENTITY_ANNOTATION_JNI_POSREC *LoadRevEntityAnnotationJniPosRec(JNIEnv *env) 
 
     rev_entity_annotation_jni_posrec->_revAnnotationResStatus = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationResStatus", "I");
 
-    rev_entity_annotation_jni_posrec->_revAnnotationNameId = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationNameId", "I");
     rev_entity_annotation_jni_posrec->_revAnnotationName = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationName", "Ljava/lang/String;");
     rev_entity_annotation_jni_posrec->_revAnnotationValue = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationValue", "Ljava/lang/String;");
 
@@ -38,27 +37,20 @@ REV_ENTITY_ANNOTATION_JNI_POSREC *LoadRevEntityAnnotationJniPosRec(JNIEnv *env) 
     rev_entity_annotation_jni_posrec->_revAnnOwnerEntityGUID = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnOwnerEntityGUID", "Ljava/lang/Long;");
     rev_entity_annotation_jni_posrec->_revAnnRemoteOwnerEntityGUID = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnRemoteOwnerEntityGUID", "Ljava/lang/Long;");
 
-    rev_entity_annotation_jni_posrec->_revAnnotationTimeCreated = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationTimeCreated", "Ljava/lang/String;");
-    rev_entity_annotation_jni_posrec->_revAnnotationTimeUpdated = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revAnnotationTimeUpdated", "Ljava/lang/String;");
-
-    rev_entity_annotation_jni_posrec->_revTimeCreated = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimeCreated", "J");
-    rev_entity_annotation_jni_posrec->_revTimePublished = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimePublished", "J");
-    rev_entity_annotation_jni_posrec->_revTimePublishedUpdated = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimePublishedUpdated", "J");
+    rev_entity_annotation_jni_posrec->_revTimeCreated_ID = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimeCreated", "Ljava/lang/Long;");
+    rev_entity_annotation_jni_posrec->_revTimePublished_ID = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimePublished", "Ljava/lang/Long;");
+    rev_entity_annotation_jni_posrec->_revTimePublishedUpdated_ID = env->GetFieldID(rev_entity_annotation_jni_posrec->cls, "_revTimePublishedUpdated", "Ljava/lang/Long;");
 
     return rev_entity_annotation_jni_posrec;
-
 }
 
-void FillDataRecValuesToRevAnnotationJni(JNIEnv *env, jobject jPosRec, RevEntityAnnotation revEntityAnnotation) {
+void FillDataRecValuesToRevAnnotationJni(JNIEnv *env, jobject revJPosRec, RevEntityAnnotation revEntityAnnotation) {
     __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> FillDataRecValuesToRevAnnotationJni <<<");
 
     rev_entity_annotation_jni_posrec = LoadRevEntityAnnotationJniPosRec(env);
 
     jint _revAnnotationResStatus = revEntityAnnotation._revAnnotationResStatus;
-    env->SetIntField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationResStatus, _revAnnotationResStatus);
-
-    jint _revAnnotationNameId = revEntityAnnotation._revAnnotationNameId;
-    env->SetIntField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationNameId, _revAnnotationNameId);
+    env->SetIntField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnotationResStatus, _revAnnotationResStatus);
 
     char *_revAnnotationValue = revEntityAnnotation._revAnnotationValue;
 
@@ -72,31 +64,43 @@ void FillDataRecValuesToRevAnnotationJni(JNIEnv *env, jobject jPosRec, RevEntity
     long _revAnnOwnerEntityGUID = revEntityAnnotation._revAnnOwnerEntityGUID;
     long _revAnnRemoteOwnerEntityGUID = revEntityAnnotation._revAnnRemoteOwnerEntityGUID;
 
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationValue, env->NewStringUTF(_revAnnotationValue));
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnotationValue, env->NewStringUTF(_revAnnotationValue));
 
-    jclass clsLong = (env)->FindClass("java/lang/Long");
-    jmethodID const_MethodId = env->GetMethodID(clsLong, "<init>", "(J)V");
+    jclass revJClassLong = (env)->FindClass("java/lang/Long");
+    jmethodID revLongMethodId = env->GetMethodID(revJClassLong, "<init>", "(J)V");
 
-    jobject _revAnnotationId_Obj = env->NewObject(clsLong, const_MethodId, _revAnnotationId);
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationId, _revAnnotationId_Obj);
+    jobject _revAnnotationId_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) _revAnnotationId);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnotationId, _revAnnotationId_Obj);
     env->DeleteLocalRef(_revAnnotationId_Obj);
 
-    jobject _revAnnotationEntityGUID_Obj = env->NewObject(clsLong, const_MethodId, _revAnnotationEntityGUID);
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationEntityGUID, _revAnnotationEntityGUID_Obj);
+    jobject _revAnnotationEntityGUID_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) _revAnnotationEntityGUID);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnotationEntityGUID, _revAnnotationEntityGUID_Obj);
     env->DeleteLocalRef(_revAnnotationEntityGUID_Obj);
 
-    jobject _revAnnotationRemoteEntityGUID_Obj = env->NewObject(clsLong, const_MethodId, _revAnnotationRemoteEntityGUID);
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnotationRemoteEntityGUID, _revAnnotationRemoteEntityGUID_Obj);
+    jobject _revAnnotationRemoteEntityGUID_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) _revAnnotationRemoteEntityGUID);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnotationRemoteEntityGUID, _revAnnotationRemoteEntityGUID_Obj);
     env->DeleteLocalRef(_revAnnotationRemoteEntityGUID_Obj);
 
-    jobject _revAnnOwnerEntityGUID_Obj = env->NewObject(clsLong, const_MethodId, _revAnnOwnerEntityGUID);
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnOwnerEntityGUID, _revAnnOwnerEntityGUID_Obj);
+    jobject _revAnnOwnerEntityGUID_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) _revAnnOwnerEntityGUID);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnOwnerEntityGUID, _revAnnOwnerEntityGUID_Obj);
     env->DeleteLocalRef(_revAnnOwnerEntityGUID_Obj);
 
-    jobject _revAnnRemoteOwnerEntityGUID_Obj = env->NewObject(clsLong, const_MethodId, _revAnnRemoteOwnerEntityGUID);
-    env->SetObjectField(jPosRec, rev_entity_annotation_jni_posrec->_revAnnRemoteOwnerEntityGUID, _revAnnRemoteOwnerEntityGUID_Obj);
+    jobject _revAnnRemoteOwnerEntityGUID_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) _revAnnRemoteOwnerEntityGUID);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revAnnRemoteOwnerEntityGUID, _revAnnRemoteOwnerEntityGUID_Obj);
     env->DeleteLocalRef(_revAnnRemoteOwnerEntityGUID_Obj);
 
-    jlong _revTimeCreated = revEntityAnnotation._revTimeCreated;
-    env->SetLongField(jPosRec, rev_entity_annotation_jni_posrec->_revTimeCreated, _revTimeCreated);
+    /** _revTimeCreated **/
+    jobject revTimeCreated_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) revEntityAnnotation._revTimeCreated);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revTimeCreated_ID, revTimeCreated_Obj);
+    env->DeleteLocalRef(revTimeCreated_Obj);
+
+    /** _revTimePublishedUpdated **/
+    jobject _revTimePublished_ID_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) revEntityAnnotation._revTimePublished);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revTimePublished_ID, _revTimePublished_ID_Obj);
+    env->DeleteLocalRef(_revTimePublished_ID_Obj);
+
+    /** _revTimePublishedUpdated **/
+    jobject _revTimePublishedUpdated_Obj = env->NewObject(revJClassLong, revLongMethodId, (long long) revEntityAnnotation._revTimePublishedUpdated);
+    env->SetObjectField(revJPosRec, rev_entity_annotation_jni_posrec->_revTimePublishedUpdated_ID, _revTimePublishedUpdated_Obj);
+    env->DeleteLocalRef(_revTimePublishedUpdated_Obj);
 }

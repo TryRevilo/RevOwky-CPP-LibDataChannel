@@ -18,10 +18,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.io.File;
-import java.util.List;
 
 import rev.ca.rev_gen_lib_pers.c_libs_core.RevPersLibCreate;
-import rev.ca.rev_gen_lib_pers.rev_server_client.RevJSONEntityConstructor;
 
 public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
     public RevPersLibCreate_React(ReactApplicationContext reactContext) {

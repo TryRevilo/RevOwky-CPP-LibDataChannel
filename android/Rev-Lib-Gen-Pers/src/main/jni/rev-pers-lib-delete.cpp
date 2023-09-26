@@ -70,7 +70,7 @@ bool revSetDelMetadataResStatus(void *revMetadataID, int revResStatus) {
 
     RevEntityMetadata *revEntityMetadata = revPersGetRevEntityMetadata_By_MetadataId(revPassLong);
 
-    if (revEntityMetadata->_resolveStatus == -1) {
+    if (revEntityMetadata->_revResolveStatus == -1) {
         return revDeleteEntityMetadata_By_ID(revPassLong);
     } else {
         return setMetadataResolveStatus_BY_METADATA_ID(revResStatus, revPassLong);

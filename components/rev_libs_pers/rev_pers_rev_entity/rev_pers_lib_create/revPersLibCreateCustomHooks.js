@@ -468,7 +468,7 @@ export const useRevSaveNewEntity = () => {
       for (let i = 0; i < revPersEntityInfoMetadataList.length; i++) {
         let revPersEntityInfoMetadata = revPersEntityInfoMetadataList[i];
 
-        let revUpdateMetadataVal = revPersEntityInfoMetadata._metadataValue;
+        let revUpdateMetadataVal = revPersEntityInfoMetadata._revMetadataValue;
 
         let revMetadata =
           revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(
@@ -477,13 +477,13 @@ export const useRevSaveNewEntity = () => {
           );
 
         let revMetadataId = revMetadata.revMetadataId;
-        let revMetadataValue = revMetadata._metadataValue;
+        let revMetadataValue = revMetadata._revMetadataValue;
 
         if (
           revStringEmpty(revUpdateMetadataVal) ||
           revCompareStrings(
             revMetadataValue,
-            revPersEntityInfoMetadata._metadataValue,
+            revPersEntityInfoMetadata._revMetadataValue,
           ) == 0
         ) {
           continue;

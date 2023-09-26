@@ -14,7 +14,7 @@ var REV_ENTITY_RELATIONSHIP_STRUCT = () => {
     _revEntityRelationshipId: -1,
     _revEntityRelationshipRemoteId: -1,
 
-    _timeCreated: '',
+    _revTimeCreated: '',
     _timeUpdated: '',
 
     revTimeCreated: -1,

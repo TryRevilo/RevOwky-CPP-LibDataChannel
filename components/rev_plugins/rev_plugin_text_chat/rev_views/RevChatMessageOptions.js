@@ -57,7 +57,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
   );
   /** END GET PUBLISHER */
 
-  let revTimeCreated = revData._timeCreated;
+  let revTimeCreated = revData._revTimeCreated;
 
   let revChatMsgStr = revGetMetadataValue(
     revMsgInfoEntity._revEntityMetadataList,

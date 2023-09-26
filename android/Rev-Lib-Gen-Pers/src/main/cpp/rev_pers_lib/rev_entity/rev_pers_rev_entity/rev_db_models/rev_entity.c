@@ -27,11 +27,11 @@ htable_strstr_t *revGetEntityDB_Keys() {
     htable_strstr_insert(revMap, "_revEntityAccessPermission", "REV_ENTITY_ACCESS_PERMISSION");
     htable_strstr_insert(revMap, "_revEntitySiteGUID", "REV_ENTITY_SITE_GUID");
     htable_strstr_insert(revMap, "_revEntityGUID", "REV_ENTITY_GUID");
-    htable_strstr_insert(revMap, "_remoteRevEntityGUID", "REMOTE_REV_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_revRemoteEntityGUID", "REMOTE_REV_ENTITY_GUID");
     htable_strstr_insert(revMap, "_revEntityOwnerGUID", "REV_ENTITY_OWNER_GUID");
     htable_strstr_insert(revMap, "_revContainerEntityGUID", "REV_ENTITY_CONTAINER_GUID");
     htable_strstr_insert(revMap, "_revTimeCreated", "REV_CREATED_DATE");
-    htable_strstr_insert(revMap, "_timeUpdated", "REV_UPDATED_DATE");
+    htable_strstr_insert(revMap, "_revTimePublishedUpdated", "REV_UPDATED_DATE");
     htable_strstr_insert(revMap, "_revTimePublished", "REV_PUBLISHED_DATE");
     htable_strstr_insert(revMap, "revLimit", "LIMIT");
 
@@ -50,11 +50,11 @@ htable_strstr_t *revGetMapped_Entity_Key_DBFieldName() {
     htable_strstr_insert(revMap, "REV_ENTITY_ACCESS_PERMISSION", "_revEntityAccessPermission");
     htable_strstr_insert(revMap, "REV_ENTITY_SITE_GUID", "_revEntitySiteGUID");
     htable_strstr_insert(revMap, "REV_ENTITY_GUID", "_revEntityGUID");
-    htable_strstr_insert(revMap, "REMOTE_REV_ENTITY_GUID", "_remoteRevEntityGUID");
+    htable_strstr_insert(revMap, "REMOTE_REV_ENTITY_GUID", "_revRemoteEntityGUID");
     htable_strstr_insert(revMap, "REV_ENTITY_OWNER_GUID", "_revEntityOwnerGUID");
     htable_strstr_insert(revMap, "REV_ENTITY_CONTAINER_GUID", "_revContainerEntityGUID");
     htable_strstr_insert(revMap, "REV_CREATED_DATE", "_revTimeCreated");
-    htable_strstr_insert(revMap, "REV_UPDATED_DATE", "_timeUpdated");
+    htable_strstr_insert(revMap, "REV_UPDATED_DATE", "_revTimePublishedUpdated");
     htable_strstr_insert(revMap, "REV_PUBLISHED_DATE", "_revTimePublished");
 
     return revMap;
@@ -74,14 +74,14 @@ RevEntity *revInitializedEntity() {
     revEntity->_revEntityAccessPermission = -1;
 
     revEntity->_revEntityGUID = -1;
-    revEntity->_remoteRevEntityGUID = -1;
+    revEntity->_revRemoteEntityGUID = -1;
     revEntity->_revOwnerEntityGUID = -1;
     revEntity->_revContainerEntityGUID = -1;
     revEntity->_remoteRevEntityContainerGUID = -1;
     revEntity->_revEntitySiteGUID = -1;
 
-    revEntity->_timeCreated = "";
-    revEntity->_timeUpdated = "";
+    revEntity->_revTimeCreated = "";
+    revEntity->_revTimePublishedUpdated = "";
 
     revEntity->_revTimeCreated = -1;
     revEntity->_revTimePublished = -1;
@@ -156,12 +156,12 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
         revEntity->_revEntityGUID = _revEntityGUIDVal;
     }
 
-    // _remoteRevEntityGUID
-    const cJSON *_remoteRevEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_remoteRevEntityGUID");
+    // _revRemoteEntityGUID
+    const cJSON *_revRemoteEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revRemoteEntityGUID");
 
-    if (cJSON_IsNumber(_remoteRevEntityGUID) && (_remoteRevEntityGUID->valueint != NULL)) {
-        long _remoteRevEntityGUIDVal = _remoteRevEntityGUID->valueint;
-        revEntity->_remoteRevEntityGUID = _remoteRevEntityGUIDVal;
+    if (cJSON_IsNumber(_revRemoteEntityGUID) && (_revRemoteEntityGUID->valueint != NULL)) {
+        long _revRemoteEntityGUIDVal = _revRemoteEntityGUID->valueint;
+        revEntity->_revRemoteEntityGUID = _revRemoteEntityGUIDVal;
     }
 
     // _revOwnerEntityGUID
@@ -204,22 +204,6 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
 
         RevEntity *revInfoEntity = revJSONEntityFiller(_revInfoEntityStrVal);
         revEntity->_revInfoEntity = revInfoEntity;
-    }
-
-    // _timeCreated
-    const cJSON *_timeCreated = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_timeCreated");
-
-    if (cJSON_IsString(_timeCreated) && (_timeCreated->valuestring != NULL)) {
-        char *_timeCreatedVal = _timeCreated->valuestring;
-        revEntity->_timeCreated = _timeCreatedVal;
-    }
-
-    // _timeUpdated
-    const cJSON *_timeUpdated = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_timeUpdated");
-
-    if (cJSON_IsString(_timeUpdated) && (_timeUpdated->valuestring != NULL)) {
-        char *_timeUpdatedVal = _timeUpdated->valuestring;
-        revEntity->_timeUpdated = _timeUpdatedVal;
     }
 
     // _revTimeCreated

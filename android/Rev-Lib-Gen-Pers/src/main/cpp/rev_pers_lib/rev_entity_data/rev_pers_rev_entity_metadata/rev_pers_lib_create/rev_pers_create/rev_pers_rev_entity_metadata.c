@@ -36,11 +36,11 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
     if (!db)
         return -1;
 
-    int _resolveStatus = revEntityMetadata->_resolveStatus;
-    long metadataOwnerGUID = revEntityMetadata->_metadataOwnerGUID;
-    long remoteRevMetadataId = revEntityMetadata->_remoteRevMetadataId;
-    char *metadataName = revEntityMetadata->_metadataName;
-    char *metadataValue = revEntityMetadata->_metadataValue;
+    int _revResolveStatus = revEntityMetadata->_revResolveStatus;
+    long metadataOwnerGUID = revEntityMetadata->_revMetadataEntityGUID;
+    long _revRemoteMetadataId = revEntityMetadata->_revRemoteMetadataId;
+    char *metadataName = revEntityMetadata->_revMetadataName;
+    char *metadataValue = revEntityMetadata->_revMetadataValue;
     char *currTime = (char *) revGetCurrentTime();
 
     long _revTimeCreated = revCurrentTimestampMillSecs();
@@ -70,20 +70,20 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
             " ) "
             "values"
             " ( "
-            "@_resolveStatus, @revEntityGUID, @remoteRevMetadataId, @metadataName, @metadataValue, @createdTime, @updatedTime, @_revTimeCreated, @_revTimePublished, @_revTimePublishedUpdated"
+            "@_revResolveStatus, @revEntityGUID, @_revRemoteMetadataId, @metadataName, @metadataValue, @createdTime, @updatedTime, @_revTimeCreated, @_revTimePublished, @_revTimePublishedUpdated"
             " ) ";
 
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, 0);
 
     if (rc == SQLITE_OK) {
-        int _resolveStatus_idx = sqlite3_bind_parameter_index(stmt, "@_resolveStatus");
-        sqlite3_bind_int(stmt, _resolveStatus_idx, _resolveStatus);
+        int _revResolveStatus_idx = sqlite3_bind_parameter_index(stmt, "@_revResolveStatus");
+        sqlite3_bind_int(stmt, _revResolveStatus_idx, _revResolveStatus);
 
         int revEntityOwnerGUID_idx = sqlite3_bind_parameter_index(stmt, "@revEntityGUID");
         sqlite3_bind_int64(stmt, revEntityOwnerGUID_idx, metadataOwnerGUID);
 
-        int remoteRevMetadataId_idx = sqlite3_bind_parameter_index(stmt, "@remoteRevMetadataId");
-        sqlite3_bind_int64(stmt, remoteRevMetadataId_idx, remoteRevMetadataId);
+        int _revRemoteMetadataId_idx = sqlite3_bind_parameter_index(stmt, "@_revRemoteMetadataId");
+        sqlite3_bind_int64(stmt, _revRemoteMetadataId_idx, _revRemoteMetadataId);
 
         int metadataName_idx = sqlite3_bind_parameter_index(stmt, "@metadataName");
         sqlite3_bind_text(stmt, metadataName_idx, metadataName, -1, SQLITE_STATIC);

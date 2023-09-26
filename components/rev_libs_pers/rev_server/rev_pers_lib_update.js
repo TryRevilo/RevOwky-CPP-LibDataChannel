@@ -32,8 +32,8 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       /** REV START GET LAST ONES ADDED */
       for (let t = 0; t < revSavedMetadataDuplicatesArr.length; t++) {
         if (
-          revCurrDuplicateMetadata.remoteRevMetadataId ==
-          revSavedMetadataDuplicatesArr[t].remoteRevMetadataId
+          revCurrDuplicateMetadata._revRemoteMetadataId ==
+          revSavedMetadataDuplicatesArr[t]._revRemoteMetadataId
         ) {
           continue;
         }
@@ -48,10 +48,10 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         }
 
         let revCurrDuplicateMetadataDate = Number(
-          revCurrDuplicateMetadata._revPublishedDate,
+          revCurrDuplicateMetadata._revTimePublished,
         );
         let revSavedMetadataDuplicateDate = Number(
-          revSavedMetadataDuplicatesArr[t]._revPublishedDate,
+          revSavedMetadataDuplicatesArr[t]._revTimePublished,
         );
 
         if (
@@ -74,7 +74,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
 
       let revMetadataName = revUpdateMetadata._revMetadataName;
 
-      let revUpdateMetadataValue = revUpdateMetadata._metadataValue;
+      let revUpdateMetadataValue = revUpdateMetadata._revMetadataValue;
       let revOriginalMetadataValue = window.revGetMetadataValue(
         revOriginalMetatadataArr,
         revMetadataName,
@@ -86,7 +86,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
             revOriginalMetatadataArr,
             revMetadataName,
           ),
-          revUpdateMetadata._metadataValue,
+          revUpdateMetadata._revMetadataValue,
         );
         let revIsUpdateDuplicateVal = window.revIsDuplicateMetadata(
           revEntityUpdateMetaDataArr,
@@ -102,13 +102,13 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         revOriginalMetadataValue &&
         revOriginalMetadataValue.localeCompare(revUpdateMetadataValue) !== 0
       ) {
-        let remoteRevMetadataId = window.revGetRemoteMetadataId(
+        let _revRemoteMetadataId = window.revGetRemoteMetadataId(
           revOriginalMetatadataArr,
           revMetadataName,
         );
 
-        if (remoteRevMetadataId && remoteRevMetadataId > 0) {
-          revUpdateMetadata.remoteRevMetadataId = remoteRevMetadataId;
+        if (_revRemoteMetadataId && _revRemoteMetadataId > 0) {
+          revUpdateMetadata._revRemoteMetadataId = _revRemoteMetadataId;
           revEntityUpdateMetaDataArr.push(revUpdateMetadata);
         }
       }
@@ -134,7 +134,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
           if (
             !window.revArrIncludesElement(
               revUpdateMetadataValuesArr,
-              revOriginalMetatadata._metadataValue,
+              revOriginalMetatadata._revMetadataValue,
             )
           ) {
             revEntityDeleteMetadataArr.push(revOriginalMetatadata);
@@ -153,15 +153,15 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       for (let dup = 0; dup < revMetadataDuplicatesArr.length; dup++) {
         let revMetadata = revMetadataDuplicatesArr[dup];
 
-        if (revMetadata.remoteRevMetadataId < 1) {
+        if (revMetadata._revRemoteMetadataId < 1) {
           continue;
         }
 
         /** REV START GET LAST ONES ADDED */
         for (let i = 0; i < revMetadataDuplicatesArr.length; i++) {
           if (
-            revMetadata._revPublishedDate &&
-            revMetadata._revPublishedDate <
+            revMetadata._revTimePublished &&
+            revMetadata._revTimePublished <
               revMetadataDuplicatesArr[i]._revTimePublished
           ) {
             continue;

@@ -14,7 +14,6 @@
 
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../../../../rev_gen_functions/rev_gen_functions.h"
-#include "../../rev_pers_rev_entity_metastrings/rev_pers_read/rev_pers_read_rev_entity_metastrings.h"
 
 int revPersUpdateRelationshipValueId_By_RelId(long revEntityRelationshipId, long relationshipValueId) {
     int revReturnVal = -1;
@@ -53,7 +52,7 @@ int revPersUpdateRelationshipValueId_By_RelId(long revEntityRelationshipId, long
     return revReturnVal;
 }
 
-int revPersUpdateRelResStatus_By_RelId(long revEntityRelationshipId, int resolveStatus) {
+int revPersUpdateRelResStatus_By_RelId(long revEntityRelationshipId, int revResolveStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -65,7 +64,7 @@ int revPersUpdateRelResStatus_By_RelId(long revEntityRelationshipId, int resolve
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
     sqlite3_bind_text(stmt, 2, revGetCurrentTime(), -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, revEntityRelationshipId);
 
@@ -86,7 +85,7 @@ int revPersUpdateRelResStatus_By_RelId(long revEntityRelationshipId, int resolve
     return revReturnVal;
 }
 
-int revPersUpdateRelResStatus_By_RemoteRelId(long revEntityRelationshipId, int resolveStatus) {
+int revPersUpdateRelResStatus_By_RemoteRelId(long revEntityRelationshipId, int revResolveStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -98,7 +97,7 @@ int revPersUpdateRelResStatus_By_RemoteRelId(long revEntityRelationshipId, int r
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
     sqlite3_bind_text(stmt, 2, revGetCurrentTime(), -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, revEntityRelationshipId);
 
@@ -279,42 +278,7 @@ int revPersSetRemoteRelationshipRemoteId(long revEntityRelationshipId, long revE
     return revReturnVal;
 }
 
-int revPersUpdateSetRemoteRelationshipRemoteId_By_RevRelType_RemoteSubjectGUID_RemoteTarhetGUID(
-    char *revEntityrelationship, long revRemoteSubjectGUID, long revRemoteTargetGUID, long revRemoteRelId) {
-    int revReturnVal = -1;
-
-    sqlite3 *db = revDb();
-    sqlite3_stmt *stmt;
-
-    char *sql = "UPDATE REV_ENTITY_RELATIONSHIPS_TABLE "
-                "SET  REMOTE_RELATIONSHIP_ID = ? "
-                "WHERE REMOTE_RELATIONSHIP_ID = ? AND REV_REMOTE_SUBJECT_GUID = ? AND REV_REMOTE_TARGET_GUID = ?";
-
-    int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-
-    sqlite3_bind_int(stmt, 1, revRemoteRelId);
-    sqlite3_bind_int(stmt, 2, getRevEntityMetaStringValueId(strdup(revEntityrelationship)));
-    sqlite3_bind_int(stmt, 3, revRemoteSubjectGUID);
-    sqlite3_bind_int(stmt, 4, revRemoteTargetGUID);
-
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteRelationshipRemoteId %s", sqlite3_errmsg(db));
-    } else {
-        if (SQLITE_DONE != sqlite3_step(stmt)) {
-            revReturnVal = -1;
-        } else {
-            revReturnVal = 1;
-        }
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return revReturnVal;
-}
-
-int revPersUpdateRelationshipResolve_RemoteRelId_ResolveStatus_By_ValueId(long revEntityRelationshipId, long revEntityRemoteRelationshipId, int resolveStatus) {
+int revPersUpdateRelationshipResolve_RemoteRelId_revResolveStatus_By_ValueId(long revEntityRelationshipId, long revEntityRemoteRelationshipId, int revResolveStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -327,12 +291,12 @@ int revPersUpdateRelationshipResolve_RemoteRelId_ResolveStatus_By_ValueId(long r
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int(stmt, 1, revEntityRemoteRelationshipId);
-    sqlite3_bind_int(stmt, 2, resolveStatus);
+    sqlite3_bind_int(stmt, 2, revResolveStatus);
     sqlite3_bind_int(stmt, 3, revEntityRelationshipId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateRelationshipResolve_RemoteRelId_ResolveStatus_By_ValueId %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateRelationshipResolve_RemoteRelId_revResolveStatus_By_ValueId %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;

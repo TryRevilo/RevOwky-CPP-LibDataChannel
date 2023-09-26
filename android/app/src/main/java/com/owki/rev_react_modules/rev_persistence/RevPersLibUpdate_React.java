@@ -27,13 +27,13 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRemoteRevEntityGUIDByRevEntityGUID(Integer revEntityGUID, Integer remoteRevEntityGUID) {
-        return revPersLibUpdate.setRemoteRevEntityGUIDByRevEntityGUID((int) revEntityGUID, (int) remoteRevEntityGUID);
+    public int setrevRemoteEntityGUIDByRevEntityGUID(Integer revEntityGUID, Integer revRemoteEntityGUID) {
+        return revPersLibUpdate.setrevRemoteEntityGUIDByRevEntityGUID((int) revEntityGUID, (int) revRemoteEntityGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRevEntityResolveStatusByRevEntityGUID(Integer resolveStatus, Integer revEntityGUID) {
-        return revPersLibUpdate.setRevEntityResolveStatusByRevEntityGUID((int) resolveStatus, (int) revEntityGUID);
+    public int setRevEntityResolveStatusByRevEntityGUID(Integer revResolveStatus, Integer revEntityGUID) {
+        return revPersLibUpdate.setRevEntityResolveStatusByRevEntityGUID((int) revResolveStatus, (int) revEntityGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
@@ -61,8 +61,8 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int revPersUpdateRelResStatus_By_RelId(Integer revEntityRelationshipId, Integer resolveStatus) {
-        return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) resolveStatus);
+    public int revPersUpdateRelResStatus_By_RelId(Integer revEntityRelationshipId, Integer revResolveStatus) {
+        return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) revResolveStatus);
     }
 
     /**
@@ -74,8 +74,8 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRemoteRevEntityMetadataId(Integer revMetadataId, Integer remoteRevMetadataId) {
-        return revPersLibUpdate.setRemoteRevEntityMetadataId((long) revMetadataId, (long) remoteRevMetadataId);
+    public int setRemoteRevEntityMetadataId(Integer revMetadataId, Integer _revRemoteMetadataId) {
+        return revPersLibUpdate.setRemoteRevEntityMetadataId((long) revMetadataId, (long) _revRemoteMetadataId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)

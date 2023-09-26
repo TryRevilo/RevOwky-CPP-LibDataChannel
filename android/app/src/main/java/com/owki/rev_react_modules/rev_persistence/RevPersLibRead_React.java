@@ -13,7 +13,7 @@ import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntity;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityMetadata;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityRelationship;
 import rev.ca.rev_gen_lib_pers.c_libs_core.RevPersLibRead;
-import rev.ca.rev_gen_lib_pers.rev_server_client.RevJSONEntityConstructor;
+import rev.ca.rev_gen_lib_pers.RevJSONEntityConstructor;
 
 public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     public RevPersLibRead_React(ReactApplicationContext reactApplicationContext) {
@@ -46,10 +46,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    String revPersGetRevEntity_By_RemoteRevEntityGUID(Integer remoteRevEntityGUID) {
+    String revPersGetEntity_By_RemoteEntityGUID(Integer revRemoteEntityGUID) {
         String revEntityStr = "{}";
 
-        RevEntity revEntity = revPersLibRead.revPersGetRevEntity_By_RemoteRevEntityGUID(remoteRevEntityGUID);
+        RevEntity revEntity = revPersLibRead.revPersGetEntity_By_RemoteEntityGUID(revRemoteEntityGUID);
 
         if (revEntity != null) {
             revEntityStr = new RevJSONEntityConstructor().revObjectSerializer(revEntity);
@@ -59,8 +59,8 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer revGetLocalEntityGUID_BY_RemoteEntityGUID(Integer revRemoteRevEntityGUID) {
-        long revEntityGUID = (revPersLibRead.getLocalRevEntityGUID_By_RemoteRevEntityGUID(revRemoteRevEntityGUID));
+    public Integer revGetLocalEntityGUID_BY_RemoteEntityGUID(Integer revrevRemoteEntityGUID) {
+        long revEntityGUID = (revPersLibRead.revGetLocalEntityGUID_By_RemoteEntityGUID(revrevRemoteEntityGUID));
 
         return (int) revEntityGUID;
     }
@@ -111,8 +111,8 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(String revMetadataName, String revMetadataValue) {
-        long revEntityGUID = (revPersLibRead.revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(revMetadataName, revMetadataValue));
+    public Integer revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(String revMetadataName, String revMetadataValue) {
+        long revEntityGUID = (revPersLibRead.revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(revMetadataName, revMetadataValue));
 
         return (int) revEntityGUID;
     }
@@ -143,10 +143,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String getRevEntityByRevEntityOwnerGUID_Subtype(Integer revEntityOwnerGUID, String revEntitySubtype) {
+    public String revGetEntity_By_RevEntityOwnerGUID_Subtype(Integer revEntityOwnerGUID, String revEntitySubtype) {
         String revEntityStr = "{}";
 
-        RevEntity revEntity = revPersLibRead.getRevEntityByRevEntityOwnerGUID_Subtype(revEntityOwnerGUID, revEntitySubtype);
+        RevEntity revEntity = revPersLibRead.revGetEntity_By_RevEntityOwnerGUID_Subtype(revEntityOwnerGUID, revEntitySubtype);
 
         if (revEntity != null)
             revEntityStr = new RevJSONEntityConstructor().revObjectSerializer(revEntity);
@@ -155,15 +155,15 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntityGUIDs_By_ResStatus(Integer resolveStatus) {
-        List<Long> revEntityGUIDs = revPersLibRead.revPersGetALLRevEntityGUIDs_By_ResStatus(resolveStatus);
+    public String revPersGetALLRevEntityGUIDs_By_ResStatus(Integer revResolveStatus) {
+        List<Long> revEntityGUIDs = revPersLibRead.revPersGetALLRevEntityGUIDs_By_ResStatus(revResolveStatus);
 
         return revEntityGUIDs.toString();
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(Integer revResolveStatus, String revEntitySubtype) {
-        List<Long> revEntityGUIDs = revPersLibRead.revPersGetALLRevEntityGUIDs_By_ResolveStatus_SubType(revResolveStatus, revEntitySubtype);
+    public String revPersGetALLRevEntityGUIDs_By_revResolveStatus_SubType(Integer revResolveStatus, String revEntitySubtype) {
+        List<Long> revEntityGUIDs = revPersLibRead.revPersGetALLRevEntityGUIDs_By_revResolveStatus_SubType(revResolveStatus, revEntitySubtype);
 
         return revEntityGUIDs.toString();
     }
@@ -185,7 +185,8 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
         return revRelSubjectGuidsList.toString();
     }
 
-    @ReactMethod(isBlockingSynchronousMethod = true) public String revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(String revEntityRelationship, Integer revEntitySubjectGUID) {
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(String revEntityRelationship, Integer revEntitySubjectGUID) {
         List<Long> revRelSubjectGuidsList = revPersLibRead.revPersGetALLRevEntityRelationshipsTargets(revEntityRelationship, revEntitySubjectGUID);
 
         return revRelSubjectGuidsList.toString();
@@ -216,10 +217,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(String revEntityrelationship, Integer revRemoteEntityGUID) {
+    public String revPersGetALLRevEntityRelGUIDs_By_RelType_revRemoteEntityGUID(String revEntityRelationship, Integer revRemoteEntityGUID) {
         String revRelsString = "[]";
 
-        List<Long> revRelsList = revPersLibRead.revPersGetALLRevEntityRelGUIDs_By_RelType_RemoteRevEntityGUID(revEntityrelationship, revRemoteEntityGUID);
+        List<Long> revRelsList = revPersLibRead.revPersGetALLRevEntityRelGUIDs_By_RelType_revRemoteEntityGUID(revEntityRelationship, revRemoteEntityGUID);
 
         if (revRelsList.size() > 0)
             revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
@@ -277,24 +278,24 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revGetRevEntityMetadata_By_MetadataName_MetadataValue(String revMetadataName, String revMetadataValue) {
-        RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_MetadataName_MetadataValue(revMetadataName, revMetadataValue);
+    public String revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(String revMetadataName, String revMetadataValue) {
+        RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(revMetadataName, revMetadataValue);
         String revEntityMetadataStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityMetadata);
 
         return revEntityMetadataStr;
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(String revMetadataName, String revMetadataValue, Integer revEntityGUID) {
-        RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_MetadataName_MetadataValue_EntityGUID(revMetadataName, revMetadataValue, (long) revEntityGUID);
+    public String revGetRevEntityMetadata_By_revMetadataName_revMetadataValue_EntityGUID(String revMetadataName, String revMetadataValue, Integer revEntityGUID) {
+        RevEntityMetadata revEntityMetadata = revPersLibRead.revGetRevEntityMetadata_By_revMetadataName_revMetadataValue_EntityGUID(revMetadataName, revMetadataValue, (long) revEntityGUID);
         String revEntityMetadataStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityMetadata);
 
         return revEntityMetadataStr;
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName(Integer revResolveStatus, String revMetadataName) {
-        List<RevEntityMetadata> revEntityMetadataList = revPersLibRead.revPersGetALLRevEntityMetadata_BY_ResStatus_MetadataName((int) revResolveStatus, revMetadataName);
+    public String revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName(Integer revResolveStatus, String revMetadataName) {
+        List<RevEntityMetadata> revEntityMetadataList = revPersLibRead.revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName((int) revResolveStatus, revMetadataName);
         String revEntityMetadataListStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityMetadataList);
 
         return revEntityMetadataListStr;

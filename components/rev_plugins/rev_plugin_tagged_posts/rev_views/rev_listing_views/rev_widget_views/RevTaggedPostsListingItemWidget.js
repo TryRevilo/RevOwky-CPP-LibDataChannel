@@ -316,7 +316,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     setRevPressing(true);
 
     // Long press duration here (in milliseconds)
-    const revCustomLongPressDuration = 2000;
+    const revCustomLongPressDuration = 2500;
 
     // Set a timeout to trigger the custom long press
     const revTimeoutId = setTimeout(() => {

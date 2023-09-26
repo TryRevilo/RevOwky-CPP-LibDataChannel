@@ -3,17 +3,13 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
 import java.util.ArrayList;
 import java.util.List;
 
-import rev.ca.rev_gen_lib_pers.RevDBModels.rev_entity_subtypes.RevGroupEntity;
-import rev.ca.rev_gen_lib_pers.RevDBModels.rev_entity_subtypes.RevObjectEntity;
-import rev.ca.rev_gen_lib_pers.RevDBModels.rev_entity_subtypes.RevUserEntity;
-
 public class RevEntity {
 
     private String _revEntityType;
     private String _revEntitySubType;
 
     private Long _revEntityGUID = -1L;
-    private Long _remoteRevEntityGUID = -1L;
+    private Long _revRemoteEntityGUID = -1L;
     private Long _revEntityOwnerGUID = -1L;
     private Long _revEntityContainerGUID = -1L;
     private Long _revEntityRemoteContainerGUID = -1L;
@@ -33,19 +29,12 @@ public class RevEntity {
     private int _revEntityChildableStatus = -1;
     private boolean _fromRemote;
 
-    private String _timeCreated = "";
-    private String _timeUpdated = "";
-
-    private long _revTimeCreated = -1;
-    private long _revTimePublished = -1;
-    private long _revTimePublishedUpdated = -1;
+    private Long _revTimeCreated = -1L;
+    private Long _revTimePublished = -1L;
+    private Long _revTimePublishedUpdated = -1L;
 
     List<RevEntityMetadata> _revEntityMetadataList = new ArrayList<>();
     List<RevAnnotation> _revAnnotations = new ArrayList<>();
-
-    RevObjectEntity revObjectEntity;
-    RevGroupEntity revGroupEntity;
-    RevUserEntity revUserEntity;
 
     List<RevEntity> _revEntityChildrenList = new ArrayList<>();
 
@@ -80,12 +69,12 @@ public class RevEntity {
         this._revEntityGUID = _revEntityGUID;
     }
 
-    public Long get_remoteRevEntityGUID() {
-        return _remoteRevEntityGUID;
+    public Long get_revRemoteEntityGUID() {
+        return _revRemoteEntityGUID;
     }
 
-    public void set_remoteRevEntityGUID(Long _remoteRevEntityGUID) {
-        this._remoteRevEntityGUID = _remoteRevEntityGUID;
+    public void set_revRemoteEntityGUID(Long _revRemoteEntityGUID) {
+        this._revRemoteEntityGUID = _revRemoteEntityGUID;
     }
 
     public Long get_revEntityOwnerGUID() {
@@ -152,43 +141,27 @@ public class RevEntity {
         this._fromRemote = _fromRemote;
     }
 
-    public String get_timeCreated() {
-        return _timeCreated;
-    }
-
-    public void set_timeCreated(String _timeCreated) {
-        this._timeCreated = _timeCreated;
-    }
-
-    public String get_timeUpdated() {
-        return _timeUpdated;
-    }
-
-    public void set_timeUpdated(String _timeUpdated) {
-        this._timeUpdated = _timeUpdated;
-    }
-
-    public long get_revTimeCreated() {
+    public Long get_revTimeCreated() {
         return _revTimeCreated;
     }
 
-    public void set_revTimeCreated(long _revTimeCreated) {
+    public void set_revTimeCreated(Long _revTimeCreated) {
         this._revTimeCreated = _revTimeCreated;
     }
 
-    public long get_revTimePublished() {
+    public Long get_revTimePublished() {
         return _revTimePublished;
     }
 
-    public void set_revTimePublished(long _revTimePublished) {
+    public void set_revTimePublished(Long _revTimePublished) {
         this._revTimePublished = _revTimePublished;
     }
 
-    public long get_revTimePublishedUpdated() {
+    public Long get_revTimePublishedUpdated() {
         return _revTimePublishedUpdated;
     }
 
-    public void set_revTimePublishedUpdated(long _revTimePublishedUpdated) {
+    public void set_revTimePublishedUpdated(Long _revTimePublishedUpdated) {
         this._revTimePublishedUpdated = _revTimePublishedUpdated;
     }
 
@@ -206,30 +179,6 @@ public class RevEntity {
 
     public void set_revAnnotations(List<RevAnnotation> _revAnnotations) {
         this._revAnnotations = _revAnnotations;
-    }
-
-    public RevObjectEntity getRevObjectEntity() {
-        return revObjectEntity;
-    }
-
-    public void setRevObjectEntity(RevObjectEntity revObjectEntity) {
-        this.revObjectEntity = revObjectEntity;
-    }
-
-    public RevGroupEntity getRevGroupEntity() {
-        return revGroupEntity;
-    }
-
-    public void setRevGroupEntity(RevGroupEntity revGroupEntity) {
-        this.revGroupEntity = revGroupEntity;
-    }
-
-    public RevUserEntity getRevUserEntity() {
-        return revUserEntity;
-    }
-
-    public void setRevUserEntity(RevUserEntity revUserEntity) {
-        this.revUserEntity = revUserEntity;
     }
 
     public List<RevEntity> get_revEntityChildrenList() {

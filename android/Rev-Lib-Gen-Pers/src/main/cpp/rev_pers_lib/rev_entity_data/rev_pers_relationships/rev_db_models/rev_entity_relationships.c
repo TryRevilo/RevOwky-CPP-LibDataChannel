@@ -20,18 +20,15 @@ RevEntityRelationship *revInitializedEntityRelationship() {
     revEntityRelationship->_revEntityRelationshipType = "";
 
     revEntityRelationship->_revEntityRelationshipId = -1;
-    revEntityRelationship->_remoteRevEntityRelationshipId = -1;
+    revEntityRelationship->_revRemoteEntityRelationshipId = -1;
 
     revEntityRelationship->_revEntityGUID = -1;
-    revEntityRelationship->_remoteRevEntityGUID = -1;
+    revEntityRelationship->_revRemoteEntityGUID = -1;
 
     revEntityRelationship->_revEntitySubjectGUID = -1;
-    revEntityRelationship->_remoteRevEntitySubjectGUID = -1;
+    revEntityRelationship->_revRemoteEntitySubjectGUID = -1;
     revEntityRelationship->_revEntityTargetGUID = -1;
-    revEntityRelationship->_remoteRevEntityTargetGUID = -1;
-
-    revEntityRelationship->_timeCreated = "";
-    revEntityRelationship->_timeUpdated = "";
+    revEntityRelationship->_revRemoteEntityTargetGUID = -1;
 
     revEntityRelationship->_revTimeCreated = -1;
     revEntityRelationship->_revTimePublished = -1;
@@ -90,12 +87,12 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_revEntityRelationshipId = _revEntityRelationshipIdVal;
     }
 
-    // _remoteRevEntityRelationshipId
-    const cJSON *_remoteRevEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_remoteRevEntityRelationshipId");
+    // _revRemoteEntityRelationshipId
+    const cJSON *_revRemoteEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityRelationshipId");
 
-    if (cJSON_IsNumber(_remoteRevEntityRelationshipId) && (_remoteRevEntityRelationshipId->valueint != NULL)) {
-        long _remoteRevEntityRelationshipIdVal = _remoteRevEntityRelationshipId->valueint;
-        revEntityRelationship->_remoteRevEntityRelationshipId = _remoteRevEntityRelationshipIdVal;
+    if (cJSON_IsNumber(_revRemoteEntityRelationshipId) && (_revRemoteEntityRelationshipId->valueint != NULL)) {
+        long _revRemoteEntityRelationshipIdVal = _revRemoteEntityRelationshipId->valueint;
+        revEntityRelationship->_revRemoteEntityRelationshipId = _revRemoteEntityRelationshipIdVal;
     }
 
     // _revEntityGUID
@@ -106,12 +103,12 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_revEntityGUID = _revEntityGUIDVal;
     }
 
-    // _remoteRevEntityGUID
-    const cJSON *_remoteRevEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_remoteRevEntityGUID");
+    // _revRemoteEntityGUID
+    const cJSON *_revRemoteEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityGUID");
 
-    if (cJSON_IsNumber(_remoteRevEntityGUID) && (_remoteRevEntityGUID->valueint != NULL)) {
-        long _remoteRevEntityGUIDVal = _remoteRevEntityGUID->valueint;
-        revEntityRelationship->_remoteRevEntityGUID = _remoteRevEntityGUIDVal;
+    if (cJSON_IsNumber(_revRemoteEntityGUID) && (_revRemoteEntityGUID->valueint != NULL)) {
+        long _revRemoteEntityGUIDVal = _revRemoteEntityGUID->valueint;
+        revEntityRelationship->_revRemoteEntityGUID = _revRemoteEntityGUIDVal;
     }
 
     // _revEntitySubjectGUID
@@ -122,12 +119,12 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_revEntitySubjectGUID = _revEntitySubjectGUIDVal;
     }
 
-    // _remoteRevEntitySubjectGUID
-    const cJSON *_remoteRevEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_remoteRevEntitySubjectGUID");
+    // _revRemoteEntitySubjectGUID
+    const cJSON *_revRemoteEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntitySubjectGUID");
 
-    if (cJSON_IsNumber(_remoteRevEntitySubjectGUID) && (_remoteRevEntitySubjectGUID->valueint != NULL)) {
-        long _remoteRevEntitySubjectGUIDVal = _remoteRevEntitySubjectGUID->valueint;
-        revEntityRelationship->_remoteRevEntitySubjectGUID = _remoteRevEntitySubjectGUIDVal;
+    if (cJSON_IsNumber(_revRemoteEntitySubjectGUID) && (_revRemoteEntitySubjectGUID->valueint != NULL)) {
+        long _revRemoteEntitySubjectGUIDVal = _revRemoteEntitySubjectGUID->valueint;
+        revEntityRelationship->_revRemoteEntitySubjectGUID = _revRemoteEntitySubjectGUIDVal;
     }
 
     // _revEntityTargetGUID
@@ -138,28 +135,12 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_revEntityTargetGUID = _revEntityTargetGUIDVal;
     }
 
-    // _remoteRevEntityTargetGUID
-    const cJSON *_remoteRevEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_remoteRevEntityTargetGUID");
+    // _revRemoteEntityTargetGUID
+    const cJSON *_revRemoteEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityTargetGUID");
 
-    if (cJSON_IsNumber(_remoteRevEntityTargetGUID) && (_remoteRevEntityTargetGUID->valueint != NULL)) {
-        long _remoteRevEntityTargetGUIDVal = _remoteRevEntityTargetGUID->valueint;
-        revEntityRelationship->_remoteRevEntityTargetGUID = _remoteRevEntityTargetGUIDVal;
-    }
-
-    // _timeCreated
-    const cJSON *_timeCreated = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_timeCreated");
-
-    if (cJSON_IsString(_timeCreated) && (_timeCreated->valuestring != NULL)) {
-        char *_timeCreatedVal = _timeCreated->valuestring;
-        revEntityRelationship->_timeCreated = _timeCreatedVal;
-    }
-
-    // _timeUpdated
-    const cJSON *_timeUpdated = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_timeUpdated");
-
-    if (cJSON_IsString(_timeUpdated) && (_timeUpdated->valuestring != NULL)) {
-        char *_timeUpdatedVal = _timeUpdated->valuestring;
-        revEntityRelationship->_timeUpdated = _timeUpdatedVal;
+    if (cJSON_IsNumber(_revRemoteEntityTargetGUID) && (_revRemoteEntityTargetGUID->valueint != NULL)) {
+        long _revRemoteEntityTargetGUIDVal = _revRemoteEntityTargetGUID->valueint;
+        revEntityRelationship->_revRemoteEntityTargetGUID = _revRemoteEntityTargetGUIDVal;
     }
 
     // _revTimeCreated

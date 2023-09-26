@@ -8,7 +8,7 @@
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../rev_db_init/rev_db_init.h"
 
-int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long remoteRevEntityGUID) {
+int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -19,7 +19,7 @@ int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long remoteRevEnti
                 "WHERE REV_ENTITY_GUID = ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int64(stmt, 1, remoteRevEntityGUID);
+    sqlite3_bind_int64(stmt, 1, revRemoteEntityGUID);
     sqlite3_bind_int(stmt, 2, 0);
     sqlite3_bind_int64(stmt, 3, revEntityGUID);
 
@@ -69,7 +69,7 @@ int setRevPublishedDate_By_RevEntityGUID(long revEntityGUID, long revPublishedDa
     return revReturnVal;
 }
 
-int setRemoteRevEntityGUID_By_RevCreationDate(long long revTimeCreated, long remoteRevEntityGUID) {
+int setrevRemoteEntityGUID_By_RevCreationDate(long long revTimeCreated, long revRemoteEntityGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -80,7 +80,7 @@ int setRemoteRevEntityGUID_By_RevCreationDate(long long revTimeCreated, long rem
                 "WHERE REV_CREATED_DATE = ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int64(stmt, 1, remoteRevEntityGUID);
+    sqlite3_bind_int64(stmt, 1, revRemoteEntityGUID);
     sqlite3_bind_int(stmt, 2, 0);
     sqlite3_bind_int64(stmt, 3, revTimeCreated);
 
@@ -188,7 +188,7 @@ int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContain
     return revReturnVal;
 }
 
-int setRemoteRevEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long remoteRevEntityGUID, long revMetadataId, long remoteRevMetadataId) {
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long revMetadataId, long _revRemoteMetadataId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -208,7 +208,7 @@ int setRemoteRevEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long rem
     sqlite3_bind_int(stmt, 1, 0);
     sqlite3_bind_int(stmt, 2, revEntityGUID);
 
-    sqlite3_bind_int64(stmt, 3, remoteRevMetadataId);
+    sqlite3_bind_int64(stmt, 3, _revRemoteMetadataId);
     sqlite3_bind_int(stmt, 4, 0);
     sqlite3_bind_int64(stmt, 5, revMetadataId);
 
@@ -228,7 +228,7 @@ int setRemoteRevEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long rem
     return revReturnVal;
 }
 
-int setRevEntityResolveStatusByRevEntityGUID(int resolveStatus, long revEntityGUID) {
+int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -239,7 +239,7 @@ int setRevEntityResolveStatusByRevEntityGUID(int resolveStatus, long revEntityGU
                 "WHERE REV_ENTITY_GUID = ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int(stmt, 1, resolveStatus);
+    sqlite3_bind_int(stmt, 1, revResolveStatus);
     sqlite3_bind_int64(stmt, 2, revEntityGUID);
 
     if (rc != SQLITE_OK) {

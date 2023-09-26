@@ -70,7 +70,7 @@ const RevSiteDataContextProvider = ({children}) => {
       }
 
       if (
-        revSiteEntityGUID._resolveStatus > -1 &&
+        revSiteEntityGUID._revResolveStatus > -1 &&
         revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID
       ) {
         let revEntityResolveStatusByRevEntityGUID =

@@ -68,7 +68,7 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
     'rev_entity_desc_val',
   );
 
-  let revTimeCreated = revVarArgs._timeCreated;
+  let revTimeCreated = revVarArgs._revTimeCreated;
 
   let minMessageLen = 1;
   let maxMessageLen = 100;

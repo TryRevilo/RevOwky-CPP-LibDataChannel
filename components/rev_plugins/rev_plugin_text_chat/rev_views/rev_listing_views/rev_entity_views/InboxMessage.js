@@ -58,7 +58,7 @@ export default function InboxMessage({revVarArgs}) {
     'rev_entity_desc_val',
   );
 
-  let revTimeCreated = revVarArgs._revInfoEntity._timeCreated;
+  let revTimeCreated = revVarArgs._revInfoEntity._revTimeCreated;
 
   let minMessageLen = 1;
   let maxMessageLen = 200;

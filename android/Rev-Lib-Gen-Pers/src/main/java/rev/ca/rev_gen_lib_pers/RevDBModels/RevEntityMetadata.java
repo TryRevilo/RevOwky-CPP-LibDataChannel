@@ -6,36 +6,32 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
 
 public class RevEntityMetadata {
 
-    public int get_resolveStatus() {
-        return _resolveStatus;
+    public int get_revResolveStatus() {
+        return _revResolveStatus;
     }
 
-    public void set_resolveStatus(int _resolveStatus) {
-        this._resolveStatus = _resolveStatus;
+    public void set_revResolveStatus(int _revResolveStatus) {
+        this._revResolveStatus = _revResolveStatus;
     }
 
-    private int _resolveStatus = -1;
+    private int _revResolveStatus = -1;
 
-    private String _revMetadataName, _metadataValue;
+    private String _revMetadataName, _revMetadataValue;
 
     private Long revMetadataId = -1L;
-    private Long remoteRevMetadataId = -1L;
+    private Long _revRemoteMetadataId = -1L;
     private Long revMetadataOwnerGUID = -1L;
-    private Long revMetadataValueId = -1L;
 
-    private String _timeCreated;
-    private String _timeUpdated;
-
-    private long _revTimeCreated = -1;
-    private long _revTimePublished = -1;
-    private long _revTimePublishedUpdated = -1;
+    private Long _revTimeCreated = -1L;
+    private Long _revTimePublished = -1L;
+    private Long _revTimePublishedUpdated = -1L;
 
     public RevEntityMetadata() {
     }
 
-    public RevEntityMetadata(String _revMetadataName, String _metadataValue) {
+    public RevEntityMetadata(String _revMetadataName, String _revMetadataValue) {
         this._revMetadataName = _revMetadataName;
-        this._metadataValue = _metadataValue;
+        this._revMetadataValue = _revMetadataValue;
     }
 
     public String get_revMetadataName() {
@@ -46,12 +42,12 @@ public class RevEntityMetadata {
         this._revMetadataName = _revMetadataName;
     }
 
-    public String get_metadataValue() {
-        return _metadataValue;
+    public String get_revMetadataValue() {
+        return _revMetadataValue;
     }
 
-    public void set_metadataValue(String _metadataValue) {
-        this._metadataValue = _metadataValue;
+    public void set_revMetadataValue(String _revMetadataValue) {
+        this._revMetadataValue = _revMetadataValue;
     }
 
     public Long getRevMetadataId() {
@@ -63,11 +59,11 @@ public class RevEntityMetadata {
     }
 
     public Long getRemoteRevMetadataId() {
-        return remoteRevMetadataId;
+        return _revRemoteMetadataId;
     }
 
-    public void setRemoteRevMetadataId(Long remoteRevMetadataId) {
-        this.remoteRevMetadataId = remoteRevMetadataId;
+    public void setRemoteRevMetadataId(Long _revRemoteMetadataId) {
+        this._revRemoteMetadataId = _revRemoteMetadataId;
     }
 
     public Long getRevMetadataOwnerGUID() {
@@ -78,51 +74,27 @@ public class RevEntityMetadata {
         this.revMetadataOwnerGUID = revMetadataOwnerGUID;
     }
 
-    public Long getRevMetadataValueId() {
-        return revMetadataValueId;
-    }
-
-    public void setRevMetadataValueId(Long revMetadataValueId) {
-        this.revMetadataValueId = revMetadataValueId;
-    }
-
-    public String get_timeCreated() {
-        return _timeCreated;
-    }
-
-    public void set_timeCreated(String _timeCreated) {
-        this._timeCreated = _timeCreated;
-    }
-
-    public String get_timeUpdated() {
-        return _timeUpdated;
-    }
-
-    public void set_timeUpdated(String _timeUpdated) {
-        this._timeUpdated = _timeUpdated;
-    }
-
-    public long get_revTimeCreated() {
+    public Long get_revTimeCreated() {
         return _revTimeCreated;
     }
 
-    public void set_revTimeCreated(long _revTimeCreated) {
+    public void set_revTimeCreated(Long _revTimeCreated) {
         this._revTimeCreated = _revTimeCreated;
     }
 
-    public long get_revTimePublished() {
+    public Long get_revTimePublished() {
         return _revTimePublished;
     }
 
-    public void set_revTimePublished(long _revTimePublished) {
+    public void set_revTimePublished(Long _revTimePublished) {
         this._revTimePublished = _revTimePublished;
     }
 
-    public long get_revTimePublishedUpdated() {
+    public Long get_revTimePublishedUpdated() {
         return _revTimePublishedUpdated;
     }
 
-    public void set_revTimePublishedUpdated(long _revTimePublishedUpdated) {
+    public void set_revTimePublishedUpdated(Long _revTimePublishedUpdated) {
         this._revTimePublishedUpdated = _revTimePublishedUpdated;
     }
 }

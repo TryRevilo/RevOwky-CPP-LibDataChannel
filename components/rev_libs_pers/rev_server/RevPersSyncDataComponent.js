@@ -8,10 +8,7 @@ import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
 import {revPostServerData} from './rev_pers_lib_create';
 
-import {
-  revPersGetALLRevEntityGUIDs_By_ResStatus,
-  revPersGetRevEnty_By_EntityGUID,
-} from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revPersGetALLRevEntityGUIDs_By_ResStatus} from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevSetMetadataArrayRemoteID} from '../rev_pers_metadata/rev_update/RevPersUpdateMetadataCustomHooks';
 import {useRevSetRemoteRelGUID} from '../rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 import {
@@ -129,13 +126,13 @@ export function useRevPersSyncDataComponent() {
       let revCurrFile = revFilesArr[i];
 
       if (
-        !revCurrFile.hasOwnProperty('_metadataValue') ||
-        revIsEmptyVar(revCurrFile._metadataValue)
+        !revCurrFile.hasOwnProperty('_revMetadataValue') ||
+        revIsEmptyVar(revCurrFile._revMetadataValue)
       ) {
         continue;
       }
 
-      let revFileURI = revCurrFile._metadataValue;
+      let revFileURI = revCurrFile._revMetadataValue;
       revFileURI = revSettings.revPublishedMediaDir + '/' + revFileURI;
       revFilesArr[i] = revFileURI;
 
@@ -233,7 +230,7 @@ export function useRevPersSyncDataComponent() {
       delete revCurrRel['_revEntityTargetGUID'];
       delete revCurrRel['_revTimePublished'];
       delete revCurrRel['_revTimePublishedUpdated'];
-      delete revCurrRel['_timeCreated'];
+      delete revCurrRel['_revTimeCreated'];
       delete revCurrRel['_revTimeCreated'];
 
       revPersRelsArr.push(revCurrRel);
@@ -448,12 +445,13 @@ export function useRevPersSyncDataComponent() {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
       revSelect: [
-        'revMetadataId',
+        '_revMetadataId',
         '_revMetadataEntityGUID',
-        'remoteRevMetadataId',
+        '_revRemoteMetadataId',
+        '_revMetadataName',
       ],
       revWhere: {
-        _resolveStatus: {'<': 0},
+        _revResolveStatus: {'<': 0},
       },
       revLimit: 22,
     };

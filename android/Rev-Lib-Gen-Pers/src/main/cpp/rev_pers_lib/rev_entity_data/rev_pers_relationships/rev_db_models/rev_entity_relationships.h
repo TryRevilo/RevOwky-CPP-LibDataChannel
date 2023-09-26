@@ -11,18 +11,15 @@ typedef struct RevEntityRelationship {
     int _revEntityRelationshipTypeValueId;
     char *_revEntityRelationshipType;
     long _revEntityRelationshipId;
-    long _remoteRevEntityRelationshipId;
+    long _revRemoteEntityRelationshipId;
 
     long _revEntityGUID;
-    long _remoteRevEntityGUID;
+    long _revRemoteEntityGUID;
 
     long _revEntitySubjectGUID;
-    long _remoteRevEntitySubjectGUID;
+    long _revRemoteEntitySubjectGUID;
     long _revEntityTargetGUID;
-    long _remoteRevEntityTargetGUID;
-
-    char *_timeCreated;
-    char *_timeUpdated;
+    long _revRemoteEntityTargetGUID;
 
     long _revTimeCreated;
     long _revTimePublished;

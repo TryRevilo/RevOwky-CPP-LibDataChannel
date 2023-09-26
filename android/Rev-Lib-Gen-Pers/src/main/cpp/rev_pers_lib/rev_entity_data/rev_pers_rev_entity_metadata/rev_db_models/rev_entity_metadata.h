@@ -9,16 +9,12 @@
 #include "../../../../../../../libs/rev_map/rev_map.h"
 
 typedef struct RevEntityMetadata {
-    int _resolveStatus;
-    long _metadataId;
-    long _remoteRevMetadataId;
-    long _metadataOwnerGUID;
-    long _metadataValueId;
-    char *_metadataName;
-    char *_metadataValue;
-
-    char *_timeCreated;
-    char *_timeUpdated;
+    int _revResolveStatus;
+    long _revMetadataID;
+    long _revRemoteMetadataId;
+    long _revMetadataEntityGUID;
+    char *_revMetadataName;
+    char *_revMetadataValue;
 
     long _revTimeCreated;
     long _revTimePublished;

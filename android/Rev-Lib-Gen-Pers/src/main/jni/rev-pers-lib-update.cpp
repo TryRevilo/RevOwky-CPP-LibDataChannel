@@ -32,8 +32,8 @@ extern "C" {
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityGUIDByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong remoteRevEntityGUID) {
-    return setRemoteRevEntityGUIGByRevEntityGUID((long) revEntityGUID, (long) remoteRevEntityGUID);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUIDByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID) {
+    return setRemoteRevEntityGUIGByRevEntityGUID((long) revEntityGUID, (long) revRemoteEntityGUID);
 }
 
 extern "C"
@@ -44,8 +44,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRevPublishedDa
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityGUID_1By_1RevCreationDate(JNIEnv *env, jobject instance, jlong revTimeCreated, jlong remoteRevEntityGUID) {
-    return setRemoteRevEntityGUID_By_RevCreationDate((long long) revTimeCreated, (long) remoteRevEntityGUID);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1By_1RevCreationDate(JNIEnv *env, jobject instance, jlong revTimeCreated, jlong revRemoteEntityGUID) {
+    return setrevRemoteEntityGUID_By_RevCreationDate((long long) revTimeCreated, (long) revRemoteEntityGUID);
 }
 
 extern "C"
@@ -62,13 +62,13 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetContain
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityGUID_1Metadata_1ByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong remoteRevEntityGUID, jlong revMetadataId, jlong remoteRevMetadataId) {
-    return setRemoteRevEntityGUID_Metadata_ByRevEntityGUID((long) revEntityGUID, (long) remoteRevEntityGUID, (long) revMetadataId, (long) remoteRevMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1Metadata_1ByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID, jlong revMetadataId, jlong _revRemoteMetadataId) {
+    return setrevRemoteEntityGUID_Metadata_ByRevEntityGUID((long) revEntityGUID, (long) revRemoteEntityGUID, (long) revMetadataId, (long) _revRemoteMetadataId);
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityGUID_1RemoteMetadataId_1LIST(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong remoteRevEntityGUID, jobject revEntityMetadataList) {
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1RemoteMetadataId_1LIST(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID, jobject revEntityMetadataList) {
     // retrieve the java.util.List interface class
     jclass cList = env->FindClass("java/util/List");
 
@@ -105,7 +105,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntit
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityGUID_1RemoteMetadataId_1Array(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong remoteRevEntityGUID,
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1RemoteMetadataId_1Array(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID,
                                                                                                                jstring revEntityMetadataJSONArray_) {
     const char *revEntityMetadataJSONArray = env->GetStringUTFChars(revEntityMetadataJSONArray_, 0);
 
@@ -131,8 +131,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntit
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityMetadataId(JNIEnv *env, jobject instance, jlong revMetadataId, jlong remoteRevMetadataId) {
-    return setRemoteRevEntityMetadataId((long) revMetadataId, (long) remoteRevMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityMetadataId(JNIEnv *env, jobject instance, jlong revMetadataId, jlong _revRemoteMetadataId) {
+    return setRemoteRevEntityMetadataId((long) revMetadataId, (long) _revRemoteMetadataId);
 }
 
 extern "C"
@@ -140,7 +140,7 @@ JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolveStatus_1BY_1MetadataName_1RevEntityGUID(JNIEnv *env, jobject instance, jstring revMetadataName_, jlong revEntityGUID, jint revResolveStatus) {
     const char *revMetadataName = env->GetStringUTFChars(revMetadataName_, 0);
 
-    int revUpdateStatus = setMetadataResolveStatus_BY_MetadataName_RevEntityGUID(strdup(revMetadataName), (long) revEntityGUID, (int) revResolveStatus);
+    int revUpdateStatus = setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(strdup(revMetadataName), (long) revEntityGUID, (int) revResolveStatus);
     env->ReleaseStringUTFChars(revMetadataName_, revMetadataName);
 
     return revUpdateStatus;
@@ -148,8 +148,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolv
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolveStatus_1BY_1METADATA_1ID(JNIEnv *env, jobject instance, jint resolveStatus, jlong revMetadataId) {
-    return setMetadataResolveStatus_BY_METADATA_ID((int) resolveStatus, (long) revMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolveStatus_1BY_1METADATA_1ID(JNIEnv *env, jobject instance, jint revResolveStatus, jlong revMetadataId) {
+    return setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) revMetadataId);
 }
 
 extern "C"
@@ -200,20 +200,20 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateSetR
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelResStatus_1By_1RelId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jint resolveStatus) {
-    return revPersUpdateRelResStatus_By_RelId((long) revEntityRelationshipId, (int) resolveStatus);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelResStatus_1By_1RelId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jint revResolveStatus) {
+    return revPersUpdateRelResStatus_By_RelId((long) revEntityRelationshipId, (int) revResolveStatus);
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelResStatus_1By_1RemoteRelId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jint resolveStatus) {
-    return revPersUpdateRelResStatus_By_RemoteRelId((long) revEntityRelationshipId, (int) resolveStatus);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelResStatus_1By_1RemoteRelId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jint revResolveStatus) {
+    return revPersUpdateRelResStatus_By_RemoteRelId((long) revEntityRelationshipId, (int) revResolveStatus);
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateSetRelResStatus_1By_1RemoteRelId(JNIEnv *env, jobject instance, jlong revEntityRemoteRelationshipId, jint resolveStatus) {
-    return revPersUpdateSetRelResStatus_By_RemoteRelId((long) revEntityRemoteRelationshipId, (int) resolveStatus);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateSetRelResStatus_1By_1RemoteRelId(JNIEnv *env, jobject instance, jlong revEntityRemoteRelationshipId, jint revResolveStatus) {
+    return revPersUpdateSetRelResStatus_By_RemoteRelId((long) revEntityRemoteRelationshipId, (int) revResolveStatus);
 }
 
 extern "C"
@@ -224,22 +224,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetRemoteR
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateSetRemoteRelationshipRemoteId_1By_1RevRelType_1RemoteSubjectGUID_1RemoteTarhetGUID(
-        JNIEnv *env, jobject instance, jstring revEntityrelationship_, jlong revRemoteSubjectGUID, jlong revRemoteTargetGUID, jlong revRemoteRelId) {
-    const char *revEntityrelationship = env->GetStringUTFChars(revEntityrelationship_, 0);
-
-    int revUpdateRetStatus = revPersUpdateSetRemoteRelationshipRemoteId_By_RevRelType_RemoteSubjectGUID_RemoteTarhetGUID(
-            strdup(revEntityrelationship), (long) revRemoteSubjectGUID, (long) revRemoteTargetGUID, (long) revRemoteRelId);
-
-    env->ReleaseStringUTFChars(revEntityrelationship_, revEntityrelationship);
-
-    return revUpdateRetStatus;
-}
-
-extern "C"
-JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelationshipResolve_1RemoteRelId_1ResolveStatus_1By_1ValueId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jlong revEntityRemoteRelationshipId, jint resolveStatus) {
-    return revPersUpdateRelationshipResolve_RemoteRelId_ResolveStatus_By_ValueId((long) revEntityRelationshipId, (long) revEntityRemoteRelationshipId, (int) resolveStatus);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersUpdateRelationshipResolve_1RemoteRelId_1ResolveStatus_1By_1ValueId(JNIEnv *env, jobject instance, jlong revEntityRelationshipId, jlong revEntityRemoteRelationshipId, jint revResolveStatus) {
+    return revPersUpdateRelationshipResolve_RemoteRelId_revResolveStatus_By_ValueId((long) revEntityRelationshipId, (long) revEntityRemoteRelationshipId, (int) revResolveStatus);
 }
 
 extern "C"
@@ -250,8 +236,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetRemoteR
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRevEntityResolveStatusByRevEntityGUID(JNIEnv *env, jobject instance, jint resolveStatus, jlong revEntityGUID) {
-    return setRevEntityResolveStatusByRevEntityGUID((int) resolveStatus, (long) revEntityGUID);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRevEntityResolveStatusByRevEntityGUID(JNIEnv *env, jobject instance, jint revResolveStatus, jlong revEntityGUID) {
+    return setRevEntityResolveStatusByRevEntityGUID((int) revResolveStatus, (long) revEntityGUID);
 }
 
 extern "C"

@@ -46,7 +46,7 @@ export const RevMembersListingItemWidget = ({revVarArgs}) => {
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  let revUserTimeCreated = revOwkiMemberEntity._timeCreated;
+  let revUserTimeCreated = revOwkiMemberEntity._revTimeCreated;
 
   let revUserInfoEntity = revOwkiMemberEntity._revInfoEntity;
 

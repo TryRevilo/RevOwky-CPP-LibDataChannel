@@ -5,19 +5,17 @@ public class RevEntityRelationship {
     private int _revResolveStatus = -1;
     private String _revEntityRelationshipType;
     private Long _revEntityRelationshipId;
-    private Long _remoteRevEntityRelationshipId = -1L;
+    private Long _revRemoteEntityRelationshipId = -1L;
     private Long _revEntityGUID = -1L;
-    private Long _remoteRevEntityGUID = -1L;
+    private Long _revRemoteEntityGUID = -1L;
     private Long _revEntityRelationshipTypeValueId = -1L;
     private Long _revEntitySubjectGUID = -1L;
-    private Long _remoteRevEntitySubjectGUID = -1L;
+    private Long _revRemoteEntitySubjectGUID = -1L;
     private Long _revEntityTargetGUID = -1L;
-    private Long _remoteRevEntityTargetGUID = -1L;
-    private String _timeCreated;
-    private String _timeUpdated;
+    private Long _revRemoteEntityTargetGUID = -1L;
     private RevEntity _subjectRevEntity, _targetRevEntity;
 
-    private long _revTimeCreated = -1;
+    private Long _revTimeCreated = -1L;
 
     private Long _revTimePublished = -1L;
     private Long _revTimePublishedUpdated = -1L;
@@ -53,12 +51,12 @@ public class RevEntityRelationship {
         this._revEntityRelationshipId = _revEntityRelationshipId;
     }
 
-    public Long get_remoteRevEntityRelationshipId() {
-        return _remoteRevEntityRelationshipId;
+    public Long get_revRemoteEntityRelationshipId() {
+        return _revRemoteEntityRelationshipId;
     }
 
-    public void set_remoteRevEntityRelationshipId(Long _remoteRevEntityRelationshipId) {
-        this._remoteRevEntityRelationshipId = _remoteRevEntityRelationshipId;
+    public void set_revRemoteEntityRelationshipId(Long _revRemoteEntityRelationshipId) {
+        this._revRemoteEntityRelationshipId = _revRemoteEntityRelationshipId;
     }
 
     public Long get_revEntityGUID() {
@@ -69,12 +67,12 @@ public class RevEntityRelationship {
         this._revEntityGUID = _revEntityGUID;
     }
 
-    public Long get_remoteRevEntityGUID() {
-        return _remoteRevEntityGUID;
+    public Long get_revRemoteEntityGUID() {
+        return _revRemoteEntityGUID;
     }
 
-    public void set_remoteRevEntityGUID(Long _remoteRevEntityGUID) {
-        this._remoteRevEntityGUID = _remoteRevEntityGUID;
+    public void set_revRemoteEntityGUID(Long _revRemoteEntityGUID) {
+        this._revRemoteEntityGUID = _revRemoteEntityGUID;
     }
 
     public Long get_revEntityRelationshipTypeValueId() {
@@ -93,12 +91,12 @@ public class RevEntityRelationship {
         this._revEntitySubjectGUID = _revEntitySubjectGUID;
     }
 
-    public Long get_remoteRevEntitySubjectGUID() {
-        return _remoteRevEntitySubjectGUID;
+    public Long get_revRemoteEntitySubjectGUID() {
+        return _revRemoteEntitySubjectGUID;
     }
 
-    public void set_remoteRevEntitySubjectGUID(Long _remoteRevEntitySubjectGUID) {
-        this._remoteRevEntitySubjectGUID = _remoteRevEntitySubjectGUID;
+    public void set_revRemoteEntitySubjectGUID(Long _revRemoteEntitySubjectGUID) {
+        this._revRemoteEntitySubjectGUID = _revRemoteEntitySubjectGUID;
     }
 
     public Long get_revEntityTargetGUID() {
@@ -109,12 +107,12 @@ public class RevEntityRelationship {
         this._revEntityTargetGUID = _revEntityTargetGUID;
     }
 
-    public Long get_remoteRevEntityTargetGUID() {
-        return _remoteRevEntityTargetGUID;
+    public Long get_revRemoteEntityTargetGUID() {
+        return _revRemoteEntityTargetGUID;
     }
 
-    public void set_remoteRevEntityTargetGUID(Long _remoteRevEntityTargetGUID) {
-        this._remoteRevEntityTargetGUID = _remoteRevEntityTargetGUID;
+    public void set_revRemoteEntityTargetGUID(Long _revRemoteEntityTargetGUID) {
+        this._revRemoteEntityTargetGUID = _revRemoteEntityTargetGUID;
     }
 
     public int get_revResolveStatus() {
@@ -123,22 +121,6 @@ public class RevEntityRelationship {
 
     public void set_revResolveStatus(int _revResolveStatus) {
         this._revResolveStatus = _revResolveStatus;
-    }
-
-    public String get_timeCreated() {
-        return _timeCreated;
-    }
-
-    public void set_timeCreated(String _timeCreated) {
-        this._timeCreated = _timeCreated;
-    }
-
-    public String get_timeUpdated() {
-        return _timeUpdated;
-    }
-
-    public void set_timeUpdated(String _timeUpdated) {
-        this._timeUpdated = _timeUpdated;
     }
 
     public RevEntity get_subjectRevEntity() {
@@ -157,11 +139,11 @@ public class RevEntityRelationship {
         this._targetRevEntity = _targetRevEntity;
     }
 
-    public long get_revTimeCreated() {
+    public Long get_revTimeCreated() {
         return _revTimeCreated;
     }
 
-    public void set_revTimeCreated(long _revTimeCreated) {
+    public void set_revTimeCreated(Long _revTimeCreated) {
         this._revTimeCreated = _revTimeCreated;
     }
 

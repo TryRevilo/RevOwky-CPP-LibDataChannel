@@ -2,21 +2,21 @@ import {revIsDuplicateInArr} from '../rev_gen_helper_functions';
 
 export var REV_ENTITY_METADATA_STRUCT = () => {
   return {
-    _resolveStatus: -1,
-    remoteRevMetadataId: -1,
+    _revResolveStatus: -1,
+    _revRemoteMetadataId: -1,
     _revMetadataEntityGUID: -1,
     _revMetadataName: '',
-    _metadataValue: '',
-    _timeCreated: '',
+    _revMetadataValue: '',
     _revTimeCreated: '',
-    _revPublishedDate: '',
+    _revTimePublished: '',
+    _revTimePublishedUpdated: '',
   };
 };
 
 export var REV_METADATA_FILLER = (revMetadataName, revMetadataVal) => {
   let revMetadata = REV_ENTITY_METADATA_STRUCT();
   revMetadata._revMetadataName = revMetadataName;
-  revMetadata._metadataValue = revMetadataVal;
+  revMetadata._revMetadataValue = revMetadataVal;
 
   return revMetadata;
 };
@@ -39,8 +39,8 @@ export var revGetMetadataValue = (revEntityMetadataList, revMetadataName) => {
     let revIsinfo =
       revCurrMetadata._revMetadataName.localeCompare(revMetadataName);
 
-    if (revIsinfo == 0 && revCurrMetadata._metadataValue) {
-      revMetadataValue = revCurrMetadata._metadataValue;
+    if (revIsinfo == 0 && revCurrMetadata._revMetadataValue) {
+      revMetadataValue = revCurrMetadata._revMetadataValue;
       break;
     }
   }
@@ -64,8 +64,8 @@ export var revGetMetadataValuesArr = (
         revMetadataName,
       ) == 0;
 
-    if (revIsinfo && revEntityMetadataList[i]._metadataValue) {
-      revMetadataValuesArr.push(revEntityMetadataList[i]._metadataValue);
+    if (revIsinfo && revEntityMetadataList[i]._revMetadataValue) {
+      revMetadataValuesArr.push(revEntityMetadataList[i]._revMetadataValue);
     }
   }
 
@@ -165,11 +165,11 @@ export var revGetRevEntityContainingMetadataValue = (
 
       for (let i = 0; i < revEntityMetadataList.length; i++) {
         let revIsEqStr =
-          revEntityMetadataList[i]._metadataValue.localeCompare(
+          revEntityMetadataList[i]._revMetadataValue.localeCompare(
             revMetadataValue,
           );
 
-        if (revEntityMetadataList[i]._metadataValue && revIsEqStr == 0) {
+        if (revEntityMetadataList[i]._revMetadataValue && revIsEqStr == 0) {
           revEntity = revCurrEntity;
           break;
         }
@@ -197,26 +197,26 @@ export var revGetRemoteMetadataId = (
   revEntityMetadataList,
   revMetadataName,
 ) => {
-  let revRemoteMetadataId = -1;
+  let _revRemoteMetadataId = -1;
 
   for (let i = 0; i < revEntityMetadataList.length; i++) {
     let revIsinfo =
       revEntityMetadataList[i]._revMetadataName.localeCompare(revMetadataName);
-    let revMetadataValue = revEntityMetadataList[i]._metadataValue;
+    let revMetadataValue = revEntityMetadataList[i]._revMetadataValue;
 
     if (revIsinfo == 0 && revMetadataValue) {
-      revRemoteMetadataId = revEntityMetadataList[i].remoteRevMetadataId;
+      _revRemoteMetadataId = revEntityMetadataList[i]._revRemoteMetadataId;
       break;
     }
   }
 
-  return revRemoteMetadataId;
+  return _revRemoteMetadataId;
 };
 
 export var revMetadataFiller = (revMetadataName, revMetadataVal) => {
   let revMetadata = REV_ENTITY_METADATA_STRUCT();
   revMetadata._revMetadataName = revMetadataName;
-  revMetadata._metadataValue = revMetadataVal;
+  revMetadata._revMetadataValue = revMetadataVal;
 
   return revMetadata;
 };
@@ -257,16 +257,19 @@ export var revGetDuplicateMetadataArr = revMetadataList => {
     // If the value appears more than once it's a duplicate == revMetadataValsArr.length > 1
     for (let val = 0; val < revMetadataValsArr.length; val++) {
       if (
-        revIteratedIdsArr.indexOf(revCurrMetadata.remoteRevMetadataId) !== -1
+        revIteratedIdsArr.indexOf(revCurrMetadata._revRemoteMetadataId) !== -1
       ) {
         continue;
       }
 
       if (
-        revIsDuplicateInArr(revMetadataValsArr, revCurrMetadata._metadataValue)
+        revIsDuplicateInArr(
+          revMetadataValsArr,
+          revCurrMetadata._revMetadataValue,
+        )
       ) {
         revDuplicatesArr.push(revCurrMetadata);
-        revIteratedIdsArr.push(revCurrMetadata.remoteRevMetadataId);
+        revIteratedIdsArr.push(revCurrMetadata._revRemoteMetadataId);
       }
     }
   }
@@ -304,7 +307,8 @@ export var revIsDuplicateMetadata = (revMetadataList, revMetadata) => {
       let revDuplicateMetadataVal = revDuplicateMetadataValsArr[i];
 
       if (
-        revDuplicateMetadataVal.localeCompare(revMetadata._metadataValue) == 0
+        revDuplicateMetadataVal.localeCompare(revMetadata._revMetadataValue) ==
+        0
       ) {
         revDuplicatesCount = revDuplicatesCount + 1;
       }
