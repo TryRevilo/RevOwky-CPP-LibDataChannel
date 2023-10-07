@@ -11,9 +11,7 @@
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 
 long getRevAnnotationValueIdByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID) {
-
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -23,7 +21,7 @@ long getRevAnnotationValueIdByOwnerEntityGUID(char *revAnnotationName, long revE
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revAnnotationName);
+    sqlite3_bind_text(stmt, 1, (const char *) revAnnotationName, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, revEntityGUID);
     sqlite3_bind_int(stmt, 3, ownerEntityGUID);
 
@@ -52,9 +50,7 @@ long getRevAnnotationValueIdByOwnerEntityGUID(char *revAnnotationName, long revE
 }
 
 long revGetRevAnnotationValueId(char *revAnnotationName, long revEntityGUID) {
-
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -64,7 +60,7 @@ long revGetRevAnnotationValueId(char *revAnnotationName, long revEntityGUID) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revAnnotationName);
+    sqlite3_bind_text(stmt, 1, (const char *) revAnnotationName, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, revEntityGUID);
 
     if (rc != SQLITE_OK) {
@@ -92,7 +88,6 @@ long revGetRevAnnotationValueId(char *revAnnotationName, long revEntityGUID) {
 
 long getRevAnnotationOwnerGUID_ByAnnotationId(long annotationId) {
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -134,7 +129,6 @@ char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, l
     char *_revAnnotationValue = "";
 
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -144,7 +138,7 @@ char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, l
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revAnnotationName);
+    sqlite3_bind_text(stmt, 1, (const char *) revAnnotationName, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, revEntityGUID);
     sqlite3_bind_int(stmt, 3, ownerEntityGUID);
 
@@ -165,13 +159,10 @@ char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, l
     return _revAnnotationValue;
 }
 
-list *getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID) {
-
-    list list;
-    list_new(&list, sizeof(long), NULL);
+void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityGUID) {
+    list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -194,24 +185,19 @@ list *getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID) {
         long long revEntityAnnotationId = sqlite3_column_int64(stmt, 0);
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntityAnnotationId %ld", revEntityAnnotationId);
 
-        list_append(&list, &revEntityAnnotationId);
+        list_append(revList, &revEntityAnnotationId);
 
         rc = sqlite3_step(stmt);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
-    return &list;
 }
 
-list *revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(char *revAnnotationName, long revEntityGUID) {
-
-    list list;
-    list_new(&list, sizeof(long), NULL);
+void revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(list *revList, char *revAnnotationName, long revEntityGUID) {
+    list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT ID "
@@ -231,24 +217,19 @@ list *revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(char *revAnnotati
 
     while (rc == SQLITE_ROW) {
         long revEntityAnnotationId = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityAnnotationId);
+        list_append(revList, &revEntityAnnotationId);
 
         rc = sqlite3_step(stmt);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
-    return &list;
 }
 
-list *getAllRevEntityAnnoationIds_By_ResStatus(int revAnnResStatus) {
-
-    list list;
-    list_new(&list, sizeof(long), NULL);
+void getAllRevEntityAnnoationIds_By_ResStatus(list *revList, int revAnnResStatus) {
+    list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT ID "
@@ -265,19 +246,15 @@ list *getAllRevEntityAnnoationIds_By_ResStatus(int revAnnResStatus) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         long revEntityAnnotationId = sqlite3_column_int64(stmt, 0);
-        list_append(&list, &revEntityAnnotationId);
+        list_append(revList, &revEntityAnnotationId);
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-
-    return &list;
 }
 
 RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId) {
-
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "
@@ -335,9 +312,7 @@ RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId) 
 }
 
 RevEntityAnnotation *revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long revOwnerGUID) {
-
     sqlite3 *db = revDb();
-
     sqlite3_stmt *stmt;
 
     char *sql = "SELECT "

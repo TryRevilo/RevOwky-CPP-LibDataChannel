@@ -19,9 +19,8 @@ import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
 import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
-import {useRevPersQuery_By_RevVarArgs} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
+const {RevPersLibCreate_React} = NativeModules;
 
 const revSettings = require('../../rev_res/rev_settings.json');
 
@@ -35,8 +34,6 @@ const RevSiteLoading = () => {
     useContext(RevSiteDataContext);
 
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
-
-  const {revPersQuery_By_RevVarArgs} = useRevPersQuery_By_RevVarArgs();
 
   let revAppRootDir = revSettings.revAppRootDir;
   const DirectoryPath = revAppRootDir + '/rev_media';

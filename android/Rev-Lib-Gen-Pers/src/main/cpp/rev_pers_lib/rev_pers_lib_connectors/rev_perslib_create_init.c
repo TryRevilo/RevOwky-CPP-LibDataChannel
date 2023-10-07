@@ -3,9 +3,9 @@
 #include <string.h>
 #include <android/log.h>
 
-#include "../rev_entity/rev_pers_rev_entity/rev_db_models/rev_entity.h"
+#include "../rev_pers_rev_entity/rev_db_models/rev_entity.h"
 #include "../rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
-#include "../rev_entity/rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.h"
+#include "../rev_pers_rev_entity/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.h"
 #include "../rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.h"
 #include "../rev_entity_data/rev_pers_relationships/rev_db_models/rev_entity_relationships.h"
 #include "../rev_entity_data/rev_pers_relationships/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.h"

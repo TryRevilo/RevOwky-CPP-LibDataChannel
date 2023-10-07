@@ -9,7 +9,7 @@
 #include "rev_pers_jni_structs.h"
 
 extern "C" {
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_db_models/rev_entity.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_db_models/rev_entity.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 }
 

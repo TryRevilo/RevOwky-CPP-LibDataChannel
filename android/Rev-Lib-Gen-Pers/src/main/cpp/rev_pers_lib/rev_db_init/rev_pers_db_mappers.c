@@ -17,7 +17,7 @@
 #include "../../../../../libs/rev_map/rev_map.h"
 #include "../../../../../libs/rev_curl/android-21/include/curl/curl.h"
 
-#include "../../rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_db_models/rev_entity.h"
+#include "../../rev_pers_lib/rev_pers_rev_entity/rev_db_models/rev_entity.h"
 #include "../../rev_pers_lib/rev_db_init/rev_db_init.h"
 #include "../../rev_gen_functions/rev_gen_functions.h"
 
@@ -195,7 +195,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 // Handle string type
                 char *revCurrVal = revWhere->valuestring;
 
-                char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
+                const char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
 
                 if (revDBTableField != NULL && revDBTableField[0] != '\0') {
                     if (revPreparedSQL[0] != '\0') {
@@ -227,7 +227,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 // Handle string type
                 char *revCurrVal = revWhere->valuestring;
 
-                char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
+                const char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
 
                 if (revDBTableField) {
                     if (revPreparedSQL[0] == '\0') {
@@ -265,7 +265,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 }
             } else if (revWhere->type == cJSON_Array) {
                 char *revArrDBTableName = revCurrKey;
-                char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
+                const char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
 
                 // Handle array type
                 int revArrSize = cJSON_GetArraySize(revWhere);
@@ -313,7 +313,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
             } else if (cJSON_IsNumber(revWhere) && (revWhere->valueint != NULL)) {
                 // Handle string type
                 int revCurrIntVal = revWhere->valueint;
-                char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
+                const char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
 
                 if (revDBTableName[0] != '\0') {
                     if (revIntWhereFields[0] == '\0') {
@@ -451,7 +451,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
             for (int i = 0; i < num_cols; i++) {
                 const char **revColName = col_names[i];
-                char *revMappedEntityColName = htable_strstr_get_direct(revMappedEntityColNameMap, revColName);
+                const char *revMappedEntityColName = htable_strstr_get_direct(revMappedEntityColNameMap, revColName);
 
                 int revType = sqlite3_column_type(stmt, i);
 

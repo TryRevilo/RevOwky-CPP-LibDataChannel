@@ -111,25 +111,3 @@ struct tm *revGetTimeAndDate(long revMilliseconds) {
         return localtime(&seconds);
     return NULL; // milliseconds >= 4G*1000
 }
-
-char *revLocalTimer(long revMills) {
-    struct timeval tv;
-    struct tm *tm;
-
-    gettimeofday(&tv, NULL);
-
-    tm = revGetTimeAndDate(revMills);
-
-    if (tm == NULL) {
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "UNSET TIME error: buffer %ld", revMills);
-        return strdup("UNSET TIME");
-    }
-
-    char formatted_date[40];
-    strftime(formatted_date, 40, "%B %d, %Y", &tm);
-
-    char *buffer[80];
-    strftime(buffer, 80, "%x - %I:%M%p", tm);
-
-    return strdup(buffer);
-}

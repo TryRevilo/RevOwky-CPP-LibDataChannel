@@ -3,7 +3,7 @@
 //
 
 
-#include "rev-pers-lib-delete.h"
+#include "rev-pers-lib-delete.hpp"
 
 #include <jni.h>
 #include <android/log.h>
@@ -15,15 +15,15 @@ extern "C" {
 #include <assert.h>
 #include "../../../../Rev-Lib-Gen-Pers/libs/rev_list/rev_linked_list.h"
 #include "../../../libs/cJSON/cJSON.h"
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_pers_delete/rev_pers_delete.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_delete/rev_pers_rel_delete.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_delete/rev_pers_delete_rev_entity_annotations.h"
 
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_read/rev_pers_read_rev_entity_annotations.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_update/rev_pers_update_rev_entity_ann.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_read/rev_pers_read_rev_entity_relationships.h"
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read/rev_pers_read.h"
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_read.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_relationships/rev_pers_update/rev_pers_update_rev_entity_rel.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_read/rev_pers_read_rev_entity_metadata.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_update/rev_pers_update_rev_entity_metadata.h"
@@ -33,8 +33,6 @@ extern "C" {
 // Function that receives a callback function
 bool revSetDelAnnResStatus(void *revAnnId, int revResStatus) {
     long revPassLong = (long) revAnnId;
-
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSetDelAnnResStatus -revAnnId %ld", revPassLong);
 
     // If res status == -1 -> Delete from DB
     RevEntityAnnotation *revEntityAnnotation = revPersGetRevEntityAnn_By_LocalAnnId(revPassLong);
@@ -51,8 +49,6 @@ bool revSetDelAnnResStatus(void *revAnnId, int revResStatus) {
 bool revSetDelRelResStatus(void *revRelID, int revResStatus) {
     long revPassLong = *(long *) revRelID;
 
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSetDelRelResStatus -revRelID %ld", revPassLong);
-
     RevEntityRelationship revEntityRelationship = revPersGetRevEntityRelById(revPassLong);
 
     if (revEntityRelationship._revResolveStatus == -1) {
@@ -66,8 +62,6 @@ bool revSetDelRelResStatus(void *revRelID, int revResStatus) {
 bool revSetDelMetadataResStatus(void *revMetadataID, int revResStatus) {
     long revPassLong = *(long *) revMetadataID;
 
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSetDelMetadataResStatus -revPassLong %ld", revPassLong);
-
     RevEntityMetadata *revEntityMetadata = revPersGetRevEntityMetadata_By_MetadataId(revPassLong);
 
     if (revEntityMetadata->_revResolveStatus == -1) {
@@ -80,8 +74,6 @@ bool revSetDelMetadataResStatus(void *revMetadataID, int revResStatus) {
 // Function that receives a callback function
 bool revSetDelRevEntityResStatus(void *revEntityGUID, int revResStatus) {
     long revPassLong = *(long *) revEntityGUID;
-
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSetDelRevEntityResStatus -revPassLong %ld", revPassLong);
 
     RevEntity revEntity = revPersGetRevEntityByGUID(revPassLong);
 
@@ -115,17 +107,17 @@ int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
     int revDelStatus = 0;
 
     // Get Anns
-    list revAnnlValIds = *(getAllRevEntityAnnoationIds_By_RevEntityGUID(revEntityGUID));
+    list revAnnlValIds;
+    getAllRevEntityAnnoationIds_By_RevEntityGUID(&revAnnlValIds, revEntityGUID);
     int revAnnLen = list_size(&revAnnlValIds);
-
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revAnnLen %d", revAnnLen);
 
     if (revAnnLen > 0) {
         revListForEach(&revAnnlValIds, -3, revSetDelAnnResStatus);
     }
 
     // Get Rels
-    list revRelIds = *(revPersGetAllRevEntityRelsIDs_By_EntityGUID(revEntityGUID));
+    list revRelIds;
+    revPersGetAllRevEntityRelsIDs_By_EntityGUID(&revRelIds, revEntityGUID);
     int revRelIdsLen = list_size(&revRelIds);
 
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revRelIdsLen %d", revRelIdsLen);
@@ -135,23 +127,23 @@ int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
     }
 
     // Get Metadata
-    list revMetadataList = *(revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(revEntityGUID));
+    list revMetadataList;
+    revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(&revMetadataList, revEntityGUID);
     int revMetadataListLen = list_size(&revMetadataList);
-
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revMetadataListLen %d", revMetadataListLen);
 
     if (revMetadataListLen > 0) {
         revListForEach(&revMetadataList, -3, revSetDelMetadataResStatus);
     }
 
     // Get Container childs
-    list *revContainerChildrenGUIDs = revPersGetALLRevEntityGUIDs_By_ContainerGUID(revEntityGUID);
-    int revContainerChildrenGUIDsLen = list_size(revContainerChildrenGUIDs);
+    list revContainerChildrenGUIDs;
+    revPersGetALLRevEntityGUIDs_By_ContainerGUID(&revContainerChildrenGUIDs, revEntityGUID);
+    int revContainerChildrenGUIDsLen = list_size(&revContainerChildrenGUIDs);
 
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revContainerChildrenGUIDsLen %d", revContainerChildrenGUIDsLen);
 
     if (revContainerChildrenGUIDsLen > 0) {
-        list_for_each(revContainerChildrenGUIDs, revPersGetRevEntityDataLong);
+        list_for_each(&revContainerChildrenGUIDs, revPersGetRevEntityDataLong);
     }
 
     revSetDelRevEntityResStatus(&revEntityGUID, -3);
@@ -225,8 +217,6 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revAsyDeleteFiles
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revFileDelStatus %d", revFileDelStatus);
 
         int revEntityDelStatus = revDeleteEntity_And_Children_By_EntityGUID(revFileGUID);
-
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntityDelStatus %d", revEntityDelStatus);
 
         // Add the deletion status to the result JSON object
         cJSON_AddItemToObject(revResultJson, "revFileGUID", cJSON_CreateNumber(revFileGUID));

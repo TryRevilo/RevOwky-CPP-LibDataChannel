@@ -11,7 +11,7 @@
 #include <vector>
 #include <memory>
 
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_table_create.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_table_create.h"
 #include "rev_pers_jni_structs.h"
 #include "rev_metadata_jni_loader.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_db_models/rev_entity_annotation.h"
@@ -23,8 +23,8 @@ extern "C"
 #include "../../../libs/rev_list/rev_linked_list.h"
 #include "../cpp/rev_pers_lib/rev_db_init/rev_db_init.h"
 #include "../cpp/rev_pers_lib/rev_pers_lib_connectors/rev_perslib_create_init.h"
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/init_rev_pers_rev_entity.h"
-#include "../cpp/rev_pers_lib/rev_entity/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/init_rev_pers_rev_entity.h"
+#include "../cpp/rev_pers_lib/rev_pers_rev_entity/rev_pers_update/rev_pers_update.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.h"
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_annotations/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.h"
@@ -76,10 +76,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revTablesInit(JNI
     revTablesInit();
 }
 
-list *revPersSetRevObjectEntityDescBaseMetadata(JNIEnv *env, jobject revEntity) {
-
-    list revEntityMetadataList;
-    list_new(&revEntityMetadataList, sizeof(RevEntityMetadata), NULL);
+void revPersSetRevObjectEntityDescBaseMetadata(list *revList, JNIEnv *env, jobject revEntity) {
+    list_new(revList, sizeof(RevEntityMetadata), NULL);
 
     jclass revEntityClazz = env->GetObjectClass(revEntity);
 
@@ -188,12 +186,10 @@ list *revPersSetRevObjectEntityDescBaseMetadata(JNIEnv *env, jobject revEntity) 
 
         /** END REV SETS**/
 
-        list_append(&revEntityMetadataList, &revEntityMetadata);
+        list_append(revList, &revEntityMetadata);
 
         env->DeleteLocalRef(obj_RevEntityMetadata);
     }
-
-    return &revEntityMetadataList;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -246,11 +242,9 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInit(JNIEn
     c_revEntity._revContainerEntityGUID = revEntityContainerGUID;
 
     /** SET REV SITE ENTITY GUID **/
-    jmethodID get_revEntitySiteGUID_MID = env->GetMethodID(revEntityClazz, "get_revEntitySiteGUID",
-                                                           "()Ljava/lang/Long;");
+    jmethodID get_revEntitySiteGUID_MID = env->GetMethodID(revEntityClazz, "get_revEntitySiteGUID", "()Ljava/lang/Long;");
     jobject revEntitySiteGUID_JOB = env->CallObjectMethod(revEntity, get_revEntitySiteGUID_MID);
     long revEntitySiteGUID = (env)->CallLongMethod(revEntitySiteGUID_JOB, longGetLongValue);
-
     c_revEntity._revEntitySiteGUID = revEntitySiteGUID;
 
     /** SET REV ACCESS PERMISSION **/
@@ -297,23 +291,28 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInit(JNIEn
     }
 
     /** SET REV CREATED DATE TIME **/
-    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityClazz, "get_revTimeCreated", "()J");
-    long _revTimeCreated = (env)->CallLongMethod(revEntity, get_revTimeCreated_MID);
+    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityClazz, "get_revTimeCreated", "()Ljava/lang/Long;");
+    jobject _revTimeCreated_JOB = env->CallObjectMethod(revEntity, get_revTimeCreated_MID);
+    long _revTimeCreated = (env)->CallLongMethod(_revTimeCreated_JOB, longGetLongValue);
     c_revEntity._revTimeCreated = _revTimeCreated;
 
     /** SET REV TIME PUBLISHED TIME **/
-    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityClazz, "get_revTimePublished", "()J");
-    long _revTimePublished = (env)->CallLongMethod(revEntity, get_revTimePublished_MID);
+    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityClazz, "get_revTimePublished", "()Ljava/lang/Long;");
+    jobject _revTimePublished_JOB = env->CallObjectMethod(revEntity, get_revTimePublished_MID);
+    long _revTimePublished = (env)->CallLongMethod(_revTimePublished_JOB, longGetLongValue);
     c_revEntity._revTimePublished = _revTimePublished;
 
     /** SET PUBLISHED UPDATED TIME **/
-    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityClazz, "get_revTimePublishedUpdated", "()J");
-    long _revTimePublishedUpdated = (env)->CallLongMethod(revEntity, get_revTimePublishedUpdated_MID);
+    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityClazz, "get_revTimePublishedUpdated", "()Ljava/lang/Long;");
+    jobject _revTimePublishedUpdated_JOB = env->CallObjectMethod(revEntity, get_revTimePublishedUpdated_MID);
+    long _revTimePublishedUpdated = (env)->CallLongMethod(_revTimePublishedUpdated_JOB, longGetLongValue);
     c_revEntity._revTimePublishedUpdated = _revTimePublishedUpdated;
 
     /** END REV SETS**/
 
-    c_revEntity._revEntityMetadataList = *(revPersSetRevObjectEntityDescBaseMetadata(env, revEntity));
+    list revEntityMetadataList;
+    revPersSetRevObjectEntityDescBaseMetadata(&revEntityMetadataList, env, revEntity);
+    c_revEntity._revEntityMetadataList = revEntityMetadataList;
 
     lastDbEntry = revPersInit(&c_revEntity);
 
@@ -797,18 +796,21 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersRevEntityA
     /** END GET REMOTE ANN OWNER ENTITY GUID **/
 
     /** SET REV CREATED DATE TIME **/
-    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimeCreated", "()J");
-    long _revTimeCreated = (env)->CallLongMethod(revAnnotation, get_revTimeCreated_MID);
+    jmethodID get_revTimeCreated_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimeCreated", "()Ljava/lang/Long;");
+    jobject _revTimeCreated_JOB = env->CallObjectMethod(revAnnotation, get_revTimeCreated_MID);
+    long _revTimeCreated = (env)->CallLongMethod(_revTimeCreated_JOB, longGetLongValue);
     c_RevAnnotation._revTimeCreated = _revTimeCreated;
 
     /** SET REV TIME PUBLISHED TIME **/
-    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimePublished", "()J");
-    long _revTimePublished = (env)->CallLongMethod(revAnnotation, get_revTimePublished_MID);
+    jmethodID get_revTimePublished_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimePublished", "()Ljava/lang/Long;");
+    jobject _revTimePublished_JOB = env->CallObjectMethod(revAnnotation, get_revTimePublished_MID);
+    long _revTimePublished = (env)->CallLongMethod(_revTimePublished_JOB, longGetLongValue);
     c_RevAnnotation._revTimePublished = _revTimePublished;
 
     /** SET PUBLISHED UPDATED TIME **/
-    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimePublishedUpdated", "()J");
-    long _revTimePublishedUpdated = (env)->CallLongMethod(revAnnotation, get_revTimePublishedUpdated_MID);
+    jmethodID get_revTimePublishedUpdated_MID = env->GetMethodID(revEntityAnnotationClazz, "get_revTimePublishedUpdated", "()Ljava/lang/Long;");
+    jobject _revTimePublishedUpdated_JOB = env->CallObjectMethod(revAnnotation, get_revTimePublishedUpdated_MID);
+    long _revTimePublishedUpdated = (env)->CallLongMethod(_revTimePublishedUpdated_JOB, longGetLongValue);
     c_RevAnnotation._revTimePublishedUpdated = _revTimePublishedUpdated;
 
     /** END REV SETS**/

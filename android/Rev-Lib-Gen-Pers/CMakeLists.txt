@@ -145,8 +145,6 @@ set(REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/
 set(REV_LIB_CONNECTORS_SRCS
         ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_perslib_create_init.c
         ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_perslib_create_init.h
-        ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_pers_lib_db_data_connectors.c
-        ${REV_PERS_LIB_CONNECTORS_PROJECT_SOURCE_DIR}/rev_pers_lib_db_data_connectors.h
         )
 add_library(rev_lib_connectors SHARED ${REV_LIB_CONNECTORS_SRCS})
 
@@ -159,8 +157,6 @@ set(REV_ENTITY_METADATA_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/rev_
 set(REV_ENTITY_METADATA_SRCS
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_metadata.h
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_metadata.c
-        ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.c
-        ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_METADATA.h
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.c
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_metadata_feedreaderdbhelper.h
         ${REV_ENTITY_METADATA_PROJECT_SOURCE_DIR}/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity_metadata.c
@@ -186,8 +182,6 @@ set(REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib
 set(REV_RELATIONSHIPS_ENTITY_SRCS
         ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_relationships.h
         ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_relationships.c
-        ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.c
-        ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_RELATIONSHIPS.h
         ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.c
         ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_relationships_feedreaderdbhelper.h
         ${REV_ENTITY_RELATIONSHIPS_PROJECT_SOURCE_DIR}/rev_pers_lib_create/rev_pers_create/rev_pers_relationships.c
@@ -215,8 +209,6 @@ set(REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/re
 set(REV_ENTITY_ANNOTATION_SRCS
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_annotation.h
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity_annotation.c
-        ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.h
-        ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/FEED_ENTRY_REV_ENTITY_ANNOTATIONS.c
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.h
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_annotation_feedreaderdbhelper.c
         ${REV_ENTITY_ANNOTATION_PROJECT_SOURCE_DIR}/rev_pers_lib_create/rev_pers_create/rev_pers_annotation.h
@@ -240,7 +232,7 @@ target_link_libraries(
 ############################################################################
 
 ## START REV ENTITY
-set(REV_ENTITY_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/rev_entity/rev_pers_rev_entity)
+set(REV_ENTITY_PROJECT_SOURCE_DIR ${REV_CPP_ROOT_DIR}/rev_pers_lib/rev_pers_rev_entity)
 set(REV_ENTITY_SRCS
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity.h
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_db_models/rev_entity.c
@@ -256,8 +248,8 @@ set(REV_ENTITY_SRCS
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_create/db_create/rev_entity_feedreaderdbhelper.h
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.c
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_create/rev_pers_create/rev_pers_rev_entity.h
-        ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_read/rev_pers_read/rev_pers_read.c
-        ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_read/rev_pers_read/rev_pers_read.h
+        ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_read/rev_pers_read.c
+        ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_lib_read/rev_pers_read.h
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update.c
         ${REV_ENTITY_PROJECT_SOURCE_DIR}/rev_pers_update/rev_pers_update.h
         )
@@ -347,7 +339,7 @@ target_link_libraries(
 
 add_library(rev-pers-lib-db-delete SHARED
         ${REV_JNI_ROOT_DIR}/rev_pers_jni_structs.h
-        ${REV_JNI_ROOT_DIR}/rev-pers-lib-delete.h
+        ${REV_JNI_ROOT_DIR}/rev-pers-lib-delete.hpp
         ${REV_JNI_ROOT_DIR}/rev-pers-lib-delete.cpp)
 target_link_libraries(
         rev-pers-lib-db-delete

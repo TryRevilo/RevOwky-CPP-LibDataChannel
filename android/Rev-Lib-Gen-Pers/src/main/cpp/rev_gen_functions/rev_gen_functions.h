@@ -32,6 +32,4 @@ int revIsCJsonStringEmpty(cJSON *revJson);
 
 struct tm *revGetTimeAndDate(long milliseconds);
 
-char *revLocalTimer(long revMills);
-
 #endif // REV_GEN_FUNCTIONS_H

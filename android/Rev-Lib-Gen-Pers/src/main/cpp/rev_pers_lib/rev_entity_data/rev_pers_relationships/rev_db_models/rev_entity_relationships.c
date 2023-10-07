@@ -53,7 +53,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revResolveStatus
     const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revResolveStatus");
 
-    if (cJSON_IsNumber(_revResolveStatus) && (_revResolveStatus->valueint != NULL)) {
+    if (cJSON_IsNumber(_revResolveStatus)) {
         int _revResolveStatusVal = _revResolveStatus->valueint;
         revEntityRelationship->_revResolveStatus = _revResolveStatusVal;
     }
@@ -61,7 +61,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revEntityRelationshipTypeValueId
     const cJSON *_revEntityRelationshipTypeValueId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityRelationshipTypeValueId");
 
-    if (cJSON_IsNumber(_revEntityRelationshipTypeValueId) && (_revEntityRelationshipTypeValueId->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityRelationshipTypeValueId)) {
         int _revEntityRelationshipTypeValueIdVal = _revEntityRelationshipTypeValueId->valueint;
         revEntityRelationship->_revEntityRelationshipTypeValueId = _revEntityRelationshipTypeValueIdVal;
     }
@@ -71,7 +71,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
 
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> cJSON_Print(_revEntityRelationshipType) : %s", cJSON_Print(_revEntityRelationshipType));
 
-    if (cJSON_IsString(_revEntityRelationshipType) && (_revEntityRelationshipType->valuestring != NULL)) {
+    if (cJSON_IsString(_revEntityRelationshipType)) {
         char *_revEntityRelationshipTypeVal = _revEntityRelationshipType->valuestring;
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> _revEntityRelationshipTypeVal : %s", _revEntityRelationshipTypeVal);
@@ -82,7 +82,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revEntityRelationshipId
     const cJSON *_revEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityRelationshipId");
 
-    if (cJSON_IsNumber(_revEntityRelationshipId) && (_revEntityRelationshipId->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityRelationshipId)) {
         int _revEntityRelationshipIdVal = _revEntityRelationshipId->valueint;
         revEntityRelationship->_revEntityRelationshipId = _revEntityRelationshipIdVal;
     }
@@ -90,7 +90,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revRemoteEntityRelationshipId
     const cJSON *_revRemoteEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityRelationshipId");
 
-    if (cJSON_IsNumber(_revRemoteEntityRelationshipId) && (_revRemoteEntityRelationshipId->valueint != NULL)) {
+    if (cJSON_IsNumber(_revRemoteEntityRelationshipId)) {
         long _revRemoteEntityRelationshipIdVal = _revRemoteEntityRelationshipId->valueint;
         revEntityRelationship->_revRemoteEntityRelationshipId = _revRemoteEntityRelationshipIdVal;
     }
@@ -98,7 +98,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revEntityGUID
     const cJSON *_revEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityGUID");
 
-    if (cJSON_IsNumber(_revEntityGUID) && (_revEntityGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityGUID)) {
         long _revEntityGUIDVal = _revEntityGUID->valueint;
         revEntityRelationship->_revEntityGUID = _revEntityGUIDVal;
     }
@@ -106,7 +106,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revRemoteEntityGUID
     const cJSON *_revRemoteEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntityGUID) && (_revRemoteEntityGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revRemoteEntityGUID)) {
         long _revRemoteEntityGUIDVal = _revRemoteEntityGUID->valueint;
         revEntityRelationship->_revRemoteEntityGUID = _revRemoteEntityGUIDVal;
     }
@@ -114,7 +114,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revEntitySubjectGUID
     const cJSON *_revEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntitySubjectGUID");
 
-    if (cJSON_IsNumber(_revEntitySubjectGUID) && (_revEntitySubjectGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntitySubjectGUID)) {
         long _revEntitySubjectGUIDVal = _revEntitySubjectGUID->valueint;
         revEntityRelationship->_revEntitySubjectGUID = _revEntitySubjectGUIDVal;
     }
@@ -122,7 +122,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revRemoteEntitySubjectGUID
     const cJSON *_revRemoteEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntitySubjectGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntitySubjectGUID) && (_revRemoteEntitySubjectGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revRemoteEntitySubjectGUID)) {
         long _revRemoteEntitySubjectGUIDVal = _revRemoteEntitySubjectGUID->valueint;
         revEntityRelationship->_revRemoteEntitySubjectGUID = _revRemoteEntitySubjectGUIDVal;
     }
@@ -130,7 +130,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revEntityTargetGUID
     const cJSON *_revEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityTargetGUID");
 
-    if (cJSON_IsNumber(_revEntityTargetGUID) && (_revEntityTargetGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revEntityTargetGUID)) {
         long _revEntityTargetGUIDVal = _revEntityTargetGUID->valueint;
         revEntityRelationship->_revEntityTargetGUID = _revEntityTargetGUIDVal;
     }
@@ -138,7 +138,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revRemoteEntityTargetGUID
     const cJSON *_revRemoteEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityTargetGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntityTargetGUID) && (_revRemoteEntityTargetGUID->valueint != NULL)) {
+    if (cJSON_IsNumber(_revRemoteEntityTargetGUID)) {
         long _revRemoteEntityTargetGUIDVal = _revRemoteEntityTargetGUID->valueint;
         revEntityRelationship->_revRemoteEntityTargetGUID = _revRemoteEntityTargetGUIDVal;
     }
@@ -146,7 +146,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revTimeCreated
     const cJSON *_revTimeCreated = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revTimeCreated");
 
-    if (cJSON_IsNumber(_revTimeCreated) && (_revTimeCreated->valueint != NULL)) {
+    if (cJSON_IsNumber(_revTimeCreated)) {
         long _revTimeCreatedVal = _revTimeCreated->valueint;
         revEntityRelationship->_revTimeCreated = _revTimeCreatedVal;
     }
@@ -154,7 +154,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revTimePublished
     const cJSON *_revTimePublished = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revTimePublished");
 
-    if (cJSON_IsNumber(_revTimePublished) && (_revTimePublished->valueint != NULL)) {
+    if (cJSON_IsNumber(_revTimePublished)) {
         long _revTimePublishedVal = _revTimePublished->valueint;
         revEntityRelationship->_revTimePublished = _revTimePublishedVal;
     }
@@ -162,7 +162,7 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
     // _revTimePublishedUpdated
     const cJSON *_revTimePublishedUpdated = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revTimePublishedUpdated");
 
-    if (cJSON_IsNumber(_revTimePublishedUpdated) && (_revTimePublishedUpdated->valueint != NULL)) {
+    if (cJSON_IsNumber(_revTimePublishedUpdated)) {
         long _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
         revEntityRelationship->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
     }

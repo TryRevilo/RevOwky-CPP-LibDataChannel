@@ -16,17 +16,17 @@ char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, l
 
 int revEntityAnnotationExists_ByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID);
 
-list *getAllRevEntityAnnoationIds_By_RevEntityGUID(long revEntityGUID);
+void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityGUID);
 
-list *getAllRevEntityAnnoationIds_By_OwnerGUID(long revOwnerGUID);
+void getAllRevEntityAnnoationIds_By_OwnerGUID(long revOwnerGUID);
 
-list *revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(char *revAnnotationName, long revEntityGUID);
+void revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(list *revList, char *revAnnotationName, long revEntityGUID);
 
-list *revPersGetALLRevEntityAnnotationsOwnerGUID();
+void revPersGetALLRevEntityAnnotationsOwnerGUID(list *revList);
 
 long getRevAnnotationOwnerGUID_ByAnnotationId(long annotationId);
 
-list *getAllRevEntityAnnoationIds_By_ResStatus(int revAnnResStatus);
+void getAllRevEntityAnnoationIds_By_ResStatus(list *revList, int revAnnResStatus);
 
 RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId);
 

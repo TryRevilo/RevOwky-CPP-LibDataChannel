@@ -7,6 +7,8 @@
 #include <jni.h>
 #include <android/log.h>
 
+char REV_RANDOM_CLASS[] = "com/owki/RevRandomClass";
+
 JNIEnv *revGetEnv(JavaVM *gJvm) {
     JNIEnv *env;
 
@@ -27,7 +29,7 @@ jclass revGetClass(JNIEnv *env, char *revClassPath) {
 
 jclass revGetRandClass(JNIEnv *env) {
     //replace with one of your classes in the line below
-    auto randomClass = revGetClass(env, "com/owki/RevRandomClass");
+    auto randomClass = revGetClass(env, REV_RANDOM_CLASS);
 
     jclass classClass = env->GetObjectClass(randomClass);
 
@@ -54,7 +56,7 @@ jmethodID revGetClassLoaderMethod(JNIEnv *env) {
 
 jobject revGetClassLoader(JNIEnv *env) {
     //replace with one of your classes in the line below
-    auto randomClass = revGetClass(env, "com/owki/RevRandomClass");
+    auto randomClass = revGetClass(env, REV_RANDOM_CLASS);
     jclass classClass = revGetRandClass(env);
 
     if (classClass == nullptr) {
