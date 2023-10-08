@@ -306,7 +306,48 @@ export function useRevPersQuery_By_RevVarArgs() {
     return revDataArr;
   };
 
-  return {revPersQuery_By_RevVarArgs, revPersQueryRevEntities_By_RevVarArgs};
+  /* STAR ASYNC **/
+  const revPersQuery_By_RevVarArgs_Async = async (
+    revVarArgs,
+    revTableName = 'REV_ENTITY_TABLE',
+  ) => {
+    let revDataStr =
+      await RevPersLibRead_React.revPersQuery_By_RevVarArgs_Async(
+        revTableName,
+        JSON.stringify(revVarArgs),
+      );
+
+    let revDataArr = JSON.parse(revDataStr);
+
+    return revDataArr;
+  };
+
+  const revPersQuery_W_Info_By_RevVarArgs_Async = async (
+    revVarArgs,
+    revTableName = 'REV_ENTITY_TABLE',
+  ) => {
+    let revDataArr = await revPersQuery_By_RevVarArgs_Async(
+      revVarArgs,
+      revTableName,
+    );
+
+    for (let i = 0; i < revDataArr.length; i++) {
+      let revCurrEntity = revDataArr[i];
+      let revEntityGUID = revCurrEntity._revEntityGUID;
+
+      revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+    }
+
+    return revDataArr;
+  };
+  /* END ASYNC **/
+
+  return {
+    revPersQuery_By_RevVarArgs,
+    revPersQueryRevEntities_By_RevVarArgs,
+    revPersQuery_By_RevVarArgs_Async,
+    revPersQuery_W_Info_By_RevVarArgs_Async,
+  };
 }
 
 export const useRevGetEntityIcon = () => {

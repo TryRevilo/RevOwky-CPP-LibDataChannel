@@ -45,10 +45,10 @@ function RevFooterArea() {
 
   const [revChatStatus] = useState(false);
 
-  const {revPersQueryRevEntities_By_RevVarArgs} =
+  const {revPersQuery_W_Info_By_RevVarArgs_Async} =
     useRevPersQuery_By_RevVarArgs();
 
-  const revGetLocalData = revLastGUID => {
+  const revGetLocalData_Async = async (revLastGUID, revLimit = 10) => {
     let revWhere = {
       _revEntityType: 'rev_object',
       _revEntitySubType: 'rev_kiwi',
@@ -72,11 +72,14 @@ function RevFooterArea() {
         '_revTimeCreated',
       ],
       revWhere: revWhere,
-      revLimit: 10,
-      revSelectDirection: 'DESC',
+      revLimit,
+      revOrderBy: {
+        revOrderByTableColumn: '_revEntityGUID',
+        revOrderByDirection: 'DESC',
+      },
     };
 
-    let revEntitiesArr = revPersQueryRevEntities_By_RevVarArgs(
+    let revEntitiesArr = await revPersQuery_W_Info_By_RevVarArgs_Async(
       revPassVarArgs,
       'REV_ENTITY_TABLE',
     );
@@ -138,6 +141,28 @@ function RevFooterArea() {
     };
   };
 
+  const revLoadLocalDataView = () => {
+    revGetLocalData_Async(0, 5)
+      .then(revRetData => {
+        revRetData = {
+          revTimelineEntities: revRetData,
+          revEntityPublishersArr: [],
+          revGetData: revGetLocalData_Async,
+        };
+
+        let revTaggedPostsListing = revPluginsLoader({
+          revPluginName: 'rev_plugin_tagged_posts',
+          revViewName: 'RevTaggedPostsListing',
+          revVarArgs: revRetData,
+        });
+
+        SET_REV_SITE_BODY(revTaggedPostsListing);
+      })
+      .catch(err => {
+        console.log('>>> revLoadLocalDataView', err.message);
+      });
+  };
+
   let revHandleTaggedPostsTabPress = () => {
     /**** */
     let revURL =
@@ -153,21 +178,16 @@ function RevFooterArea() {
       revRetData['revGetData'] = revLastGUID => {};
 
       if (revRetData.hasOwnProperty('revError')) {
-        revRetData = revGetLocalData(0);
-        revRetData = {
-          revTimelineEntities: revRetData,
-          revEntityPublishersArr: [],
-          revGetData: revGetLocalData,
-        };
+        revLoadLocalDataView();
+      } else {
+        let revTaggedPostsListing = revPluginsLoader({
+          revPluginName: 'rev_plugin_tagged_posts',
+          revViewName: 'RevTaggedPostsListing',
+          revVarArgs: revRetData,
+        });
+
+        SET_REV_SITE_BODY(revTaggedPostsListing);
       }
-
-      let revTaggedPostsListing = revPluginsLoader({
-        revPluginName: 'rev_plugin_tagged_posts',
-        revViewName: 'RevTaggedPostsListing',
-        revVarArgs: revRetData,
-      });
-
-      SET_REV_SITE_BODY(revTaggedPostsListing);
     });
   };
 

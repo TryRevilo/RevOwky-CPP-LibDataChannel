@@ -2,6 +2,7 @@ package com.owki.rev_react_modules.rev_persistence;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -12,8 +13,8 @@ import rev.ca.rev_gen_lib_pers.RevDBModels.RevAnnotation;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntity;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityMetadata;
 import rev.ca.rev_gen_lib_pers.RevDBModels.RevEntityRelationship;
-import rev.ca.rev_gen_lib_pers.c_libs_core.RevPersLibRead;
 import rev.ca.rev_gen_lib_pers.RevJSONEntityConstructor;
+import rev.ca.rev_gen_lib_pers.c_libs_core.RevPersLibRead;
 
 public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     public RevPersLibRead_React(ReactApplicationContext reactApplicationContext) {
@@ -140,6 +141,19 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
         }
 
         return revEntitiesStr;
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = false)
+    public void revPersQuery_By_RevVarArgs_Async(String revTableName, String revVarArgs, Promise revPromise) {
+        String revEntitiesStr = "[]";
+
+        List revResDataList = revPersLibRead.revPersQuery_By_RevVarArgs(revTableName, revVarArgs);
+
+        if (revResDataList.size() > 0) {
+            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revResDataList);
+        }
+
+        revPromise.resolve(revEntitiesStr);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)

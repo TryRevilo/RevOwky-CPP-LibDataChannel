@@ -15,6 +15,7 @@ import {revGetPublisherEntity} from '../../../../../../rev_function_libs/rev_ent
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
 import RevCustomLoadingView from '../../../../../rev_views/rev_loaders/RevCustomLoadingView';
+import {revGenRandString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -36,10 +37,12 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     return null;
   }
 
-  let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
-  let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
+  const REV_INCREMENTALS = 10;
 
-  const REV_INCREMENTALS = 2;
+  let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
+  revTimelineEntitiesArr = revTimelineEntitiesArr.slice(0, REV_INCREMENTALS);
+
+  let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
   const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr);
   const [revPage, setRevPage] = useState(1);
@@ -47,75 +50,112 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
   const revIsLoadingRef = useRef(false);
 
-  const revFetchData = () => {
-    let revLastGUID = 0;
+  const [revAdEntitiesArr, setRevAdEntitiesArr] = useState([]);
 
-    if (revListingData.length) {
-      revLastGUID = revListingData[revListingData.length - 1]._revEntityGUID;
-    }
+  const [isRevAllLoaded, setIsRevAllLoaded] = useState(false);
+
+  const revFetchData = () => {
+    revIsLoadingRef.current = true;
+
+    revVarArgs
+      .revGetData(
+        revListingData[revListingData.length - 1]._revEntityGUID,
+        REV_INCREMENTALS,
+      )
+      .then(revRetData => {
+        if (revRetData.length) {
+          setRevListingData(prev => {
+            let revNewArr = [...prev, ...revRetData];
+
+            if (revNewArr.length >= REV_INCREMENTALS * 2) {
+              revNewArr = revNewArr.slice(
+                REV_INCREMENTALS - 1,
+                REV_INCREMENTALS * 2 - 1,
+              );
+            }
+
+            return revNewArr;
+          });
+        } else {
+          setIsRevAllLoaded(true);
+          revIsLoadingRef.current = false;
+        }
+      })
+      .catch(err => {
+        console.log('>>> revLoadLocalDataView', err.message);
+      });
   };
 
   const revLoadMoreData = () => {
-    if (revListingData.length > revPage * revPageSize) {
+    if (!isRevAllLoaded) {
       setRevPage(revPage + 1);
       setRevPageSize(revPageSize + REV_INCREMENTALS);
+
+      revFetchData();
     } else {
       revIsLoadingRef.current = false;
     }
   };
 
-  const {revPersQueryRevEntities_By_RevVarArgs} =
+  const {revPersQuery_W_Info_By_RevVarArgs_Async} =
     useRevPersQuery_By_RevVarArgs();
 
   let revAdsCount = Math.floor(5 / 2);
 
-  let revPassVarArgs = {
-    revSelect: [
-      '_revEntityGUID',
-      '_revEntityOwnerGUID',
-      '_revContainerEntityGUID',
-      '_revEntitySiteGUID',
-      '_revEntityAccessPermission',
-      '_revEntityType',
-      '_revEntitySubType',
-      '_revTimeCreated',
-    ],
-    revWhere: {
-      _revEntityType: 'rev_object',
-      _revEntitySubType: 'rev_ad',
-    },
-    revLimit: revAdsCount,
+  const revLoadAdsArr = async () => {
+    let revPassVarArgs = {
+      revSelect: [
+        '_revEntityGUID',
+        '_revEntityOwnerGUID',
+        '_revContainerEntityGUID',
+        '_revEntitySiteGUID',
+        '_revEntityAccessPermission',
+        '_revEntityType',
+        '_revEntitySubType',
+        '_revTimeCreated',
+      ],
+      revWhere: {
+        _revEntityType: 'rev_object',
+        _revEntitySubType: 'rev_ad',
+      },
+      revLimit: revAdsCount,
+    };
+
+    let revAdEntitiesData = await revPersQuery_W_Info_By_RevVarArgs_Async(
+      revPassVarArgs,
+    );
+
+    let revAdEntitiesParsedArr = [];
+
+    for (let i = 0; i < revAdEntitiesData.length; i++) {
+      let revAdEntity = revAdEntitiesData[i];
+      let revAdEntityGUID = revAdEntity._revEntityGUID;
+
+      if (revAdEntityGUID < 1) {
+        continue;
+      }
+
+      let revOrganizationGUID =
+        RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+          'rev_organization_of',
+          revAdEntity._revEntityGUID,
+        );
+
+      let revProdLineGUID =
+        RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
+          'rev_product_line_of',
+          revAdEntity._revEntityGUID,
+        );
+
+      if (revOrganizationGUID < 1 || revProdLineGUID < 1) {
+        continue;
+      }
+
+      revAdEntitiesParsedArr.push(revAdEntity);
+    }
+
+    setRevAdEntitiesArr(revAdEntitiesParsedArr);
   };
-  let revAdEntitiesArr = revPersQueryRevEntities_By_RevVarArgs(revPassVarArgs);
-
-  let revAdEntitiesParsedArr = [];
-
-  for (let i = 0; i < revAdEntitiesArr.length; i++) {
-    let revAdEntity = revAdEntitiesArr[i];
-    let revAdEntityGUID = revAdEntity._revEntityGUID;
-
-    if (revAdEntityGUID < 1) {
-      continue;
-    }
-
-    let revOrganizationGUID =
-      RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
-        'rev_organization_of',
-        revAdEntity._revEntityGUID,
-      );
-
-    let revprodLineGUID =
-      RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
-        'rev_product_line_of',
-        revAdEntity._revEntityGUID,
-      );
-
-    if (revOrganizationGUID < 1 || revprodLineGUID < 1) {
-      continue;
-    }
-
-    revAdEntitiesParsedArr.push(revAdEntity);
-  }
 
   let revCounter = 0;
   let revCurrAdItem = 0;
@@ -132,7 +172,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
           styles.revFooterLoadingWrapper,
         ]}>
         <RevCustomLoadingView
-          backgroundColor={'#FFF'}
+          backgroundColor={'#FFFFFF'}
           revLoadintText={'Loading'}
         />
       </View>
@@ -171,23 +211,25 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     let revAddAd = revCounter % 2 == 0;
 
-    let revAdView = revAddAd ? (
-      <View style={{marginTop: 12}}>
-        {revPluginsLoader({
-          revPluginName: 'rev_plugin_ads',
-          revViewName: 'RevAdEntityListingView',
-          revVarArgs: {revData: revAdEntitiesParsedArr[revCurrAdItem]},
-        })}
-      </View>
-    ) : null;
+    let revAdView = null;
 
-    revCounter++;
+    if (revAdEntitiesArr.length) {
+      revAdView = revAddAd ? (
+        <View style={{marginTop: 12}}>
+          {revPluginsLoader({
+            revPluginName: 'rev_plugin_ads',
+            revViewName: 'RevAdEntityListingView',
+            revVarArgs: {revData: revAdEntitiesArr[revCurrAdItem]},
+          })}
+        </View>
+      ) : null;
 
-    if (revAddAd) {
-      revCurrAdItem =
-        revCurrAdItem == revAdEntitiesParsedArr.length - 1
-          ? 0
-          : ++revCurrAdItem;
+      revCounter++;
+
+      if (revAddAd) {
+        revCurrAdItem =
+          revCurrAdItem == revAdEntitiesArr.length - 1 ? 0 : ++revCurrAdItem;
+      }
     }
 
     let revTaggedPostsListingItem = revPluginsLoader({
@@ -196,12 +238,8 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       revVarArgs: item,
     });
 
-    let revIsLastItem =
+    revIsLoadingRef.current =
       revListingData[revListingData.length - 1]._revEntityGUID == revEntityGUID;
-
-    if (revIsLastItem) {
-      revIsLoadingRef.current = false;
-    }
 
     return (
       <View>
@@ -212,7 +250,11 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   };
 
   useEffect(() => {
-    revFetchData();
+    revLoadAdsArr();
+
+    if (revListingData.length < 1) {
+      revFetchData();
+    }
   }, []);
 
   return (
@@ -222,12 +264,14 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
         <FlatList
           data={revListingData.slice(0, revPage * revPageSize)}
           renderItem={revRenderItem}
-          keyExtractor={item => revGetLocal_OR_RemoteGUID(item)}
+          keyExtractor={item =>
+            revGetLocal_OR_RemoteGUID(item) + '_' + revGenRandString(5)
+          }
           updateCellsBatchingPeriod={5000}
-          onEndReached={revLoadMoreData}
           ListFooterComponent={renderFooter}
-          onEndReachedThreshold={0.1}
-          initialNumToRender={2}
+          onEndReached={revLoadMoreData}
+          onEndReachedThreshold={0.75}
+          initialNumToRender={REV_INCREMENTALS}
           maxToRenderPerBatch={revPageSize}
         />
       ) : (

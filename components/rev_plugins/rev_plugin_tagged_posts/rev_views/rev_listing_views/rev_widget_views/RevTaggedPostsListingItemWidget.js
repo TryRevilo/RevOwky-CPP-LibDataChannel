@@ -7,7 +7,6 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
   NativeModules,
 } from 'react-native';
 
@@ -21,7 +20,10 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {
   revGetLocal_OR_RemoteGUID,
@@ -118,16 +120,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   if (!revKiwiTxtVal) {
     return null;
   }
-
-  let revFlagEntityGUIDsStr =
-    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-      'rev_flag_of',
-      revEntityGUID,
-    );
-
-  let revFlagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
-    JSON.parse(revFlagEntityGUIDsStr),
-  );
 
   let revChatMessageText = _revKiwiTxtVal => {
     return (
@@ -283,7 +275,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     return RevCustomVideoPlayer;
   };
 
-  let revVideoPlayerView = RevVideoPlayer();
+  let revVideoPlayerView = revEntityGUID % 3 == 0 ? RevVideoPlayer() : null;
 
   const handleRevUserProfileClick = () => {
     let RevUserProfileObjectView = revPluginsLoader({
@@ -381,6 +373,16 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     </>
   );
 
+  let revFlagEntityGUIDsStr =
+    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_flag_of',
+      revEntityGUID,
+    );
+
+  let revFlagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(
+    JSON.parse(revFlagEntityGUIDsStr),
+  );
+
   const revFlagAreaView = () => {
     let revFlagItemView = revPluginsLoader({
       revPluginName: 'rev_plugin_flag',
@@ -423,11 +425,11 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   return (
     <TouchableOpacity
       onLongPress={() => {
-        handleRevTaggedPostLongPressed(revVarArgs);
+        // handleRevTaggedPostLongPressed(revVarArgs);
       }}
-      onPressIn={handleRevPressIn}
+      // onPressIn={handleRevPressIn}
       onPressOut={() => {
-        handleRevPressOut(revVarArgs);
+        // handleRevPressOut(revVarArgs);
       }}>
       <View style={revSiteStyles.revFlexWrapper}>
         <View style={styles.revChatMsgUserIcon}>
@@ -541,11 +543,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     </TouchableOpacity>
   );
 };
-
-var pageWidth = Dimensions.get('window').width;
-var height = Dimensions.get('window').height;
-
-var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
   revChatMsgUserIcon: {

@@ -229,7 +229,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
                 const char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
 
-                if (revDBTableField) {
+                if (revDBTableField[0] != '\0') {
                     if (revPreparedSQL[0] == '\0') {
                         revPreparedSQL = revConcatStrings(revPreparedSQL, revDBTableField);
                     } else {
@@ -310,7 +310,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                         revIntValsArr[revArrPos] = revArrayElementVal;
                     }
                 }
-            } else if (cJSON_IsNumber(revWhere) && (revWhere->valueint != NULL)) {
+            } else if (cJSON_IsNumber(revWhere)) {
                 // Handle string type
                 int revCurrIntVal = revWhere->valueint;
                 const char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
@@ -356,34 +356,32 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     }
 
     /** START SET ORDER BY **/
-    if (cJSON_HasObjectItem(revJSON, "revOrderByVal")) {
-        const cJSON *revOrderByVal_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revOrderByVal");
+    if (cJSON_HasObjectItem(revJSON, "revOrderBy")) {
+        // Get the "revOrderBy" object from the root revJSON JSON object
+        cJSON *revOrderByObject = cJSON_GetObjectItem(revJSON, "revOrderBy");
 
-        int revJsonStringEmpty = revIsCJsonStringEmpty(revOrderByVal_JSON);
+        if (revOrderByObject != NULL && cJSON_IsObject(revOrderByObject)) {
+            cJSON *revOrderByTableColumn = cJSON_GetObjectItem(revOrderByObject, "revOrderByTableColumn");
+            cJSON *revOrderByDirection = cJSON_GetObjectItem(revOrderByObject, "revOrderByDirection");
 
-        if (revJsonStringEmpty != 0) {
-            char *revOrderByVal = revOrderByVal_JSON->valuestring;
-            strcpy(sql, " ORDER BY ");
-            strcpy(sql, revOrderByVal);
+            if (revOrderByTableColumn != NULL && cJSON_IsString(revOrderByTableColumn) &&
+                revOrderByDirection != NULL && cJSON_IsString(revOrderByDirection)) {
+                const char *revOrderByTableColumnVal = revOrderByTableColumn->valuestring;
+                char *revOrderByTableColumnNameVal = htable_strstr_get_direct(revMap, revOrderByTableColumnVal);
 
-            /** START SET SELECT DIRECTION **/
-            char revSelectDirectionVal[] = "DESC";
+                if (revOrderByTableColumnNameVal != NULL && revOrderByTableColumnNameVal[0] != '\0') {
+                    const char *revOrderByDirectionVal = revOrderByDirection->valuestring;
 
-            if (cJSON_HasObjectItem(revJSON, "revSelectDirection")) {
-                const cJSON *revSelectDirection_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revSelectDirection");
-
-                char *revSelectDirection = revSelectDirection_JSON->valuestring;
-
-                if (strcmp(revSelectDirection, "DESC") == 0 || strcmp(revSelectDirection, "ASC") == 0) {
-                    strcpy(revSelectDirectionVal, revSelectDirection);
+                    sql = revConcatStrings(sql, " ORDER BY ");
+                    sql = revConcatStrings(sql, revOrderByTableColumnNameVal);
+                    sql = revConcatStrings(sql, " ");
+                    sql = revConcatStrings(sql, revOrderByDirectionVal);
                 }
+            } else {
+                printf("Invalid values within the 'person' object.\n");
             }
-
-            sql = revConcatStrings(sql, " ORDER BY ");
-            sql = revConcatStrings(sql, revOrderByVal);
-            sql = revConcatStrings(sql, " ");
-            sql = revConcatStrings(sql, revSelectDirectionVal);
-            /** END SET SELECT DIRECTION **/
+        } else {
+            printf("The 'person' object not found or is not an object.\n");
         }
     }
     /** END SET ORDER BY **/
@@ -402,14 +400,14 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         sqlite3_bind_text(stmt, revBoundCount, (const char *) revStrValsArr[i], -1, SQLITE_STATIC);
     }
 
-    for (int i = 0; i < revIntArrLen; i++) {
-        revBoundCount = revBoundCount + 1;
-        sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
-    }
-
     for (int i = 0; i < revIntWhereArrLen; i++) {
         revBoundCount = revBoundCount + 1;
         sqlite3_bind_int64(stmt, revBoundCount, revIntWhereValsArr[i]);
+    }
+
+    for (int i = 0; i < revIntArrLen; i++) {
+        revBoundCount = revBoundCount + 1;
+        sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
     }
 
     int revLimit = 10;
