@@ -66,10 +66,10 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   });
 
   const handleRevConnectTabPressed = revVarArgs => {
-    let revRemoteGUID = revVarArgs._remoteRevEntityGUID;
+    let revRemoteGUID = revVarArgs._revRemoteEntityGUID;
 
     let revTargetEntityStr =
-      RevPersLibRead_React.revPersGetRevEntity_By_RemoteRevEntityGUID(
+      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteEntityGUID(
         revRemoteGUID,
       );
 

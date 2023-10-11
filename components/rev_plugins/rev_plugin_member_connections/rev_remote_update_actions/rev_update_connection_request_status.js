@@ -48,7 +48,7 @@ export const useRevUpdateConnectionRequestStatus = () => {
     revPostServerData(
       revURL,
       {
-        revLoggedInEntityGUID: REV_LOGGED_IN_ENTITY._remoteRevEntityGUID,
+        revLoggedInEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
         revUpdateRelsResStatusArr: revPersAcceptedRelsArr,
       },
       revRetRelData => {

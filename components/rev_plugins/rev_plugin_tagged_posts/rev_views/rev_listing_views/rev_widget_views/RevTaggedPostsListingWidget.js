@@ -57,11 +57,22 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   const revFetchData = () => {
     revIsLoadingRef.current = true;
 
+    let revLastEntityGUID = 0;
+    let revLastEntity = null;
+
+    if (revListingData.length) {
+      revLastEntity = revListingData.length - 1;
+    }
+
+    if (
+      !revIsEmptyJSONObject(revLastEntity) &&
+      revLastEntity.hasOwnProperty('_revEntityGUID')
+    ) {
+      revLastEntityGUID = revLastEntity._revEntityGUID;
+    }
+
     revVarArgs
-      .revGetData(
-        revListingData[revListingData.length - 1]._revEntityGUID,
-        REV_INCREMENTALS,
-      )
+      .revGetData(revLastEntityGUID, REV_INCREMENTALS)
       .then(revRetData => {
         if (revRetData.length) {
           setRevListingData(prev => {
@@ -74,6 +85,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
               );
             }
 
+            revIsLoadingRef.current = false;
             return revNewArr;
           });
         } else {

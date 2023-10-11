@@ -3,7 +3,7 @@ var REV_ENTITY_STRUCT = () => {
     _revEntityType: '',
     _revEntitySubType: '',
     _revEntityGUID: -1,
-    _remoteRevEntityGUID: -1,
+    _revRemoteEntityGUID: -1,
     _revEntityOwnerGUID: -1,
     _revEntityContainerGUID: -1,
     _revEntityRemoteContainerGUID: -1,

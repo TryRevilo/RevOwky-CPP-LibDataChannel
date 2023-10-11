@@ -38,7 +38,7 @@ export function RevFooter3() {
         {isRevFooter3StrangerChat ? (
           <View style={styles.recipientNextTab}>
             <RevNextStrangerChatTab
-              revVarArgs={{_remoteRevEntityGUID: 98876}}
+              revVarArgs={{_revRemoteEntityGUID: 98876}}
             />
           </View>
         ) : null}

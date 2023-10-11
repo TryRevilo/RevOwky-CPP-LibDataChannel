@@ -12,7 +12,7 @@ function RevVideoCallModal({revVarArgs}) {
 
   const handleRevInitVideoCallTabPress = async () => {
     let revTargetPeerId =
-      REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
+      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID == 407 ? 375 : 407;
 
     try {
       await revInitVideoCall({

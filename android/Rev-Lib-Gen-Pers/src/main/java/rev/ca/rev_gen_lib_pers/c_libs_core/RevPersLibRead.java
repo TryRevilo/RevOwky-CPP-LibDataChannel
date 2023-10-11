@@ -66,9 +66,9 @@ public class RevPersLibRead {
      * METADATA
      **/
 
-    public native String getMetadataValue_By_MetadataId(long revMetadataId);
+    public native String getMetadataValue_By_MetadataId(long _revMetadataId);
 
-    public native RevEntityMetadata revPersGetRevEntityMetadata_By_MetadataId(long revMetadataId);
+    public native RevEntityMetadata revPersGetRevEntityMetadata_By_MetadataId(long _revMetadataId);
 
     public native long revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(String revMetadataName, String revMetadataValue);
 

@@ -188,7 +188,7 @@ int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContain
     return revReturnVal;
 }
 
-int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long revMetadataId, long _revRemoteMetadataId) {
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revMetadataId, long _revRemoteMetadataId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -210,7 +210,7 @@ int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long rev
 
     sqlite3_bind_int64(stmt, 3, _revRemoteMetadataId);
     sqlite3_bind_int(stmt, 4, 0);
-    sqlite3_bind_int64(stmt, 5, revMetadataId);
+    sqlite3_bind_int64(stmt, 5, _revMetadataId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));

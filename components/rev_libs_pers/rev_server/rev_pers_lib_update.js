@@ -11,7 +11,7 @@ import {REV_UPDATE_METADATA_ARR_URL} from './rev_pers_urls';
 /** START REV ENTITY UPDATE */
 
 export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
-  let revEntityGUID = revEntityOriginal._remoteRevEntityGUID;
+  let revEntityGUID = revEntityOriginal._revRemoteEntityGUID;
 
   let revWalkRevEntityMetadata = (
     revEntityUpdateMetadataArr,

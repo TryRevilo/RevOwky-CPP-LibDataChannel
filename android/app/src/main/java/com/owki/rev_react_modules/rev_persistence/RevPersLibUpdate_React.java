@@ -74,18 +74,18 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRemoteRevEntityMetadataId(Integer revMetadataId, Integer _revRemoteMetadataId) {
-        return revPersLibUpdate.setRemoteRevEntityMetadataId((long) revMetadataId, (long) _revRemoteMetadataId);
+    public int setRemoteRevEntityMetadataId(Integer _revMetadataId, Integer _revRemoteMetadataId) {
+        return revPersLibUpdate.setRemoteRevEntityMetadataId((long) _revMetadataId, (long) _revRemoteMetadataId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setMetadataResolveStatus_BY_METADATA_ID(Integer revResolveStatus, Integer revMetadataId) {
-        return revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) revMetadataId);
+    public int setMetadataResolveStatus_BY_METADATA_ID(Integer revResolveStatus, Integer _revMetadataId) {
+        return revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) _revMetadataId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setMetadataValue_BY_MetadataId(Integer revMetadataId, String revMetadataValue) {
-        return revPersLibUpdate.setMetadataValue_BY_MetadataId((long) revMetadataId, revMetadataValue);
+    public int setMetadataValue_BY_MetadataId(Integer _revMetadataId, String revMetadataValue) {
+        return revPersLibUpdate.setMetadataValue_BY_MetadataId((long) _revMetadataId, revMetadataValue);
     }
 
     /**

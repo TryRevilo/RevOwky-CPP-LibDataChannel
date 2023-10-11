@@ -123,10 +123,10 @@ function RevFooterArea() {
 
   const handleEndVideoCall = () => {
     let revTargetEntityGUID =
-      REV_LOGGED_IN_ENTITY._remoteRevEntityGUID == 407 ? 375 : 407;
+      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID == 407 ? 375 : 407;
 
     let revDataUserEntityStr =
-      RevPersLibRead_React.revPersGetRevEntity_By_RemoteRevEntityGUID(
+      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteEntityGUID(
         revTargetEntityGUID,
       );
 

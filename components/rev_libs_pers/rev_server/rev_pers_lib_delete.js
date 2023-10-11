@@ -51,7 +51,7 @@ export const useRev_Server_DeleteEntities_By_entityGUIDsArr = () => {
         RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
 
       let revCurRemoteEntityGUID =
-        JSON.parse(revCurrEntityStr)._remoteRevEntityGUID;
+        JSON.parse(revCurrEntityStr)._revRemoteEntityGUID;
 
       if (revCurRemoteEntityGUID && revCurRemoteEntityGUID >= 0)
         revPostDelEntityGUIDsArr.push(revCurRemoteEntityGUID);

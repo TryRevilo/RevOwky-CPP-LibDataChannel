@@ -58,9 +58,6 @@ htable_strstr_t *revGetMapped_Metadata_Key_DBFieldName() {
     htable_strstr_insert(revMap, "METADATA_NAME", "_revMetadataName");
     htable_strstr_insert(revMap, "METADATA_VALUE", "_revMetadataValue");
 
-    htable_strstr_insert(revMap, "CREATED_DATE", "_revTimeCreated");
-    htable_strstr_insert(revMap, "UPDATED_DATE", "_revTimePublishedUpdated");
-
     htable_strstr_insert(revMap, "REV_CREATED_DATE", "_revTimeCreated");
     htable_strstr_insert(revMap, "REV_PUBLISHED_DATE", "_revTimePublished");
 
@@ -78,7 +75,7 @@ RevEntityMetadata *revInitializedMetadata() {
 
     revEntityMetadata->_revResolveStatus = -1;
 
-    revEntityMetadata->_revMetadataID = -1;
+    revEntityMetadata->_revMetadataId = -1;
     revEntityMetadata->_revRemoteMetadataId = -1;
     revEntityMetadata->_revMetadataEntityGUID = -1;
 
@@ -152,18 +149,44 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     revEntityMetadata->_revRemoteMetadataId = _revRemoteMetadataIdVal;
 
+    // _revTimeCreated
+    long _revTimeCreatedVal = -1;
+
+    const cJSON *_revTimeCreated = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimeCreated");
+
+    if (cJSON_IsNumber(_revTimeCreated)) {
+        _revTimeCreatedVal = _revTimeCreated->valueint;
+    }
+
+    revEntityMetadata->_revTimeCreated = _revTimeCreatedVal;
+
     // _revTimePublished
-    revEntityMetadata->_revTimePublished = revCurrentTimestampMillSecs();
+    long _revTimePublishedVal = -1;
+
+    const cJSON *_revTimePublished = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimePublished");
+
+    if (cJSON_IsNumber(_revTimePublished)) {
+        _revTimePublishedVal = _revTimePublished->valueint;
+    }
+
+    revEntityMetadata->_revTimePublished = _revTimePublishedVal;
 
     // _revTimePublishedUpdated
-    revEntityMetadata->_revTimePublishedUpdated = revCurrentTimestampMillSecs();
+    long _revTimePublishedUpdatedVal = -1;
+
+    const cJSON *_revTimePublishedUpdated = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimePublishedUpdated");
+
+    if (cJSON_IsNumber(_revTimePublishedUpdated)) {
+        _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
+    }
+
+    revEntityMetadata->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
 
     return revEntityMetadata;
 }
 
-list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr) {
-    list list;
-    list_new(&list, sizeof(RevEntityMetadata), revFreeMetadata);
+void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr) {
+    list_new(revList, sizeof(RevEntityMetadata), revFreeMetadata);
 
     // _revEntityMetadataList
     const cJSON *_revEntityMetadataList = cJSON_Parse(revEntityMetadataJSONArrStr);
@@ -212,15 +235,40 @@ list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr)
 
             revEntityMetadata->_revRemoteMetadataId = _revRemoteMetadataIdVal;
 
+            // _revTimeCreated
+            long _revTimeCreatedVal = -1;
+
+            const cJSON *_revTimeCreated = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimeCreated");
+
+            if (cJSON_IsNumber(_revTimeCreated)) {
+                _revTimeCreatedVal = _revTimeCreated->valueint;
+            }
+
+            revEntityMetadata->_revTimeCreated = _revTimeCreatedVal;
+
             // _revTimePublished
-            revEntityMetadata->_revTimePublished = revCurrentTimestampMillSecs();
+            long _revTimePublishedVal = -1;
+
+            const cJSON *_revTimePublished = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimePublished");
+
+            if (cJSON_IsNumber(_revTimePublished)) {
+                _revTimePublishedVal = _revTimePublished->valueint;
+            }
+
+            revEntityMetadata->_revTimePublished = _revTimePublishedVal;
 
             // _revTimePublishedUpdated
-            revEntityMetadata->_revTimePublishedUpdated = revCurrentTimestampMillSecs();
+            long _revTimePublishedUpdatedVal = -1;
 
-            list_append(&list, revEntityMetadata);
+            const cJSON *_revTimePublishedUpdated = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimePublishedUpdated");
+
+            if (cJSON_IsNumber(_revTimePublishedUpdated)) {
+                _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
+            }
+
+            revEntityMetadata->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
+
+            list_append(revList, revEntityMetadata);
         }
     }
-
-    return &list;
 }

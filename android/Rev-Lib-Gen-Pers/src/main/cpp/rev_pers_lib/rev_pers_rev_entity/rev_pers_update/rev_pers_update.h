@@ -19,7 +19,7 @@ int resetRevEntityOwnerGUIG(long revEntityGUID, long revEntityOwnerGUID);
 
 int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContainerGUID);
 
-int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long revMetadataId, long _revRemoteMetadataId);
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revMetadataId, long _revRemoteMetadataId);
 
 int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID);
 

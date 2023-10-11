@@ -8,9 +8,9 @@
 #include "../rev_db_models/rev_entity_metadata.h"
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 
-char *getMetadataValue_By_MetadataId(long metadataId);
+char *getMetadataValue_By_MetadataId(long _revMetadataId);
 
-RevEntityMetadata *revPersGetRevEntityMetadata_By_MetadataId(long long revMetadataId);
+RevEntityMetadata *revPersGetRevEntityMetadata_By_MetadataId(long long _revMetadataId);
 
 long revGetRevEntityMetadataId_By_RevMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID);
 
@@ -24,7 +24,7 @@ void revPersGetALLRevEntityRevEntityMetadataByOwnerGUID(list *revList, long revE
 
 void revPersGetALLRevEntityMetadataByResolveStatus(list *revList, int revResolveStatus);
 
-void revPersGetALLRevEntityMetadataId_By_revMetadataName_revResolveStatus(list *revList, char *metadataName, int revResolveStatus);
+void revPersGetALLRevEntityMetadataId_By_revMetadataName_revResolveStatus(list *revList, char *revMetadataName, int revResolveStatus);
 
 void revPersGetALLRevEntityMetadata_By_ResStatus(int revResolveStatus);
 
@@ -44,8 +44,8 @@ void revPersGetALLRevEntityMetadataUnsynched(list *revList);
 
 void revPersGetALLRevEntityMetadataUnsynched_By_RevEntityGUID(list *revList, long revEntityGUID);
 
-void revPersGetALLRevEntityRevEntityMetadataBy_revMetadataName_OwnerGUID(list *revList, char *metadataName, long revEntityGUID);
+void revPersGetALLRevEntityRevEntityMetadataBy_revMetadataName_OwnerGUID(list *revList, char *revMetadataName, long revEntityGUID);
 
-long revGetRevEntityMetadataOwnerGUID(long metadataId);
+long revGetRevEntityMetadataOwnerGUID(long _revMetadataId);
 
 #endif //OWKI_REV_PERS_READ_REV_ENTITY_METADATA_H

@@ -21,8 +21,8 @@ export const revIsUserEntity_WithInfo = revEntity => {
 
   let revInfoEntity = revEntity._revInfoEntity;
   if (
-    !revInfoEntity.hasOwnProperty('_remoteRevEntityGUID') ||
-    revInfoEntity._remoteRevEntityGUID < 0
+    !revInfoEntity.hasOwnProperty('_revRemoteEntityGUID') ||
+    revInfoEntity._revRemoteEntityGUID < 0
   ) {
     return false;
   }
@@ -55,10 +55,10 @@ export const revGetRemoteEntityGUID = revEntity => {
   }
 
   if (
-    revEntity.hasOwnProperty('_remoteRevEntityGUID') &&
-    revEntity._remoteRevEntityGUID >= -1
+    revEntity.hasOwnProperty('_revRemoteEntityGUID') &&
+    revEntity._revRemoteEntityGUID >= -1
   ) {
-    revEntityGUID = revEntity._remoteRevEntityGUID;
+    revEntityGUID = revEntity._revRemoteEntityGUID;
   }
 
   return revEntityGUID;

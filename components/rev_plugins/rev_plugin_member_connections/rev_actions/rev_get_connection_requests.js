@@ -10,7 +10,7 @@ export const useRevGetConnectionRequests = () => {
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
 
   const revGetConnectionRequests = revCallBack => {
-    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._remoteRevEntityGUID;
+    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteEntityGUID;
 
     if (revLoggedInRemoteEntityGUID < 1) {
       return revCallBack(null);

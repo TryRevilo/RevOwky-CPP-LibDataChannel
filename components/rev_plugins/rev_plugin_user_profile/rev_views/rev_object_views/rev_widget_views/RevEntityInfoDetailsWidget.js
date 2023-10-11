@@ -39,10 +39,18 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
     'rev_entity_desc_val',
   );
 
+  if (revStringEmpty(revEntityDescVal)) {
+    revEntityDescVal = 'unset';
+  }
+
   let revAboutEntityInfo = revGetMetadataValue(
     revInfoEntity._revEntityMetadataList,
     'rev_about_entity_info',
   );
+
+  if (revStringEmpty(revAboutEntityInfo)) {
+    revAboutEntityInfo = 'unset';
+  }
 
   let revEntityFullNamesArr = revSplitStringToArray(revEntityFullNames);
   let revEntityFirstName = revEntityFullNamesArr[0];
@@ -135,7 +143,8 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
             </Text>
           </View>
 
-          <View style={[revSiteStyles.revFlexWrapper]}>
+          <View
+            style={[revSiteStyles.revFlexWrapper, {alignItems: 'baseline'}]}>
             <Text
               style={[
                 revSiteStyles.revSiteTxtColorLight,
@@ -152,7 +161,8 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
               />
             </View>
           </View>
-          <View style={[revSiteStyles.revFlexWrapper]}>
+          <View
+            style={[revSiteStyles.revFlexWrapper, {alignItems: 'baseline'}]}>
             <Text
               style={[
                 revSiteStyles.revSiteTxtColorLight,

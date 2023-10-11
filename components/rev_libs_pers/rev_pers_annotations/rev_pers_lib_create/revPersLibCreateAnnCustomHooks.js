@@ -15,9 +15,9 @@ export const useRevSaveNewAnnotation = () => {
   const {revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID} =
     useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID();
 
-  const revUpdateAnnStatsMetadata = (revMetadataID, revNewVal) => {
+  const revUpdateAnnStatsMetadata = (_revMetadataId, revNewVal) => {
     return RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
-      revMetadataID,
+      _revMetadataId,
       revNewVal,
     );
   };
@@ -107,7 +107,7 @@ export const useRevSaveNewAnnotation = () => {
 
       // Update Ann metadata stats value
       revUpdateAnnStatsMetadata(
-        revLikesStatsMetadata.revMetadataId,
+        revLikesStatsMetadata._revMetadataId,
         revCurrMetadataStasValInt.toString(),
       );
     }

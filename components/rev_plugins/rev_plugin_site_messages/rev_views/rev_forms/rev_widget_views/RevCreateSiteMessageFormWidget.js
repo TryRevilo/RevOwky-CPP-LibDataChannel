@@ -44,7 +44,7 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
   }
 
   let revContainerEntity = revVarArgs.revEntity;
-  let revContainerRemoteEntityGUID = revContainerEntity._remoteRevEntityGUID;
+  let revContainerRemoteEntityGUID = revContainerEntity._revRemoteEntityGUID;
 
   if (revContainerRemoteEntityGUID < 1) {
     return null;

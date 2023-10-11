@@ -20,15 +20,15 @@ export const useRevSetMetadataArrayRemoteID = (
       continue;
     }
 
-    let revLocalMetadataId = revCurrMetadata.localMetadataId;
-    let _revRemoteMetadataId = revCurrMetadata.metadataId;
+    let _revMetadataId = revCurrMetadata._revMetadataId;
+    let _revRemoteMetadataId = revCurrMetadata._revRemoteMetadataId;
 
-    if (revLocalMetadataId < 1 || _revRemoteMetadataId < 1) {
+    if (_revMetadataId < 1 || _revRemoteMetadataId < 1) {
       continue;
     }
 
     RevPersLibUpdate_React.setRemoteRevEntityMetadataId(
-      revLocalMetadataId,
+      _revMetadataId,
       _revRemoteMetadataId,
     );
   }

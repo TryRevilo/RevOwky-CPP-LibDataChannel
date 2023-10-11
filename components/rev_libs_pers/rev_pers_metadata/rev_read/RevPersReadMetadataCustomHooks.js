@@ -41,8 +41,7 @@ export const useRevGetRevEntityMetadata_By_MetadataName_MetadataValue = () => {
     if (!revStringEmpty(revRetMetadataStr) && revRetMetadataStr !== 'null') {
       let revRetMetadata = JSON.parse(revRetMetadataStr);
 
-      revRetMetadata['_revMetadataEntityGUID'] =
-        revRetMetadata.revMetadataOwnerGUID;
+      revRetMetadata['_revMetadataEntityGUID'] = revRetMetadata._revEntityGUID;
 
       return revRetMetadata;
     }

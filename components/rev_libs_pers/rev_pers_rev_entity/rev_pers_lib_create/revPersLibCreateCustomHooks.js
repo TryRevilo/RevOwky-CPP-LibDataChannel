@@ -18,8 +18,6 @@ import {
   revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
 } from '../rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
-import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataComponent';
-
 import {
   revGetFileObjectSubType,
   revIsEmptyJSONObject,
@@ -410,8 +408,6 @@ export const useRevCreateNewTag = () => {
 };
 
 export const useRevSaveNewEntity = () => {
-  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
-
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
   const {revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID} =
@@ -476,7 +472,7 @@ export const useRevSaveNewEntity = () => {
             revPersinfoEntityGUID,
           );
 
-        let revMetadataId = revMetadata.revMetadataId;
+        let _revMetadataId = revMetadata._revMetadataId;
         let revMetadataValue = revMetadata._revMetadataValue;
 
         if (
@@ -489,14 +485,14 @@ export const useRevSaveNewEntity = () => {
           continue;
         }
 
-        if (revMetadataId > 0) {
+        if (_revMetadataId > 0) {
           let revUpdateStatus =
             RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
-              revMetadataId,
+              _revMetadataId,
               revUpdateMetadataVal,
             );
 
-          console.log(revMetadataId, '>>> revUpdateStatus', revUpdateStatus);
+          console.log(_revMetadataId, '>>> revUpdateStatus', revUpdateStatus);
         } else {
           revPersEntityInfoMetadata['_revMetadataEntityGUID'] =
             revPersinfoEntityGUID;
@@ -662,10 +658,6 @@ export const useRevSaveNewEntity = () => {
     }
     // END Save Tags
 
-    revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-      console.log('>>> revPersSyncData', JSON.stringify(revSynchedGUIDsArr));
-    });
-
     return revPersEntityGUID;
   };
 
@@ -681,8 +673,8 @@ export const useRevCreateNewUserEntity = () => {
     }
 
     if (
-      revUserEntity.hasOwnProperty('_remoteRevEntityGUID') &&
-      revUserEntity._remoteRevEntityGUID
+      revUserEntity.hasOwnProperty('_revRemoteEntityGUID') &&
+      revUserEntity._revRemoteEntityGUID
     ) {
       revUserEntity['_revEntityResolveStatus'] = 0;
     }
@@ -800,24 +792,24 @@ export const useRevCreateNewUserEntity = () => {
 
     /** START SET REMOTE REL GUID */
     // Set remote user rel subject and target GUIDS
-    revSetRemoteRelGUID(revUserEntityGUID, revUserEntity._remoteRevEntityGUID);
+    revSetRemoteRelGUID(revUserEntityGUID, revUserEntity._revRemoteEntityGUID);
 
     // Set remote user info rel subject and target GUIDS
     revSetRemoteRelGUID(
       revUserEntityInfoGUID,
-      revUserEntityInfo._remoteRevEntityGUID,
+      revUserEntityInfo._revRemoteEntityGUID,
     );
 
     // Set remote user settings rel subject and target GUIDS
     revSetRemoteRelGUID(
       revUserEntitySettingsGUID,
-      revUserEntitySettings._remoteRevEntityGUID,
+      revUserEntitySettings._revRemoteEntityGUID,
     );
 
     // Set remote user settings info rel subject and target GUIDS
     revSetRemoteRelGUID(
       revUserEntitySettingsInfoGUID,
-      revUserEntitySettingsInfo._remoteRevEntityGUID,
+      revUserEntitySettingsInfo._revRemoteEntityGUID,
     );
     /** END SET REMOTE REL GUID */
 

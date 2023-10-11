@@ -77,9 +77,9 @@ export function ChatMessageInputComposer({revVarArgs}) {
     }
 
     if (!hasSentTypingMessage) {
-      sendMessage(revActivePeerEntity._remoteRevEntityGUID, {
+      sendMessage(revActivePeerEntity._revRemoteEntityGUID, {
         revMsg: 'User is typing...',
-        revSender: REV_LOGGED_IN_ENTITY._remoteRevEntityGUID,
+        revSender: REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
       });
     }
   };
@@ -125,7 +125,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revChatUserTab = revNewActivePeer => {
-    let revNewActivePeerGUID = revNewActivePeer._remoteRevEntityGUID;
+    let revNewActivePeerGUID = revNewActivePeer._revRemoteEntityGUID;
 
     return (
       <TouchableOpacity
@@ -158,7 +158,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
         revURL,
         {
           revLoggedInRemoteEntityGUID:
-            REV_LOGGED_IN_ENTITY._remoteRevEntityGUID,
+            REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
           filter: [],
         },
         revRetPersData => {
@@ -179,8 +179,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
                   revRetLoggedInEntitiesDataFilter[i];
                 if (
                   revEntity &&
-                  revEntity._remoteRevEntityGUID ==
-                    REV_LOGGED_IN_ENTITY._remoteRevEntityGUID
+                  revEntity._revRemoteEntityGUID ==
+                    REV_LOGGED_IN_ENTITY._revRemoteEntityGUID
                 ) {
                   revNewActivePeerEntitiesArr.push(revEntity);
                 }
@@ -390,7 +390,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
         revGetChatTextImput={() => revChatMessageTxtLatest.current}
         revCallback={revRetData => {
           let revRemoteTargetEntityGUID =
-            revActivePeerEntity._remoteRevEntityGUID;
+            revActivePeerEntity._revRemoteEntityGUID;
 
           sendMessage(revRemoteTargetEntityGUID, {
             revMsg: revChatMessageTxtLatest.current,

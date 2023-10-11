@@ -14,7 +14,7 @@ import {
 
 /** START REV ENTITY UPDATE */
 var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
-  let revEntityGUID = revEntityOriginal._remoteRevEntityGUID;
+  let revEntityGUID = revEntityOriginal._revRemoteEntityGUID;
 
   let revWalkRevEntityMetadata = (
     revEntityUpdateMetadataArr,
@@ -223,10 +223,10 @@ export const useRevDeleteEntity = () => {
     let revInfoMetadataList = revVarArgs._revInfoEntity._revEntityMetadataList;
 
     for (let i = 0; i < revInfoMetadataList.length; i++) {
-      let revMetadataId = revInfoMetadataList[i].revMetadataId;
+      let _revMetadataId = revInfoMetadataList[i]._revMetadataId;
       RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
         -3,
-        revMetadataId,
+        _revMetadataId,
       );
     }
 

@@ -159,7 +159,18 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     );
   };
 
-  let revPicsArray = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum.revPicsArray;
+  let revPicsArray = [];
+
+  if (REV_LOGGED_IN_ENTITY.hasOwnProperty('revEntityPicsAlbum')) {
+    let revEntityPicsAlbum = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum;
+
+    if (
+      !revIsEmptyJSONObject(revEntityPicsAlbum) &&
+      revEntityPicsAlbum.hasOwnProperty('revPicsArray')
+    ) {
+      revPicsArray = revEntityPicsAlbum.revPicsArray;
+    }
+  }
 
   for (let i = 0; i < revPicsArray.length; i++) {
     let revPicView = (

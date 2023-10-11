@@ -44,13 +44,13 @@ export const useRevCreateSitePostAction = () => {
         'revPostText',
       );
 
-      let revMetadataId = revCurrMetadata.revMetadataId;
+      let _revMetadataId = revCurrMetadata._revMetadataId;
       let revCurrMetadataVal = revCurrMetadata._revMetadataValue;
 
       if (revCurrMetadataVal.localeCompare(revPostText) !== 0) {
         let revMetadataUpdateStatus =
           RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
-            revMetadataId,
+            _revMetadataId,
             revPostText,
           );
 
@@ -62,7 +62,7 @@ export const useRevCreateSitePostAction = () => {
             );
 
           if (revEntityUpdateStatus == 1) {
-            revRetData['revUpdateMetadataIdsArr'] = [revMetadataId];
+            revRetData['revUpdateMetadataIdsArr'] = [_revMetadataId];
           }
         }
       }

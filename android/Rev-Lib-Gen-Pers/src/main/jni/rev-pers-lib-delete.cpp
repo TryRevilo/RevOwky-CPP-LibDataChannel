@@ -59,8 +59,8 @@ bool revSetDelRelResStatus(void *revRelID, int revResStatus) {
 }
 
 // Function that receives a callback function
-bool revSetDelMetadataResStatus(void *revMetadataID, int revResStatus) {
-    long revPassLong = *(long *) revMetadataID;
+bool revSetDelMetadataResStatus(void *_revMetadataId, int revResStatus) {
+    long revPassLong = *(long *) _revMetadataId;
 
     RevEntityMetadata *revEntityMetadata = revPersGetRevEntityMetadata_By_MetadataId(revPassLong);
 

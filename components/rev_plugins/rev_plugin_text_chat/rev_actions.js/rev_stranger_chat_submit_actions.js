@@ -42,7 +42,7 @@ export const useRevHandleSendMsgAction = () => {
       revMsgSenderOfRel._revEntityRelationshipType = 'rev_stranger_chat_of';
 
       revMsgSenderOfRel._revEntityGUID = revPersEntityGUID;
-      revMsgSenderOfRel._remoteRevEntityGUID = -1;
+      revMsgSenderOfRel._revRemoteEntityGUID = -1;
 
       revMsgSenderOfRel._revEntityTargetGUID = revEntityOwnerGUID;
       revMsgSenderOfRel._revEntitySubjectGUID = revTargetEntityGUID;

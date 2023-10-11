@@ -18,10 +18,12 @@ export const useRevLogin = () => {
 
   const revLogin = async (revUserId, revPassword) => {
     let revUniqueIdEntityGUID =
-      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(
+      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(
         'rev_entity_unique_id',
         revUserId,
       );
+
+    console.log('>>> revUniqueIdEntityGUID', revUniqueIdEntityGUID);
 
     let revUserIdOwnerGUID =
       RevPersLibRead_React.revGetEntityOwnerGUID_BY_EntityGUID(
@@ -29,7 +31,7 @@ export const useRevLogin = () => {
       );
 
     let revPasswordEntityGUID =
-      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_MetadataName_MetadataValue(
+      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(
         'revPassword1',
         revPassword,
       );

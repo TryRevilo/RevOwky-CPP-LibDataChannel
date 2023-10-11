@@ -5,7 +5,6 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
  */
 
 public class RevEntityMetadata {
-
     public int get_revResolveStatus() {
         return _revResolveStatus;
     }
@@ -15,13 +14,10 @@ public class RevEntityMetadata {
     }
 
     private int _revResolveStatus = -1;
-
     private String _revMetadataName, _revMetadataValue;
-
-    private Long revMetadataId = -1L;
+    private Long _revMetadataId = -1L;
     private Long _revRemoteMetadataId = -1L;
-    private Long revMetadataOwnerGUID = -1L;
-
+    private Long _revEntityGUID = -1L;
     private Long _revTimeCreated = -1L;
     private Long _revTimePublished = -1L;
     private Long _revTimePublishedUpdated = -1L;
@@ -50,28 +46,28 @@ public class RevEntityMetadata {
         this._revMetadataValue = _revMetadataValue;
     }
 
-    public Long getRevMetadataId() {
-        return revMetadataId;
+    public Long get_revMetadataId() {
+        return _revMetadataId;
     }
 
-    public void setRevMetadataId(Long revMetadataId) {
-        this.revMetadataId = revMetadataId;
+    public void set_revMetadataId(Long _revMetadataId) {
+        this._revMetadataId = _revMetadataId;
     }
 
-    public Long getRemoteRevMetadataId() {
+    public Long getRemote_revMetadataId() {
         return _revRemoteMetadataId;
     }
 
-    public void setRemoteRevMetadataId(Long _revRemoteMetadataId) {
+    public void setRemote_revMetadataId(Long _revRemoteMetadataId) {
         this._revRemoteMetadataId = _revRemoteMetadataId;
     }
 
-    public Long getRevMetadataOwnerGUID() {
-        return revMetadataOwnerGUID;
+    public Long get_revMetadataOwnerGUID() {
+        return _revEntityGUID;
     }
 
-    public void setRevMetadataOwnerGUID(Long revMetadataOwnerGUID) {
-        this.revMetadataOwnerGUID = revMetadataOwnerGUID;
+    public void set_revMetadataOwnerGUID(Long _revEntityGUID) {
+        this._revEntityGUID = _revEntityGUID;
     }
 
     public Long get_revTimeCreated() {

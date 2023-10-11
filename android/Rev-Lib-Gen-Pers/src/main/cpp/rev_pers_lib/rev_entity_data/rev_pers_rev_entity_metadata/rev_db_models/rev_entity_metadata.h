@@ -10,7 +10,7 @@
 
 typedef struct RevEntityMetadata {
     int _revResolveStatus;
-    long _revMetadataID;
+    long _revMetadataId;
     long _revRemoteMetadataId;
     long _revMetadataEntityGUID;
     char *_revMetadataName;
@@ -29,6 +29,6 @@ RevEntityMetadata *revInitializedMetadata();
 
 RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr);
 
-list *revMetaDataJSONArrStrFiller(const char *const revEntityMetadataJSONArrStr);
+void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr);
 
 #endif //OWKI_REV_ENTITY_METADATA_H

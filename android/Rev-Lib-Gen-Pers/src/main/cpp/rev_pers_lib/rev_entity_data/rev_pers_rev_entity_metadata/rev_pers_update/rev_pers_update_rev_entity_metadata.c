@@ -9,7 +9,7 @@
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 
-int setRemoteRevEntityMetadataId(long revMetadataId, long _revRemoteMetadataId) {
+int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -22,7 +22,7 @@ int setRemoteRevEntityMetadataId(long revMetadataId, long _revRemoteMetadataId) 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
     sqlite3_bind_int(stmt, 1, _revRemoteMetadataId);
     sqlite3_bind_int(stmt, 2, 0);
-    sqlite3_bind_int(stmt, 3, revMetadataId);
+    sqlite3_bind_int(stmt, 3, _revMetadataId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -41,7 +41,7 @@ int setRemoteRevEntityMetadataId(long revMetadataId, long _revRemoteMetadataId) 
     return revReturnVal;
 }
 
-int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long revMetadataId) {
+int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetadataId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -53,7 +53,7 @@ int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long revMetada
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
     sqlite3_bind_int(stmt, 1, revResolveStatus);
-    sqlite3_bind_int(stmt, 2, revMetadataId);
+    sqlite3_bind_int(stmt, 2, _revMetadataId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -103,7 +103,7 @@ int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(char *revMetadataN
     return revReturnVal;
 }
 
-int setMetadataValue_BY_MetadataId(long revMetadataId, char *revMetadataValue) {
+int setMetadataValue_BY_MetadataId(long _revMetadataId, char *revMetadataValue) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -117,7 +117,7 @@ int setMetadataValue_BY_MetadataId(long revMetadataId, char *revMetadataValue) {
 
     sqlite3_bind_text(stmt, 1, revMetadataValue, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, 101);
-    sqlite3_bind_int(stmt, 3, revMetadataId);
+    sqlite3_bind_int(stmt, 3, _revMetadataId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));

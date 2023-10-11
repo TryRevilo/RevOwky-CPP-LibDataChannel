@@ -41,14 +41,14 @@ typedef struct REV_ENTITY_METADATA_JNI_POSREC {
     jmethodID constructortor_ID;
 
     jfieldID _revResolveStatus;
-    jfieldID revMetadataId;
+    jfieldID _revMetadataId;
     jfieldID revMetadataValueId;
     jfieldID _revRemoteMetadataId;
 
     jfieldID _revMetadataName;
     jfieldID _revMetadataValue;
 
-    jfieldID revMetadataOwnerGUID;
+    jfieldID _revEntityGUID;
 
     jfieldID _revTimeCreated_ID;
     jfieldID _revTimePublished_ID;

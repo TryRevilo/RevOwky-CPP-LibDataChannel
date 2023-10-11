@@ -66,10 +66,13 @@ const RevSiteLoading = () => {
     </View>,
   );
 
+  const revSync = async () => {
+    let revRetData = await revPersSyncDataComponent();
+    console.log('>>> revRetData', JSON.stringify(revRetData));
+  };
+
   useEffect(() => {
-    revPersSyncDataComponent(-1, revSynchedGUIDsArr => {
-      console.log('>>> revPersSyncData', JSON.stringify(revSynchedGUIDsArr));
-    });
+    revSync();
   }, [REV_SITE_ENTITY_GUID]);
 
   useEffect(() => {

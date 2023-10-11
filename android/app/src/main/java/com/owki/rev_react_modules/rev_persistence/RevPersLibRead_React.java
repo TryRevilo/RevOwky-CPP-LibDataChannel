@@ -79,8 +79,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         RevEntity[] revEntities = revPersLibRead.revPersGet_ALL_RevEntity_By_SiteGUID_SubType(revSiteEntityGUID, revEntitySubType);
 
-        if (revEntities.length > 0)
-            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+        if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
         return revEntitiesStr;
     }
@@ -98,8 +97,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         RevEntity[] revEntities = revPersLibRead.revPersGet_ALL_RevEntity_By_RevEntityContainerGUID_SubTYPE(revEntityGUID, revEntitySubType);
 
-        if (revEntities.length > 0)
-            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+        if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
         return revEntitiesStr;
     }
@@ -124,8 +122,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         RevEntity[] revEntities = revPersLibRead.revPersGetALLRevEntity_By_SubType(revEntitySubType);
 
-        if (revEntities.length > 0)
-            revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
+        if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
         return revEntitiesStr;
     }
@@ -162,8 +159,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         RevEntity revEntity = revPersLibRead.revGetEntity_By_RevEntityOwnerGUID_Subtype(revEntityOwnerGUID, revEntitySubtype);
 
-        if (revEntity != null)
-            revEntityStr = new RevJSONEntityConstructor().revObjectSerializer(revEntity);
+        if (revEntity != null) revEntityStr = new RevJSONEntityConstructor().revObjectSerializer(revEntity);
 
         return revEntityStr;
     }
@@ -212,8 +208,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<RevEntityRelationship> revEntityRelationships = revPersLibRead.revPersGetRevEntityRels_By_ResStatus(revResStatus);
 
-        if (revEntityRelationships.size() > 0)
-            revEntityRelationshipsStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityRelationships);
+        if (revEntityRelationships.size() > 0) revEntityRelationshipsStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityRelationships);
 
         return revEntityRelationshipsStr;
     }
@@ -224,8 +219,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<RevEntityRelationship> revEntityRelationships = revPersLibRead.revPersGetRevEntityRels_By_ResStatus_RelType(revResStatus, revEntityRelationship);
 
-        if (revEntityRelationships.size() > 0)
-            revEntityRelationshipsStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityRelationships);
+        if (revEntityRelationships.size() > 0) revEntityRelationshipsStr = new RevJSONEntityConstructor().revObjectSerializer(revEntityRelationships);
 
         return revEntityRelationshipsStr;
     }
@@ -236,8 +230,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<Long> revRelsList = revPersLibRead.revPersGetALLRevEntityRelGUIDs_By_RelType_revRemoteEntityGUID(revEntityRelationship, revRemoteEntityGUID);
 
-        if (revRelsList.size() > 0)
-            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+        if (revRelsList.size() > 0) revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
 
         return revRelsString;
 
@@ -249,8 +242,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(revRelType, revEntityGUID, revLocalGUID_1, revLocalGUID_2);
 
-        if (revRelsList.size() > 0)
-            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+        if (revRelsList.size() > 0) revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
 
         return revRelsString;
     }
@@ -261,8 +253,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_LocalGUIDs(revRelType, revLocalGUID_1, revLocalGUID_2);
 
-        if (revRelsList.size() > 0)
-            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+        if (revRelsList.size() > 0) revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
 
         return revRelsString;
     }
@@ -273,8 +264,7 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
 
         List<RevEntityRelationship> revRelsList = revPersLibRead.revGetRels_By_RelType_RemoteGUIDs(revRelType, revRemoteGUID_1, revRemoteGUID_2);
 
-        if (revRelsList.size() > 0)
-            revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
+        if (revRelsList.size() > 0) revRelsString = new RevJSONEntityConstructor().revObjectSerializer(revRelsList);
 
         return revRelsString;
     }

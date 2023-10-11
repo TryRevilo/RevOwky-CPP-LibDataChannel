@@ -17,7 +17,7 @@ export function RevFooter1Left() {
 
   return (
     <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'flex-end'}]}>
-      <RevNextStrangerChatTab revVarArgs={{_remoteRevEntityGUID: 1055}} />
+      <RevNextStrangerChatTab revVarArgs={{_revRemoteEntityGUID: 1055}} />
 
       {REV_FOOTER_1_CENTER}
 

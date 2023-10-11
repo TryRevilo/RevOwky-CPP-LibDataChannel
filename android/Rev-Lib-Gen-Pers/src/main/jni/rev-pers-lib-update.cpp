@@ -62,8 +62,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_revPersSetContain
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1Metadata_1ByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID, jlong revMetadataId, jlong _revRemoteMetadataId) {
-    return setrevRemoteEntityGUID_Metadata_ByRevEntityGUID((long) revEntityGUID, (long) revRemoteEntityGUID, (long) revMetadataId, (long) _revRemoteMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntityGUID_1Metadata_1ByRevEntityGUID(JNIEnv *env, jobject instance, jlong revEntityGUID, jlong revRemoteEntityGUID, jlong _revMetadataId, jlong _revRemoteMetadataId) {
+    return setrevRemoteEntityGUID_Metadata_ByRevEntityGUID((long) revEntityGUID, (long) revRemoteEntityGUID, (long) _revMetadataId, (long) _revRemoteMetadataId);
 }
 
 extern "C"
@@ -95,7 +95,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntit
 
         cJSON *json = cJSON_Parse(chr);
 
-        name = cJSON_GetObjectItem(json, "localMetadataId");
+        name = cJSON_GetObjectItem(json, "_revMetadataId");
 
         env->ReleaseStringUTFChars(strObj, chr);
     }
@@ -116,7 +116,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntit
     int n = cJSON_GetArraySize(root);
     for (i = 0; i < n; i++) {
         elem = cJSON_GetArrayItem(root, i);
-        name = cJSON_GetObjectItem(elem, "localMetadataId");
+        name = cJSON_GetObjectItem(elem, "_revMetadataId");
         printf("%s\n", name->valuestring);
     }
 
@@ -131,8 +131,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setrevRemoteEntit
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityMetadataId(JNIEnv *env, jobject instance, jlong revMetadataId, jlong _revRemoteMetadataId) {
-    return setRemoteRevEntityMetadataId((long) revMetadataId, (long) _revRemoteMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setRemoteRevEntityMetadataId(JNIEnv *env, jobject instance, jlong _revMetadataId, jlong _revRemoteMetadataId) {
+    return setRemoteRevEntityMetadataId((long) _revMetadataId, (long) _revRemoteMetadataId);
 }
 
 extern "C"
@@ -148,16 +148,16 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolv
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolveStatus_1BY_1METADATA_1ID(JNIEnv *env, jobject instance, jint revResolveStatus, jlong revMetadataId) {
-    return setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) revMetadataId);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataResolveStatus_1BY_1METADATA_1ID(JNIEnv *env, jobject instance, jint revResolveStatus, jlong _revMetadataId) {
+    return setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) _revMetadataId);
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataValue_1BY_1MetadataId(JNIEnv *env, jobject instance, jlong revMetadataId, jstring revMetadataValue_) {
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibUpdate_setMetadataValue_1BY_1MetadataId(JNIEnv *env, jobject instance, jlong _revMetadataId, jstring revMetadataValue_) {
     const char *revMetadataValue = env->GetStringUTFChars(revMetadataValue_, 0);
 
-    int revUpdateStatus = setMetadataValue_BY_MetadataId((long) revMetadataId, strdup(revMetadataValue));
+    int revUpdateStatus = setMetadataValue_BY_MetadataId((long) _revMetadataId, strdup(revMetadataValue));
 
     env->ReleaseStringUTFChars(revMetadataValue_, revMetadataValue);
 

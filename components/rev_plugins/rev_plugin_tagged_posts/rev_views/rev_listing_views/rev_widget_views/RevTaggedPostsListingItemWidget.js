@@ -20,10 +20,7 @@ import {
   RevCenteredImage,
 } from '../../../../../rev_views/rev_page_views';
 
-import {
-  revGetRandInteger,
-  revIsEmptyJSONObject,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 import {
   revGetLocal_OR_RemoteGUID,
@@ -208,6 +205,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
         i == revPicsArr.length - 1
           ? {
               borderRightWidth: 0,
+              REV_INCREMENTALS,
             }
           : null;
 

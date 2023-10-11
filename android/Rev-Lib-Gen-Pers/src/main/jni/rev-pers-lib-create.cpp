@@ -159,9 +159,9 @@ void revPersSetRevObjectEntityDescBaseMetadata(list *revList, JNIEnv *env, jobje
         jclass clsLong = (env)->FindClass("java/lang/Long");
         jmethodID longGetLongValue = (env)->GetMethodID(clsLong, "longValue", "()J");
 
-        jmethodID methodId_getRemoteRevMetadataId = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "getRemoteRevMetadataId", "()Ljava/lang/Long;");
-        jobject revRemoteRevMetadataId_JOB = env->CallObjectMethod(obj_RevEntityMetadata, methodId_getRemoteRevMetadataId);
-        long _revRemoteMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
+        jmethodID methodId_getRemote_revMetadataId = env->GetMethodID(env->GetObjectClass(obj_RevEntityMetadata), "getRemote_revMetadataId", "()Ljava/lang/Long;");
+        jobject revRemote_revMetadataId_JOB = env->CallObjectMethod(obj_RevEntityMetadata, methodId_getRemote_revMetadataId);
+        long _revRemoteMetadataId = (env)->CallLongMethod(revRemote_revMetadataId_JOB, longGetLongValue);
 
         if (_revRemoteMetadataId > 0) {
             revEntityMetadata._revRemoteMetadataId = _revRemoteMetadataId;
@@ -409,8 +409,8 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
         /** Start METADATA Owner GUID **/
 
-        jmethodID methodId_getRevMetadataOwnerGUID = env->GetMethodID(revEntityMetadataClazz, "getRevMetadataOwnerGUID", "()Ljava/lang/Long;");
-        jobject revEntityMetadataOwnerGUID_JOB = env->CallObjectMethod(obj_RevEntityMetadata, methodId_getRevMetadataOwnerGUID);
+        jmethodID methodId_get_revMetadataOwnerGUID = env->GetMethodID(revEntityMetadataClazz, "get_revMetadataOwnerGUID", "()Ljava/lang/Long;");
+        jobject revEntityMetadataOwnerGUID_JOB = env->CallObjectMethod(obj_RevEntityMetadata, methodId_get_revMetadataOwnerGUID);
         long revEntityMetadataOwnerGUID = (env)->CallLongMethod(revEntityMetadataOwnerGUID_JOB, longGetLongValue);
 
         if (revEntityMetadataOwnerGUID > 0) {
@@ -419,7 +419,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
         /** End METADATA CONTAINER ENTITY GUID **/
 
-        revEntityMetadata._revMetadataID = revPersSaveRevEntityMetadata(&revEntityMetadata);
+        revEntityMetadata._revMetadataId = revPersSaveRevEntityMetadata(&revEntityMetadata);
 
         list_append(&list, &revEntityMetadata);
 
@@ -498,11 +498,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
     jclass clsLong = (env)->FindClass("java/lang/Long");
     jmethodID longGetLongValue = (env)->GetMethodID(clsLong, "longValue", "()J");
 
-    jmethodID methodId_getRemoteRevMetadataId = env->GetMethodID(revEntityMetadataClazz,
-                                                                 "getRemoteRevMetadataId",
+    jmethodID methodId_getRemote_revMetadataId = env->GetMethodID(revEntityMetadataClazz,
+                                                                 "getRemote_revMetadataId",
                                                                  "()Ljava/lang/Long;");
-    jobject revRemoteRevMetadataId_JOB = env->CallObjectMethod(revEntityMetadata, methodId_getRemoteRevMetadataId);
-    long _revRemoteMetadataId = (env)->CallLongMethod(revRemoteRevMetadataId_JOB, longGetLongValue);
+    jobject revRemote_revMetadataId_JOB = env->CallObjectMethod(revEntityMetadata, methodId_getRemote_revMetadataId);
+    long _revRemoteMetadataId = (env)->CallLongMethod(revRemote_revMetadataId_JOB, longGetLongValue);
 
     if (_revRemoteMetadataId > 0) {
         c_revEntityMetadata._revRemoteMetadataId = _revRemoteMetadataId;
@@ -514,11 +514,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revSaveRevEntityM
 
     /** Start METADATA Owner GUID **/
 
-    jmethodID methodId_getRevMetadataOwnerGUID = env->GetMethodID(revEntityMetadataClazz,
-                                                                  "getRevMetadataOwnerGUID",
+    jmethodID methodId_get_revMetadataOwnerGUID = env->GetMethodID(revEntityMetadataClazz,
+                                                                  "get_revMetadataOwnerGUID",
                                                                   "()Ljava/lang/Long;");
     jobject revEntityMetadataOwnerGUID_JOB = env->CallObjectMethod(revEntityMetadata,
-                                                                   methodId_getRevMetadataOwnerGUID);
+                                                                   methodId_get_revMetadataOwnerGUID);
     long revEntityMetadataOwnerGUID = (env)->CallLongMethod(revEntityMetadataOwnerGUID_JOB,
                                                             longGetLongValue);
 
@@ -539,11 +539,11 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersSaveEntity
     const char *revEntityMetadataJSONStr = env->GetStringUTFChars(rev_entity_metadata_jsonstr, 0);
 
     RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataJSONStr);
-    long revMetadataID = revPersSaveRevEntityMetadata(revEntityMetadata);
+    long _revMetadataId = revPersSaveRevEntityMetadata(revEntityMetadata);
 
     env->ReleaseStringUTFChars(rev_entity_metadata_jsonstr, revEntityMetadataJSONStr);
 
-    return revMetadataID;
+    return _revMetadataId;
 }
 
 /** END REV ENTITY METADATA **/

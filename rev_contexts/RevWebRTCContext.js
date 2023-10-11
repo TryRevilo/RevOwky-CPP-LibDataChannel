@@ -762,13 +762,13 @@ const RevWebRTCContextProvider = ({children}) => {
   useEffect(() => {
     if (
       !REV_LOGGED_IN_ENTITY ||
-      REV_LOGGED_IN_ENTITY._remoteRevEntityGUID < 1
+      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID < 1
     ) {
       console.log(deviceModel, 'NOT LOGGED IN');
       return;
     }
 
-    setRevLoggedInEntityGUID(REV_LOGGED_IN_ENTITY._remoteRevEntityGUID);
+    setRevLoggedInEntityGUID(REV_LOGGED_IN_ENTITY._revRemoteEntityGUID);
     console.log(deviceModel, 'LOGGED IN');
   }, [REV_LOGGED_IN_ENTITY]);
 
