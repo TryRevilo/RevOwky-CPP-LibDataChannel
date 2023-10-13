@@ -8,20 +8,20 @@
 #include <string.h>
 
 typedef struct RevEntityAnnotation {
-    int _revAnnotationResStatus;
+    int _revResolveStatus;
 
-    char *_revAnnotationName;
+    char *_revName;
 
-    char *_revAnnotationValue;
+    char *_revValue;
 
-    long _revAnnotationId;
-    long _revAnnotationRemoteId;
+    long _revId;
+    long _revRemoteId;
 
-    long _revAnnotationEntityGUID;
-    long _revAnnotationRemoteEntityGUID;
+    long _revGUID;
+    long _revRemoteGUID;
 
-    long _revAnnOwnerEntityGUID;
-    long _revAnnRemoteOwnerEntityGUID;
+    long _revOwnerGUID;
+    long _revRemoteOwnerGUID;
 
     long long _revTimeCreated;
     long _revTimePublished;

@@ -18,6 +18,6 @@ typedef bool (*revSetResStatusCallBack)(void *, int);
 
 void revListForEach(list *list, int revResStatus, revSetResStatusCallBack iterator);
 
-int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID);
+int revPersDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID);
 
 #endif //OWKI_REV_PERS_LIB_DELETE_HPP

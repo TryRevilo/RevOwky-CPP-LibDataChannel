@@ -14,7 +14,7 @@ import {
 
 /** START REV ENTITY UPDATE */
 var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
-  let revEntityGUID = revEntityOriginal._revRemoteEntityGUID;
+  let revEntityGUID = revEntityOriginal._revRemoteGUID;
 
   let revWalkRevEntityMetadata = (
     revEntityUpdateMetadataArr,
@@ -31,13 +31,12 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
 
     for (let i = 0; i < revSavedMetadataDuplicatesArr.length; i++) {
       let revCurrDuplicateMetadata = revSavedMetadataDuplicatesArr[i];
-      let revCurrDuplicateMetadataRemId =
-        revCurrDuplicateMetadata._revRemoteMetadataId;
+      let revCurrDuplicateMetadataRemId = revCurrDuplicateMetadata._revRemoteId;
 
       /** REV START GET LAST ONES ADDED */
       for (let j = 0; j < revSavedMetadataDuplicatesArr.length; j++) {
         let revSavedMetadataDuplicatesArrRemId =
-          revSavedMetadataDuplicatesArr[j]._revRemoteMetadataId;
+          revSavedMetadataDuplicatesArr[j]._revRemoteId;
 
         if (
           revCurrDuplicateMetadataRemId == revSavedMetadataDuplicatesArrRemId
@@ -77,9 +76,9 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
     for (let i = 0; i < revEntityUpdateMetadataArr.length; i++) {
       let revUpdateMetadata = revEntityUpdateMetadataArr[i];
 
-      let revMetadataName = revUpdateMetadata._revMetadataName;
+      let revMetadataName = revUpdateMetadata._revName;
 
-      let revUpdateMetadataValue = revUpdateMetadata._revMetadataValue;
+      let revUpdateMetadataValue = revUpdateMetadata._revValue;
       let revOriginalMetadataValue = revGetMetadataValue(
         revOriginalMetatadataArr,
         revMetadataName,
@@ -88,7 +87,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       if (!revOriginalMetadataValue || !revUpdateMetadata._revIsUnique) {
         let revIsInOriginalMetadataList = revArrIncludesElement(
           revGetMetadataValuesArr(revOriginalMetatadataArr, revMetadataName),
-          revUpdateMetadata._revMetadataValue,
+          revUpdateMetadata._revValue,
         );
         let revIsUpdateDuplicateVal = revIsDuplicateMetadata(
           revEntityUpdateMetaDataArr,
@@ -104,13 +103,13 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         revOriginalMetadataValue &&
         revOriginalMetadataValue.localeCompare(revUpdateMetadataValue) !== 0
       ) {
-        let _revRemoteMetadataId = revGetRemoteMetadataId(
+        let _revRemoteId = revGetRemoteMetadataId(
           revOriginalMetatadataArr,
           revMetadataName,
         );
 
-        if (_revRemoteMetadataId && _revRemoteMetadataId > 0) {
-          revUpdateMetadata._revRemoteMetadataId = _revRemoteMetadataId;
+        if (_revRemoteId && _revRemoteId > 0) {
+          revUpdateMetadata._revRemoteId = _revRemoteId;
           revEntityUpdateMetaDataArr.push(revUpdateMetadata);
         }
       }
@@ -121,7 +120,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         if (revUpdateMetadata._revIsUnique) {
           let revDeleteMetadataValue = revGetMetadataValue(
             revEntityUpdateMetadataArr,
-            revOriginalMetatadata._revMetadataName,
+            revOriginalMetatadata._revName,
           );
 
           if (!revDeleteMetadataValue) {
@@ -130,13 +129,13 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         } else {
           let revUpdateMetadataValuesArr = revGetMetadataValuesArr(
             revEntityUpdateMetadataArr,
-            revOriginalMetatadata._revMetadataName,
+            revOriginalMetatadata._revName,
           );
 
           if (
             !revArrIncludesElement(
               revUpdateMetadataValuesArr,
-              revOriginalMetatadata._revMetadataValue,
+              revOriginalMetatadata._revValue,
             )
           ) {
             revEntityDeleteMetadataArr.push(revOriginalMetatadata);
@@ -155,7 +154,7 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       for (let dup = 0; dup < revMetadataDuplicatesArr.length; dup++) {
         let revMetadata = revMetadataDuplicatesArr[dup];
 
-        if (revMetadata._revRemoteMetadataId < 1) {
+        if (revMetadata._revRemoteId < 1) {
           continue;
         }
 
@@ -184,8 +183,8 @@ var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
   };
 
   return revWalkRevEntityMetadata(
-    revEntityUpdate._revEntityMetadataList,
-    revEntityOriginal._revEntityMetadataList,
+    revEntityUpdate._revMetadataList,
+    revEntityOriginal._revMetadataList,
   );
 };
 
@@ -195,12 +194,12 @@ export const useRevDeleteEntity = () => {
   const revDeleteEntity = revVarArgs => {
     if (
       revIsEmptyJSONObject(revVarArgs._revInfoEntity) ||
-      !revVarArgs.hasOwnProperty('_revEntityGUID')
+      !revVarArgs.hasOwnProperty('_revGUID')
     ) {
       return -1;
     }
 
-    let revEntityGUID = revVarArgs._revEntityGUID;
+    let revEntityGUID = revVarArgs._revGUID;
 
     if (revEntityGUID < 0) {
       return -1;
@@ -209,24 +208,24 @@ export const useRevDeleteEntity = () => {
     let revRetResStatusVal = 1;
 
     revRetResStatusVal =
-      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+      RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
         -3,
         revEntityGUID,
       );
 
     revRetResStatusVal =
-      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+      RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
         -3,
-        revVarArgs._revInfoEntity._revEntityGUID,
+        revVarArgs._revInfoEntity._revGUID,
       );
 
-    let revInfoMetadataList = revVarArgs._revInfoEntity._revEntityMetadataList;
+    let revInfoMetadataList = revVarArgs._revInfoEntity._revMetadataList;
 
     for (let i = 0; i < revInfoMetadataList.length; i++) {
-      let _revMetadataId = revInfoMetadataList[i]._revMetadataId;
-      RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+      let _revId = revInfoMetadataList[i]._revId;
+      RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
         -3,
-        _revMetadataId,
+        _revId,
       );
     }
 

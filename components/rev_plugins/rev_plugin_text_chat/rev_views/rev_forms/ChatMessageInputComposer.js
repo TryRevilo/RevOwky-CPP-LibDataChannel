@@ -77,9 +77,9 @@ export function ChatMessageInputComposer({revVarArgs}) {
     }
 
     if (!hasSentTypingMessage) {
-      sendMessage(revActivePeerEntity._revRemoteEntityGUID, {
+      sendMessage(revActivePeerEntity._revRemoteGUID, {
         revMsg: 'User is typing...',
-        revSender: REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
+        revSender: REV_LOGGED_IN_ENTITY._revRemoteGUID,
       });
     }
   };
@@ -125,7 +125,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revChatUserTab = revNewActivePeer => {
-    let revNewActivePeerGUID = revNewActivePeer._revRemoteEntityGUID;
+    let revNewActivePeerGUID = revNewActivePeer._revRemoteGUID;
 
     return (
       <TouchableOpacity
@@ -157,8 +157,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
       revPostServerData(
         revURL,
         {
-          revLoggedInRemoteEntityGUID:
-            REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
+          revLoggedInRemoteEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
           filter: [],
         },
         revRetPersData => {
@@ -179,8 +178,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
                   revRetLoggedInEntitiesDataFilter[i];
                 if (
                   revEntity &&
-                  revEntity._revRemoteEntityGUID ==
-                    REV_LOGGED_IN_ENTITY._revRemoteEntityGUID
+                  revEntity._revRemoteGUID ==
+                    REV_LOGGED_IN_ENTITY._revRemoteGUID
                 ) {
                   revNewActivePeerEntitiesArr.push(revEntity);
                 }
@@ -217,12 +216,12 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
     let revInfoEntity = revEntity._revInfoEntity;
 
-    if (!('_revEntityMetadataList' in revInfoEntity)) {
+    if (!('_revMetadataList' in revInfoEntity)) {
       return null;
     }
 
     let revFullNames = revGetMetadataValue(
-      revInfoEntity._revEntityMetadataList,
+      revInfoEntity._revMetadataList,
       'rev_full_names',
     );
 
@@ -344,7 +343,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
     if (revActivePeerEntity) {
       let revInfoEntity = revActivePeerEntity._revInfoEntity;
       revFullNames = revGetMetadataValue(
-        revInfoEntity._revEntityMetadataList,
+        revInfoEntity._revMetadataList,
         'rev_full_names',
       );
     }
@@ -389,8 +388,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
         }}
         revGetChatTextImput={() => revChatMessageTxtLatest.current}
         revCallback={revRetData => {
-          let revRemoteTargetEntityGUID =
-            revActivePeerEntity._revRemoteEntityGUID;
+          let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
 
           sendMessage(revRemoteTargetEntityGUID, {
             revMsg: revChatMessageTxtLatest.current,

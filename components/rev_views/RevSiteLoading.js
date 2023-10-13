@@ -85,7 +85,7 @@ const RevSiteLoading = () => {
       let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
 
       if (!revIsEmptyJSONObject(revLoggedInSiteEntity)) {
-        let revLoggedInEntityGUID = revLoggedInSiteEntity._revEntityOwnerGUID;
+        let revLoggedInEntityGUID = revLoggedInSiteEntity._revOwnerGUID;
 
         if (revLoggedInEntityGUID > 0) {
           SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);

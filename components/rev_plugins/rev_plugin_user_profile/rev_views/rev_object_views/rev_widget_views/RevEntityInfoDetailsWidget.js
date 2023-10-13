@@ -30,12 +30,12 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   let revInfoEntity = revVarArgs._revInfoEntity;
 
   let revEntityFullNames = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_full_names',
   );
 
   let revEntityDescVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 
@@ -44,7 +44,7 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   }
 
   let revAboutEntityInfo = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_about_entity_info',
   );
 
@@ -63,7 +63,7 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
   let revFormattedLongDate = revFormatLongDate(revUserRegLongDate);
 
   let revMainEntityIconVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_main_entity_icon_val',
   );
 

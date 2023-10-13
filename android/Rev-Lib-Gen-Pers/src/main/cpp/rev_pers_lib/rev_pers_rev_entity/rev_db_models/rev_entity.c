@@ -20,16 +20,16 @@ htable_strstr_t *revGetEntityDB_Keys() {
 
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
-    htable_strstr_insert(revMap, "_revEntityType", "REV_ENTITY_TYPE");
-    htable_strstr_insert(revMap, "_revEntitySubType", "REV_ENTITY_SUB_TYPE");
-    htable_strstr_insert(revMap, "_revEntityResolveStatus", "REV_RESOLVE_STATUS");
-    htable_strstr_insert(revMap, "_revEntityChildableStatus", "REV_CHILDABLE_STATUS");
-    htable_strstr_insert(revMap, "_revEntityAccessPermission", "REV_ENTITY_ACCESS_PERMISSION");
-    htable_strstr_insert(revMap, "_revEntitySiteGUID", "REV_ENTITY_SITE_GUID");
-    htable_strstr_insert(revMap, "_revEntityGUID", "REV_ENTITY_GUID");
-    htable_strstr_insert(revMap, "_revRemoteEntityGUID", "REMOTE_REV_ENTITY_GUID");
-    htable_strstr_insert(revMap, "_revEntityOwnerGUID", "REV_ENTITY_OWNER_GUID");
-    htable_strstr_insert(revMap, "_revContainerEntityGUID", "REV_ENTITY_CONTAINER_GUID");
+    htable_strstr_insert(revMap, "_revType", "REV_ENTITY_TYPE");
+    htable_strstr_insert(revMap, "_revSubType", "REV_ENTITY_SUB_TYPE");
+    htable_strstr_insert(revMap, "_revResolveStatus", "REV_RESOLVE_STATUS");
+    htable_strstr_insert(revMap, "_revChildableStatus", "REV_CHILDABLE_STATUS");
+    htable_strstr_insert(revMap, "_revAccessPermission", "REV_ENTITY_ACCESS_PERMISSION");
+    htable_strstr_insert(revMap, "_revSiteGUID", "REV_ENTITY_SITE_GUID");
+    htable_strstr_insert(revMap, "_revGUID", "REV_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_revRemoteGUID", "REMOTE_REV_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_revOwnerGUID", "REV_ENTITY_OWNER_GUID");
+    htable_strstr_insert(revMap, "_revContainerGUID", "REV_ENTITY_CONTAINER_GUID");
     htable_strstr_insert(revMap, "_revTimeCreated", "REV_CREATED_DATE");
     htable_strstr_insert(revMap, "_revTimePublishedUpdated", "REV_UPDATED_DATE");
     htable_strstr_insert(revMap, "_revTimePublished", "REV_PUBLISHED_DATE");
@@ -43,16 +43,16 @@ htable_strstr_t *revGetMapped_Entity_Key_DBFieldName() {
 
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
-    htable_strstr_insert(revMap, "REV_ENTITY_TYPE", "_revEntityType");
-    htable_strstr_insert(revMap, "REV_ENTITY_SUB_TYPE", "_revEntitySubType");
-    htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revEntityResolveStatus");
-    htable_strstr_insert(revMap, "REV_CHILDABLE_STATUS", "_revEntityChildableStatus");
-    htable_strstr_insert(revMap, "REV_ENTITY_ACCESS_PERMISSION", "_revEntityAccessPermission");
-    htable_strstr_insert(revMap, "REV_ENTITY_SITE_GUID", "_revEntitySiteGUID");
-    htable_strstr_insert(revMap, "REV_ENTITY_GUID", "_revEntityGUID");
-    htable_strstr_insert(revMap, "REMOTE_REV_ENTITY_GUID", "_revRemoteEntityGUID");
-    htable_strstr_insert(revMap, "REV_ENTITY_OWNER_GUID", "_revEntityOwnerGUID");
-    htable_strstr_insert(revMap, "REV_ENTITY_CONTAINER_GUID", "_revContainerEntityGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_TYPE", "_revType");
+    htable_strstr_insert(revMap, "REV_ENTITY_SUB_TYPE", "_revSubType");
+    htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revResolveStatus");
+    htable_strstr_insert(revMap, "REV_CHILDABLE_STATUS", "_revChildableStatus");
+    htable_strstr_insert(revMap, "REV_ENTITY_ACCESS_PERMISSION", "_revAccessPermission");
+    htable_strstr_insert(revMap, "REV_ENTITY_SITE_GUID", "_revSiteGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_GUID", "_revGUID");
+    htable_strstr_insert(revMap, "REMOTE_REV_ENTITY_GUID", "_revRemoteGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_OWNER_GUID", "_revOwnerGUID");
+    htable_strstr_insert(revMap, "REV_ENTITY_CONTAINER_GUID", "_revContainerGUID");
     htable_strstr_insert(revMap, "REV_CREATED_DATE", "_revTimeCreated");
     htable_strstr_insert(revMap, "REV_UPDATED_DATE", "_revTimePublishedUpdated");
     htable_strstr_insert(revMap, "REV_PUBLISHED_DATE", "_revTimePublished");
@@ -66,19 +66,19 @@ RevEntity *revInitializedEntity() {
     revEntity->_isNull = FALSE;
 
     revEntity->_id = -1;
-    revEntity->_revEntityType = "";
-    revEntity->_revEntitySubType = "";
+    revEntity->_revType = "";
+    revEntity->_revSubType = "";
 
-    revEntity->_revEntityResolveStatus = -1;
-    revEntity->_revEntityChildableStatus = -1;
-    revEntity->_revEntityAccessPermission = -1;
+    revEntity->_revResolveStatus = -1;
+    revEntity->_revChildableStatus = -1;
+    revEntity->_revAccessPermission = -1;
 
-    revEntity->_revEntityGUID = -1;
-    revEntity->_revRemoteEntityGUID = -1;
-    revEntity->_revOwnerEntityGUID = -1;
-    revEntity->_revContainerEntityGUID = -1;
-    revEntity->_remoteRevEntityContainerGUID = -1;
-    revEntity->_revEntitySiteGUID = -1;
+    revEntity->_revGUID = -1;
+    revEntity->_revRemoteGUID = -1;
+    revEntity->_revOwnerGUID = -1;
+    revEntity->_revContainerGUID = -1;
+    revEntity->_revRemoteContainerGUID = -1;
+    revEntity->_revSiteGUID = -1;
 
     revEntity->_revTimeCreated = -1;
     revEntity->_revTimePublished = -1;
@@ -89,7 +89,7 @@ RevEntity *revInitializedEntity() {
     list list;
     list_new(&list, sizeof(RevEntityMetadata), NULL);
 
-    revEntity->_revEntityMetadataList = list;
+    revEntity->_revMetadataList = list;
 
     return revEntity;
 }
@@ -108,89 +108,89 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     }
 
     // Type
-    const cJSON *_revEntityType = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityType");
-    if (cJSON_IsString(_revEntityType)) {
-        char *_revEntityTypeVal = _revEntityType->valuestring;
-        revEntity->_revEntityType = strdup(_revEntityTypeVal);
+    const cJSON *_revType = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revType");
+    if (cJSON_IsString(_revType)) {
+        char *_revTypeVal = _revType->valuestring;
+        revEntity->_revType = strdup(_revTypeVal);
     }
 
-    // _revEntitySubType
-    const cJSON *_revEntitySubType = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntitySubType");
-    if (cJSON_IsString(_revEntitySubType)) {
-        char *_revEntitySubTypeVal = _revEntitySubType->valuestring;
-        revEntity->_revEntitySubType = strdup(_revEntitySubTypeVal);
+    // _revSubType
+    const cJSON *_revSubType = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revSubType");
+    if (cJSON_IsString(_revSubType)) {
+        char *_revSubTypeVal = _revSubType->valuestring;
+        revEntity->_revSubType = strdup(_revSubTypeVal);
     }
 
-    // _revEntityResolveStatus
-    const cJSON *_revEntityResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityResolveStatus");
+    // _revResolveStatus
+    const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revResolveStatus");
 
-    if (cJSON_IsNumber(_revEntityResolveStatus)) {
-        int _revEntityResolveStatusVal = _revEntityResolveStatus->valueint;
-        revEntity->_revEntityResolveStatus = _revEntityResolveStatusVal;
+    if (cJSON_IsNumber(_revResolveStatus)) {
+        int _revResolveStatusVal = _revResolveStatus->valueint;
+        revEntity->_revResolveStatus = _revResolveStatusVal;
     }
 
-    // _revEntityChildableStatus
-    const cJSON *_revEntityChildableStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityChildableStatus");
+    // _revChildableStatus
+    const cJSON *_revChildableStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revChildableStatus");
 
-    if (cJSON_IsNumber(_revEntityChildableStatus)) {
-        int _revEntityChildableStatusVal = _revEntityChildableStatus->valueint;
-        revEntity->_revEntityChildableStatus = _revEntityChildableStatusVal;
+    if (cJSON_IsNumber(_revChildableStatus)) {
+        int _revChildableStatusVal = _revChildableStatus->valueint;
+        revEntity->_revChildableStatus = _revChildableStatusVal;
     }
 
-    // _revEntityAccessPermission
-    const cJSON *_revEntityAccessPermission = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityAccessPermission");
+    // _revAccessPermission
+    const cJSON *_revAccessPermission = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revAccessPermission");
 
-    if (cJSON_IsNumber(_revEntityAccessPermission)) {
-        int _revEntityAccessPermissionVal = _revEntityAccessPermission->valueint;
-        revEntity->_revEntityAccessPermission = _revEntityAccessPermissionVal;
+    if (cJSON_IsNumber(_revAccessPermission)) {
+        int _revAccessPermissionVal = _revAccessPermission->valueint;
+        revEntity->_revAccessPermission = _revAccessPermissionVal;
     }
 
-    // _revEntityGUID
-    const cJSON *_revEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityGUID");
+    // _revGUID
+    const cJSON *_revGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revGUID");
 
-    if (cJSON_IsNumber(_revEntityGUID)) {
-        long _revEntityGUIDVal = _revEntityGUID->valueint;
-        revEntity->_revEntityGUID = _revEntityGUIDVal;
+    if (cJSON_IsNumber(_revGUID)) {
+        long _revGUIDVal = _revGUID->valueint;
+        revEntity->_revGUID = _revGUIDVal;
     }
 
-    // _revRemoteEntityGUID
-    const cJSON *_revRemoteEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revRemoteEntityGUID");
+    // _revRemoteGUID
+    const cJSON *_revRemoteGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revRemoteGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntityGUID)) {
-        long _revRemoteEntityGUIDVal = _revRemoteEntityGUID->valueint;
-        revEntity->_revRemoteEntityGUID = _revRemoteEntityGUIDVal;
+    if (cJSON_IsNumber(_revRemoteGUID)) {
+        long _revRemoteGUIDVal = _revRemoteGUID->valueint;
+        revEntity->_revRemoteGUID = _revRemoteGUIDVal;
     }
 
-    // _revOwnerEntityGUID
-    const cJSON *_revEntityOwnerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityOwnerGUID");
+    // _revOwnerGUID
+    const cJSON *_revOwnerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revOwnerGUID");
 
-    if (cJSON_IsNumber(_revEntityOwnerGUID)) {
-        long _revEntityOwnerGUIDVal = _revEntityOwnerGUID->valueint;
-        revEntity->_revOwnerEntityGUID = _revEntityOwnerGUIDVal;
+    if (cJSON_IsNumber(_revOwnerGUID)) {
+        long _revOwnerGUIDVal = _revOwnerGUID->valueint;
+        revEntity->_revOwnerGUID = _revOwnerGUIDVal;
     }
 
-    // _revEntityContainerGUID
-    const cJSON *_revEntityContainerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityContainerGUID");
+    // _revContainerGUID
+    const cJSON *_revContainerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revContainerGUID");
 
-    if (cJSON_IsNumber(_revEntityContainerGUID)) {
-        long _revEntityContainerGUIDVal = _revEntityContainerGUID->valueint;
-        revEntity->_revContainerEntityGUID = _revEntityContainerGUIDVal;
+    if (cJSON_IsNumber(_revContainerGUID)) {
+        long _revContainerGUIDVal = _revContainerGUID->valueint;
+        revEntity->_revContainerGUID = _revContainerGUIDVal;
     }
 
-    // _remoteRevEntityContainerGUID
-    const cJSON *_remoteRevEntityContainerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_remoteRevEntityContainerGUID");
+    // _revRemoteContainerGUID
+    const cJSON *_revRemoteContainerGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revRemoteContainerGUID");
 
-    if (cJSON_IsNumber(_remoteRevEntityContainerGUID)) {
-        long _remoteRevEntityContainerGUIDVal = _remoteRevEntityContainerGUID->valueint;
-        revEntity->_remoteRevEntityContainerGUID = _remoteRevEntityContainerGUIDVal;
+    if (cJSON_IsNumber(_revRemoteContainerGUID)) {
+        long _revRemoteContainerGUIDVal = _revRemoteContainerGUID->valueint;
+        revEntity->_revRemoteContainerGUID = _revRemoteContainerGUIDVal;
     }
 
-    // _revEntitySiteGUID
-    const cJSON *_revEntitySiteGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntitySiteGUID");
+    // _revSiteGUID
+    const cJSON *_revSiteGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revSiteGUID");
 
-    if (cJSON_IsNumber(_revEntitySiteGUID)) {
-        long _revEntitySiteGUIDVal = _revEntitySiteGUID->valueint;
-        revEntity->_revEntitySiteGUID = _revEntitySiteGUIDVal;
+    if (cJSON_IsNumber(_revSiteGUID)) {
+        long _revSiteGUIDVal = _revSiteGUID->valueint;
+        revEntity->_revSiteGUID = _revSiteGUIDVal;
     }
 
     // _revInfoEntity
@@ -227,12 +227,12 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
         revEntity->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
     }
 
-    // _revEntityMetadataList
-    const cJSON *_revEntityMetadataList = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revEntityMetadataList");
+    // _revMetadataList
+    const cJSON *_revMetadataList = cJSON_GetObjectItemCaseSensitive(rev_entity_json, "_revMetadataList");
 
     list revList;
-    revMetaDataJSONArrStrFiller(&revList, cJSON_Print(_revEntityMetadataList));
-    revEntity->_revEntityMetadataList = revList;
+    revMetaDataJSONArrStrFiller(&revList, cJSON_Print(_revMetadataList));
+    revEntity->_revMetadataList = revList;
 
     end:
 

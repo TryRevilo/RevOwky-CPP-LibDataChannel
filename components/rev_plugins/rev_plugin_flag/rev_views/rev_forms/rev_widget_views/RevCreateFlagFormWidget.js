@@ -33,7 +33,7 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
 
   const {revCancelFlag, revData} = revVarArgs;
 
-  let revEntityGUID = revData._revEntityGUID;
+  let revEntityGUID = revData._revGUID;
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 

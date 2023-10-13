@@ -52,7 +52,7 @@ export function useChatMessages() {
   const revRenderItem = ({item}) => {
     let chatMsg = item;
 
-    let revCurrMsgId = chatMsg._revEntityGUID;
+    let revCurrMsgId = chatMsg._revGUID;
 
     let revView = null;
 
@@ -63,8 +63,7 @@ export function useChatMessages() {
     }
 
     let revPastChatConversationsArr = (
-      <View
-        key={chatMsg._revEntityGUID + '_revRenderItem_' + revGetRandInteger()}>
+      <View key={chatMsg._revGUID + '_revRenderItem_' + revGetRandInteger()}>
         {revView}
       </View>
     );
@@ -83,7 +82,7 @@ export function useChatMessages() {
         inverted={true}
         data={revFlatListData}
         renderItem={revRenderItem}
-        keyExtractor={item => item._revEntityGUID}
+        keyExtractor={item => item._revGUID}
         onLayout={() => {
           // revFlatListRef.current.scrollToEnd({animated: true});
         }}
@@ -137,9 +136,9 @@ export function useChatMessages() {
   const revAddChatMessage = revChatMessage => {
     if (
       revIsEmptyJSONObject(revChatMessage) ||
-      '_revEntityOwnerGUID' in revChatMessage ||
-      revIsEmptyVar(revChatMessage._revEntityOwnerGUID) ||
-      revChatMessage._revEntityOwnerGUID < 1
+      '_revOwnerGUID' in revChatMessage ||
+      revIsEmptyVar(revChatMessage._revOwnerGUID) ||
+      revChatMessage._revOwnerGUID < 1
     ) {
       return null;
     }
@@ -148,7 +147,7 @@ export function useChatMessages() {
 
     if (revIsEmptyJSONObject(revChatMessage._revPublisherEntity)) {
       let revPublisherEntity = revPersGetRevEnty_By_EntityGUID(
-        revChatMessage._revEntityOwnerGUID,
+        revChatMessage._revOwnerGUID,
       );
 
       if (revIsEmptyJSONObject(revPublisherEntity)) {

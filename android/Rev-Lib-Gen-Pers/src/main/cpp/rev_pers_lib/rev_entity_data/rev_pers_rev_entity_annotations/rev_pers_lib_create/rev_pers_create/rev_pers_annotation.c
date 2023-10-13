@@ -9,7 +9,7 @@
 #include "../../rev_db_models/rev_entity_annotation.h"
 #include "../../../../../rev_gen_functions/rev_gen_functions.h"
 
-long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long _revEntityGUID, long revEntityOwnerGUID) {
+long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long _revGUID, long revEntityOwnerGUID) {
 
     sqlite3 *db = revDb();
 
@@ -40,7 +40,7 @@ long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationV
         sqlite3_bind_text(stmt, 1, (const char *) revEntityAnnotationName, -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, (const char *) revEntityAnnotationValue, -1, SQLITE_STATIC);
 
-        sqlite3_bind_int(stmt, 3, _revEntityGUID);
+        sqlite3_bind_int(stmt, 3, _revGUID);
         sqlite3_bind_int(stmt, 4, revEntityOwnerGUID);
         sqlite3_bind_text(stmt, 5, currTime, -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 6, currTime, -1, SQLITE_STATIC);
@@ -68,18 +68,18 @@ long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationV
 long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation) {
     long revReturnVal = -1;
 
-    int _revAnnotationResStatus = revEntityAnnotation->_revAnnotationResStatus;
+    int _revResolveStatus = revEntityAnnotation->_revResolveStatus;
 
-    char *_revAnnotationName = revEntityAnnotation->_revAnnotationName;
-    char *_revAnnotationValue = revEntityAnnotation->_revAnnotationValue;
+    char *_revName = revEntityAnnotation->_revName;
+    char *_revValue = revEntityAnnotation->_revValue;
 
-    long _revAnnotationRemoteId = revEntityAnnotation->_revAnnotationRemoteId;
+    long _revRemoteId = revEntityAnnotation->_revRemoteId;
 
-    long _revAnnotationEntityGUID = revEntityAnnotation->_revAnnotationEntityGUID;
-    long _revAnnotationRemoteEntityGUID = revEntityAnnotation->_revAnnotationRemoteEntityGUID;
+    long _revGUID = revEntityAnnotation->_revGUID;
+    long _revRemoteGUID = revEntityAnnotation->_revRemoteGUID;
 
-    long _revAnnOwnerEntityGUID = revEntityAnnotation->_revAnnOwnerEntityGUID;
-    long _revAnnRemoteOwnerEntityGUID = revEntityAnnotation->_revAnnRemoteOwnerEntityGUID;
+    long _revOwnerGUID = revEntityAnnotation->_revOwnerGUID;
+    long _revRemoteOwnerGUID = revEntityAnnotation->_revRemoteOwnerGUID;
 
     long _revTimeCreated = revCurrentTimestampMillSecs();
     long _revTimePublished = revEntityAnnotation->_revTimePublished;
@@ -113,18 +113,18 @@ long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation) {
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, &pzTest);
 
     if (rc == SQLITE_OK) {
-        sqlite3_bind_int(stmt, 1, _revAnnotationResStatus);
-        sqlite3_bind_int(stmt, 2, _revAnnotationRemoteId);
+        sqlite3_bind_int(stmt, 1, _revResolveStatus);
+        sqlite3_bind_int(stmt, 2, _revRemoteId);
 
-        sqlite3_bind_text(stmt, 3, (const char *) _revAnnotationName, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, (const char *) _revName, -1, SQLITE_STATIC);
 
-        sqlite3_bind_text(stmt, 4, (const char *) _revAnnotationValue, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, (const char *) _revValue, -1, SQLITE_STATIC);
 
-        sqlite3_bind_int(stmt, 5, _revAnnotationEntityGUID);
-        sqlite3_bind_int(stmt, 6, _revAnnotationRemoteEntityGUID);
+        sqlite3_bind_int(stmt, 5, _revGUID);
+        sqlite3_bind_int(stmt, 6, _revRemoteGUID);
 
-        sqlite3_bind_int(stmt, 7, _revAnnOwnerEntityGUID);
-        sqlite3_bind_int(stmt, 8, _revAnnRemoteOwnerEntityGUID);
+        sqlite3_bind_int(stmt, 7, _revOwnerGUID);
+        sqlite3_bind_int(stmt, 8, _revRemoteOwnerGUID);
 
         sqlite3_bind_int64(stmt, 9, _revTimeCreated);
         sqlite3_bind_int64(stmt, 10, _revTimePublished);

@@ -26,7 +26,7 @@ export default function OutboxChatMessage({revVarArgs}) {
     return null;
   }
 
-  let revEntityGUID = revVarArgs._revEntityGUID;
+  let revEntityGUID = revVarArgs._revGUID;
 
   /** START GET PUBLISHER */
   if (
@@ -38,12 +38,12 @@ export default function OutboxChatMessage({revVarArgs}) {
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_full_names',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -55,7 +55,7 @@ export default function OutboxChatMessage({revVarArgs}) {
   let revMsgInfoEntity = revVarArgs._revInfoEntity;
 
   let revChatMsgStr = revGetMetadataValue(
-    revMsgInfoEntity._revEntityMetadataList,
+    revMsgInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 

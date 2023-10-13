@@ -46,7 +46,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
   let revFlagEntity = revFlagEntitiesArr[0];
 
   let revFlagValsMetadataArr = revGetMetadataValuesArr(
-    revFlagEntity._revInfoEntity._revEntityMetadataList,
+    revFlagEntity._revInfoEntity._revMetadataList,
     'rev_flag_val',
   );
 
@@ -102,7 +102,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
   }
 
   let revFlagLinkValsMetadataArr = revGetMetadataValuesArr(
-    revFlagEntity._revInfoEntity._revEntityMetadataList,
+    revFlagEntity._revInfoEntity._revMetadataList,
     'rev_flag_ref_link',
   );
 
@@ -126,7 +126,7 @@ export const RevFlagItemViewWidget = ({revVarArgs}) => {
   );
 
   let revFlagContextVal = revGetMetadataValue(
-    revFlagEntitiesArr[0]._revInfoEntity._revEntityMetadataList,
+    revFlagEntitiesArr[0]._revInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 

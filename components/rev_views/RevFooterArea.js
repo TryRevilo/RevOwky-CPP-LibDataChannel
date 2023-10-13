@@ -50,31 +50,31 @@ function RevFooterArea() {
 
   const revGetLocalData_Async = async (revLastGUID, revLimit = 10) => {
     let revWhere = {
-      _revEntityType: 'rev_object',
-      _revEntitySubType: 'rev_kiwi',
-      _revEntityResolveStatus: [0, -1, -101],
+      _revType: 'rev_object',
+      _revSubType: 'rev_kiwi',
+      _revResolveStatus: [0, -1, -101],
     };
 
     if (revLastGUID > 0) {
-      revWhere['_revEntityGUID'] = {'<': revLastGUID};
+      revWhere['_revGUID'] = {'<': revLastGUID};
     }
 
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_TABLE',
       revSelect: [
-        '_revEntityGUID',
-        '_revEntityOwnerGUID',
-        '_revContainerEntityGUID',
-        '_revEntitySiteGUID',
-        '_revEntityAccessPermission',
-        '_revEntityType',
-        '_revEntitySubType',
+        '_revGUID',
+        '_revOwnerGUID',
+        '_revContainerGUID',
+        '_revSiteGUID',
+        '_revAccessPermission',
+        '_revType',
+        '_revSubType',
         '_revTimeCreated',
       ],
       revWhere: revWhere,
       revLimit,
       revOrderBy: {
-        revOrderByTableColumn: '_revEntityGUID',
+        revOrderByTableColumn: '_revGUID',
         revOrderByDirection: 'DESC',
       },
     };
@@ -86,7 +86,7 @@ function RevFooterArea() {
 
     for (let i = 0; i < revEntitiesArr.length; i++) {
       let revCurrEntity = revEntitiesArr[i];
-      let revEntityGUID = revCurrEntity._revEntityGUID;
+      let revEntityGUID = revCurrEntity._revGUID;
 
       let revPicAlbumGUID =
         RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
@@ -101,10 +101,10 @@ function RevFooterArea() {
       let revPicAlbumEntity =
         revPersGetFilledRevEntity_By_GUID(revPicAlbumGUID);
 
-      let revPicAlbumEntityGUID = revPicAlbumEntity._revEntityGUID;
+      let revPicAlbumEntityGUID = revPicAlbumEntity._revGUID;
 
       let revPicAlbumPicsGUIDsArr =
-        RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
           'rev_picture_of',
           revPicAlbumEntityGUID,
         );
@@ -113,9 +113,9 @@ function RevFooterArea() {
         JSON.parse(revPicAlbumPicsGUIDsArr),
       );
 
-      revPicAlbumEntity._revEntityChildrenList = revPicsEntitiesArr;
+      revPicAlbumEntity._revChildrenList = revPicsEntitiesArr;
 
-      revEntitiesArr[i]._revEntityChildrenList.push(revPicAlbumEntity);
+      revEntitiesArr[i]._revChildrenList.push(revPicAlbumEntity);
     }
 
     return revEntitiesArr;
@@ -123,10 +123,10 @@ function RevFooterArea() {
 
   const handleEndVideoCall = () => {
     let revTargetEntityGUID =
-      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID == 407 ? 375 : 407;
+      REV_LOGGED_IN_ENTITY._revRemoteGUID == 407 ? 375 : 407;
 
     let revDataUserEntityStr =
-      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteEntityGUID(
+      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteGUID(
         revTargetEntityGUID,
       );
 

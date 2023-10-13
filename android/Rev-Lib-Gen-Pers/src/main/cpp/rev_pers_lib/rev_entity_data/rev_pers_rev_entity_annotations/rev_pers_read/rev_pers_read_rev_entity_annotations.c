@@ -10,7 +10,7 @@
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 
-long getRevAnnotationValueIdByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID) {
+long revPersGetAnnValueId_By_Name_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID) {
     sqlite3 *db = revDb();
     sqlite3_stmt *stmt;
 
@@ -122,11 +122,11 @@ long getRevAnnotationOwnerGUID_ByAnnotationId(long annotationId) {
 }
 
 int revEntityAnnotationExists_ByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID) {
-    return getRevAnnotationValueIdByOwnerEntityGUID(strdup(revAnnotationName), revEntityGUID, ownerEntityGUID);
+    return revPersGetAnnValueId_By_Name_EntityGUID_OwnerGUID(strdup(revAnnotationName), revEntityGUID, ownerEntityGUID);
 }
 
 char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID) {
-    char *_revAnnotationValue = "";
+    char *_revValue = "";
 
     sqlite3 *db = revDb();
     sqlite3_stmt *stmt;
@@ -150,16 +150,16 @@ char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, l
     rc = sqlite3_step(stmt);
 
     if (rc == SQLITE_ROW) {
-        _revAnnotationValue = strdup((const char *) sqlite3_column_text(stmt, 0));
+        _revValue = strdup((const char *) sqlite3_column_text(stmt, 0));
     }
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
-    return _revAnnotationValue;
+    return _revValue;
 }
 
-void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityGUID) {
+void getAllRevEntityAnnoationIds_By_revGUID(list *revList, long revEntityGUID) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -176,7 +176,7 @@ void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityG
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: -getAllRevEntityAnnoationIds_By_RevEntityGUID %s\n", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "SQL error: -getAllRevEntityAnnoationIds_By_revGUID %s\n", sqlite3_errmsg(db));
     }
 
     rc = sqlite3_step(stmt);
@@ -194,7 +194,7 @@ void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityG
     sqlite3_close(db);
 }
 
-void revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(list *revList, char *revAnnotationName, long revEntityGUID) {
+void revPersGetAnnIds_By_Name_EntityGUID(list *revList, char *revAnnotationName, long revEntityGUID) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -279,28 +279,28 @@ RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId) 
         fprintf(stderr, "SQL error: revPersGetALLRevEntityAnn_By_ResStatus %s", sqlite3_errmsg(db));
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "revPersGetALLRevEntityAnn_By_ResStatus >>> %s", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
-        int _revAnnotationResStatus = sqlite3_column_int(stmt, 0);
-        char *_revAnnotationName = strdup((const char *) sqlite3_column_text(stmt, 1));
-        char *_revAnnotationValue = strdup((const char *) sqlite3_column_text(stmt, 2));
+        int _revResolveStatus = sqlite3_column_int(stmt, 0);
+        char *_revName = strdup((const char *) sqlite3_column_text(stmt, 1));
+        char *_revValue = strdup((const char *) sqlite3_column_text(stmt, 2));
 
-        long _revAnnotationEntityGUID = sqlite3_column_int64(stmt, 3);
-        long _revAnnotationRemoteEntityGUID = sqlite3_column_int64(stmt, 4);
+        long _revGUID = sqlite3_column_int64(stmt, 3);
+        long _revRemoteGUID = sqlite3_column_int64(stmt, 4);
 
-        long _revAnnOwnerEntityGUID = sqlite3_column_int64(stmt, 5);
-        long _revAnnRemoteOwnerEntityGUID = sqlite3_column_int64(stmt, 6);
+        long _revOwnerGUID = sqlite3_column_int64(stmt, 5);
+        long _revRemoteOwnerGUID = sqlite3_column_int64(stmt, 6);
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 7);
 
-        revEntityAnnotation->_revAnnotationId = revAnnotationId;
-        revEntityAnnotation->_revAnnotationResStatus = _revAnnotationResStatus;
-        revEntityAnnotation->_revAnnotationName = _revAnnotationName;
-        revEntityAnnotation->_revAnnotationValue = _revAnnotationValue;
+        revEntityAnnotation->_revId = revAnnotationId;
+        revEntityAnnotation->_revResolveStatus = _revResolveStatus;
+        revEntityAnnotation->_revName = _revName;
+        revEntityAnnotation->_revValue = _revValue;
 
-        revEntityAnnotation->_revAnnotationEntityGUID = _revAnnotationEntityGUID;
-        revEntityAnnotation->_revAnnotationRemoteEntityGUID = _revAnnotationRemoteEntityGUID;
+        revEntityAnnotation->_revGUID = _revGUID;
+        revEntityAnnotation->_revRemoteGUID = _revRemoteGUID;
 
-        revEntityAnnotation->_revAnnOwnerEntityGUID = _revAnnOwnerEntityGUID;
-        revEntityAnnotation->_revAnnRemoteOwnerEntityGUID = _revAnnRemoteOwnerEntityGUID;
+        revEntityAnnotation->_revOwnerGUID = _revOwnerGUID;
+        revEntityAnnotation->_revRemoteOwnerGUID = _revRemoteOwnerGUID;
 
         revEntityAnnotation->_revTimeCreated = _revTimeCreated;
     }
@@ -311,7 +311,7 @@ RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId) 
     return revEntityAnnotation;
 }
 
-RevEntityAnnotation *revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long revOwnerGUID) {
+RevEntityAnnotation *revPersGetAnn_By_Name_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long revOwnerGUID) {
     sqlite3 *db = revDb();
     sqlite3_stmt *stmt;
 
@@ -337,32 +337,32 @@ RevEntityAnnotation *revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(char
     RevEntityAnnotation *revEntityAnnotation = revInitializedAnnotation();
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID %s", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID >>> %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revPersGetAnn_By_Name_EntityGUID_OwnerGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "revPersGetAnn_By_Name_EntityGUID_OwnerGUID >>> %s", sqlite3_errmsg(db));
     } else if (sqlite3_step(stmt) == SQLITE_ROW) {
-        int _revAnnotationId = sqlite3_column_int64(stmt, 0);
-        int _revAnnotationResStatus = sqlite3_column_int(stmt, 1);
-        char *_revAnnotationName = strdup((const char *) sqlite3_column_text(stmt, 2));
-        char *_revAnnotationValue = strdup((const char *) sqlite3_column_text(stmt, 3));
+        int _revId = sqlite3_column_int64(stmt, 0);
+        int _revResolveStatus = sqlite3_column_int(stmt, 1);
+        char *_revName = strdup((const char *) sqlite3_column_text(stmt, 2));
+        char *_revValue = strdup((const char *) sqlite3_column_text(stmt, 3));
 
-        long _revAnnotationEntityGUID = sqlite3_column_int64(stmt, 4);
-        long _revAnnotationRemoteEntityGUID = sqlite3_column_int64(stmt, 5);
+        long _revGUID = sqlite3_column_int64(stmt, 4);
+        long _revRemoteGUID = sqlite3_column_int64(stmt, 5);
 
-        long _revAnnOwnerEntityGUID = sqlite3_column_int64(stmt, 6);
-        long _revAnnRemoteOwnerEntityGUID = sqlite3_column_int64(stmt, 7);
+        long _revOwnerGUID = sqlite3_column_int64(stmt, 6);
+        long _revRemoteOwnerGUID = sqlite3_column_int64(stmt, 7);
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 8);
 
-        revEntityAnnotation->_revAnnotationId = _revAnnotationId;
-        revEntityAnnotation->_revAnnotationResStatus = _revAnnotationResStatus;
-        revEntityAnnotation->_revAnnotationName = _revAnnotationName;
-        revEntityAnnotation->_revAnnotationValue = _revAnnotationValue;
+        revEntityAnnotation->_revId = _revId;
+        revEntityAnnotation->_revResolveStatus = _revResolveStatus;
+        revEntityAnnotation->_revName = _revName;
+        revEntityAnnotation->_revValue = _revValue;
 
-        revEntityAnnotation->_revAnnotationEntityGUID = _revAnnotationEntityGUID;
-        revEntityAnnotation->_revAnnotationRemoteEntityGUID = _revAnnotationRemoteEntityGUID;
+        revEntityAnnotation->_revGUID = _revGUID;
+        revEntityAnnotation->_revRemoteGUID = _revRemoteGUID;
 
-        revEntityAnnotation->_revAnnOwnerEntityGUID = _revAnnOwnerEntityGUID;
-        revEntityAnnotation->_revAnnRemoteOwnerEntityGUID = _revAnnRemoteOwnerEntityGUID;
+        revEntityAnnotation->_revOwnerGUID = _revOwnerGUID;
+        revEntityAnnotation->_revRemoteOwnerGUID = _revRemoteOwnerGUID;
 
         revEntityAnnotation->_revTimeCreated = _revTimeCreated;
     }

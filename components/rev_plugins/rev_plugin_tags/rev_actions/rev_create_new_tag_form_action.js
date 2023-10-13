@@ -37,7 +37,7 @@ export const useRevCreateNewTagFormAction = () => {
       );
 
     if (!revIsEmptyJSONObject(revSavedTagMetadata)) {
-      return revSavedTagMetadata._revMetadataEntityGUID;
+      return revSavedTagMetadata._revGUID;
     }
 
     revVarArgs['revEntitySubType'] = 'rev_tag';
@@ -56,16 +56,16 @@ export const useRevCreateNewTagFormAction = () => {
 
     if (revEntityGUID > 0) {
       let revEntityTagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revEntityTagRel._revEntityRelationshipType = 'rev_tag_of';
-      revEntityTagRel._revEntityTargetGUID = revEntityGUID;
-      revEntityTagRel._revEntitySubjectGUID = -1;
+      revEntityTagRel._revType = 'rev_tag_of';
+      revEntityTagRel._revTargetGUID = revEntityGUID;
+      revEntityTagRel._revSubjectGUID = -1;
 
       revVarArgs['revSubjectRelsArr'] = [revEntityTagRel];
     }
 
     try {
       let revPersEntity = await revSaveNewEntity(revVarArgs);
-      return revPersEntity._revEntityGUID;
+      return revPersEntity._revGUID;
     } catch (error) {
       console.log('*** error', error);
       return -1;

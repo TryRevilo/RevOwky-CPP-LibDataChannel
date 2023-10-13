@@ -73,9 +73,7 @@ export const RevStoresListingViewWidget = () => {
         data={revEntitiesArr}
         renderItem={renderItem}
         keyExtractor={item => {
-          return (
-            item._revEntityGUID.toString() + '_' + revGetRandInteger(100, 1000)
-          );
+          return item._revGUID.toString() + '_' + revGetRandInteger(100, 1000);
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

@@ -11,7 +11,7 @@ import {REV_UPDATE_METADATA_ARR_URL} from './rev_pers_urls';
 /** START REV ENTITY UPDATE */
 
 export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
-  let revEntityGUID = revEntityOriginal._revRemoteEntityGUID;
+  let revEntityGUID = revEntityOriginal._revRemoteGUID;
 
   let revWalkRevEntityMetadata = (
     revEntityUpdateMetadataArr,
@@ -32,8 +32,8 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       /** REV START GET LAST ONES ADDED */
       for (let t = 0; t < revSavedMetadataDuplicatesArr.length; t++) {
         if (
-          revCurrDuplicateMetadata._revRemoteMetadataId ==
-          revSavedMetadataDuplicatesArr[t]._revRemoteMetadataId
+          revCurrDuplicateMetadata._revRemoteId ==
+          revSavedMetadataDuplicatesArr[t]._revRemoteId
         ) {
           continue;
         }
@@ -72,9 +72,9 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
     for (let i = 0; i < revEntityUpdateMetadataArr.length; i++) {
       let revUpdateMetadata = revEntityUpdateMetadataArr[i];
 
-      let revMetadataName = revUpdateMetadata._revMetadataName;
+      let revMetadataName = revUpdateMetadata._revName;
 
-      let revUpdateMetadataValue = revUpdateMetadata._revMetadataValue;
+      let revUpdateMetadataValue = revUpdateMetadata._revValue;
       let revOriginalMetadataValue = window.revGetMetadataValue(
         revOriginalMetatadataArr,
         revMetadataName,
@@ -86,7 +86,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
             revOriginalMetatadataArr,
             revMetadataName,
           ),
-          revUpdateMetadata._revMetadataValue,
+          revUpdateMetadata._revValue,
         );
         let revIsUpdateDuplicateVal = window.revIsDuplicateMetadata(
           revEntityUpdateMetaDataArr,
@@ -102,13 +102,13 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         revOriginalMetadataValue &&
         revOriginalMetadataValue.localeCompare(revUpdateMetadataValue) !== 0
       ) {
-        let _revRemoteMetadataId = window.revGetRemoteMetadataId(
+        let _revRemoteId = window.revGetRemoteMetadataId(
           revOriginalMetatadataArr,
           revMetadataName,
         );
 
-        if (_revRemoteMetadataId && _revRemoteMetadataId > 0) {
-          revUpdateMetadata._revRemoteMetadataId = _revRemoteMetadataId;
+        if (_revRemoteId && _revRemoteId > 0) {
+          revUpdateMetadata._revRemoteId = _revRemoteId;
           revEntityUpdateMetaDataArr.push(revUpdateMetadata);
         }
       }
@@ -119,7 +119,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         if (revUpdateMetadata._revIsUnique) {
           let revDeleteMetadataValue = window.revGetMetadataValue(
             revEntityUpdateMetadataArr,
-            revOriginalMetatadata._revMetadataName,
+            revOriginalMetatadata._revName,
           );
 
           if (!revDeleteMetadataValue) {
@@ -128,13 +128,13 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
         } else {
           let revUpdateMetadataValuesArr = window.revGetMetadataValuesArr(
             revEntityUpdateMetadataArr,
-            revOriginalMetatadata._revMetadataName,
+            revOriginalMetatadata._revName,
           );
 
           if (
             !window.revArrIncludesElement(
               revUpdateMetadataValuesArr,
-              revOriginalMetatadata._revMetadataValue,
+              revOriginalMetatadata._revValue,
             )
           ) {
             revEntityDeleteMetadataArr.push(revOriginalMetatadata);
@@ -153,7 +153,7 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
       for (let dup = 0; dup < revMetadataDuplicatesArr.length; dup++) {
         let revMetadata = revMetadataDuplicatesArr[dup];
 
-        if (revMetadata._revRemoteMetadataId < 1) {
+        if (revMetadata._revRemoteId < 1) {
           continue;
         }
 
@@ -182,8 +182,8 @@ export var revEntityUdateData = (revEntityOriginal, revEntityUpdate) => {
   };
 
   return revWalkRevEntityMetadata(
-    revEntityUpdate._revEntityMetadataList,
-    revEntityOriginal._revEntityMetadataList,
+    revEntityUpdate._revMetadataList,
+    revEntityOriginal._revMetadataList,
   );
 };
 

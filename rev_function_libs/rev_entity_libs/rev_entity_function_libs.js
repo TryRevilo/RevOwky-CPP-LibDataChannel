@@ -21,8 +21,8 @@ export const revIsUserEntity_WithInfo = revEntity => {
 
   let revInfoEntity = revEntity._revInfoEntity;
   if (
-    !revInfoEntity.hasOwnProperty('_revRemoteEntityGUID') ||
-    revInfoEntity._revRemoteEntityGUID < 0
+    !revInfoEntity.hasOwnProperty('_revRemoteGUID') ||
+    revInfoEntity._revRemoteGUID < 0
   ) {
     return false;
   }
@@ -37,11 +37,8 @@ export const revGetEntityGUID = revEntity => {
     return revEntityGUID;
   }
 
-  if (
-    revEntity.hasOwnProperty('_revEntityGUID') &&
-    revEntity._revEntityGUID >= -1
-  ) {
-    revEntityGUID = revEntity._revEntityGUID;
+  if (revEntity.hasOwnProperty('_revGUID') && revEntity._revGUID >= -1) {
+    revEntityGUID = revEntity._revGUID;
   }
 
   return revEntityGUID;
@@ -55,10 +52,10 @@ export const revGetRemoteEntityGUID = revEntity => {
   }
 
   if (
-    revEntity.hasOwnProperty('_revRemoteEntityGUID') &&
-    revEntity._revRemoteEntityGUID >= -1
+    revEntity.hasOwnProperty('_revRemoteGUID') &&
+    revEntity._revRemoteGUID >= -1
   ) {
-    revEntityGUID = revEntity._revRemoteEntityGUID;
+    revEntityGUID = revEntity._revRemoteGUID;
   }
 
   return revEntityGUID;
@@ -118,7 +115,7 @@ export const revGetEntityChildren_By_Subtype = (
       continue;
     }
 
-    if (revEntityChild._revEntitySubType.localeCompare(revEntitySubtype) == 0) {
+    if (revEntityChild._revSubType.localeCompare(revEntitySubtype) == 0) {
       if (limit && limit > 0) {
         if (limit == 1) {
           revEntityChildrenSubtypesArr = revEntityChild;

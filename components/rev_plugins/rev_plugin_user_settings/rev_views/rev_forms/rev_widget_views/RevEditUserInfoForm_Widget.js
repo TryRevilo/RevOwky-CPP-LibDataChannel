@@ -41,7 +41,7 @@ import {
 import {revPersGetRevEntities_By_EntityGUIDsArr} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {
-  revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
+  revPersGetSubjectGUIDs_BY_RelStr_TargetGUID,
   useRevGetEntityIcon,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
@@ -71,7 +71,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     return null;
   }
 
-  let revInfoEntityMetadataList = revInfoEntity._revEntityMetadataList;
+  let revInfoEntityMetadataList = revInfoEntity._revMetadataList;
 
   let revEntityPicsAlbum = REV_LOGGED_IN_ENTITY.revEntityPicsAlbum;
 
@@ -90,7 +90,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         continue;
       }
 
-      let revPicMetadataArr = revCurrPic._revEntityMetadataList;
+      let revPicMetadataArr = revCurrPic._revMetadataList;
       let revRemoteFileName = revGetMetadataValue(
         revPicMetadataArr,
         'rev_remote_file_name',
@@ -100,7 +100,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
         'file://' + rev_settings.revPublishedMediaDir + '/' + revRemoteFileName;
 
       revEntityPicsAlbumDataArr.push({
-        _revEntityGUID: revCurrPic._revEntityGUID,
+        _revGUID: revCurrPic._revGUID,
         uri: revEntityIconValPath,
       });
     }
@@ -128,11 +128,10 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
     'rev_main_entity_banner_icon_val',
   );
 
-  let revTagRelsArr =
-    revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-      'rev_tag_of',
-      REV_LOGGED_IN_ENTITY_GUID,
-    );
+  let revTagRelsArr = revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
+    'rev_tag_of',
+    REV_LOGGED_IN_ENTITY_GUID,
+  );
 
   let revTagEntitiesArr =
     revPersGetRevEntities_By_EntityGUIDsArr(revTagRelsArr);
@@ -141,7 +140,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   for (let i = 0; i < revTagEntitiesArr.length; i++) {
     let revTagVal = revGetMetadataValue(
-      revTagEntitiesArr[i]._revInfoEntity._revEntityMetadataList,
+      revTagEntitiesArr[i]._revInfoEntity._revMetadataList,
       'rev_entity_name_val',
     );
     revTagValsArr.push(revTagVal);
@@ -206,7 +205,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   const handleRevSaveInfoTabPress = () => {
     let revPassVarArgs = {
-      _revEntityGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameTxt,
       revEntityDescVal: revEntityDescTxt,
@@ -316,8 +315,8 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
           console.log('>>> revFilePath', revFilePath);
 
           let revDelFileGUID =
-            '_revEntityGUID' in revDeletedData && revDeletedData._revEntityGUID
-              ? revDeletedData._revEntityGUID
+            '_revGUID' in revDeletedData && revDeletedData._revGUID
+              ? revDeletedData._revGUID
               : -1;
 
           console.log('>>> revDelFileGUID', revDelFileGUID);

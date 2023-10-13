@@ -45,7 +45,7 @@ export const useRevEditUserInfoFormAction = () => {
 
     try {
       let revPersEntity = await revSaveNewEntity(revVarArgs);
-      return revPersCallBack(revPersEntity._revEntityGUID);
+      return revPersCallBack(revPersEntity._revGUID);
     } catch (error) {
       console.log('*** error', error);
       return revPersCallBack(-1);

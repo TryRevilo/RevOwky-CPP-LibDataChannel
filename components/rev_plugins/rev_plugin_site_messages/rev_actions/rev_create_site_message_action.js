@@ -44,9 +44,9 @@ export const useRevCreateCommentAction = () => {
         revPersEntityInfoMetadataList;
 
       let revMsgRecipientOfRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revMsgRecipientOfRel._revEntityRelationshipType = 'rev_msg_recipient_of';
-      revMsgRecipientOfRel._revEntityTargetGUID = -1;
-      revMsgRecipientOfRel._revEntitySubjectGUID = revCommentContainerGUID;
+      revMsgRecipientOfRel._revType = 'rev_msg_recipient_of';
+      revMsgRecipientOfRel._revTargetGUID = -1;
+      revMsgRecipientOfRel._revSubjectGUID = revCommentContainerGUID;
 
       revVarArgs['revTargetRelsArr'] = [revMsgRecipientOfRel];
 
@@ -58,29 +58,29 @@ export const useRevCreateCommentAction = () => {
       let revFilledEntity =
         revPersGetFilledRevEntity_By_GUID(revPersEntityGUID);
       let revCurrMetadata = revGetMetadataContainingMetadataName(
-        revFilledEntity._revInfoEntity._revEntityMetadataList,
+        revFilledEntity._revInfoEntity._revMetadataList,
         'rev_entity_desc_val',
       );
 
-      let _revMetadataId = revCurrMetadata._revMetadataId;
-      let revCurrMetadataVal = revCurrMetadata._revMetadataValue;
+      let _revId = revCurrMetadata._revId;
+      let revCurrMetadataVal = revCurrMetadata._revValue;
 
       if (revCurrMetadataVal.localeCompare(revCommentText) !== 0) {
         let revMetadataUpdateStatus =
-          RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
-            _revMetadataId,
+          RevPersLibUpdate_React.revPersSetMetadataVal_BY_Id(
+            _revId,
             revCommentText,
           );
 
         if (revMetadataUpdateStatus > 0) {
           let revEntityUpdateStatus =
-            RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+            RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
               -101,
               revPersEntityGUID,
             );
 
           if (revEntityUpdateStatus == 1) {
-            revRetData['revUpdateMetadataIdsArr'] = [_revMetadataId];
+            revRetData['revUpdateMetadataIdsArr'] = [_revId];
           }
         }
       }

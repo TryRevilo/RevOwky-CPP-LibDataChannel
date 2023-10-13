@@ -27,12 +27,12 @@ export const RevChatMessagesConversationsListingWidget = ({revVarArgs}) => {
 
   let RevPastChatConversations = () => {
     let revPassVarArgs = {
-      revSelect: ['_revEntityGUID', '_revOwnerEntityGUID'],
+      revSelect: ['_revGUID', '_revOwnerGUID'],
       revWhere: {
-        _revEntityType: 'rev_object',
-        _revEntitySubType: 'rev_message',
-        _revEntityResolveStatus: [0, -1, -101],
-        _revEntitySiteGUID: [5, 10],
+        _revType: 'rev_object',
+        _revSubType: 'rev_message',
+        _revResolveStatus: [0, -1, -101],
+        _revSiteGUID: [5, 10],
       },
       revLimit: 22,
     };
@@ -45,7 +45,7 @@ export const RevChatMessagesConversationsListingWidget = ({revVarArgs}) => {
   function renderItem({item}) {
     let revCurrMsg = item;
 
-    let revMsgEntityOwnerGUID = revCurrMsg._revPublisherEntity._revEntityGUID;
+    let revMsgEntityOwnerGUID = revCurrMsg._revPublisherEntity._revGUID;
 
     let revMessageView =
       revMsgEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID ? (

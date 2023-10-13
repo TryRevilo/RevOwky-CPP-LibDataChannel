@@ -132,11 +132,11 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
 
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
-  if (!('_revEntityGUID' in revData || revIsEmptyVar(revData._revEntityGUID))) {
+  if (!('_revGUID' in revData || revIsEmptyVar(revData._revGUID))) {
     return <>{revNullAdRetView}</>;
   }
 
-  let revAdEntityGUID = revData._revEntityGUID;
+  let revAdEntityGUID = revData._revGUID;
 
   if (revAdEntityGUID < 1) {
     return <>{revNullAdRetView}</>;
@@ -145,17 +145,17 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   let revInfoEntity = revData._revInfoEntity;
 
   let revAdTitleTxtVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_entity_name_val',
   );
 
   let revAdDescriptionTxtVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 
   let revMainCampaignIconPath = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'revMainCampaignIconPath',
   );
 
@@ -185,7 +185,7 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
   let revOrganizationEntityInfo = revOrganizationEntity._revInfoEntity;
 
   let revOrganizationEntityTitleTxtVal = revGetMetadataValue(
-    revOrganizationEntityInfo._revEntityMetadataList,
+    revOrganizationEntityInfo._revMetadataList,
     'rev_entity_name_val',
   );
 
@@ -197,9 +197,9 @@ export const RevAdEntityListingViewWidget = ({revVarArgs}) => {
 
   // Get TAGS
   let revTagEntityGUIDsStr =
-    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+    RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
       'rev_tag_of',
-      revOrganizationEntity._revEntityGUID,
+      revOrganizationEntity._revGUID,
     );
 
   let revTagEntitiesArr = revPersGetRevEntities_By_EntityGUIDsArr(

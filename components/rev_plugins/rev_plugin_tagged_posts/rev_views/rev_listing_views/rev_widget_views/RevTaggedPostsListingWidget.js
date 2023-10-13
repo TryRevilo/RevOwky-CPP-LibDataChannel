@@ -61,14 +61,14 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
     let revLastEntity = null;
 
     if (revListingData.length) {
-      revLastEntity = revListingData.length - 1;
+      revLastEntity = revListingData[revListingData.length - 1];
     }
 
     if (
       !revIsEmptyJSONObject(revLastEntity) &&
-      revLastEntity.hasOwnProperty('_revEntityGUID')
+      revLastEntity.hasOwnProperty('_revGUID')
     ) {
-      revLastEntityGUID = revLastEntity._revEntityGUID;
+      revLastEntityGUID = revLastEntity._revGUID;
     }
 
     revVarArgs
@@ -89,8 +89,10 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
             return revNewArr;
           });
         } else {
-          setIsRevAllLoaded(true);
           revIsLoadingRef.current = false;
+          setIsRevAllLoaded(true);
+
+          setRevListingData([...revListingData, null]);
         }
       })
       .catch(err => {
@@ -117,18 +119,18 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   const revLoadAdsArr = async () => {
     let revPassVarArgs = {
       revSelect: [
-        '_revEntityGUID',
-        '_revEntityOwnerGUID',
-        '_revContainerEntityGUID',
-        '_revEntitySiteGUID',
-        '_revEntityAccessPermission',
-        '_revEntityType',
-        '_revEntitySubType',
+        '_revGUID',
+        '_revOwnerGUID',
+        '_revContainerGUID',
+        '_revSiteGUID',
+        '_revAccessPermission',
+        '_revType',
+        '_revSubType',
         '_revTimeCreated',
       ],
       revWhere: {
-        _revEntityType: 'rev_object',
-        _revEntitySubType: 'rev_ad',
+        _revType: 'rev_object',
+        _revSubType: 'rev_ad',
       },
       revLimit: revAdsCount,
     };
@@ -141,7 +143,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     for (let i = 0; i < revAdEntitiesData.length; i++) {
       let revAdEntity = revAdEntitiesData[i];
-      let revAdEntityGUID = revAdEntity._revEntityGUID;
+      let revAdEntityGUID = revAdEntity._revGUID;
 
       if (revAdEntityGUID < 1) {
         continue;
@@ -150,13 +152,13 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       let revOrganizationGUID =
         RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
           'rev_organization_of',
-          revAdEntity._revEntityGUID,
+          revAdEntity._revGUID,
         );
 
       let revProdLineGUID =
         RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
           'rev_product_line_of',
-          revAdEntity._revEntityGUID,
+          revAdEntity._revGUID,
         );
 
       if (revOrganizationGUID < 1 || revProdLineGUID < 1) {
@@ -192,13 +194,17 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
   };
 
   const revRenderItem = ({item}) => {
+    if (revIsEmptyJSONObject(item)) {
+      return null;
+    }
+
     let revEntityGUID = revGetLocal_OR_RemoteGUID(item);
 
     if (revEntityGUID < 0) {
       return null;
     }
 
-    let revEntityOwnerGUID = item._revEntityOwnerGUID;
+    let revEntityOwnerGUID = item._revOwnerGUID;
 
     let revPublisherEntity = revGetPublisherEntity(
       revEntityPublishersArr,
@@ -207,7 +213,7 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
     if (revIsEmptyJSONObject(revPublisherEntity)) {
       let revPublisherEntityStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityOwnerGUID);
+        RevPersLibRead_React.revPersGetEntity_By_GUID(revEntityOwnerGUID);
       revPublisherEntity = JSON.parse(revPublisherEntityStr);
 
       if (revIsEmptyJSONObject(revPublisherEntity)) {
@@ -250,8 +256,12 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       revVarArgs: item,
     });
 
-    revIsLoadingRef.current =
-      revListingData[revListingData.length - 1]._revEntityGUID == revEntityGUID;
+    if (!revIsEmptyJSONObject(revListingData[revListingData.length - 1])) {
+      revIsLoadingRef.current =
+        revListingData[revListingData.length - 1]._revGUID == revEntityGUID;
+    } else {
+      revIsLoadingRef.current = false;
+    }
 
     return (
       <View>

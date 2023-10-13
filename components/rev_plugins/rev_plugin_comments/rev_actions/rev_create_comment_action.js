@@ -44,9 +44,9 @@ export const useRevCreateCommentAction = () => {
         revPersEntityInfoMetadataList;
 
       let revCommentRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revCommentRel._revEntityRelationshipType = 'rev_comment';
-      revCommentRel._revEntityTargetGUID = revCommentContainerGUID;
-      revCommentRel._revEntitySubjectGUID = -1;
+      revCommentRel._revType = 'rev_comment';
+      revCommentRel._revTargetGUID = revCommentContainerGUID;
+      revCommentRel._revSubjectGUID = -1;
 
       revVarArgs['revSubjectRelsArr'] = [revCommentRel];
 
@@ -58,29 +58,29 @@ export const useRevCreateCommentAction = () => {
       let revFilledEntity =
         revPersGetFilledRevEntity_By_GUID(revPersEntityGUID);
       let revCurrMetadata = revGetMetadataContainingMetadataName(
-        revFilledEntity._revInfoEntity._revEntityMetadataList,
+        revFilledEntity._revInfoEntity._revMetadataList,
         'rev_comment_value',
       );
 
-      let _revMetadataId = revCurrMetadata._revMetadataId;
-      let revCurrMetadataVal = revCurrMetadata._revMetadataValue;
+      let _revId = revCurrMetadata._revId;
+      let revCurrMetadataVal = revCurrMetadata._revValue;
 
       if (revCurrMetadataVal.localeCompare(revCommentText) !== 0) {
         let revMetadataUpdateStatus =
-          RevPersLibUpdate_React.setMetadataValue_BY_MetadataId(
-            _revMetadataId,
+          RevPersLibUpdate_React.revPersSetMetadataVal_BY_Id(
+            _revId,
             revCommentText,
           );
 
         if (revMetadataUpdateStatus > 0) {
           let revEntityUpdateStatus =
-            RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+            RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
               -101,
               revPersEntityGUID,
             );
 
           if (revEntityUpdateStatus == 1) {
-            revRetData['revUpdateMetadataIdsArr'] = [_revMetadataId];
+            revRetData['revUpdateMetadataIdsArr'] = [_revId];
           }
         }
       }

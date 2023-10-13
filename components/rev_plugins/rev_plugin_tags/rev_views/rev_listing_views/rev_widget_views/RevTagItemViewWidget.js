@@ -30,7 +30,7 @@ export const RevTagItemViewWidget = ({revVarArgs}) => {
   let revInfoEntity = revVarArgs._revInfoEntity;
 
   let revTagEntityTitleTxtVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_entity_name_val',
   );
 

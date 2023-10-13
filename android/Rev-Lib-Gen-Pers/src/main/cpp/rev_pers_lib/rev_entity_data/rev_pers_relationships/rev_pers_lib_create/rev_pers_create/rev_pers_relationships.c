@@ -127,17 +127,17 @@ long revPersRelationshipObject(RevEntityRelationship *revEntityRelationship) {
         return -1;
 
     int _revResolveStatus = revEntityRelationship->_revResolveStatus;
-    int _revRemoteEntityRelationshipId = revEntityRelationship->_revRemoteEntityRelationshipId;
+    int _revRemoteId = revEntityRelationship->_revRemoteId;
 
-    char *_revEntityRelationshipType = revEntityRelationship->_revEntityRelationshipType;
+    char *_revType = revEntityRelationship->_revType;
 
-    long _revEntityGUID = revEntityRelationship->_revEntityGUID;
-    long _revRemoteEntityGUID = revEntityRelationship->_revRemoteEntityGUID;
+    long _revGUID = revEntityRelationship->_revGUID;
+    long _revRemoteGUID = revEntityRelationship->_revRemoteGUID;
 
-    long _revEntitySubjectGUID = revEntityRelationship->_revEntitySubjectGUID;
-    long _remoteRevevEntitySubjectGUID = revEntityRelationship->_revRemoteEntitySubjectGUID;
-    long _revEntityTargetGUID = revEntityRelationship->_revEntityTargetGUID;
-    long _revRemoteEntityTargetGUID = revEntityRelationship->_revRemoteEntityTargetGUID;
+    long _revSubjectGUID = revEntityRelationship->_revSubjectGUID;
+    long _remoteRevevEntitySubjectGUID = revEntityRelationship->_revRemoteSubjectGUID;
+    long _revTargetGUID = revEntityRelationship->_revTargetGUID;
+    long _revRemoteTargetGUID = revEntityRelationship->_revRemoteTargetGUID;
 
     long _revTimeCreated = revEntityRelationship->_revTimeCreated;
 
@@ -171,16 +171,16 @@ long revPersRelationshipObject(RevEntityRelationship *revEntityRelationship) {
 
     if (rc == SQLITE_OK) {
         sqlite3_bind_int(stmt, 1, _revResolveStatus);
-        sqlite3_bind_int64(stmt, 2, _revRemoteEntityRelationshipId);
+        sqlite3_bind_int64(stmt, 2, _revRemoteId);
 
-        sqlite3_bind_int64(stmt, 3, _revEntityGUID);
-        sqlite3_bind_int64(stmt, 4, _revRemoteEntityGUID);
+        sqlite3_bind_int64(stmt, 3, _revGUID);
+        sqlite3_bind_int64(stmt, 4, _revRemoteGUID);
 
-        sqlite3_bind_int64(stmt, 5, _revEntitySubjectGUID);
+        sqlite3_bind_int64(stmt, 5, _revSubjectGUID);
         sqlite3_bind_int64(stmt, 6, _remoteRevevEntitySubjectGUID);
-        sqlite3_bind_int64(stmt, 7, _revEntityTargetGUID);
-        sqlite3_bind_int64(stmt, 8, _revRemoteEntityTargetGUID);
-        sqlite3_bind_int(stmt, 9, revPersGetRelId(_revEntityRelationshipType));
+        sqlite3_bind_int64(stmt, 7, _revTargetGUID);
+        sqlite3_bind_int64(stmt, 8, _revRemoteTargetGUID);
+        sqlite3_bind_int(stmt, 9, revPersGetRelId(_revType));
         sqlite3_bind_int64(stmt, 10, _revTimeCreated);
         sqlite3_bind_int64(stmt, 11, _revTimePublished);
         sqlite3_bind_int64(stmt, 12, _revTimePublishedUpdated);

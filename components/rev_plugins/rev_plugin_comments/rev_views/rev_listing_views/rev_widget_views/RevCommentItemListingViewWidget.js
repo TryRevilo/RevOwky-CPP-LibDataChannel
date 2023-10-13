@@ -45,7 +45,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   let revCommentInfoEntity = revVarArgs._revInfoEntity;
 
   let revCommentTxtVal = revGetMetadataValue(
-    revCommentInfoEntity._revEntityMetadataList,
+    revCommentInfoEntity._revMetadataList,
     'rev_comment_value',
   );
 
@@ -62,15 +62,15 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherInfoEntity = revPublisherEntity._revInfoEntity;
   let revPublisherInfoEntityMetadataList =
-    revPublisherInfoEntity._revEntityMetadataList;
+    revPublisherInfoEntity._revMetadataList;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 

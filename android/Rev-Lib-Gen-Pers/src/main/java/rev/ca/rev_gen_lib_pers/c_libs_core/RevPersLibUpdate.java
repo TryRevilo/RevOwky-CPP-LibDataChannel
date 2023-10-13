@@ -8,25 +8,26 @@ public class RevPersLibUpdate {
         System.loadLibrary("rev-pers-lib-db-update");
     }
 
-    public native int setrevRemoteEntityGUIDByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID);
+    public native int revPersSetRemoteEntityGUID_By_LocalEntityGUID(long revEntityGUID, long revRemoteEntityGUID);
 
-    public native int setRevPublishedDate_By_RevEntityGUID(long revEntityGUID, long revPublishedDate);
+    public native int revPersSetPubDate_By_GUID(long revEntityGUID, long revPublishedDate);
 
-    public native int resetRevEntityOwnerGUID(long revEntityGUID, long revEntityOwnerGUID);
+    public native int revPersResetEntityOwnerGUID(long revEntityGUID, long revEntityOwnerGUID);
 
-    public native int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID);
+    public native int revPersSetEntityResStatus_By_EntityGUID(int revResolveStatus, long revEntityGUID);
 
     /**
      * START REV ENTITY METADATA
      **/
 
-    public native int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetadataId);
+    public native int revPersSetMetadataResStatus_BY_Metadata_Id(int revResolveStatus, long _revId);
 
-    public native int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId);
+    public native int revPersSetRemoteMetadataId(long _revId, long _revRemoteId);
 
-    public native int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(String revMetadataName, long revEntityGUID, int revResolveStatus);
+    public native int setMetadataResolveStatus_BY_revName_revGUID(String revMetadataName, long revEntityGUID,
+            int revResolveStatus);
 
-    public native int setMetadataValue_BY_MetadataId(long _revMetadataId, String revMetadataValue);
+    public native int revPersSetMetadataVal_BY_Id(long _revId, String revMetadataValue);
 
     /** END REV ENTITY METADATA **/
 
@@ -36,27 +37,24 @@ public class RevPersLibUpdate {
 
     public native int revPersUpdateRelResStatus_By_RelId(long revEntityRelationshipId, int revResolveStatus);
 
-    public native int revPersSetRemoteRelationshipRemoteId(long revEntityRelationshipId, long revEntityRemoteRelationshipId);
+    public native int revPersSetRemoteRelId(long revEntityRelationshipId, long revEntityRemoteRelationshipId);
 
-    public native int revPersUpdateSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID);
+    public native int revPersSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID);
 
-    public native int revPersUpdateSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID);
-
+    public native int revPersSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID);
 
     /** END REV ENTITY REL **/
-
 
     /**
      * REV ENTITY ANNOTATIONS
      **/
 
-    public native int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, String revEntityAnnotationValue);
+    public native int revPersSetAnnVal_By_Id(long revAnnotationId, String revEntityAnnotationValue);
 
-    public native int revPersSetRevAnnResStatus_By_RevAnnId(long revAnnotationId, int revAnnotationResStatus);
+    public native int revPersSetAnnResStatus_By_Id(long revAnnotationId, int revAnnotationResStatus);
 
     public native int revPersSetRemoteRevAnnId(long revAnnotationId, long revAnnotationRemoteId);
 
     /** REV ENTITY ANNOTATIONS **/
-
 
 }

@@ -129,7 +129,7 @@ const RevWalledGarden = () => {
 
       let revSiteEntity = revSiteEntitiesArr[0];
 
-      let revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
+      let revSiteEntityOwnerGUID = revSiteEntity._revOwnerGUID;
 
       if (revSiteEntityOwnerGUID) {
         SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);
@@ -145,7 +145,7 @@ const RevWalledGarden = () => {
     if (revIsEmptyJSONObject(revSiteEntity)) {
       revSiteEntityGUID = revCreateSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
     } else {
-      revSiteEntityGUID = revSiteEntity._revEntityGUID;
+      revSiteEntityGUID = revSiteEntity._revGUID;
     }
 
     SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);

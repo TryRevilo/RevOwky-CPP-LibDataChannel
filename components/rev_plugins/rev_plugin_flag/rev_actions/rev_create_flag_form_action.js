@@ -71,9 +71,9 @@ export const useRevCreateFlagFormAction = () => {
       }
 
       let revFlagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revFlagRel._revEntityRelationshipType = 'rev_flag_of';
-      revFlagRel._revEntityTargetGUID = revContainerEntityGUID;
-      revFlagRel._revEntitySubjectGUID = -1;
+      revFlagRel._revType = 'rev_flag_of';
+      revFlagRel._revTargetGUID = revContainerEntityGUID;
+      revFlagRel._revSubjectGUID = -1;
 
       revVarArgs['revSubjectRelsArr'] = [revFlagRel];
 

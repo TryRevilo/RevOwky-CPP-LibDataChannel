@@ -20,9 +20,9 @@ long getRevEntityRelationshipId_By_RelType_Subject_Target(char *revEntityRelatio
 
 RevEntityRelationship revPersGetRevEntityRelById(long revEntityRelationshipId);
 
-void revPersGetRevEntityRels_By_ResStatus(list *revList, int revResStatus);
+void revPersGetRels_By_ResStatus(list *revList, int revResStatus);
 
-void revPersGetRevEntityRels_By_ResStatus_RelType(list *revList, int revResStatus, char *revEntityRelationship);
+void revPersGetRels_By_ResStatus_RelType(list *revList, int revResStatus, char *revEntityRelationship);
 
 void revPersGetALLRevEntityRelValIds_By_RevResStatus(list *revList, int revResolveStatus);
 
@@ -46,7 +46,7 @@ void revPersGetRevEntityRels_By_RelTypeValueId_TargetGUID(list *revList, long re
 
 void revPersGetRevEntityRels_By_RelTypeValueId_SubjectGUID_TargetGUID_revResolveStatus(list *revList, int relTypeValueId, long revEntityTargetGUID, int revEntityResolveStatus);
 
-void revPersGetRemoteRelsGUIDs_By_RelTypeValueId_RevEntityGUID_revResolveStatus(list *revList, int relTypeValueId, long revEntityGUID, int revEntityResolveStatus);
+void revPersGetRemoteRelsGUIDs_By_RelTypeValueId_revGUID_revResolveStatus(list *revList, int relTypeValueId, long revEntityGUID, int revEntityResolveStatus);
 
 void revPersGetAllRevEntityRels_By_RelType_ValueId_revResolveStatus(list *revList, int relTypeValueId, long revEntityGUID, int revResolveStatus);
 
@@ -58,23 +58,23 @@ void revPersGetALLRevRels_RemoteRelId_By_revResolveStatus_RemoteTargetGUID(list 
 
 void revPersGetALLRevEntityRelationshipsSubjectGUID_BY_TARGET_GUID(list *revList, long targetGUID);
 
-void revPersGetALLRevEntityRelationshipsTargets(list *revList, char *revEntityRelationship, long subjectGUID);
+void revPersGetTargetGUIDs_BY_RelStr_SubjectGUID(list *revList, char *revEntityRelationship, long subjectGUID);
 
 void revPersGetAllRevEntityRelsIDs_By_EntityGUID(list *revList, long revEntityGUID);
 
-void revPersGetALLRevEntityRelGUIDs_By_RelType_revRemoteEntityGUID(list *revList, char *revEntityRelationship, long revRemoteEntityGUID);
+void revPersGetRelGUIDs_By_Type_revRemoteGUID(list *revList, char *revEntityRelationship, long revRemoteEntityGUID);
 
-void revGetRels_By_RelType_RevEntityGUID_LocalGUIDs(list *revList, const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
+void revPersGetRels_By_Type_EntityGUID_LocalEntityGUIDs(list *revList, const char *revRelType, long revEntityGUID, long revLocalGUID_1, long revLocalGUID_2);
 
-void revGetRels_By_RelType_LocalGUIDs(list *revList, const char *revRelType, long revLocalGUID_1, long revLocalGUID_2);
+void revPersGetRels_By_Type_LocalEntityGUIDs(list *revList, const char *revRelType, long revLocalGUID_1, long revLocalGUID_2);
 
-void revGetRels_By_RelType_RemoteGUIDs(list *revList, const char *revRelType, long revRemoteSubjectGUID, long revRemoteTargetGuid);
+void revPersGetRels_By_Type_RemoteEntityGUIDs(list *revList, const char *revRelType, long revRemoteSubjectGUID, long revRemoteTargetGuid);
 
 void revPersGetALLRelSubjectGUIDs_By_TargetGUID(list *revList, long revTargetGUID);
 
 long revPersGetSubjectGUID_BY_RelStr_TargetGUID(char *revEntityRelationship, long revTargetGUID);
 
-void revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(list *revList, char *revEntityRelationship, long subjectGUID);
+void revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(list *revList, char *revEntityRelationship, long subjectGUID);
 
 void revPersGetUnresolvedRemoteTargetGUIDSRelIds(list *revList);
 

@@ -5,12 +5,12 @@
 #ifndef REVCAMPANN_REV_PERS_UPDATE_REV_ENTITY_METADATA_H
 #define REVCAMPANN_REV_PERS_UPDATE_REV_ENTITY_METADATA_H
 
-int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId);
+int revPersSetRemoteMetadataId(long _revId, long _revRemoteId);
 
-int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetadataId);
+int revPersSetMetadataResStatus_BY_Metadata_Id(int revResolveStatus, long _revId);
 
-int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus);
+int setMetadataResolveStatus_BY_revName_revGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus);
 
-int setMetadataValue_BY_MetadataId(long _revMetadataId, char *revMetadataValue);
+int revPersSetMetadataVal_BY_Id(long _revId, char *revMetadataValue);
 
 #endif //REVCAMPANN_REV_PERS_UPDATE_REV_ENTITY_METADATA_H

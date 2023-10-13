@@ -7,33 +7,34 @@
 #include "../../../../../../libs/rev_map/rev_map.h"
 #include "../../rev_db_init/rev_db_init.h"
 
-typedef struct RevEntity {
+typedef struct RevEntity
+{
 
     bool _isNull;
 
     long _id;
-    char *_revEntityType;
-    char *_revEntitySubType;
+    char *_revType;
+    char *_revSubType;
 
-    int _revEntityResolveStatus;
-    int _revEntityChildableStatus;
-    int _revEntityAccessPermission;
+    int _revResolveStatus;
+    int _revChildableStatus;
+    int _revAccessPermission;
 
-    long _revEntityGUID;
-    long _revRemoteEntityGUID;
-    long _revOwnerEntityGUID;
-    long _revContainerEntityGUID;
-    long _remoteRevEntityContainerGUID;
-    long _revEntitySiteGUID;
+    long _revGUID;
+    long _revRemoteGUID;
+    long _revOwnerGUID;
+    long _revContainerGUID;
+    long _revRemoteContainerGUID;
+    long _revSiteGUID;
 
     long _revTimeCreated;
     long _revTimePublished;
     long _revTimePublishedUpdated;
 
-    struct RevEntity *childRevEntity;
+    struct RevEntity *_revChildEntity;
     struct RevEntity *_revInfoEntity;
 
-    list _revEntityMetadataList;
+    list _revMetadataList;
 
 } RevEntity;
 

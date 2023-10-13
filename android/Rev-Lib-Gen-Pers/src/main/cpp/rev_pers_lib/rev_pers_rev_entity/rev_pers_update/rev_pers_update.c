@@ -39,7 +39,7 @@ int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long revRemoteEnti
     return revReturnVal;
 }
 
-int setRevPublishedDate_By_RevEntityGUID(long revEntityGUID, long revPublishedDate) {
+int revPersSetPubDate_By_GUID(long revEntityGUID, long revPublishedDate) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -156,7 +156,7 @@ int resetRevEntityOwnerGUIG(long revEntityGUID, long revEntityOwnerGUID) {
     return revReturnVal;
 }
 
-int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContainerGUID) {
+int revPersSetContainerGUID_By_revGUID(long revEntityGUID, long revContainerGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -188,7 +188,7 @@ int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContain
     return revReturnVal;
 }
 
-int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revMetadataId, long _revRemoteMetadataId) {
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revId, long _revRemoteId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -208,9 +208,9 @@ int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long rev
     sqlite3_bind_int(stmt, 1, 0);
     sqlite3_bind_int(stmt, 2, revEntityGUID);
 
-    sqlite3_bind_int64(stmt, 3, _revRemoteMetadataId);
+    sqlite3_bind_int64(stmt, 3, _revRemoteId);
     sqlite3_bind_int(stmt, 4, 0);
-    sqlite3_bind_int64(stmt, 5, _revMetadataId);
+    sqlite3_bind_int64(stmt, 5, _revId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -228,7 +228,7 @@ int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long rev
     return revReturnVal;
 }
 
-int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID) {
+int revPersSetEntityResStatus_By_EntityGUID(int revResolveStatus, long revEntityGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();

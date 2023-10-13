@@ -14,10 +14,10 @@ public class RevEntityMetadata {
     }
 
     private int _revResolveStatus = -1;
-    private String _revMetadataName, _revMetadataValue;
-    private Long _revMetadataId = -1L;
-    private Long _revRemoteMetadataId = -1L;
-    private Long _revEntityGUID = -1L;
+    private String _revName, _revValue;
+    private Long _revId = -1L;
+    private Long _revRemoteId = -1L;
+    private Long _revGUID = -1L;
     private Long _revTimeCreated = -1L;
     private Long _revTimePublished = -1L;
     private Long _revTimePublishedUpdated = -1L;
@@ -25,49 +25,49 @@ public class RevEntityMetadata {
     public RevEntityMetadata() {
     }
 
-    public RevEntityMetadata(String _revMetadataName, String _revMetadataValue) {
-        this._revMetadataName = _revMetadataName;
-        this._revMetadataValue = _revMetadataValue;
+    public RevEntityMetadata(String _revName, String _revValue) {
+        this._revName = _revName;
+        this._revValue = _revValue;
     }
 
-    public String get_revMetadataName() {
-        return _revMetadataName;
+    public String get_revName() {
+        return _revName;
     }
 
-    public void set_revMetadataName(String _revMetadataName) {
-        this._revMetadataName = _revMetadataName;
+    public void set_revName(String _revName) {
+        this._revName = _revName;
     }
 
-    public String get_revMetadataValue() {
-        return _revMetadataValue;
+    public String get_revValue() {
+        return _revValue;
     }
 
-    public void set_revMetadataValue(String _revMetadataValue) {
-        this._revMetadataValue = _revMetadataValue;
+    public void set_revValue(String _revValue) {
+        this._revValue = _revValue;
     }
 
-    public Long get_revMetadataId() {
-        return _revMetadataId;
+    public Long get_revId() {
+        return _revId;
     }
 
-    public void set_revMetadataId(Long _revMetadataId) {
-        this._revMetadataId = _revMetadataId;
+    public void set_revId(Long _revId) {
+        this._revId = _revId;
     }
 
-    public Long getRemote_revMetadataId() {
-        return _revRemoteMetadataId;
+    public Long getRemote_revId() {
+        return _revRemoteId;
     }
 
-    public void setRemote_revMetadataId(Long _revRemoteMetadataId) {
-        this._revRemoteMetadataId = _revRemoteMetadataId;
+    public void setRemote_revId(Long _revRemoteId) {
+        this._revRemoteId = _revRemoteId;
     }
 
     public Long get_revMetadataOwnerGUID() {
-        return _revEntityGUID;
+        return _revGUID;
     }
 
-    public void set_revMetadataOwnerGUID(Long _revEntityGUID) {
-        this._revEntityGUID = _revEntityGUID;
+    public void set_revMetadataOwnerGUID(Long _revGUID) {
+        this._revGUID = _revGUID;
     }
 
     public Long get_revTimeCreated() {

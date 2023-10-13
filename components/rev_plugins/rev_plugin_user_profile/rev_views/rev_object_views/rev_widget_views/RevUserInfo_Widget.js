@@ -28,7 +28,7 @@ import {
 import {revIsUserEntity_WithInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {
-  revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID,
+  revPersGetSubjectGUIDs_BY_RelStr_TargetGUID,
   revPersGetRevEntities_By_EntityGUIDsArr,
 } from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
@@ -55,11 +55,10 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     return null;
   }
 
-  let revTagRelsArr =
-    revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-      'rev_tag_of',
-      REV_LOGGED_IN_ENTITY_GUID,
-    );
+  let revTagRelsArr = revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
+    'rev_tag_of',
+    REV_LOGGED_IN_ENTITY_GUID,
+  );
 
   let revTagEntitiesArr =
     revPersGetRevEntities_By_EntityGUIDsArr(revTagRelsArr);
@@ -68,7 +67,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   for (let i = 0; i < revTagEntitiesArr.length; i++) {
     let revTagVal = revGetMetadataValue(
-      revTagEntitiesArr[i]._revInfoEntity._revEntityMetadataList,
+      revTagEntitiesArr[i]._revInfoEntity._revMetadataList,
       'rev_entity_name_val',
     );
     revTagValsArr.push(revTagVal);
@@ -97,13 +96,10 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
   const RevPicContainer = ({revMediaEntity, revStyles}) => {
     const revMediaEntityPressed = () => {
-      console.log(
-        '>>> revMediaEntity._revEntityGUID',
-        revMediaEntity._revEntityGUID,
-      );
+      console.log('>>> revMediaEntity._revGUID', revMediaEntity._revGUID);
     };
     let revImagePathVal = revGetMetadataValue(
-      revMediaEntity._revEntityMetadataList,
+      revMediaEntity._revMetadataList,
       'rev_remote_file_name',
     );
 
@@ -136,7 +132,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
     return (
       <TouchableOpacity
-        key={'RevPicContainer_' + revMediaEntity._revEntityGUID}
+        key={'RevPicContainer_' + revMediaEntity._revGUID}
         onPress={revMediaEntityPressed}
         style={{
           width: revImageWidth - 2,

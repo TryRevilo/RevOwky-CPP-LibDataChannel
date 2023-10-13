@@ -15,7 +15,7 @@ bool setMetadataOwnerGUID(void *data, long ownerGUID) {
         return FALSE;
 
     RevEntityMetadata *d = (RevEntityMetadata *) data;
-    d->_revMetadataEntityGUID = ownerGUID;
+    d->_revGUID = ownerGUID;
 
     return TRUE;
 }
@@ -33,7 +33,7 @@ long revPersInit(RevEntity *revEntity) {
     long revEntityGUID = revPersSaveRevEntity(revEntity);
 
     /** Save entity metadata **/
-    list revEntityMetadataList = revEntity->_revEntityMetadataList;
+    list revEntityMetadataList = revEntity->_revMetadataList;
     int revMetadataListSize = list_size(&revEntityMetadataList);
 
     if (revMetadataListSize > 0) {
@@ -42,8 +42,8 @@ long revPersInit(RevEntity *revEntity) {
     }
 
     RevEntity *revInfoEntity = revEntity->_revInfoEntity;
-    char *revEntityType = revInfoEntity->_revEntityType;
-    char *revInfoEntitySubType = revInfoEntity->_revEntitySubType;
+    char *revEntityType = revInfoEntity->_revType;
+    char *revInfoEntitySubType = revInfoEntity->_revSubType;
 
     if (revInfoEntity
         && (revEntityType != NULL) && (revEntityType[0] != '\0')
@@ -51,15 +51,15 @@ long revPersInit(RevEntity *revEntity) {
 
         long revInfoEntityGUID = revPersInit(revInfoEntity);
 
-        RevEntityRelationship *c_RevEntityRelationship = revInitializedEntityRelationship();
+        RevEntityRelationship *c_revRelationship = revInitializedEntityRelationship();
 
-        c_RevEntityRelationship->_revEntityRelationshipType = "rev_entity_info";
-        c_RevEntityRelationship->_revEntitySubjectGUID = revInfoEntityGUID;
-        c_RevEntityRelationship->_revEntityTargetGUID = revEntityGUID;
-        c_RevEntityRelationship->_revResolveStatus = -1;
-        c_RevEntityRelationship->_revRemoteEntityRelationshipId = -1;
+        c_revRelationship->_revType = "rev_entity_info";
+        c_revRelationship->_revSubjectGUID = revInfoEntityGUID;
+        c_revRelationship->_revTargetGUID = revEntityGUID;
+        c_revRelationship->_revResolveStatus = -1;
+        c_revRelationship->_revRemoteId = -1;
 
-        long relationshipId = revPersRelationshipObject(c_RevEntityRelationship);
+        long relationshipId = revPersRelationshipObject(c_revRelationship);
     }
 
     return revEntityGUID;

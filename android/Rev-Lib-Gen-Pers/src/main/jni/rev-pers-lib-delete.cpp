@@ -37,11 +37,11 @@ bool revSetDelAnnResStatus(void *revAnnId, int revResStatus) {
     // If res status == -1 -> Delete from DB
     RevEntityAnnotation *revEntityAnnotation = revPersGetRevEntityAnn_By_LocalAnnId(revPassLong);
 
-    if (revEntityAnnotation->_revAnnotationResStatus == -1) {
-        return revDeleteEntityAnnotation_By_AnnotationID(revPassLong);
+    if (revEntityAnnotation->_revResolveStatus == -1) {
+        return revPersDeleteAnn_By_AnnId(revPassLong);
     } else {
         // If res status !== -1 -> Update Res Status
-        return revPersSetRevAnnResStatus_By_RevAnnId(revPassLong, revResStatus);
+        return revPersSetAnnResStatus_By_Id(revPassLong, revResStatus);
     }
 }
 
@@ -59,15 +59,15 @@ bool revSetDelRelResStatus(void *revRelID, int revResStatus) {
 }
 
 // Function that receives a callback function
-bool revSetDelMetadataResStatus(void *_revMetadataId, int revResStatus) {
-    long revPassLong = *(long *) _revMetadataId;
+bool revSetDelMetadataResStatus(void *_revId, int revResStatus) {
+    long revPassLong = *(long *) _revId;
 
     RevEntityMetadata *revEntityMetadata = revPersGetRevEntityMetadata_By_MetadataId(revPassLong);
 
     if (revEntityMetadata->_revResolveStatus == -1) {
         return revDeleteEntityMetadata_By_ID(revPassLong);
     } else {
-        return setMetadataResolveStatus_BY_METADATA_ID(revResStatus, revPassLong);
+        return revPersSetMetadataResStatus_BY_Metadata_Id(revResStatus, revPassLong);
     }
 }
 
@@ -75,14 +75,14 @@ bool revSetDelMetadataResStatus(void *_revMetadataId, int revResStatus) {
 bool revSetDelRevEntityResStatus(void *revEntityGUID, int revResStatus) {
     long revPassLong = *(long *) revEntityGUID;
 
-    RevEntity revEntity = revPersGetRevEntityByGUID(revPassLong);
+    RevEntity revEntity = revPersGetEntity_By_GUID(revPassLong);
 
-    if (revEntity._revEntityResolveStatus == revResStatus) {
+    if (revEntity._revResolveStatus == revResStatus) {
         return 1;
-    } else if (revEntity._revEntityResolveStatus == -1) {
+    } else if (revEntity._revResolveStatus == -1) {
         return revDeleteEntity_By_EntityGUID(revPassLong);
     } else {
-        return setRevEntityResolveStatusByRevEntityGUID(revResStatus, revPassLong);
+        return revPersSetEntityResStatus_By_EntityGUID(revResStatus, revPassLong);
     }
 }
 
@@ -99,16 +99,16 @@ void revListForEach(list *list, int revResStatus, revSetResStatusCallBack iterat
 }
 
 bool revPersGetRevEntityDataLong(void *data) {
-    revDeleteEntity_And_Children_By_EntityGUID(*(long *) data);
+    revPersDeleteEntity_And_Children_By_EntityGUID(*(long *) data);
     return true;
 }
 
-int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
+int revPersDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
     int revDelStatus = 0;
 
     // Get Anns
     list revAnnlValIds;
-    getAllRevEntityAnnoationIds_By_RevEntityGUID(&revAnnlValIds, revEntityGUID);
+    getAllRevEntityAnnoationIds_By_revGUID(&revAnnlValIds, revEntityGUID);
     int revAnnLen = list_size(&revAnnlValIds);
 
     if (revAnnLen > 0) {
@@ -128,7 +128,7 @@ int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
 
     // Get Metadata
     list revMetadataList;
-    revPersGetALLRevEntityMetadataIds_By_RevEntityGUID(&revMetadataList, revEntityGUID);
+    revPersGetALLRevEntityMetadataIds_By_revGUID(&revMetadataList, revEntityGUID);
     int revMetadataListLen = list_size(&revMetadataList);
 
     if (revMetadataListLen > 0) {
@@ -157,8 +157,9 @@ int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID) {
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revDeleteEntity_1And_1Children_1By_1EntityGUID(JNIEnv *env, jobject thiz, jlong rev_entity_guid) {
-    return revDeleteEntity_And_Children_By_EntityGUID((long) rev_entity_guid);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revPersDeleteEntity_1And_1Children_1By_1EntityGUID(JNIEnv *env, jobject thiz, jlong rev_entity_guid) {
+    // TODO: implement revPersDeleteEntity_And_Children_By_EntityGUID()
+    return revPersDeleteEntity_And_Children_By_EntityGUID((long) rev_entity_guid);
 }
 
 extern "C"
@@ -175,8 +176,9 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revDeleteEntity_1
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revDeleteEntityAnnotation_1By_1AnnotationID(JNIEnv *env, jobject thiz, jlong rev_annotation_id) {
-    return revDeleteEntityAnnotation_By_AnnotationID(rev_annotation_id);
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revPersDeleteAnn_1By_1AnnId(JNIEnv *env, jobject thiz, jlong rev_annotation_id) {
+    // TODO: implement revPersDeleteAnn_By_AnnId()
+    return revPersDeleteAnn_By_AnnId(rev_annotation_id);
 }
 
 extern "C"
@@ -216,7 +218,7 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revAsyDeleteFiles
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revFileDelStatus %d", revFileDelStatus);
 
-        int revEntityDelStatus = revDeleteEntity_And_Children_By_EntityGUID(revFileGUID);
+        int revEntityDelStatus = revPersDeleteEntity_And_Children_By_EntityGUID(revFileGUID);
 
         // Add the deletion status to the result JSON object
         cJSON_AddItemToObject(revResultJson, "revFileGUID", cJSON_CreateNumber(revFileGUID));

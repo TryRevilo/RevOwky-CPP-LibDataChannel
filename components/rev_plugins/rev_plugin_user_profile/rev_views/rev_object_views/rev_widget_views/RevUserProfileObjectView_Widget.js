@@ -39,7 +39,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
 
   if (
     revIsEmptyJSONObject(revUserEntity) ||
-    revUserEntity._revEntityType !== 'rev_user_entity'
+    revUserEntity._revType !== 'rev_user_entity'
   ) {
     return null;
   }
@@ -66,18 +66,16 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   });
 
   const handleRevConnectTabPressed = revVarArgs => {
-    let revRemoteGUID = revVarArgs._revRemoteEntityGUID;
+    let revRemoteGUID = revVarArgs._revRemoteGUID;
 
     let revTargetEntityStr =
-      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteEntityGUID(
-        revRemoteGUID,
-      );
+      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteGUID(revRemoteGUID);
 
     let revConnectUser = JSON.parse(revTargetEntityStr);
 
     if (
       revIsEmptyJSONObject(revConnectUser) ||
-      revConnectUser._revEntityType !== 'rev_user_entity'
+      revConnectUser._revType !== 'rev_user_entity'
     ) {
       console.log('>>> ERR - No User <<<');
       return null;
@@ -181,7 +179,7 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   };
 
   const revMainEntityBannerIconLocalPath = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'rev_main_entity_banner_icon_val',
   );
 

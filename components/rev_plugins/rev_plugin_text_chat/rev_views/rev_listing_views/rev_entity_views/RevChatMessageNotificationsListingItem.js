@@ -35,7 +35,7 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  let revEntityGUID = revVarArgs._revEntityGUID;
+  let revEntityGUID = revVarArgs._revGUID;
 
   /** START GET PUBLISHER */
   if (
@@ -47,12 +47,12 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_full_names',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -64,7 +64,7 @@ export const RevChatMessageNotificationsListingItem = ({revVarArgs}) => {
   let revMsgInfoEntity = revVarArgs._revInfoEntity;
 
   let revChatMsgStr = revGetMetadataValue(
-    revMsgInfoEntity._revEntityMetadataList,
+    revMsgInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 

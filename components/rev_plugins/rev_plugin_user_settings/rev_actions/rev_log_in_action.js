@@ -18,7 +18,7 @@ export const useRevLogin = () => {
 
   const revLogin = async (revUserId, revPassword) => {
     let revUniqueIdEntityGUID =
-      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(
+      RevPersLibRead_React.revPersGetMetadataOwnerGUID_By_Name_Value(
         'rev_entity_unique_id',
         revUserId,
       );
@@ -26,18 +26,18 @@ export const useRevLogin = () => {
     console.log('>>> revUniqueIdEntityGUID', revUniqueIdEntityGUID);
 
     let revUserIdOwnerGUID =
-      RevPersLibRead_React.revGetEntityOwnerGUID_BY_EntityGUID(
+      RevPersLibRead_React.revPersGetEntityOwnerGUID_BY_EntityGUID(
         revUniqueIdEntityGUID,
       );
 
     let revPasswordEntityGUID =
-      RevPersLibRead_React.revGetRevEntityMetadataOwnerGUID_By_revMetadataName_revMetadataValue(
+      RevPersLibRead_React.revPersGetMetadataOwnerGUID_By_Name_Value(
         'revPassword1',
         revPassword,
       );
 
     let revPasswordOwnerGUID =
-      RevPersLibRead_React.revGetEntityOwnerGUID_BY_EntityGUID(
+      RevPersLibRead_React.revPersGetEntityOwnerGUID_BY_EntityGUID(
         revPasswordEntityGUID,
       );
 
@@ -45,7 +45,7 @@ export const useRevLogin = () => {
 
     if (revUserIdOwnerGUID == revPasswordOwnerGUID) {
       let revUserSettingsGUIDsArrStr =
-        RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+        RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
           'rev_entity_info',
           revPasswordOwnerGUID,
         );
@@ -56,7 +56,7 @@ export const useRevLogin = () => {
         let revUserSettingsGUID = revUserSettingsGUIDsArr[0];
 
         revLoggedInUserGUID =
-          RevPersLibRead_React.revGetEntityOwnerGUID_BY_EntityGUID(
+          RevPersLibRead_React.revPersGetEntityOwnerGUID_BY_EntityGUID(
             revUserSettingsGUID,
           );
       }

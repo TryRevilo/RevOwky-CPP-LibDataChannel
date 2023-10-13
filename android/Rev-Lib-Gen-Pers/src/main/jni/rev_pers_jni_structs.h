@@ -11,22 +11,22 @@ typedef struct REV_ENTITY_JNI_POSREC {
     jclass cls;
     jmethodID constructortor_ID;
 
-    jfieldID _revEntityType_ID;
-    jfieldID _revEntitySubType_ID;
+    jfieldID _revType_ID;
+    jfieldID _revSubType_ID;
 
-    jfieldID _revEntityResolveStatus;
-    jfieldID _revEntityChildableStatus;
+    jfieldID _revResolveStatus;
+    jfieldID _revChildableStatus;
 
-    jfieldID _revEntityGUID_ID;
-    jfieldID _revRemoteEntityGUID_ID;
+    jfieldID _revGUID_ID;
+    jfieldID _revRemoteGUID_ID;
 
-    jfieldID _revEntityOwnerGUID_ID;
-    jfieldID _revEntityContainerGUID_ID;
-    jfieldID _remoteRevEntityContainerGUID;
-    jfieldID _revEntitySiteGUID_ID;
-    jfieldID _revEntityAccessPermission_ID;
+    jfieldID _revOwnerGUID_ID;
+    jfieldID _revContainerGUID_ID;
+    jfieldID _revRemoteContainerGUID;
+    jfieldID _revSiteGUID_ID;
+    jfieldID _revAccessPermission_ID;
 
-    jfieldID _revEntityMetadataList_ID;
+    jfieldID _revMetadataList_ID;
 
     jfieldID _revPublisherEntity_ID;
     jfieldID _revInfoEntity_ID;
@@ -41,14 +41,14 @@ typedef struct REV_ENTITY_METADATA_JNI_POSREC {
     jmethodID constructortor_ID;
 
     jfieldID _revResolveStatus;
-    jfieldID _revMetadataId;
+    jfieldID _revId;
     jfieldID revMetadataValueId;
-    jfieldID _revRemoteMetadataId;
+    jfieldID _revRemoteId;
 
-    jfieldID _revMetadataName;
-    jfieldID _revMetadataValue;
+    jfieldID _revName;
+    jfieldID _revValue;
 
-    jfieldID _revEntityGUID;
+    jfieldID _revGUID;
 
     jfieldID _revTimeCreated_ID;
     jfieldID _revTimePublished_ID;
@@ -59,18 +59,18 @@ typedef struct REV_ENTITY_ANNOTATION_JNI_POSREC {
     jclass cls;
     jmethodID constructortor_ID;
 
-    jfieldID _revAnnotationResStatus;
+    jfieldID _revResolveStatus;
 
-    jfieldID _revAnnotationName;
-    jfieldID _revAnnotationValue;
+    jfieldID _revName;
+    jfieldID _revValue;
 
-    jfieldID _revAnnotationId;
-    jfieldID _revAnnotationRemoteId;
+    jfieldID _revId;
+    jfieldID _revRemoteId;
 
-    jfieldID _revAnnotationEntityGUID;
-    jfieldID _revAnnotationRemoteEntityGUID;
-    jfieldID _revAnnOwnerEntityGUID;
-    jfieldID _revAnnRemoteOwnerEntityGUID;
+    jfieldID _revGUID;
+    jfieldID _revRemoteGUID;
+    jfieldID _revOwnerGUID;
+    jfieldID _revRemoteOwnerGUID;
 
     jfieldID _revTimeCreated_ID;
     jfieldID _revTimePublished_ID;
@@ -83,18 +83,18 @@ typedef struct REV_ENTITY_RELATIONSHIP_JNI_POSREC {
     jmethodID constructortor_ID;
 
     jfieldID _revResolveStatus;
-    jfieldID _revEntityRelationshipId_ID;
-    jfieldID _revRemoteEntityRelationshipId;
+    jfieldID _revId_ID;
+    jfieldID _revRemoteId;
 
-    jfieldID _revEntityGUID;
-    jfieldID _revRemoteEntityGUID;
+    jfieldID _revGUID;
+    jfieldID _revRemoteGUID;
 
-    jfieldID _revEntityRelationshipType_ID;
-    jfieldID _revEntityRelationshipTypeValueId_ID;
-    jfieldID _revEntitySubjectGUID_ID;
+    jfieldID _revType_ID;
+    jfieldID _revTypeValueId_ID;
+    jfieldID _revSubjectGUID_ID;
     jfieldID _remoteRevevEntitySubjectGUID_ID;
-    jfieldID _revEntityTargetGUID_ID;
-    jfieldID _revRemoteEntityTargetGUID_ID;
+    jfieldID _revTargetGUID_ID;
+    jfieldID _revRemoteTargetGUID_ID;
 
     jfieldID _revTimeCreated_ID;
     jfieldID _revTimePublished_ID;

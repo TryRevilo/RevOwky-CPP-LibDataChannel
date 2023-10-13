@@ -20,17 +20,14 @@ export const useRevSetMetadataArrayRemoteID = (
       continue;
     }
 
-    let _revMetadataId = revCurrMetadata._revMetadataId;
-    let _revRemoteMetadataId = revCurrMetadata._revRemoteMetadataId;
+    let _revId = revCurrMetadata._revId;
+    let _revRemoteId = revCurrMetadata._revRemoteId;
 
-    if (_revMetadataId < 1 || _revRemoteMetadataId < 1) {
+    if (_revId < 1 || _revRemoteId < 1) {
       continue;
     }
 
-    RevPersLibUpdate_React.setRemoteRevEntityMetadataId(
-      _revMetadataId,
-      _revRemoteMetadataId,
-    );
+    RevPersLibUpdate_React.revPersSetRemoteMetadataId(_revId, _revRemoteId);
   }
 
   return true;

@@ -18,7 +18,7 @@ export const useRevUpdateConnectionRequestStatus = () => {
     }
 
     let revAcceptedRelsArrStr =
-      RevPersLibRead_React.revPersGetRevEntityRels_By_ResStatus_RelType(
+      RevPersLibRead_React.revPersGetRels_By_ResStatus_RelType(
         0,
         'rev_entity_connect_members',
       );
@@ -32,8 +32,7 @@ export const useRevUpdateConnectionRequestStatus = () => {
       revPersAcceptedRelsArr.push({
         revResolveStatus: 2,
         revEntityRelationshipId: revCurrRel._remoteRevEntityRelationshipId,
-        revEntityRelationshipRemoteId:
-          revCurrRel._revEntityRelationshipRemoteId,
+        revEntityRelationshipRemoteId: revCurrRel._revRemoteId,
       });
     }
 
@@ -48,7 +47,7 @@ export const useRevUpdateConnectionRequestStatus = () => {
     revPostServerData(
       revURL,
       {
-        revLoggedInEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
+        revLoggedInEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
         revUpdateRelsResStatusArr: revPersAcceptedRelsArr,
       },
       revRetRelData => {

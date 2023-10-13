@@ -67,9 +67,9 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   let revPublisherEntity = revVarArgs._revPublisherEntity;
   let revPublisherInfoEntity = revPublisherEntity._revInfoEntity;
   let revPublisherInfoEntityMetadataList =
-    revPublisherInfoEntity._revEntityMetadataList;
+    revPublisherInfoEntity._revMetadataList;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
@@ -110,7 +110,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   let revMaxMessageLen = 200;
 
   let revKiwiTxtVal = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'revPostText',
   );
 
@@ -135,7 +135,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revTagEntitiesInlineListingView = () => {
     let revTagEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_tag_of',
         revEntityGUID,
       );
@@ -180,13 +180,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
 
-    let revPicsArr = revPicsAlbum._revEntityChildrenList;
+    let revPicsArr = revPicsAlbum._revChildrenList;
 
     for (let i = 0; i < revPicsArr.length; i++) {
       let revPic = revPicsArr[i];
 
       let revEntityImageURI = revGetMetadataValue(
-        revPic._revEntityMetadataList,
+        revPic._revMetadataList,
         'rev_remote_file_name',
       );
 
@@ -205,7 +205,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
         i == revPicsArr.length - 1
           ? {
               borderRightWidth: 0,
-              REV_INCREMENTALS,
             }
           : null;
 
@@ -244,9 +243,9 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revImagesMediaView = null;
 
-  if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
+  if (revVarArgs.hasOwnProperty('_revChildrenList')) {
     let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
-      revVarArgs._revEntityChildrenList,
+      revVarArgs._revChildrenList,
       'rev_pics_album',
     );
 
@@ -372,7 +371,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   );
 
   let revFlagEntityGUIDsStr =
-    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+    RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
       'rev_flag_of',
       revEntityGUID,
     );
@@ -395,7 +394,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   };
 
   const {revMainEntityIconLocalPath = ''} = revGetEntityIcon({
-    revEntityGUID: -1, // revPublisherEntity._revEntityGUID,
+    revEntityGUID: -1, // revPublisherEntity._revGUID,
   });
 
   let revMainEntityIconView = !revStringEmpty(revMainEntityIconLocalPath) ? (

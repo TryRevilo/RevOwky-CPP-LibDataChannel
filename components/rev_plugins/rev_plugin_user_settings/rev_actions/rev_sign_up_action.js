@@ -14,8 +14,8 @@ export const revRegisterUserEntity = revVarArgs => {
   let revEMail = revVarArgs.revEMail;
 
   let revPersUserEntity = REV_ENTITY_STRUCT();
-  revPersUserEntity._revEntityType = 'rev_user_entity';
-  revPersUserEntity._revEntitySubType = 'rev_user_entity';
+  revPersUserEntity._revType = 'rev_user_entity';
+  revPersUserEntity._revSubType = 'rev_user_entity';
 
   let revPersUserEntityGUID = RevPersLibCreate_React.revPersInitJSON(
     JSON.stringify(revPersUserEntity),
@@ -27,11 +27,11 @@ export const revRegisterUserEntity = revVarArgs => {
 
   /** Rev START save user info */
   let revPersUserEntityInfo = REV_ENTITY_STRUCT();
-  revPersUserEntityInfo._revEntityType = 'rev_object';
-  revPersUserEntityInfo._revEntitySubType = 'rev_entity_info';
-  revPersUserEntityInfo._revEntityOwnerGUID = revPersUserEntityGUID;
+  revPersUserEntityInfo._revType = 'rev_object';
+  revPersUserEntityInfo._revSubType = 'rev_entity_info';
+  revPersUserEntityInfo._revOwnerGUID = revPersUserEntityGUID;
 
-  revPersUserEntityInfo._revEntityMetadataList = [
+  revPersUserEntityInfo._revMetadataList = [
     REV_METADATA_FILLER('rev_entity_unique_id', revUserId),
     REV_METADATA_FILLER('rev_full_names', revFullNames),
   ];
@@ -45,10 +45,10 @@ export const revRegisterUserEntity = revVarArgs => {
   }
 
   let revPersUserEntityInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-  revPersUserEntityInfoRel._revEntityRelationshipType = 'rev_entity_info';
+  revPersUserEntityInfoRel._revType = 'rev_entity_info';
   revPersUserEntityInfoRel._revOwnerGUID = revPersUserEntityGUID;
-  revPersUserEntityInfoRel._revEntityTargetGUID = revPersUserEntityGUID;
-  revPersUserEntityInfoRel._revEntitySubjectGUID = revPersUserEntityInfoGUID;
+  revPersUserEntityInfoRel._revTargetGUID = revPersUserEntityGUID;
+  revPersUserEntityInfoRel._revSubjectGUID = revPersUserEntityInfoGUID;
 
   let revPersUserEntityInfoRel_Id =
     RevPersLibCreate_React.revPersRelationshipJSON(
@@ -62,21 +62,21 @@ export const revRegisterUserEntity = revVarArgs => {
 
   /** START SAVE SETTINGS */
   let revPersUserEntitySettings = REV_ENTITY_STRUCT();
-  revPersUserEntitySettings._revEntityType = 'rev_object';
-  revPersUserEntitySettings._revEntitySubType = 'rev_settings_entity';
-  revPersUserEntitySettings._revEntityOwnerGUID = revPersUserEntityGUID;
-  revPersUserEntitySettings._revEntityContainerGUID = revPersUserEntityGUID;
+  revPersUserEntitySettings._revType = 'rev_object';
+  revPersUserEntitySettings._revSubType = 'rev_settings_entity';
+  revPersUserEntitySettings._revOwnerGUID = revPersUserEntityGUID;
+  revPersUserEntitySettings._revContainerGUID = revPersUserEntityGUID;
 
   let revPersUserEntitySettingsGUID = RevPersLibCreate_React.revPersInitJSON(
     JSON.stringify(revPersUserEntitySettings),
   );
 
   let revPersEntitySettingsInfo = REV_ENTITY_STRUCT();
-  revPersEntitySettingsInfo._revEntityType = 'rev_object';
-  revPersEntitySettingsInfo._revEntitySubType = 'rev_entity_info';
-  revPersEntitySettingsInfo._revEntityOwnerGUID = revPersUserEntityGUID;
+  revPersEntitySettingsInfo._revType = 'rev_object';
+  revPersEntitySettingsInfo._revSubType = 'rev_entity_info';
+  revPersEntitySettingsInfo._revOwnerGUID = revPersUserEntityGUID;
 
-  revPersEntitySettingsInfo._revEntityMetadataList = [
+  revPersEntitySettingsInfo._revMetadataList = [
     REV_METADATA_FILLER('revPassword1', revPassword1),
     REV_METADATA_FILLER('revPassword2', revPassword2),
     REV_METADATA_FILLER('rev_email', revEMail),
@@ -90,11 +90,10 @@ export const revRegisterUserEntity = revVarArgs => {
     return -1;
   } else {
     let revPersEntitySettingsInfoRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revPersEntitySettingsInfoRel._revEntityRelationshipType = 'rev_entity_info';
+    revPersEntitySettingsInfoRel._revType = 'rev_entity_info';
     revPersEntitySettingsInfoRel._revOwnerGUID = revPersUserEntityGUID;
-    revPersEntitySettingsInfoRel._revEntityTargetGUID =
-      revPersUserEntitySettingsGUID;
-    revPersEntitySettingsInfoRel._revEntitySubjectGUID =
+    revPersEntitySettingsInfoRel._revTargetGUID = revPersUserEntitySettingsGUID;
+    revPersEntitySettingsInfoRel._revSubjectGUID =
       revPersEntitySettingsInfoGUID;
 
     let revPersEntitySettingsInfoRel_Id =

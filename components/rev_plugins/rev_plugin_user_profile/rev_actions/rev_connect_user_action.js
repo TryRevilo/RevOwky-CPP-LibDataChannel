@@ -23,7 +23,7 @@ export const useRevConnectUser_Action = () => {
       return revCallBack(-1);
     }
 
-    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteEntityGUID;
+    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
     if (revLoggedInRemoteEntityGUID < 1) {
       return revCallBack(-1);
@@ -47,21 +47,21 @@ export const useRevConnectUser_Action = () => {
     }
 
     let revTargetEntityStr =
-      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteEntityGUID(
+      RevPersLibRead_React.revPersGetRevEntity_By_revRemoteGUID(
         revTargetRemoteEntityGUID,
       );
 
     let revTargetEntity = JSON.parse(revTargetEntityStr);
 
-    let revTargetEntityGUID = revTargetEntity._revEntityGUID;
+    let revTargetEntityGUID = revTargetEntity._revGUID;
 
     let revConnectUserRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revConnectUserRel._revEntityRelationshipType = 'rev_entity_connect_members';
+    revConnectUserRel._revType = 'rev_entity_connect_members';
     revConnectUserRel._revOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
-    revConnectUserRel._revEntityTargetGUID = revTargetEntityGUID;
-    revConnectUserRel._revRemoteEntityTargetGUID = revTargetRemoteEntityGUID;
-    revConnectUserRel._revEntitySubjectGUID = REV_LOGGED_IN_ENTITY_GUID;
-    revConnectUserRel._revRemoteEntitySubjectGUID = revLoggedInRemoteEntityGUID;
+    revConnectUserRel._revTargetGUID = revTargetEntityGUID;
+    revConnectUserRel._revRemoteTargetGUID = revTargetRemoteEntityGUID;
+    revConnectUserRel._revSubjectGUID = REV_LOGGED_IN_ENTITY_GUID;
+    revConnectUserRel._revRemoteSubjectGUID = revLoggedInRemoteEntityGUID;
 
     let revConnectUserRelId = RevPersLibCreate_React.revPersRelationshipJSON(
       JSON.stringify(revConnectUserRel),

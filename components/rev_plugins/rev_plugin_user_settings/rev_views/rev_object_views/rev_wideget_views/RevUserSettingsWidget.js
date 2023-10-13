@@ -102,10 +102,10 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
   const revHandleOnLogOutTabPressed = () => {
     let revSiteEntity = revPersGetRevEnty_By_EntityGUID(REV_SITE_ENTITY_GUID);
 
-    if (revSiteEntity && revSiteEntity._revEntityResolveStatus > -1) {
-      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+    if (revSiteEntity && revSiteEntity._revResolveStatus > -1) {
+      RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
         0,
-        revSiteEntity._revEntityGUID,
+        revSiteEntity._revGUID,
       );
 
       SET_REV_LOGGED_IN_ENTITY_GUID(-1);

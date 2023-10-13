@@ -5,18 +5,18 @@ import java.util.List;
 
 public class RevEntity {
 
-    private String _revEntityType;
-    private String _revEntitySubType;
+    private String _revType;
+    private String _revSubType;
 
-    private Long _revEntityGUID = -1L;
-    private Long _revRemoteEntityGUID = -1L;
-    private Long _revEntityOwnerGUID = -1L;
-    private Long _revEntityContainerGUID = -1L;
-    private Long _revEntityRemoteContainerGUID = -1L;
-    private Long _revEntitySiteGUID = -1L;
+    private Long _revGUID = -1L;
+    private Long _revRemoteGUID = -1L;
+    private Long _revOwnerGUID = -1L;
+    private Long _revContainerGUID = -1L;
+    private Long _revRemoteContainerGUID = -1L;
+    private Long _revSiteGUID = -1L;
 
-    private int _revEntityAccessPermission = -1;
-    private int _revEntityResolveStatus = -1;
+    private int _revAccessPermission = -1;
+    private int _revResolveStatus = -1;
 
     /**
      * -1 = NO CHILDREN. NO PARENT (ONLY TIED VIA RELATIONSHIPS)
@@ -26,17 +26,17 @@ public class RevEntity {
      * 3 = HAS CHILDREN. HAS PARENT. HAS RELATIONSHIPS
      **/
 
-    private int _revEntityChildableStatus = -1;
+    private int _revChildableStatus = -1;
     private boolean _fromRemote;
 
     private Long _revTimeCreated = -1L;
     private Long _revTimePublished = -1L;
     private Long _revTimePublishedUpdated = -1L;
 
-    List<RevEntityMetadata> _revEntityMetadataList = new ArrayList<>();
+    List<RevEntityMetadata> _revMetadataList = new ArrayList<>();
     List<RevAnnotation> _revAnnotations = new ArrayList<>();
 
-    List<RevEntity> _revEntityChildrenList = new ArrayList<>();
+    List<RevEntity> _revChildrenList = new ArrayList<>();
 
     RevEntity _revPublisherEntity;
     RevEntity _revInfoEntity;
@@ -45,92 +45,92 @@ public class RevEntity {
     public RevEntity() {
     }
 
-    public String get_revEntityType() {
-        return _revEntityType;
+    public String get_revType() {
+        return _revType;
     }
 
-    public void set_revEntityType(String _revEntityType) {
-        this._revEntityType = _revEntityType;
+    public void set_revType(String _revType) {
+        this._revType = _revType;
     }
 
-    public String get_revEntitySubType() {
-        return _revEntitySubType;
+    public String get_revSubType() {
+        return _revSubType;
     }
 
-    public void set_revEntitySubType(String _revEntitySubType) {
-        this._revEntitySubType = _revEntitySubType;
+    public void set_revSubType(String _revSubType) {
+        this._revSubType = _revSubType;
     }
 
-    public Long get_revEntityGUID() {
-        return _revEntityGUID;
+    public Long get_revGUID() {
+        return _revGUID;
     }
 
-    public void set_revEntityGUID(Long _revEntityGUID) {
-        this._revEntityGUID = _revEntityGUID;
+    public void set_revGUID(Long _revGUID) {
+        this._revGUID = _revGUID;
     }
 
-    public Long get_revRemoteEntityGUID() {
-        return _revRemoteEntityGUID;
+    public Long get_revRemoteGUID() {
+        return _revRemoteGUID;
     }
 
-    public void set_revRemoteEntityGUID(Long _revRemoteEntityGUID) {
-        this._revRemoteEntityGUID = _revRemoteEntityGUID;
+    public void set_revRemoteGUID(Long _revRemoteGUID) {
+        this._revRemoteGUID = _revRemoteGUID;
     }
 
-    public Long get_revEntityOwnerGUID() {
-        return _revEntityOwnerGUID;
+    public Long get_revOwnerGUID() {
+        return _revOwnerGUID;
     }
 
-    public void set_revEntityOwnerGUID(Long _revEntityOwnerGUID) {
-        this._revEntityOwnerGUID = _revEntityOwnerGUID;
+    public void set_revOwnerGUID(Long _revOwnerGUID) {
+        this._revOwnerGUID = _revOwnerGUID;
     }
 
-    public Long get_revEntityContainerGUID() {
-        return _revEntityContainerGUID;
+    public Long get_revContainerGUID() {
+        return _revContainerGUID;
     }
 
-    public void set_revEntityContainerGUID(Long _revEntityContainerGUID) {
-        this._revEntityContainerGUID = _revEntityContainerGUID;
+    public void set_revContainerGUID(Long _revContainerGUID) {
+        this._revContainerGUID = _revContainerGUID;
     }
 
-    public Long get_revEntityRemoteContainerGUID() {
-        return _revEntityRemoteContainerGUID;
+    public Long get_revRemoteContainerGUID() {
+        return _revRemoteContainerGUID;
     }
 
-    public void set_revEntityRemoteContainerGUID(Long _revEntityRemoteContainerGUID) {
-        this._revEntityRemoteContainerGUID = _revEntityRemoteContainerGUID;
+    public void set_revRemoteContainerGUID(Long _revRemoteContainerGUID) {
+        this._revRemoteContainerGUID = _revRemoteContainerGUID;
     }
 
-    public Long get_revEntitySiteGUID() {
-        return _revEntitySiteGUID;
+    public Long get_revSiteGUID() {
+        return _revSiteGUID;
     }
 
-    public void set_revEntitySiteGUID(Long _revEntitySiteGUID) {
-        this._revEntitySiteGUID = _revEntitySiteGUID;
+    public void set_revSiteGUID(Long _revSiteGUID) {
+        this._revSiteGUID = _revSiteGUID;
     }
 
-    public int get_revEntityAccessPermission() {
-        return _revEntityAccessPermission;
+    public int get_revAccessPermission() {
+        return _revAccessPermission;
     }
 
-    public void set_revEntityAccessPermission(int _revEntityAccessPermission) {
-        this._revEntityAccessPermission = _revEntityAccessPermission;
+    public void set_revAccessPermission(int _revAccessPermission) {
+        this._revAccessPermission = _revAccessPermission;
     }
 
-    public int get_revEntityResolveStatus() {
-        return _revEntityResolveStatus;
+    public int get_revResolveStatus() {
+        return _revResolveStatus;
     }
 
-    public void set_revEntityResolveStatus(int _revEntityResolveStatus) {
-        this._revEntityResolveStatus = _revEntityResolveStatus;
+    public void set_revResolveStatus(int _revResolveStatus) {
+        this._revResolveStatus = _revResolveStatus;
     }
 
-    public int get_revEntityChildableStatus() {
-        return _revEntityChildableStatus;
+    public int get_revChildableStatus() {
+        return _revChildableStatus;
     }
 
-    public void set_revEntityChildableStatus(int _revEntityChildableStatus) {
-        this._revEntityChildableStatus = _revEntityChildableStatus;
+    public void set_revChildableStatus(int _revChildableStatus) {
+        this._revChildableStatus = _revChildableStatus;
     }
 
     public boolean is_fromRemote() {
@@ -165,12 +165,12 @@ public class RevEntity {
         this._revTimePublishedUpdated = _revTimePublishedUpdated;
     }
 
-    public List<RevEntityMetadata> get_revEntityMetadataList() {
-        return _revEntityMetadataList;
+    public List<RevEntityMetadata> get_revMetadataList() {
+        return _revMetadataList;
     }
 
-    public void set_revEntityMetadataList(List<RevEntityMetadata> _revEntityMetadataList) {
-        this._revEntityMetadataList = _revEntityMetadataList;
+    public void set_revMetadataList(List<RevEntityMetadata> _revMetadataList) {
+        this._revMetadataList = _revMetadataList;
     }
 
     public List<RevAnnotation> get_revAnnotations() {
@@ -181,12 +181,12 @@ public class RevEntity {
         this._revAnnotations = _revAnnotations;
     }
 
-    public List<RevEntity> get_revEntityChildrenList() {
-        return _revEntityChildrenList;
+    public List<RevEntity> get_revChildrenList() {
+        return _revChildrenList;
     }
 
-    public void set_revEntityChildrenList(List<RevEntity> _revEntityChildrenList) {
-        this._revEntityChildrenList = _revEntityChildrenList;
+    public void set_revChildrenList(List<RevEntity> _revChildrenList) {
+        this._revChildrenList = _revChildrenList;
     }
 
     public RevEntity get_revPublisherEntity() {

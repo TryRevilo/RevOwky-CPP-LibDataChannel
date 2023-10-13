@@ -16,17 +16,17 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
     if (!db)
         return -1;
 
-    long revRemoteEntityGUID = revEntity->_revRemoteEntityGUID;
-    long revEntityResolveStatus = revEntity->_revEntityResolveStatus;
-    long revEntityChildableStatus = revEntity->_revEntityChildableStatus;
-    long revEntityOwnerGUID = revEntity->_revOwnerEntityGUID;
-    long revEntityContainerGUID = revEntity->_revContainerEntityGUID;
-    long revEntitySiteGUID = revEntity->_revEntitySiteGUID;
+    long revRemoteEntityGUID = revEntity->_revRemoteGUID;
+    long revEntityResolveStatus = revEntity->_revResolveStatus;
+    long revEntityChildableStatus = revEntity->_revChildableStatus;
+    long revEntityOwnerGUID = revEntity->_revOwnerGUID;
+    long revEntityContainerGUID = revEntity->_revContainerGUID;
+    long revEntitySiteGUID = revEntity->_revSiteGUID;
 
-    int revEntityAccessPermission = revEntity->_revEntityAccessPermission;
+    int revEntityAccessPermission = revEntity->_revAccessPermission;
 
-    char *revEntityType = revEntity->_revEntityType;
-    char *revEntitySubType = revEntity->_revEntitySubType;
+    char *revEntityType = revEntity->_revType;
+    char *revEntitySubType = revEntity->_revSubType;
 
     long _revTimeCreated = revCurrentTimestampMillSecs();
     long _revTimePublished = revEntity->_revTimePublished;
@@ -53,7 +53,7 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
             " values ("
             "@revRemoteEntityGUID, "
             "@revEntityResolveStatus, "
-            "@_revEntityChildableStatus, "
+            "@_revChildableStatus, "
             "@revEntityOwnerGUID, "
             "@revEntityContainerGUID, "
             "@revEntitySiteGUID, "
@@ -70,7 +70,7 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
         int revRemoteEntityGUID_idx = sqlite3_bind_parameter_index(stmt, "@revRemoteEntityGUID");
         sqlite3_bind_int64(stmt, revRemoteEntityGUID_idx, revRemoteEntityGUID);
 
-        int revEntityChildableStatus_idx = sqlite3_bind_parameter_index(stmt, "@_revEntityChildableStatus");
+        int revEntityChildableStatus_idx = sqlite3_bind_parameter_index(stmt, "@_revChildableStatus");
         sqlite3_bind_int64(stmt, revEntityChildableStatus_idx, revEntityChildableStatus);
 
         int revEntityResolveStatus_idx = sqlite3_bind_parameter_index(stmt, "@revEntityResolveStatus");

@@ -9,7 +9,7 @@
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 
-int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId) {
+int revPersSetRemoteMetadataId(long _revId, long _revRemoteId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -20,9 +20,9 @@ int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId)
                 "WHERE METADATA_ID = ?";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int(stmt, 1, _revRemoteMetadataId);
+    sqlite3_bind_int(stmt, 1, _revRemoteId);
     sqlite3_bind_int(stmt, 2, 0);
-    sqlite3_bind_int(stmt, 3, _revMetadataId);
+    sqlite3_bind_int(stmt, 3, _revId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -41,7 +41,7 @@ int setRemoteRevEntityMetadataId(long _revMetadataId, long _revRemoteMetadataId)
     return revReturnVal;
 }
 
-int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetadataId) {
+int revPersSetMetadataResStatus_BY_Metadata_Id(int revResolveStatus, long _revId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -53,7 +53,7 @@ int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetad
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
     sqlite3_bind_int(stmt, 1, revResolveStatus);
-    sqlite3_bind_int(stmt, 2, _revMetadataId);
+    sqlite3_bind_int(stmt, 2, _revId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -71,7 +71,7 @@ int setMetadataResolveStatus_BY_METADATA_ID(int revResolveStatus, long _revMetad
     return revReturnVal;
 }
 
-int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus) {
+int setMetadataResolveStatus_BY_revName_revGUID(char *revMetadataName, long revEntityGUID, int revResolveStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -103,7 +103,7 @@ int setMetadataResolveStatus_BY_revMetadataName_RevEntityGUID(char *revMetadataN
     return revReturnVal;
 }
 
-int setMetadataValue_BY_MetadataId(long _revMetadataId, char *revMetadataValue) {
+int revPersSetMetadataVal_BY_Id(long _revId, char *revMetadataValue) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -117,7 +117,7 @@ int setMetadataValue_BY_MetadataId(long _revMetadataId, char *revMetadataValue) 
 
     sqlite3_bind_text(stmt, 1, revMetadataValue, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, 101);
-    sqlite3_bind_int(stmt, 3, _revMetadataId);
+    sqlite3_bind_int(stmt, 3, _revId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));

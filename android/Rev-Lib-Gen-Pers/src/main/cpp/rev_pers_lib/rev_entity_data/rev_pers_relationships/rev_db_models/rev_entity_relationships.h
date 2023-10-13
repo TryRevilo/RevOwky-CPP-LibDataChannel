@@ -5,21 +5,22 @@
 #ifndef OWKI_REV_ENTITY_RELATIONSHIPS_H
 #define OWKI_REV_ENTITY_RELATIONSHIPS_H
 
-typedef struct RevEntityRelationship {
+typedef struct RevEntityRelationship
+{
 
     int _revResolveStatus;
-    int _revEntityRelationshipTypeValueId;
-    char *_revEntityRelationshipType;
-    long _revEntityRelationshipId;
-    long _revRemoteEntityRelationshipId;
+    int _revTypeValueId;
+    char *_revType;
+    long _revId;
+    long _revRemoteId;
 
-    long _revEntityGUID;
-    long _revRemoteEntityGUID;
+    long _revGUID;
+    long _revRemoteGUID;
 
-    long _revEntitySubjectGUID;
-    long _revRemoteEntitySubjectGUID;
-    long _revEntityTargetGUID;
-    long _revRemoteEntityTargetGUID;
+    long _revSubjectGUID;
+    long _revRemoteSubjectGUID;
+    long _revTargetGUID;
+    long _revRemoteTargetGUID;
 
     long _revTimeCreated;
     long _revTimePublished;
@@ -30,4 +31,4 @@ RevEntityRelationship *revInitializedEntityRelationship();
 
 RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSONStringEntityRelationship);
 
-#endif //OWKI_REV_ENTITY_RELATIONSHIPS_H
+#endif // OWKI_REV_ENTITY_RELATIONSHIPS_H

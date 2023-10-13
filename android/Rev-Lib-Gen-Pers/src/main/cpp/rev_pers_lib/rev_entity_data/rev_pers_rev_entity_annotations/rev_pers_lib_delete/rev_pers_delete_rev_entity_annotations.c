@@ -9,7 +9,7 @@
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../rev_db_init/rev_db_init.h"
 
-int revDeleteEntityAnnotation_By_AnnotationID(long revAnnotationID) {
+int revPersDeleteAnn_By_AnnId(long revAnnotationID) {
     int revRetVal = -1;
 
     sqlite3 *db = revDb();
@@ -23,12 +23,12 @@ int revDeleteEntityAnnotation_By_AnnotationID(long revAnnotationID) {
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "ERR revDeleteEntityAnnotation_By_AnnotationID %ld", revAnnotationID);
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "ERR revPersDeleteAnn_By_AnnId %ld", revAnnotationID);
     } else {
         // commit
         sqlite3_step(stmt);
 
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", "revDeleteEntityAnnotation_By_AnnotationID %ld", revAnnotationID);
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "revPersDeleteAnn_By_AnnId %ld", revAnnotationID);
 
         revRetVal = 1;
     }

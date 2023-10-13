@@ -58,13 +58,13 @@ const RevLibWebRTCCLientContextProvider = ({children}) => {
       !REV_PORT ||
       !REV_IP ||
       !REV_LOGGED_IN_ENTITY ||
-      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID < 1
+      REV_LOGGED_IN_ENTITY._revRemoteGUID < 1
     ) {
       return;
     }
 
     setRevLoggedInEntity({
-      _revRemoteEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteEntityGUID,
+      _revRemoteGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
     });
 
     SET_REV_WEB_SOCKET_SERVER(revSetupWebSocket());
@@ -145,7 +145,7 @@ const RevLibWebRTCCLientContextProvider = ({children}) => {
 
   // Login when the user clicks the button
   const revWebRTCLogIn = revEntity => {
-    if (revEntity._revRemoteEntityGUID > 0) {
+    if (revEntity._revRemoteGUID > 0) {
       revSendWebServerMessage({
         type: 'login',
         revEntity: revEntity,
@@ -163,12 +163,12 @@ const RevLibWebRTCCLientContextProvider = ({children}) => {
   };
 
   const revGetEntityRCTObject = (revTargetEntity, revProp) => {
-    if (!revTargetEntity || !revTargetEntity._revRemoteEntityGUID) {
-      console.log('ERR -> !revEntity || !revEntity._revRemoteEntityGUID');
+    if (!revTargetEntity || !revTargetEntity._revRemoteGUID) {
+      console.log('ERR -> !revEntity || !revEntity._revRemoteGUID');
       return;
     }
 
-    let remoteRevEntityGUID = revTargetEntity._revRemoteEntityGUID;
+    let remoteRevEntityGUID = revTargetEntity._revRemoteGUID;
 
     if (REV_PEER_CONNECTIONS.hasOwnProperty(remoteRevEntityGUID)) {
       let revRCTConnectionObject = REV_PEER_CONNECTIONS[remoteRevEntityGUID];
@@ -221,7 +221,7 @@ const RevLibWebRTCCLientContextProvider = ({children}) => {
       return;
     }
 
-    let remoteRevEntityGUID = revTargetEntity._revRemoteEntityGUID;
+    let remoteRevEntityGUID = revTargetEntity._revRemoteGUID;
 
     try {
       let revTargetConn = new RTCPeerConnection(peerConstraints);
@@ -393,10 +393,7 @@ const RevLibWebRTCCLientContextProvider = ({children}) => {
     revMessage,
     revMessageRecipientEntity,
   ) => {
-    if (
-      !revMessageRecipientEntity ||
-      !revMessageRecipientEntity._revRemoteEntityGUID
-    )
+    if (!revMessageRecipientEntity || !revMessageRecipientEntity._revRemoteGUID)
       return;
 
     await revInitConn(revMessageRecipientEntity);

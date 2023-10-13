@@ -36,8 +36,8 @@ public class RevPersLibDelete_React extends ReactContextBaseJavaModule {
 
     @NonNull
     @ReactMethod(isBlockingSynchronousMethod = false)
-    public void revDeleteEntity_And_Children_By_EntityGUID(@NonNull Integer revEntityGUID, final Promise promise) {
-        int revDelStatus = revPersLibDelete.revDeleteEntity_And_Children_By_EntityGUID((long) revEntityGUID);
+    public void revPersDeleteEntity_And_Children_By_EntityGUID(@NonNull Integer revEntityGUID, final Promise promise) {
+        int revDelStatus = revPersLibDelete.revPersDeleteEntity_And_Children_By_EntityGUID((long) revEntityGUID);
         promise.resolve(revDelStatus);
     }
 
@@ -49,9 +49,10 @@ public class RevPersLibDelete_React extends ReactContextBaseJavaModule {
      * START ANNOTATIONS
      **/
     @ReactMethod(isBlockingSynchronousMethod = true)
-    Integer revDeleteEntityAnnotation_By_AnnotationID(Integer revAnnotationID) {
-        return revPersLibDelete.revDeleteEntityAnnotation_By_AnnotationID((long) revAnnotationID);
+    Integer revPersDeleteAnn_By_AnnId(Integer revAnnotationID) {
+        return revPersLibDelete.revPersDeleteAnn_By_AnnId((long) revAnnotationID);
     }
+
     /**
      * END ANNOTATIONS
      **/

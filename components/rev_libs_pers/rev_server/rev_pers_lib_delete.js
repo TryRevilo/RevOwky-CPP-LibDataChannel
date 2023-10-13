@@ -25,7 +25,7 @@ export const useRev_Server_DeleteEntities_By_entityGUIDsArr = () => {
 
   const revSyncDeleteServerData = revCallBack => {
     let revDeleEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(-3);
+      RevPersLibRead_React.revPersGetEntityGUIDs_By_ResStatus(-3);
 
     let revDeleEntityGUIDsArr = [];
 
@@ -48,10 +48,9 @@ export const useRev_Server_DeleteEntities_By_entityGUIDsArr = () => {
 
       let revCurrEntityGUID = revDeleEntityGUIDsArr[i];
       let revCurrEntityStr =
-        RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
+        RevPersLibRead_React.revPersGetEntity_By_GUID(revCurrEntityGUID);
 
-      let revCurRemoteEntityGUID =
-        JSON.parse(revCurrEntityStr)._revRemoteEntityGUID;
+      let revCurRemoteEntityGUID = JSON.parse(revCurrEntityStr)._revRemoteGUID;
 
       if (revCurRemoteEntityGUID && revCurRemoteEntityGUID >= 0)
         revPostDelEntityGUIDsArr.push(revCurRemoteEntityGUID);

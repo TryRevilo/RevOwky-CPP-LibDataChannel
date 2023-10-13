@@ -46,12 +46,12 @@ export const RevChatMessageNotificationsListingWidget = () => {
   let revPastChatConversations = () => {
     let revPassVarArgs = {
       revDistinct: 1,
-      revSelect: ['_revEntityGUID', '_revOwnerEntityGUID'],
+      revSelect: ['_revGUID', '_revOwnerGUID'],
       revWhere: {
-        _revEntityType: 'rev_object',
-        _revEntitySubType: 'rev_message',
-        _revEntityResolveStatus: [0, -1, -101],
-        _revEntitySiteGUID: [5, 10],
+        _revType: 'rev_object',
+        _revSubType: 'rev_message',
+        _revResolveStatus: [0, -1, -101],
+        _revSiteGUID: [5, 10],
       },
       revLimit: 22,
     };
@@ -64,7 +64,7 @@ export const RevChatMessageNotificationsListingWidget = () => {
     for (let i = 0; i < revVarArgsEntitiesArr.length; i++) {
       let revCurrMsg = revVarArgsEntitiesArr[i];
 
-      let revMsgEntityOwnerGUID = revCurrMsg._revPublisherEntity._revEntityGUID;
+      let revMsgEntityOwnerGUID = revCurrMsg._revPublisherEntity._revGUID;
 
       if (revArrIncludesElement(revAddedMsgsGUIDsArr, revMsgEntityOwnerGUID)) {
         continue;
@@ -91,9 +91,7 @@ export const RevChatMessageNotificationsListingWidget = () => {
         data={revPastChatMessagesData}
         renderItem={renderItem}
         keyExtractor={item => {
-          return (
-            'RevDisplay_' + revGetRandInteger() + '_' + item._revEntityGUID
-          );
+          return 'RevDisplay_' + revGetRandInteger() + '_' + item._revGUID;
         }}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

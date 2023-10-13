@@ -22,33 +22,34 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
     RevPersLibUpdate revPersLibUpdate = new RevPersLibUpdate();
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer resetRevEntityOwnerGUID(Integer revEntityGUID, Integer revEntityOwnerGUID) {
-        return revPersLibUpdate.resetRevEntityOwnerGUID(revEntityGUID, revEntityOwnerGUID);
+    public Integer revPersResetEntityOwnerGUID(Integer revEntityGUID, Integer revEntityOwnerGUID) {
+        return revPersLibUpdate.revPersResetEntityOwnerGUID(revEntityGUID, revEntityOwnerGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setrevRemoteEntityGUIDByRevEntityGUID(Integer revEntityGUID, Integer revRemoteEntityGUID) {
-        return revPersLibUpdate.setrevRemoteEntityGUIDByRevEntityGUID((int) revEntityGUID, (int) revRemoteEntityGUID);
+    public int revPersSetRemoteEntityGUID_By_LocalEntityGUID(Integer revEntityGUID, Integer revRemoteEntityGUID) {
+        return revPersLibUpdate.revPersSetRemoteEntityGUID_By_LocalEntityGUID((int) revEntityGUID,
+                (int) revRemoteEntityGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRevEntityResolveStatusByRevEntityGUID(Integer revResolveStatus, Integer revEntityGUID) {
-        return revPersLibUpdate.setRevEntityResolveStatusByRevEntityGUID((int) revResolveStatus, (int) revEntityGUID);
+    public int revPersSetEntityResStatus_By_EntityGUID(Integer revResolveStatus, Integer revEntityGUID) {
+        return revPersLibUpdate.revPersSetEntityResStatus_By_EntityGUID((int) revResolveStatus, (int) revEntityGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRevPublishedDate_By_RevEntityGUID(Integer revEntityGUID, Integer revPublishedDate) {
-        return revPersLibUpdate.setRevPublishedDate_By_RevEntityGUID((int) revEntityGUID, (int) revPublishedDate);
+    public int revPersSetPubDate_By_GUID(Integer revEntityGUID, Integer revPublishedDate) {
+        return revPersLibUpdate.revPersSetPubDate_By_GUID((int) revEntityGUID, (int) revPublishedDate);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int revPersUpdateSetRemoteSubjectGUID(Integer localSubjectGUID, Integer remoteSubjectGUID) {
-        return revPersLibUpdate.revPersUpdateSetRemoteSubjectGUID((int) localSubjectGUID, (int) remoteSubjectGUID);
+    public int revPersSetRemoteSubjectGUID(Integer localSubjectGUID, Integer remoteSubjectGUID) {
+        return revPersLibUpdate.revPersSetRemoteSubjectGUID((int) localSubjectGUID, (int) remoteSubjectGUID);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int revPersUpdateSetRemoteTargetGUID(Integer localTargetGUID, Integer remoteTargetGUID) {
-        return revPersLibUpdate.revPersUpdateSetRemoteTargetGUID((int) localTargetGUID, (int) remoteTargetGUID);
+    public int revPersSetRemoteTargetGUID(Integer localTargetGUID, Integer remoteTargetGUID) {
+        return revPersLibUpdate.revPersSetRemoteTargetGUID((int) localTargetGUID, (int) remoteTargetGUID);
     }
 
     /**
@@ -56,13 +57,16 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int revPersSetRemoteRelationshipRemoteId(Integer revEntityRelationshipId, Integer revEntityRemoteRelationshipId) {
-        return revPersLibUpdate.revPersSetRemoteRelationshipRemoteId((int) revEntityRelationshipId, (int) revEntityRemoteRelationshipId);
+    public int revPersSetRemoteRelId(Integer revEntityRelationshipId,
+            Integer revEntityRemoteRelationshipId) {
+        return revPersLibUpdate.revPersSetRemoteRelId((int) revEntityRelationshipId,
+                (int) revEntityRemoteRelationshipId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public int revPersUpdateRelResStatus_By_RelId(Integer revEntityRelationshipId, Integer revResolveStatus) {
-        return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId, (int) revResolveStatus);
+        return revPersLibUpdate.revPersUpdateRelResStatus_By_RelId((int) revEntityRelationshipId,
+                (int) revResolveStatus);
     }
 
     /**
@@ -74,18 +78,18 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setRemoteRevEntityMetadataId(Integer _revMetadataId, Integer _revRemoteMetadataId) {
-        return revPersLibUpdate.setRemoteRevEntityMetadataId((long) _revMetadataId, (long) _revRemoteMetadataId);
+    public int revPersSetRemoteMetadataId(Integer _revId, Integer _revRemoteId) {
+        return revPersLibUpdate.revPersSetRemoteMetadataId((long) _revId, (long) _revRemoteId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setMetadataResolveStatus_BY_METADATA_ID(Integer revResolveStatus, Integer _revMetadataId) {
-        return revPersLibUpdate.setMetadataResolveStatus_BY_METADATA_ID((int) revResolveStatus, (long) _revMetadataId);
+    public int revPersSetMetadataResStatus_BY_Metadata_Id(Integer revResolveStatus, Integer _revId) {
+        return revPersLibUpdate.revPersSetMetadataResStatus_BY_Metadata_Id((int) revResolveStatus, (long) _revId);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public int setMetadataValue_BY_MetadataId(Integer _revMetadataId, String revMetadataValue) {
-        return revPersLibUpdate.setMetadataValue_BY_MetadataId((long) _revMetadataId, revMetadataValue);
+    public int revPersSetMetadataVal_BY_Id(Integer _revId, String revMetadataValue) {
+        return revPersLibUpdate.revPersSetMetadataVal_BY_Id((long) _revId, revMetadataValue);
     }
 
     /**
@@ -97,13 +101,13 @@ public class RevPersLibUpdate_React extends ReactContextBaseJavaModule {
      **/
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer revPersSetRevAnnVal_By_RevAnnId(Integer revAnnotationId, String revEntityAnnotationValue) {
-        return revPersLibUpdate.revPersSetRevAnnVal_By_RevAnnId((long) revAnnotationId, revEntityAnnotationValue);
+    public Integer revPersSetAnnVal_By_Id(Integer revAnnotationId, String revEntityAnnotationValue) {
+        return revPersLibUpdate.revPersSetAnnVal_By_Id((long) revAnnotationId, revEntityAnnotationValue);
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer revPersSetRevAnnResStatus_By_RevAnnId(Integer revAnnotationId, Integer revAnnotationResStatus) {
-        return revPersLibUpdate.revPersSetRevAnnResStatus_By_RevAnnId((long) revAnnotationId, revAnnotationResStatus);
+    public Integer revPersSetAnnResStatus_By_Id(Integer revAnnotationId, Integer revAnnotationResStatus) {
+        return revPersLibUpdate.revPersSetAnnResStatus_By_Id((long) revAnnotationId, revAnnotationResStatus);
     }
 
     /**

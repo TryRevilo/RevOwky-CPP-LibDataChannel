@@ -32,20 +32,20 @@ export const useRevHandleSendMsgAction = () => {
     revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
 
     let revRetEntity = revVarArgs; // await revSaveNewEntity(revVarArgs);
-    let revPersEntityGUID = revRetEntity._revEntityGUID;
+    let revPersEntityGUID = revRetEntity._revGUID;
 
     revVarArgs['revEntity'] = revRetEntity;
 
     /** START SET OWNER AS SENDER */
     if (revPersEntityGUID > 0) {
       let revMsgSenderOfRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-      revMsgSenderOfRel._revEntityRelationshipType = 'rev_stranger_chat_of';
+      revMsgSenderOfRel._revType = 'rev_stranger_chat_of';
 
-      revMsgSenderOfRel._revEntityGUID = revPersEntityGUID;
-      revMsgSenderOfRel._revRemoteEntityGUID = -1;
+      revMsgSenderOfRel._revGUID = revPersEntityGUID;
+      revMsgSenderOfRel._revRemoteGUID = -1;
 
-      revMsgSenderOfRel._revEntityTargetGUID = revEntityOwnerGUID;
-      revMsgSenderOfRel._revEntitySubjectGUID = revTargetEntityGUID;
+      revMsgSenderOfRel._revTargetGUID = revEntityOwnerGUID;
+      revMsgSenderOfRel._revSubjectGUID = revTargetEntityGUID;
 
       //   let revMsgRelId = RevPersLibCreate_React.revPersRelationshipJSON(
       //     JSON.stringify(revMsgSenderOfRel),

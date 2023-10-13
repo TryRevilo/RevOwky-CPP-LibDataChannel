@@ -27,7 +27,7 @@ public class RevPersLibCreate {
 
     public native long revPersRevEntityAnnotation(RevAnnotation revAnnotation);
 
-    public native long revPersRevEntityAnnotationWithValues(String _revAnnotationName, String _revAnnotationValue, long _revEntityGUID, long _ownerEntityGUID);
+    public native long revPersAnn_With_Values(String _revName, String _revValue, long _revGUID, long _ownerEntityGUID);
 
     public native List<RevEntityMetadata> revSaveRevEntityMetadataList(List<RevEntityMetadata> revEntityMetadataList);
 

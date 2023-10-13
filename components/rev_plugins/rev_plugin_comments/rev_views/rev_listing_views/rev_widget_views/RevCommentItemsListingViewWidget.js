@@ -24,7 +24,7 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
   let revCommentsArr = [];
 
   let revCommentGUIDsArrStr =
-    RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+    RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
       'rev_comment',
       revEntityGUID,
     );
@@ -35,11 +35,11 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
     let revCurrCommentGUID = revCommentGUIDsArr[i];
 
     let revCurrCommentStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrCommentGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revCurrCommentGUID);
     let revCurrComment = JSON.parse(revCurrCommentStr);
 
     let revCommentPublisher = revPersGetRevEnty_By_EntityGUID(
-      revCurrComment._revEntityOwnerGUID,
+      revCurrComment._revOwnerGUID,
     );
     revCurrComment['_revPublisherEntity'] = revCommentPublisher;
 

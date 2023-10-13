@@ -8,11 +8,11 @@ public class RevPersLibDelete {
         System.loadLibrary("rev-pers-lib-db-delete");
     }
 
-    public native int revDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID);
+    public native int revPersDeleteEntity_And_Children_By_EntityGUID(long revEntityGUID);
 
     public native int revDeleteEntity_By_EntityGUID(long revEntityGUID);
 
-    public native int revDeleteEntityAnnotation_By_AnnotationID(long revAnnotationID);
+    public native int revPersDeleteAnn_By_AnnId(long revAnnotationID);
 
     // FILES
     public native void revAsyDeleteFilesFromPathsStrArr(String revJsonFilePathsArrStr, IRevLibCallBack iRevLibCallBack);

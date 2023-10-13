@@ -8,24 +8,24 @@
 #include <android/log.h>
 #include <string.h>
 
-RevEntityAnnotation *revInitializedAnnotation() {
-    RevEntityAnnotation *revEntityAnnotation = (RevEntityAnnotation *) malloc(sizeof(RevEntityAnnotation));
+RevEntityAnnotation *revInitializedAnnotation()
+{
+    RevEntityAnnotation *revEntityAnnotation = (RevEntityAnnotation *)malloc(sizeof(RevEntityAnnotation));
 
+    revEntityAnnotation->_revResolveStatus = -1;
 
-    revEntityAnnotation->_revAnnotationResStatus = -1;
+    revEntityAnnotation->_revName = "";
 
-    revEntityAnnotation->_revAnnotationName = "";
+    revEntityAnnotation->_revValue = "";
 
-    revEntityAnnotation->_revAnnotationValue = "";
+    revEntityAnnotation->_revId = -1;
+    revEntityAnnotation->_revRemoteId = -1;
 
-    revEntityAnnotation->_revAnnotationId = -1;
-    revEntityAnnotation->_revAnnotationRemoteId = -1;
+    revEntityAnnotation->_revGUID = -1;
+    revEntityAnnotation->_revRemoteGUID = -1;
 
-    revEntityAnnotation->_revAnnotationEntityGUID = -1;
-    revEntityAnnotation->_revAnnotationRemoteEntityGUID = -1;
-
-    revEntityAnnotation->_revAnnOwnerEntityGUID = -1;
-    revEntityAnnotation->_revAnnRemoteOwnerEntityGUID = -1;
+    revEntityAnnotation->_revOwnerGUID = -1;
+    revEntityAnnotation->_revRemoteOwnerGUID = -1;
 
     revEntityAnnotation->_revTimeCreated = -1;
     revEntityAnnotation->_revTimePublished = -1;

@@ -47,7 +47,7 @@ export function useRevWebSocket() {
   let revURL = 'ws://' + REV_IP + ':' + REV_PORT;
 
   useEffect(() => {
-    if (REV_LOGGED_IN_ENTITY && REV_LOGGED_IN_ENTITY._revRemoteEntityGUID > 0) {
+    if (REV_LOGGED_IN_ENTITY && REV_LOGGED_IN_ENTITY._revRemoteGUID > 0) {
       SET_REV_WEB_SOCKET_SERVER(revConnectWebSocket(revURL));
     }
   }, [REV_LOGGED_IN_ENTITY]);
@@ -108,7 +108,7 @@ export function useRevWebSocket() {
   };
 
   const revCreateNewPeerConnection = async (revPeerEntity, revIsInitiator) => {
-    let revPeerRemoteEntityGUID = revPeerEntity._revRemoteEntityGUID;
+    let revPeerRemoteEntityGUID = revPeerEntity._revRemoteGUID;
 
     console.log(
       deviceModel,
@@ -236,7 +236,7 @@ export function useRevWebSocket() {
   };
 
   const revCreateDataChannel = (revEntity, peerConnection) => {
-    let revPeerRemoteEntityGUID = revEntity._revRemoteEntityGUID;
+    let revPeerRemoteEntityGUID = revEntity._revRemoteGUID;
 
     const dc = peerConnection.createDataChannel('myDataChannel');
     // listen for the datachannel state changes
@@ -318,12 +318,12 @@ export function useRevWebSocket() {
 
     if (
       revIsEmptyJSONObject(revPeerEntity) ||
-      !revPeerEntity.hasOwnProperty('_revRemoteEntityGUID')
+      !revPeerEntity.hasOwnProperty('_revRemoteGUID')
     ) {
       return;
     }
 
-    let revPeerEntityEntityGUID = revPeerEntity._revRemoteEntityGUID;
+    let revPeerEntityEntityGUID = revPeerEntity._revRemoteGUID;
 
     let revPeerConn = await revCreateNewPeerConnection(revPeerEntity, false);
 
@@ -375,7 +375,7 @@ export function useRevWebSocket() {
 
   const revHandleWebServerAnswer = async revData => {
     let revPeerEntity = revData.revEntity;
-    let revPeerEntityEntityGUID = revPeerEntity._revRemoteEntityGUID;
+    let revPeerEntityEntityGUID = revPeerEntity._revRemoteGUID;
     let revSDPAnswer = revData.answer;
 
     let revPeerConn = await revCreateNewPeerConnection(revPeerEntity, false);
@@ -424,12 +424,12 @@ export function useRevWebSocket() {
 
     if (
       revIsEmptyJSONObject(revPeerEntity) ||
-      !('_revRemoteEntityGUID' in revPeerEntity)
+      !('_revRemoteGUID' in revPeerEntity)
     ) {
       return;
     }
 
-    let revPeerEntityEntityGUID = revPeerEntity._revRemoteEntityGUID;
+    let revPeerEntityEntityGUID = revPeerEntity._revRemoteGUID;
 
     let revPeerConn = await revCreateNewPeerConnection(revPeerEntity, false);
 
@@ -471,7 +471,7 @@ export function useRevWebSocket() {
   };
 
   const revGetDataChannel = async revPeerEntity => {
-    let revDataChannelId = revPeerEntity._revRemoteEntityGUID;
+    let revDataChannelId = revPeerEntity._revRemoteGUID;
 
     let revPeer = REV_PEER_CONNECTIONS[revDataChannelId];
 

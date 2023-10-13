@@ -42,10 +42,10 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
   ) {
     revVarArgs = revVarArgs.revVarArgs;
 
-    revEntityGUID = revVarArgs._revEntityGUID;
+    revEntityGUID = revVarArgs._revGUID;
 
     let revInfoEntityGUIDArrStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
         revEntityGUID,
       );
@@ -62,12 +62,12 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
     let revInfoEntityGUID = revInfoEntityGUIDArr[0];
 
     let revInfoEntityStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
 
     let revInfoEntity = JSON.parse(revInfoEntityStr);
 
     revKiwiTxtVal = revGetMetadataValue(
-      revInfoEntity._revEntityMetadataList,
+      revInfoEntity._revMetadataList,
       'revPostText',
     );
 
@@ -88,7 +88,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
 
   const revHandleCreateSitePostTab = () => {
     let revVaArgs = {
-      _revEntityGUID: revEntityGUID,
+      _revGUID: revEntityGUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revSitePostText,
       revSelectedMedia,

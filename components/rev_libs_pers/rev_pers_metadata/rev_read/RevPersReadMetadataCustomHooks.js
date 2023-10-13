@@ -10,22 +10,21 @@ const {
 import {revIsEmptyJSONObject} from '../../../../rev_function_libs/rev_gen_helper_functions';
 import {revStringEmpty} from '../../../../rev_function_libs/rev_string_function_libs';
 
-export const useRevGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID =
-  () => {
-    const revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID = (
-      revMetadataName,
-      revEntityGUID,
-    ) => {
-      let revMetadataStr =
-        RevPersLibRead_React.revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID(
-          revMetadataName,
-          revEntityGUID,
-        );
-      return JSON.parse(revMetadataStr);
-    };
-
-    return {revGetRevEntityMetadata_By_RevMetadataName_RevEntityGUID};
+export const userevPersGetMetadata_By_Name_EntityGUID = () => {
+  const revPersGetMetadata_By_Name_EntityGUID = (
+    revMetadataName,
+    revEntityGUID,
+  ) => {
+    let revMetadataStr =
+      RevPersLibRead_React.revPersGetMetadata_By_Name_EntityGUID(
+        revMetadataName,
+        revEntityGUID,
+      );
+    return JSON.parse(revMetadataStr);
   };
+
+  return {revPersGetMetadata_By_Name_EntityGUID};
+};
 
 export const useRevGetRevEntityMetadata_By_MetadataName_MetadataValue = () => {
   const revGetRevEntityMetadata_By_MetadataName_MetadataValue = (
@@ -41,7 +40,7 @@ export const useRevGetRevEntityMetadata_By_MetadataName_MetadataValue = () => {
     if (!revStringEmpty(revRetMetadataStr) && revRetMetadataStr !== 'null') {
       let revRetMetadata = JSON.parse(revRetMetadataStr);
 
-      revRetMetadata['_revMetadataEntityGUID'] = revRetMetadata._revEntityGUID;
+      revRetMetadata['_revGUID'] = revRetMetadata._revGUID;
 
       return revRetMetadata;
     }

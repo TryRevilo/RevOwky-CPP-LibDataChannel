@@ -10,7 +10,7 @@
 #include "../../../rev_db_init/rev_db_init.h"
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 
-int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, char *revEntityAnnotationValue) {
+int revPersSetAnnVal_By_Id(long revAnnotationId, char *revEntityAnnotationValue) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -26,8 +26,8 @@ int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, char *revEntityAnnotat
     sqlite3_bind_int64(stmt, 2, revAnnotationId);
 
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "SQL error: revPersSetRevAnnVal_By_RevAnnId %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRevAnnResStatus_By_RevAnnId %s", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: revPersSetAnnVal_By_Id %s\n", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetAnnResStatus_By_Id %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;
@@ -42,7 +42,7 @@ int revPersSetRevAnnVal_By_RevAnnId(long revAnnotationId, char *revEntityAnnotat
     return revReturnVal;
 }
 
-int revPersSetRevAnnResStatus_By_RevAnnId(long revAnnotationId, int revAnnotationResStatus) {
+int revPersSetAnnResStatus_By_Id(long revAnnotationId, int revAnnotationResStatus) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -59,7 +59,7 @@ int revPersSetRevAnnResStatus_By_RevAnnId(long revAnnotationId, int revAnnotatio
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRevAnnResStatus_By_RevAnnId %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetAnnResStatus_By_Id %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;

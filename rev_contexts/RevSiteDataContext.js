@@ -40,7 +40,7 @@ const RevSiteDataContextProvider = ({children}) => {
       let revSiteEntityGUID = -1;
       let revSiteEntityOwnerGUID = -1;
 
-      let revLoggedInEntityStr = RevPersLibRead_React.revPersGetRevEntityByGUID(
+      let revLoggedInEntityStr = RevPersLibRead_React.revPersGetEntity_By_GUID(
         REV_LOGGED_IN_ENTITY_GUID,
       );
 
@@ -58,15 +58,15 @@ const RevSiteDataContextProvider = ({children}) => {
 
       if (
         !revIsEmptyJSONObject(revSiteEntity) &&
-        revSiteEntity.hasOwnProperty('_revEntityGUID')
+        revSiteEntity.hasOwnProperty('_revGUID')
       ) {
-        revSiteEntityGUID = revSiteEntity._revEntityGUID;
-        revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
+        revSiteEntityGUID = revSiteEntity._revGUID;
+        revSiteEntityOwnerGUID = revSiteEntity._revOwnerGUID;
       } else {
         revSiteEntityGUID = revCreateSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
         let revSiteEntity = revGetSiteEntity(REV_LOGGED_IN_ENTITY_GUID);
 
-        revSiteEntityOwnerGUID = revSiteEntity._revEntityOwnerGUID;
+        revSiteEntityOwnerGUID = revSiteEntity._revOwnerGUID;
       }
 
       if (
@@ -74,7 +74,7 @@ const RevSiteDataContextProvider = ({children}) => {
         revSiteEntityOwnerGUID === REV_LOGGED_IN_ENTITY_GUID
       ) {
         let revEntityResolveStatusByRevEntityGUID =
-          RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+          RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
             2,
             revSiteEntityGUID,
           );

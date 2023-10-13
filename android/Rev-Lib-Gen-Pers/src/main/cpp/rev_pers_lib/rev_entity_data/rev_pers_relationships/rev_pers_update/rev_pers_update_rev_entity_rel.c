@@ -118,7 +118,7 @@ int revPersUpdateRelResStatus_By_RemoteRelId(long revEntityRelationshipId, int r
     return revReturnVal;
 }
 
-int revPersUpdateSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID) {
+int revPersSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -135,7 +135,7 @@ int revPersUpdateSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectG
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;
@@ -150,7 +150,7 @@ int revPersUpdateSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectG
     return revReturnVal;
 }
 
-int revPersUpdateSetRemoteSubjectGUID_By_RelId(long revRelId, long revRemoteSubjectGUID) {
+int revPersSetRemoteSubjectGUID_By_RelId(long revRelId, long revRemoteSubjectGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -167,7 +167,7 @@ int revPersUpdateSetRemoteSubjectGUID_By_RelId(long revRelId, long revRemoteSubj
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;
@@ -199,7 +199,7 @@ int revPersUpdateSetRemoteTarget_By_RelId(long revRelId, long revRemoteTargetGUI
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteSubjectGUID %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;
@@ -214,7 +214,7 @@ int revPersUpdateSetRemoteTarget_By_RelId(long revRelId, long revRemoteTargetGUI
     return revReturnVal;
 }
 
-int revPersUpdateSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID) {
+int revPersSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -231,7 +231,7 @@ int revPersUpdateSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersUpdateSetRemoteTargetGUID %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteTargetGUID %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;
@@ -246,7 +246,7 @@ int revPersUpdateSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID
     return revReturnVal;
 }
 
-int revPersSetRemoteRelationshipRemoteId(long revEntityRelationshipId, long revEntityRemoteRelationshipId) {
+int revPersSetRemoteRelId(long revEntityRelationshipId, long revEntityRemoteRelationshipId) {
     int revReturnVal = -1;
 
     sqlite3 *db = revDb();
@@ -263,7 +263,7 @@ int revPersSetRemoteRelationshipRemoteId(long revEntityRelationshipId, long revE
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteRelationshipRemoteId %s", sqlite3_errmsg(db));
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error here revPersSetRemoteRelId %s", sqlite3_errmsg(db));
     } else {
         if (SQLITE_DONE != sqlite3_step(stmt)) {
             revReturnVal = -1;

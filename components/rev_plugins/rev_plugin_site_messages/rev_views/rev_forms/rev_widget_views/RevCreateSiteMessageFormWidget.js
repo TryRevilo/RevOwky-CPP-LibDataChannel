@@ -44,14 +44,14 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
   }
 
   let revContainerEntity = revVarArgs.revEntity;
-  let revContainerRemoteEntityGUID = revContainerEntity._revRemoteEntityGUID;
+  let revContainerRemoteEntityGUID = revContainerEntity._revRemoteGUID;
 
   if (revContainerRemoteEntityGUID < 1) {
     return null;
   }
 
   let revContainerLocalEntityGUID =
-    RevPersLibRead_React.revGetLocalEntityGUID_BY_RemoteEntityGUID(
+    RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
       revContainerRemoteEntityGUID,
     );
 
@@ -71,7 +71,7 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     revIsCommentUpdate
   ) {
     let revInfoEntityGUIDArrStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
         revContainerLocalEntityGUID,
       );
@@ -88,12 +88,12 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     let revInfoEntityGUID = revInfoEntityGUIDArr[0];
 
     let revInfoEntityStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
 
     let revInfoEntity = JSON.parse(revInfoEntityStr);
 
     revEntityDescInputTextVal = revGetMetadataValue(
-      revInfoEntity._revEntityMetadataList,
+      revInfoEntity._revMetadataList,
       'rev_entity_desc_val',
     );
   }

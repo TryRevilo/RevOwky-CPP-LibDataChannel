@@ -58,12 +58,12 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
 
   let revPublisherEntity = revVarArgs._revPublisherEntity;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_full_names',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -79,7 +79,7 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
   let revMaxMessageLen = 200;
 
   let chatMsg = revGetMetadataValue(
-    revInfoEntity._revEntityMetadataList,
+    revInfoEntity._revMetadataList,
     'revPostText',
   );
 
@@ -189,13 +189,13 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
   const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
 
-    let revPicsArr = revPicsAlbum._revEntityChildrenList;
+    let revPicsArr = revPicsAlbum._revChildrenList;
 
     for (let i = 0; i < revPicsArr.length; i++) {
       let revPic = revPicsArr[i];
 
       let revEntityImageURI = revGetMetadataValue(
-        revPic._revEntityMetadataList,
+        revPic._revMetadataList,
         'rev_remote_file_name',
       );
 
@@ -257,9 +257,9 @@ export const RevKiwiObjectWidgetView = ({revVarArgs}) => {
 
   let revImagesMediaView = null;
 
-  if (revVarArgs.hasOwnProperty('_revEntityChildrenList')) {
+  if (revVarArgs.hasOwnProperty('_revChildrenList')) {
     let revPicsAlbumArr = revGetEntityChildren_By_Subtype(
-      revVarArgs._revEntityChildrenList,
+      revVarArgs._revChildrenList,
       'rev_pics_album',
     );
 

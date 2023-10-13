@@ -9,7 +9,7 @@
 #include "../../../../../../../libs/sqlite3/include/sqlite3.h"
 #include "../../../rev_db_init/rev_db_init.h"
 
-int revDeleteEntityMetadata_By_ID(long _revMetadataId) {
+int revDeleteEntityMetadata_By_ID(long _revId) {
     int revRetVal = -1;
 
     sqlite3 *db = revDb();
@@ -19,16 +19,16 @@ int revDeleteEntityMetadata_By_ID(long _revMetadataId) {
     char *sql = "DELETE from REV_ENTITY_METADATA_TABLE WHERE METADATA_ID = ?;";
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
-    sqlite3_bind_int64(stmt, 1, _revMetadataId);
+    sqlite3_bind_int64(stmt, 1, _revId);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "ERR revDeleteEntityMetadata_By_ID %d", _revMetadataId);
+        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "ERR revDeleteEntityMetadata_By_ID %d", _revId);
     } else {
         // commit
         sqlite3_step(stmt);
 
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", "revDeleteEntityMetadata_By_ID %d", _revMetadataId);
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", "revDeleteEntityMetadata_By_ID %d", _revId);
 
         revRetVal = 1;
     }

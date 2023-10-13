@@ -18,27 +18,27 @@ export function useRevPersGetRevEnty_By_EntityGUID() {
     }
 
     let revEntityStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revEntityGUID);
     return JSON.parse(revEntityStr);
   };
 
   return {revPersGetRevEnty_By_EntityGUID};
 }
 
-export function useRevPersGet_ALL_RevEntity_By_SiteGUID_SubType() {
-  const revPersGet_ALL_RevEntity_By_SiteGUID_SubType = (
+export function userevPersGetEntities_By_SiteGUID_SubType() {
+  const revPersGetEntities_By_SiteGUID_SubType = (
     revSiteEntityGUID,
     revEntitySubType,
   ) => {
     let revEntitiesStr =
-      RevPersLibRead_React.revPersGet_ALL_RevEntity_By_SiteGUID_SubType(
+      RevPersLibRead_React.revPersGetEntities_By_SiteGUID_SubType(
         revSiteEntityGUID,
         revEntitySubType,
       );
     return JSON.parse(revEntitiesStr);
   };
 
-  return {revPersGet_ALL_RevEntity_By_SiteGUID_SubType};
+  return {revPersGetEntities_By_SiteGUID_SubType};
 }
 
 export function useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE() {
@@ -69,12 +69,12 @@ export const revPersGetRevEntities_By_EntityGUIDsArr = revEntityGUIDsArr => {
     let revCurrEntityGUID = revEntityGUIDsArr[i];
 
     let revCurrEntityStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revCurrEntityGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revCurrEntityGUID);
 
     let revCurrEntity = JSON.parse(revCurrEntityStr);
 
     let revCurrInfoEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
         revCurrEntityGUID,
       );
@@ -98,9 +98,9 @@ export const revPersGetRevEntities_By_EntityGUIDsArr = revEntityGUIDsArr => {
   return revEntities;
 };
 
-export function revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus) {
+export function revPersGetEntityGUIDs_By_ResStatus(revResStatus) {
   let revUnresolvedEntityGUIDsStr =
-    RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus);
+    RevPersLibRead_React.revPersGetEntityGUIDs_By_ResStatus(revResStatus);
 
   let revUnresolvedEntityGUIDs;
 
@@ -123,7 +123,7 @@ export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
     revEntitySubType,
   ) => {
     let revUnresolvedEntityGUIDsStr =
-      RevPersLibRead_React.revPersGetALLRevEntityGUIDs_By_revResolveStatus_SubType(
+      RevPersLibRead_React.revPersGetEntityGUIDs_By_ResolveStatus_SubType(
         revResStatus,
         revEntitySubType,
       );
@@ -148,7 +148,7 @@ export function useRevGetEntityInfo(revEntityGUID) {
   }
 
   let revInfoEntityStr =
-    RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
+    RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
 
   if (revIsEmptyVar(revInfoEntityStr)) {
     return {};
@@ -157,16 +157,18 @@ export function useRevGetEntityInfo(revEntityGUID) {
   return JSON.parse(revInfoEntityStr);
 }
 
-export const revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID =
-  (revEntityRelationship, revEntityTargetGUID) => {
-    let revEntityGUIDsString =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsTargetGUIDs_BY_RelStr_SubjectGUID(
-        revEntityRelationship,
-        revEntityTargetGUID,
-      );
+export const revPersGetTargetGUIDs_BY_RelStr_SubjectGUID = (
+  revEntityRelationship,
+  revEntityTargetGUID,
+) => {
+  let revEntityGUIDsString =
+    RevPersLibRead_React.revPersGetTargetGUIDs_BY_RelStr_SubjectGUID(
+      revEntityRelationship,
+      revEntityTargetGUID,
+    );
 
-    return JSON.parse(revEntityGUIDsString);
-  };
+  return JSON.parse(revEntityGUIDsString);
+};
 
 export const revPersGetSubjectGUID_BY_RelStr_TargetGUID = (
   revEntityRelationship,
@@ -181,24 +183,25 @@ export const revPersGetSubjectGUID_BY_RelStr_TargetGUID = (
   return JSON.parse(revEntityGUIDsString);
 };
 
-export const revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID =
-  (revEntityRelationship, revEntityTargetGUID) => {
-    let revEntityGUIDsString =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        revEntityRelationship,
-        revEntityTargetGUID,
-      );
+export const revPersGetSubjectGUIDs_BY_RelStr_TargetGUID = (
+  revEntityRelationship,
+  revEntityTargetGUID,
+) => {
+  let revEntityGUIDsString =
+    RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
+      revEntityRelationship,
+      revEntityTargetGUID,
+    );
 
-    return JSON.parse(revEntityGUIDsString);
-  };
+  return JSON.parse(revEntityGUIDsString);
+};
 
 export const useRevGetEntityPictureAlbumPics = () => {
   const revGetEntityPictureAlbumPics = revEntityGUID => {
-    let revPicAlbumPicsGUIDsArr =
-      revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_picture_of',
-        revEntityGUID,
-      );
+    let revPicAlbumPicsGUIDsArr = revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_picture_of',
+      revEntityGUID,
+    );
 
     if (revPicAlbumPicsGUIDsArr.length < 1) {
       return [];
@@ -222,11 +225,10 @@ export const useRevGetEntityPictureAlbums = () => {
       return [];
     }
 
-    let revPicAlbumGUIDsArr =
-      revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_pics_album_of',
-        revEntityGUID,
-      );
+    let revPicAlbumGUIDsArr = revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
+      'rev_pics_album_of',
+      revEntityGUID,
+    );
 
     if (revPicAlbumGUIDsArr.length < 1) {
       return [];
@@ -236,7 +238,7 @@ export const useRevGetEntityPictureAlbums = () => {
       revPersGetRevEntities_By_EntityGUIDsArr(revPicAlbumGUIDsArr);
 
     for (let i = 0; i < revPicAlbumEntitiesArr.length; i++) {
-      let revPicAlbumGUID = revPicAlbumEntitiesArr[i]._revEntityGUID;
+      let revPicAlbumGUID = revPicAlbumEntitiesArr[i]._revGUID;
       let revPicAlbumEntityPicsArr =
         revGetEntityPictureAlbumPics(revPicAlbumGUID);
 
@@ -251,7 +253,7 @@ export const useRevGetEntityPictureAlbums = () => {
 
 export function revPersGetFilledRevEntity_By_GUID(revEntityGUID) {
   let revEntityStr =
-    RevPersLibRead_React.revPersGetRevEntityByGUID(revEntityGUID);
+    RevPersLibRead_React.revPersGetEntity_By_GUID(revEntityGUID);
 
   let revEntity = JSON.parse(revEntityStr);
   revEntity['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
@@ -261,13 +263,13 @@ export function revPersGetFilledRevEntity_By_GUID(revEntityGUID) {
 
 export function useRevPersGetALLFilledRevEntity_By_SubType(revEntitySubType) {
   let revEntitiesStr =
-    RevPersLibRead_React.revPersGetALLRevEntity_By_SubType(revEntitySubType);
+    RevPersLibRead_React.revPersGetEntities_By_SubType(revEntitySubType);
 
   let revEntitiesArr = JSON.parse(revEntitiesStr);
 
   for (let i = 0; i < revEntitiesArr.length; i++) {
     let revCurrEntity = revEntitiesArr[i];
-    let revEntityGUID = revCurrEntity._revEntityGUID;
+    let revEntityGUID = revCurrEntity._revGUID;
 
     revEntitiesArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
   }
@@ -298,7 +300,7 @@ export function useRevPersQuery_By_RevVarArgs() {
 
     for (let i = 0; i < revDataArr.length; i++) {
       let revCurrEntity = revDataArr[i];
-      let revEntityGUID = revCurrEntity._revEntityGUID;
+      let revEntityGUID = revCurrEntity._revGUID;
 
       revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
     }
@@ -333,7 +335,7 @@ export function useRevPersQuery_By_RevVarArgs() {
 
     for (let i = 0; i < revDataArr.length; i++) {
       let revCurrEntity = revDataArr[i];
-      let revEntityGUID = revCurrEntity._revEntityGUID;
+      let revEntityGUID = revCurrEntity._revGUID;
 
       revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
     }
@@ -376,14 +378,14 @@ export const useRevGetEntityIcon = () => {
     }
 
     if (
-      !('_revEntityMetadataList' in revMainEntityIconFileEntity) ||
-      !Array.isArray(revMainEntityIconFileEntity._revEntityMetadataList)
+      !('_revMetadataList' in revMainEntityIconFileEntity) ||
+      !Array.isArray(revMainEntityIconFileEntity._revMetadataList)
     ) {
       return {};
     }
 
     let revMainEntityIconVal = revGetMetadataValue(
-      revMainEntityIconFileEntity._revEntityMetadataList,
+      revMainEntityIconFileEntity._revMetadataList,
       'rev_remote_file_name',
     );
 

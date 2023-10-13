@@ -23,9 +23,9 @@ long revPersSaveRevMetadata(void *revEntityMetadataList) {
 long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr) {
     RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataJSONStr);
 
-    long _revMetadataId = revPersSaveRevEntityMetadata(revEntityMetadata);
+    long _revId = revPersSaveRevEntityMetadata(revEntityMetadata);
 
-    return  _revMetadataId;
+    return  _revId;
 }
 
 long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
@@ -37,10 +37,10 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
         return -1;
 
     int _revResolveStatus = revEntityMetadata->_revResolveStatus;
-    long revMetadataOwnerGUID = revEntityMetadata->_revMetadataEntityGUID;
-    long _revRemoteMetadataId = revEntityMetadata->_revRemoteMetadataId;
-    char *revMetadataName = revEntityMetadata->_revMetadataName;
-    char *revMetadataValue = revEntityMetadata->_revMetadataValue;
+    long revMetadataOwnerGUID = revEntityMetadata->_revGUID;
+    long _revRemoteId = revEntityMetadata->_revRemoteId;
+    char *revMetadataName = revEntityMetadata->_revName;
+    char *revMetadataValue = revEntityMetadata->_revValue;
     char *currTime = (char *) revGetCurrentTime();
 
     long _revTimeCreated = revCurrentTimestampMillSecs();
@@ -70,7 +70,7 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
             " ) "
             "values"
             " ( "
-            "@_revResolveStatus, @revEntityGUID, @_revRemoteMetadataId, @revMetadataName, @revMetadataValue, @createdTime, @updatedTime, @_revTimeCreated, @_revTimePublished, @_revTimePublishedUpdated"
+            "@_revResolveStatus, @revEntityGUID, @_revRemoteId, @revMetadataName, @revMetadataValue, @createdTime, @updatedTime, @_revTimeCreated, @_revTimePublished, @_revTimePublishedUpdated"
             " ) ";
 
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, 0);
@@ -82,8 +82,8 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
         int revEntityOwnerGUID_idx = sqlite3_bind_parameter_index(stmt, "@revEntityGUID");
         sqlite3_bind_int64(stmt, revEntityOwnerGUID_idx, revMetadataOwnerGUID);
 
-        int _revRemoteMetadataId_idx = sqlite3_bind_parameter_index(stmt, "@_revRemoteMetadataId");
-        sqlite3_bind_int64(stmt, _revRemoteMetadataId_idx, _revRemoteMetadataId);
+        int _revRemoteId_idx = sqlite3_bind_parameter_index(stmt, "@_revRemoteId");
+        sqlite3_bind_int64(stmt, _revRemoteId_idx, _revRemoteId);
 
         int revMetadataName_idx = sqlite3_bind_parameter_index(stmt, "@revMetadataName");
         sqlite3_bind_text(stmt, revMetadataName_idx, revMetadataName, -1, SQLITE_STATIC);

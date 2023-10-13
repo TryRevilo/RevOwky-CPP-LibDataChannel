@@ -17,15 +17,15 @@ int revPersUpdateSetRelResStatus_By_RemoteRelId(long revEntityRemoteRelationship
 
 int revPersUpdateRelationshipResolve_RemoteRelId_revResolveStatus_By_ValueId(long revEntityRelationshipId, long revEntityRemoteRelationshipId, int revResolveStatus);
 
-int revPersSetRemoteRelationshipRemoteId(long revEntityRelationshipId, long revEntityRemoteRelationshipId);
+int revPersSetRemoteRelId(long revEntityRelationshipId, long revEntityRemoteRelationshipId);
 
 int revPersSetRemoteRelationshipResolved(long revEntityRelationshipId, long revEntityRemoteRelationshipId);
 
-int revPersUpdateSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID);
+int revPersSetRemoteSubjectGUID(long localSubjectGUID, long remoteSubjectGUID);
 
-int revPersUpdateSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID);
+int revPersSetRemoteTargetGUID(long localTargetGUID, long remoteTargetGUID);
 
-int revPersUpdateSetRemoteSubjectGUID_By_RelId(long revRelId, long revRemoteSubjectGUID);
+int revPersSetRemoteSubjectGUID_By_RelId(long revRelId, long revRemoteSubjectGUID);
 
 int revPersUpdateSetRemoteTarget_By_RelId(long revRelId, long revRemoteTargetGUID);
 

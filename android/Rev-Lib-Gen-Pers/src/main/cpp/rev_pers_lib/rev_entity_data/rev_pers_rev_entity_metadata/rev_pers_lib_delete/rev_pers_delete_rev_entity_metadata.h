@@ -5,6 +5,6 @@
 #ifndef OWKI_REV_PERS_DELETE_REV_ENTITY_METADATA_H
 #define OWKI_REV_PERS_DELETE_REV_ENTITY_METADATA_H
 
-int revDeleteEntityMetadata_By_ID(long _revMetadataId);
+int revDeleteEntityMetadata_By_ID(long _revId);
 
 #endif //OWKI_REV_PERS_DELETE_REV_ENTITY_METADATA_H

@@ -8,13 +8,14 @@
 #include "../../../../../../../libs/rev_list/rev_linked_list.h"
 #include "../../../../../../../libs/rev_map/rev_map.h"
 
-typedef struct RevEntityMetadata {
+typedef struct RevEntityMetadata
+{
     int _revResolveStatus;
-    long _revMetadataId;
-    long _revRemoteMetadataId;
-    long _revMetadataEntityGUID;
-    char *_revMetadataName;
-    char *_revMetadataValue;
+    long _revId;
+    long _revRemoteId;
+    long _revGUID;
+    char *_revName;
+    char *_revValue;
 
     long _revTimeCreated;
     long _revTimePublished;
@@ -31,4 +32,4 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
 void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr);
 
-#endif //OWKI_REV_ENTITY_METADATA_H
+#endif // OWKI_REV_ENTITY_METADATA_H

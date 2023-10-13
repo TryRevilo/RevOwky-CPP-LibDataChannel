@@ -13,7 +13,7 @@ export const useRevChatMessagesHelperFunctions = () => {
     useRevPersGetRevEnty_By_EntityGUID();
 
   const revSetChatMessage = revChatMsgEntity => {
-    let revEntityOwnerGUID = revChatMsgEntity._revEntityOwnerGUID;
+    let revEntityOwnerGUID = revChatMsgEntity._revOwnerGUID;
 
     if (revEntityOwnerGUID == REV_LOGGED_IN_ENTITY_GUID) {
       revChatMsgEntity['revMessageType'] = 'outbox';
@@ -25,18 +25,19 @@ export const useRevChatMessagesHelperFunctions = () => {
   };
 
   const revGetLocalChatMessages = (revGUID_1, revGUID_2) => {
-    let revChatRelsStr = RevPersLibRead_React.revGetRels_By_RelType_LocalGUIDs(
-      'rev_stranger_chat_of',
-      revGUID_1,
-      revGUID_2,
-    );
+    let revChatRelsStr =
+      RevPersLibRead_React.revPersGetRels_By_Type_LocalEntityGUIDs(
+        'rev_stranger_chat_of',
+        revGUID_1,
+        revGUID_2,
+      );
 
     let revChatRelsArr = JSON.parse(revChatRelsStr);
 
     let revLocalChatMessagesArr = [];
 
     for (let i = 0; i < revChatRelsArr.length; i++) {
-      let revEntityGUID = revChatRelsArr[i]._revEntityGUID;
+      let revEntityGUID = revChatRelsArr[i]._revGUID;
 
       if (revEntityGUID < 1) {
         continue;

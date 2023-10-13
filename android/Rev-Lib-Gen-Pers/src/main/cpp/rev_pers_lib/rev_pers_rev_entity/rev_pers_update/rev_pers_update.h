@@ -9,7 +9,7 @@
 
 int setRemoteRevEntityGUIGByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID);
 
-int setRevPublishedDate_By_RevEntityGUID(long revEntityGUID, long revPublishedDate);
+int revPersSetPubDate_By_GUID(long revEntityGUID, long revPublishedDate);
 
 int setrevRemoteEntityGUID_By_RevCreationDate(long long revTimeCreated, long revRemoteEntityGUID);
 
@@ -17,10 +17,10 @@ int setResStatus_By_RevCreationDate(long revTimeCreated, int revResStatus);
 
 int resetRevEntityOwnerGUIG(long revEntityGUID, long revEntityOwnerGUID);
 
-int revPersSetContainerGUID_By_RevEntityGUID(long revEntityGUID, long revContainerGUID);
+int revPersSetContainerGUID_By_revGUID(long revEntityGUID, long revContainerGUID);
 
-int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revMetadataId, long _revRemoteMetadataId);
+int setrevRemoteEntityGUID_Metadata_ByRevEntityGUID(long revEntityGUID, long revRemoteEntityGUID, long _revId, long _revRemoteId);
 
-int setRevEntityResolveStatusByRevEntityGUID(int revResolveStatus, long revEntityGUID);
+int revPersSetEntityResStatus_By_EntityGUID(int revResolveStatus, long revEntityGUID);
 
 #endif //REVCAMPANN_REV_PERS_UPDATE_H

@@ -2,14 +2,14 @@ import {NativeModules} from 'react-native';
 
 const {RevPersLibRead_React} = NativeModules;
 
-export const useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID = () => {
-  const revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID = (
+export const userevPersGetAnn_By_Name_EntityGUID_OwnerGUID = () => {
+  const revPersGetAnn_By_Name_EntityGUID_OwnerGUID = (
     revAnnotationName,
     revEntityGUID,
     revOwnerGUID,
   ) => {
     let revEntityAnnDataStr =
-      RevPersLibRead_React.revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(
+      RevPersLibRead_React.revPersGetAnn_By_Name_EntityGUID_OwnerGUID(
         revAnnotationName,
         revEntityGUID,
         revOwnerGUID,
@@ -18,5 +18,5 @@ export const useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID = () => {
     return JSON.parse(revEntityAnnDataStr);
   };
 
-  return {revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID};
+  return {revPersGetAnn_By_Name_EntityGUID_OwnerGUID};
 };

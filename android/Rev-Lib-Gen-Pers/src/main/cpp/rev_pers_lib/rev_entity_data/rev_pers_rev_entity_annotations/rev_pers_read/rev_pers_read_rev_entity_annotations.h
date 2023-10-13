@@ -10,17 +10,17 @@
 
 long revGetRevAnnotationValueId(char *revAnnotationName, long revEntityGUID);
 
-long getRevAnnotationValueIdByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID);
+long revPersGetAnnValueId_By_Name_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID);
 
 char *getRevEntityAnnotationValue(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID);
 
 int revEntityAnnotationExists_ByOwnerEntityGUID(char *revAnnotationName, long revEntityGUID, long ownerEntityGUID);
 
-void getAllRevEntityAnnoationIds_By_RevEntityGUID(list *revList, long revEntityGUID);
+void getAllRevEntityAnnoationIds_By_revGUID(list *revList, long revEntityGUID);
 
 void getAllRevEntityAnnoationIds_By_OwnerGUID(long revOwnerGUID);
 
-void revGetAllRevEntityAnnoationIds_By_AnnName_RevEntity_GUID(list *revList, char *revAnnotationName, long revEntityGUID);
+void revPersGetAnnIds_By_Name_EntityGUID(list *revList, char *revAnnotationName, long revEntityGUID);
 
 void revPersGetALLRevEntityAnnotationsOwnerGUID(list *revList);
 
@@ -30,6 +30,6 @@ void getAllRevEntityAnnoationIds_By_ResStatus(list *revList, int revAnnResStatus
 
 RevEntityAnnotation *revPersGetRevEntityAnn_By_LocalAnnId(long revAnnotationId);
 
-RevEntityAnnotation *revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long revOwnerGUID);
+RevEntityAnnotation *revPersGetAnn_By_Name_EntityGUID_OwnerGUID(char *revAnnotationName, long revEntityGUID, long revOwnerGUID);
 
 #endif //OWKI_REV_PERS_READ_REV_ENTITY_ANNOTATIONS_H

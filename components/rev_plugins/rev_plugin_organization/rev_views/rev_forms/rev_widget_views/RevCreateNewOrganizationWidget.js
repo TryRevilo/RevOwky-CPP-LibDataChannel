@@ -83,19 +83,19 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   let revPassVarArgs = {
     revSelect: [
-      '_revEntityGUID',
-      '_revEntityOwnerGUID',
-      '_revContainerEntityGUID',
-      '_revEntitySiteGUID',
-      '_revEntityAccessPermission',
-      '_revEntityType',
-      '_revEntitySubType',
+      '_revGUID',
+      '_revOwnerGUID',
+      '_revContainerGUID',
+      '_revSiteGUID',
+      '_revAccessPermission',
+      '_revType',
+      '_revSubType',
       '_revTimeCreated',
     ],
     revWhere: {
-      _revEntityType: 'rev_object',
-      _revEntitySubType: 'rev_organization',
-      _revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revType: 'rev_object',
+      _revSubType: 'rev_organization',
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
     },
     revLimit: 20,
   };
@@ -106,7 +106,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
   for (let i = 0; i < revMyOrganizationsArr.length; i++) {
     let revMyCurrOrganization = revMyOrganizationsArr[i];
     let revEntityMetadataList =
-      revMyCurrOrganization._revInfoEntity._revEntityMetadataList;
+      revMyCurrOrganization._revInfoEntity._revMetadataList;
 
     let revEntityNameVal = revGetMetadataValue(
       revEntityMetadataList,
@@ -114,7 +114,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
     );
 
     revOrgsSelectionOptionsArr.push({
-      key: revMyCurrOrganization._revEntityGUID,
+      key: revMyCurrOrganization._revGUID,
       value: revEntityNameVal,
     });
   }

@@ -6,86 +6,87 @@ package rev.ca.rev_gen_lib_pers.RevDBModels;
 
 public class RevAnnotation {
 
+    int _revResolveStatus;
 
-    int _revAnnotationResStatus;
-
-    private String _revAnnotationName, _revAnnotationValue;
-    private Long _revAnnotationId, _revAnnotationRemoteId, _revAnnotationEntityGUID, _revAnnotationRemoteEntityGUID, _revAnnOwnerEntityGUID, _revAnnRemoteOwnerEntityGUID, _revTimeCreated, _revTimePublished, _revTimePublishedUpdated = -1L;
+    private String _revName, _revValue;
+    private Long _revId, _revRemoteId, _revGUID, _revRemoteGUID,
+            _revOwnerGUID, _revRemoteOwnerGUID, _revTimeCreated, _revTimePublished,
+            _revTimePublishedUpdated = -1L;
 
     public RevAnnotation() {
-        _revAnnotationId = _revAnnotationRemoteId = _revAnnOwnerEntityGUID = _revAnnotationEntityGUID = _revAnnRemoteOwnerEntityGUID = _revAnnotationRemoteEntityGUID = -1L;
+        _revId = _revRemoteId = _revOwnerGUID = _revGUID = _revRemoteOwnerGUID = _revRemoteGUID = -1L;
     }
 
-    public int get_revAnnotationResStatus() {
-        return _revAnnotationResStatus;
+    public int get_revResolveStatus() {
+        return _revResolveStatus;
     }
 
-    public void set_revAnnotationResStatus(int _revAnnotationResStatus) {
-        this._revAnnotationResStatus = _revAnnotationResStatus;
+    public void set_revResolveStatus(int _revResolveStatus) {
+        this._revResolveStatus = _revResolveStatus;
     }
 
-    public String get_revAnnotationName() {
-        return _revAnnotationName;
+    public String get_revName() {
+        return _revName;
     }
 
-    public void set_revAnnotationName(String _revAnnotationName) {
-        this._revAnnotationName = _revAnnotationName;
+    public void set_revName(String _revName) {
+        this._revName = _revName;
     }
 
-    public String get_revAnnotationValue() {
-        return _revAnnotationValue;
+    public String get_revValue() {
+        return _revValue;
     }
 
-    public void set_revAnnotationValue(String _revAnnotationValue) {
-        this._revAnnotationValue = _revAnnotationValue;
+    public void set_revValue(String _revValue) {
+        this._revValue = _revValue;
     }
 
-    public Long get_revAnnotationId() {
-        return _revAnnotationId;
+    public Long get_revId() {
+        return _revId;
     }
 
-    public void set_revAnnotationId(Long _revAnnotationId) {
-        this._revAnnotationId = _revAnnotationId;
+    public void set_revId(Long _revId) {
+        this._revId = _revId;
     }
 
-    public Long get_revAnnotationRemoteId() {
-        return _revAnnotationRemoteId;
+    public Long get_revRemoteId() {
+        return _revRemoteId;
     }
 
-    public void set_revAnnotationRemoteId(Long _revAnnotationRemoteId) {
-        this._revAnnotationRemoteId = _revAnnotationRemoteId;
+    public void set_revRemoteId(Long _revRemoteId) {
+        this._revRemoteId = _revRemoteId;
     }
 
-    public Long get_revAnnotationEntityGUID() {
-        return _revAnnotationEntityGUID;
+    public Long get_revGUID() {
+        return _revGUID;
     }
 
-    public void set_revAnnotationEntityGUID(Long _revAnnotationEntityGUID) {
-        this._revAnnotationEntityGUID = _revAnnotationEntityGUID;
+    public void set_revGUID(Long _revGUID) {
+        this._revGUID = _revGUID;
     }
 
-    public Long get_revAnnotationRemoteEntityGUID() {
-        return _revAnnotationRemoteEntityGUID;
+    public Long get_revRemoteGUID() {
+        return _revRemoteGUID;
     }
 
-    public void set_revAnnotationRemoteEntityGUID(Long _revAnnotationRemoteEntityGUID) {
-        this._revAnnotationRemoteEntityGUID = _revAnnotationRemoteEntityGUID;
+    public void set_revRemoteGUID(Long _revRemoteGUID) {
+        this._revRemoteGUID = _revRemoteGUID;
     }
 
-    public Long get_revAnnOwnerEntityGUID() {
-        return _revAnnOwnerEntityGUID;
+    public Long get_revOwnerGUID() {
+        return _revOwnerGUID;
     }
 
-    public void set_revAnnOwnerEntityGUID(Long _revAnnOwnerEntityGUID) {
-        this._revAnnOwnerEntityGUID = _revAnnOwnerEntityGUID;
+    public void set_revOwnerGUID(Long _revOwnerGUID) {
+        this._revOwnerGUID = _revOwnerGUID;
     }
 
-    public Long get_revAnnRemoteOwnerEntityGUID() {
-        return _revAnnRemoteOwnerEntityGUID;
+    public Long get_revRemoteOwnerGUID() {
+        return _revRemoteOwnerGUID;
     }
 
-    public void set_revAnnRemoteOwnerEntityGUID(Long _revAnnRemoteOwnerEntityGUID) {
-        this._revAnnRemoteOwnerEntityGUID = _revAnnRemoteOwnerEntityGUID;
+    public void set_revRemoteOwnerGUID(Long _revRemoteOwnerGUID) {
+        this._revRemoteOwnerGUID = _revRemoteOwnerGUID;
     }
 
     public Long get_revTimeCreated() {

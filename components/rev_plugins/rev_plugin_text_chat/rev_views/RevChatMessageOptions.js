@@ -30,7 +30,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
 
   const [revIsSiteMessageForm, setRevIsSiteMessageForm] = useState(false);
 
-  let revEntityGUID = revData._revEntityGUID;
+  let revEntityGUID = revData._revGUID;
   let revMsgInfoEntity = revData._revInfoEntity;
 
   /** START GET PUBLISHER */
@@ -43,12 +43,12 @@ export default function RevChatMessageOptions({revData, revCallback}) {
 
   let revPublisherEntity = revData._revPublisherEntity;
 
-  if (revPublisherEntity._revEntityType !== 'rev_user_entity') {
+  if (revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revEntityMetadataList,
+    revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_full_names',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -60,7 +60,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
   let revTimeCreated = revData._revTimeCreated;
 
   let revChatMsgStr = revGetMetadataValue(
-    revMsgInfoEntity._revEntityMetadataList,
+    revMsgInfoEntity._revMetadataList,
     'rev_entity_desc_val',
   );
 

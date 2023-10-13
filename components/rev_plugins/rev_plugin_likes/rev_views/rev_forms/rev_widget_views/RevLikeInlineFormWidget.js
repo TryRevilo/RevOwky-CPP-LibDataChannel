@@ -27,7 +27,7 @@ import {
 import {REV_METADATA_FILLER} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
-import {useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID} from '../../../../../rev_libs_pers/rev_pers_annotations/rev_read/RevPersReadAnnotationsCustomHooks';
+import {userevPersGetAnn_By_Name_EntityGUID_OwnerGUID} from '../../../../../rev_libs_pers/rev_pers_annotations/rev_read/RevPersReadAnnotationsCustomHooks';
 import {useRevGetEntityPictureAlbums} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {
@@ -58,7 +58,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
   let revLikesStatsVal =
-    RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
+    RevPersLibRead_React.revPersGetMetadataValue_By_Name_EntityGUID(
       'rev_tot_likes_stats',
       revEntityGUID,
     );
@@ -68,7 +68,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       'rev_tot_likes_stats',
       '0',
     );
-    revTotLikesStatsMetadata._revMetadataEntityGUID = revEntityGUID;
+    revTotLikesStatsMetadata._revGUID = revEntityGUID;
 
     let revTotLikesStatsMetadataID =
       RevPersLibCreate_React.revPersSaveEntityMetadataJSONStr(
@@ -82,8 +82,8 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
 
   const {revLikeInlineFormAction} = useRevLikeInlineFormAction();
 
-  const {revPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID} =
-    useRevPersGetRevEntityAnn_By_AnnName_EntityGUID_OwnerGUID();
+  const {revPersGetAnn_By_Name_EntityGUID_OwnerGUID} =
+    userevPersGetAnn_By_Name_EntityGUID_OwnerGUID();
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
 
   let revEntityPictureAlbumsArr = revGetEntityPictureAlbums(revEntityGUID);
@@ -101,7 +101,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
       let revPicsArray = revEntityPictureAlbumsArr[0].revPicsArray;
 
       revOrgMainPicURI = revGetMetadataValue(
-        revPicsArray[0]._revEntityMetadataList,
+        revPicsArray[0]._revMetadataList,
         'rev_remote_file_name',
       );
       revOrgMainPicURI =
@@ -137,7 +137,7 @@ export const RevLikeInlineFormWidget = ({revVarArgs}) => {
     );
 
     let revLikesStatsVal =
-      RevPersLibRead_React.revGetRevEntityMetadataValue_By_RevMetadataName_RevEntityGUID(
+      RevPersLibRead_React.revPersGetMetadataValue_By_Name_EntityGUID(
         'rev_tot_likes_stats',
         revEntityGUID,
       );

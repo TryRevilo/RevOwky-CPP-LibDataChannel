@@ -26,12 +26,12 @@ htable_strstr_t *revGetMetadataDB_Keys() {
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
     htable_strstr_insert(revMap, "_revResolveStatus", "REV_RESOLVE_STATUS");
-    htable_strstr_insert(revMap, "_revMetadataId", "METADATA_ID");
-    htable_strstr_insert(revMap, "_revEntityResolveStatus", "REV_RESOLVE_STATUS");
-    htable_strstr_insert(revMap, "_revRemoteMetadataId", "REMOTE_METADATA_ID");
-    htable_strstr_insert(revMap, "_revMetadataEntityGUID", "METADATA_ENTITY_GUID");
-    htable_strstr_insert(revMap, "_revMetadataName", "METADATA_NAME");
-    htable_strstr_insert(revMap, "_revMetadataValue", "METADATA_VALUE");
+    htable_strstr_insert(revMap, "_revId", "METADATA_ID");
+    htable_strstr_insert(revMap, "_revResolveStatus", "REV_RESOLVE_STATUS");
+    htable_strstr_insert(revMap, "_revRemoteId", "REMOTE_METADATA_ID");
+    htable_strstr_insert(revMap, "_revGUID", "METADATA_ENTITY_GUID");
+    htable_strstr_insert(revMap, "_revName", "METADATA_NAME");
+    htable_strstr_insert(revMap, "_revValue", "METADATA_VALUE");
 
     htable_strstr_insert(revMap, "_revTimeCreated", "CREATED_DATE");
     htable_strstr_insert(revMap, "_revTimePublishedUpdated", "UPDATED_DATE");
@@ -51,12 +51,12 @@ htable_strstr_t *revGetMapped_Metadata_Key_DBFieldName() {
     revMap = htable_strstr_create(HTABLE_STR_CASECMP);
 
     htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revResolveStatus");
-    htable_strstr_insert(revMap, "METADATA_ID", "_revMetadataId");
-    htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revEntityResolveStatus");
-    htable_strstr_insert(revMap, "REMOTE_METADATA_ID", "_revRemoteMetadataId");
-    htable_strstr_insert(revMap, "METADATA_ENTITY_GUID", "_revMetadataEntityGUID");
-    htable_strstr_insert(revMap, "METADATA_NAME", "_revMetadataName");
-    htable_strstr_insert(revMap, "METADATA_VALUE", "_revMetadataValue");
+    htable_strstr_insert(revMap, "METADATA_ID", "_revId");
+    htable_strstr_insert(revMap, "REV_RESOLVE_STATUS", "_revResolveStatus");
+    htable_strstr_insert(revMap, "REMOTE_METADATA_ID", "_revRemoteId");
+    htable_strstr_insert(revMap, "METADATA_ENTITY_GUID", "_revGUID");
+    htable_strstr_insert(revMap, "METADATA_NAME", "_revName");
+    htable_strstr_insert(revMap, "METADATA_VALUE", "_revValue");
 
     htable_strstr_insert(revMap, "REV_CREATED_DATE", "_revTimeCreated");
     htable_strstr_insert(revMap, "REV_PUBLISHED_DATE", "_revTimePublished");
@@ -75,12 +75,12 @@ RevEntityMetadata *revInitializedMetadata() {
 
     revEntityMetadata->_revResolveStatus = -1;
 
-    revEntityMetadata->_revMetadataId = -1;
-    revEntityMetadata->_revRemoteMetadataId = -1;
-    revEntityMetadata->_revMetadataEntityGUID = -1;
+    revEntityMetadata->_revId = -1;
+    revEntityMetadata->_revRemoteId = -1;
+    revEntityMetadata->_revGUID = -1;
 
-    revEntityMetadata->_revMetadataName = "";
-    revEntityMetadata->_revMetadataValue = "";
+    revEntityMetadata->_revName = "";
+    revEntityMetadata->_revValue = "";
 
     revEntityMetadata->_revTimeCreated = -1;
     revEntityMetadata->_revTimePublished = -1;
@@ -103,20 +103,20 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
         return revEntityMetadata;
     }
 
-    // _revMetadataName
-    const cJSON *_revMetadataName = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revMetadataName");
+    // _revName
+    const cJSON *_revName = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revName");
 
-    if (cJSON_IsString(_revMetadataName) && (_revMetadataName->valuestring != NULL)) {
-        char *_revMetadataNameVal = _revMetadataName->valuestring;
-        revEntityMetadata->_revMetadataName = _revMetadataNameVal;
+    if (cJSON_IsString(_revName) && (_revName->valuestring != NULL)) {
+        char *_revNameVal = _revName->valuestring;
+        revEntityMetadata->_revName = _revNameVal;
     }
 
-    // _revMetadataValue
-    const cJSON *_revMetadataValue = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revMetadataValue");
+    // _revValue
+    const cJSON *_revValue = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revValue");
 
-    if (cJSON_IsString(_revMetadataValue) && (_revMetadataValue->valuestring != NULL)) {
-        char *_revMetadataValueVal = _revMetadataValue->valuestring;
-        revEntityMetadata->_revMetadataValue = _revMetadataValueVal;
+    if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL)) {
+        char *_revValueVal = _revValue->valuestring;
+        revEntityMetadata->_revValue = _revValueVal;
     }
 
     // _revResolveStatus
@@ -127,27 +127,27 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
         revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
     }
 
-    // _revMetadataEntityGUID
-    long _revMetadataEntityGUIDVal = -1;
+    // _revGUID
+    long _revGUIDVal = -1;
 
-    const cJSON *_revMetadataEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revMetadataEntityGUID");
+    const cJSON *_revGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revGUID");
 
-    if (cJSON_IsNumber(_revMetadataEntityGUID)) {
-        _revMetadataEntityGUIDVal = _revMetadataEntityGUID->valueint;
+    if (cJSON_IsNumber(_revGUID)) {
+        _revGUIDVal = _revGUID->valueint;
     }
 
-    revEntityMetadata->_revMetadataEntityGUID = _revMetadataEntityGUIDVal;
+    revEntityMetadata->_revGUID = _revGUIDVal;
 
-    // _revRemoteMetadataId
-    const cJSON *_revRemoteMetadataId = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revRemoteMetadataId");
+    // _revRemoteId
+    const cJSON *_revRemoteId = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revRemoteId");
 
-    long _revRemoteMetadataIdVal = -1l;
+    long _revRemoteIdVal = -1l;
 
-    if (cJSON_IsNumber(_revRemoteMetadataId)) {
-        _revRemoteMetadataIdVal = _revRemoteMetadataId->valueint;
+    if (cJSON_IsNumber(_revRemoteId)) {
+        _revRemoteIdVal = _revRemoteId->valueint;
     }
 
-    revEntityMetadata->_revRemoteMetadataId = _revRemoteMetadataIdVal;
+    revEntityMetadata->_revRemoteId = _revRemoteIdVal;
 
     // _revTimeCreated
     long _revTimeCreatedVal = -1;
@@ -188,29 +188,29 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr) {
     list_new(revList, sizeof(RevEntityMetadata), revFreeMetadata);
 
-    // _revEntityMetadataList
-    const cJSON *_revEntityMetadataList = cJSON_Parse(revEntityMetadataJSONArrStr);
+    // _revMetadataList
+    const cJSON *_revMetadataList = cJSON_Parse(revEntityMetadataJSONArrStr);
 
-    if (cJSON_IsArray(_revEntityMetadataList)) {
+    if (cJSON_IsArray(_revMetadataList)) {
         cJSON *revEntityMetadataJSON = NULL;
 
-        cJSON_ArrayForEach(revEntityMetadataJSON, _revEntityMetadataList) {
+        cJSON_ArrayForEach(revEntityMetadataJSON, _revMetadataList) {
             RevEntityMetadata *revEntityMetadata = (RevEntityMetadata *) malloc(sizeof(RevEntityMetadata));
 
-            // _revMetadataName
-            const cJSON *_revMetadataName = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revMetadataName");
+            // _revName
+            const cJSON *_revName = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revName");
 
-            if (cJSON_IsString(_revMetadataName) && (_revMetadataName->valuestring != NULL)) {
-                char *_revMetadataNameVal = _revMetadataName->valuestring;
-                revEntityMetadata->_revMetadataName = _revMetadataNameVal;
+            if (cJSON_IsString(_revName) && (_revName->valuestring != NULL)) {
+                char *_revNameVal = _revName->valuestring;
+                revEntityMetadata->_revName = _revNameVal;
             }
 
-            // _revMetadataValue
-            const cJSON *_revMetadataValue = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revMetadataValue");
+            // _revValue
+            const cJSON *_revValue = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revValue");
 
-            if (cJSON_IsString(_revMetadataValue) && (_revMetadataValue->valuestring != NULL)) {
-                char *_revMetadataValueVal = _revMetadataValue->valuestring;
-                revEntityMetadata->_revMetadataValue = _revMetadataValueVal;
+            if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL)) {
+                char *_revValueVal = _revValue->valuestring;
+                revEntityMetadata->_revValue = _revValueVal;
             }
 
             // _revResolveStatus
@@ -221,19 +221,19 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
                 revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
             }
 
-            // _revMetadataEntityGUID
-            revEntityMetadata->_revMetadataEntityGUID = -1;
+            // _revGUID
+            revEntityMetadata->_revGUID = -1;
 
-            // _revRemoteMetadataId
-            const cJSON *_revRemoteMetadataId = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revRemoteMetadataId");
+            // _revRemoteId
+            const cJSON *_revRemoteId = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revRemoteId");
 
-            long _revRemoteMetadataIdVal = -1l;
+            long _revRemoteIdVal = -1l;
 
-            if (cJSON_IsNumber(_revRemoteMetadataId)) {
-                _revRemoteMetadataIdVal = _revRemoteMetadataId->valueint;
+            if (cJSON_IsNumber(_revRemoteId)) {
+                _revRemoteIdVal = _revRemoteId->valueint;
             }
 
-            revEntityMetadata->_revRemoteMetadataId = _revRemoteMetadataIdVal;
+            revEntityMetadata->_revRemoteId = _revRemoteIdVal;
 
             // _revTimeCreated
             long _revTimeCreatedVal = -1;

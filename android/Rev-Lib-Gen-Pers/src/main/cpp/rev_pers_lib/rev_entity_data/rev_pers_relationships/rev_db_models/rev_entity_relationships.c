@@ -17,19 +17,19 @@ RevEntityRelationship *revInitializedEntityRelationship()
 
     revEntityRelationship->_revResolveStatus = -1;
 
-    revEntityRelationship->_revEntityRelationshipTypeValueId = -1;
-    revEntityRelationship->_revEntityRelationshipType = "";
+    revEntityRelationship->_revTypeValueId = -1;
+    revEntityRelationship->_revType = "";
 
-    revEntityRelationship->_revEntityRelationshipId = -1;
-    revEntityRelationship->_revRemoteEntityRelationshipId = -1;
+    revEntityRelationship->_revId = -1;
+    revEntityRelationship->_revRemoteId = -1;
 
-    revEntityRelationship->_revEntityGUID = -1;
-    revEntityRelationship->_revRemoteEntityGUID = -1;
+    revEntityRelationship->_revGUID = -1;
+    revEntityRelationship->_revRemoteGUID = -1;
 
-    revEntityRelationship->_revEntitySubjectGUID = -1;
-    revEntityRelationship->_revRemoteEntitySubjectGUID = -1;
-    revEntityRelationship->_revEntityTargetGUID = -1;
-    revEntityRelationship->_revRemoteEntityTargetGUID = -1;
+    revEntityRelationship->_revSubjectGUID = -1;
+    revEntityRelationship->_revRemoteSubjectGUID = -1;
+    revEntityRelationship->_revTargetGUID = -1;
+    revEntityRelationship->_revRemoteTargetGUID = -1;
 
     revEntityRelationship->_revTimeCreated = -1;
     revEntityRelationship->_revTimePublished = -1;
@@ -63,99 +63,99 @@ RevEntityRelationship *revJSONEntityRelationshipFiller(const char *const revJSON
         revEntityRelationship->_revResolveStatus = _revResolveStatusVal;
     }
 
-    // _revEntityRelationshipTypeValueId
-    const cJSON *_revEntityRelationshipTypeValueId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityRelationshipTypeValueId");
+    // _revTypeValueId
+    const cJSON *_revTypeValueId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revTypeValueId");
 
-    if (cJSON_IsNumber(_revEntityRelationshipTypeValueId))
+    if (cJSON_IsNumber(_revTypeValueId))
     {
-        int _revEntityRelationshipTypeValueIdVal = _revEntityRelationshipTypeValueId->valueint;
-        revEntityRelationship->_revEntityRelationshipTypeValueId = _revEntityRelationshipTypeValueIdVal;
+        int _revTypeValueIdVal = _revTypeValueId->valueint;
+        revEntityRelationship->_revTypeValueId = _revTypeValueIdVal;
     }
 
-    // _revEntityRelationshipType
-    const cJSON *_revEntityRelationshipType = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityRelationshipType");
+    // _revType
+    const cJSON *_revType = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revType");
 
-    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> cJSON_Print(_revEntityRelationshipType) : %s", cJSON_Print(_revEntityRelationshipType));
+    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> cJSON_Print(_revType) : %s", cJSON_Print(_revType));
 
-    if (cJSON_IsString(_revEntityRelationshipType))
+    if (cJSON_IsString(_revType))
     {
-        char *_revEntityRelationshipTypeVal = _revEntityRelationshipType->valuestring;
+        char *_revTypeVal = _revType->valuestring;
 
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> _revEntityRelationshipTypeVal : %s", _revEntityRelationshipTypeVal);
+        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> _revTypeVal : %s", _revTypeVal);
 
-        revEntityRelationship->_revEntityRelationshipType = strdup(_revEntityRelationshipTypeVal);
+        revEntityRelationship->_revType = strdup(_revTypeVal);
     }
 
-    // _revEntityRelationshipId
-    const cJSON *_revEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityRelationshipId");
+    // _revId
+    const cJSON *_revId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revId");
 
-    if (cJSON_IsNumber(_revEntityRelationshipId))
+    if (cJSON_IsNumber(_revId))
     {
-        int _revEntityRelationshipIdVal = _revEntityRelationshipId->valueint;
-        revEntityRelationship->_revEntityRelationshipId = _revEntityRelationshipIdVal;
+        int _revIdVal = _revId->valueint;
+        revEntityRelationship->_revId = _revIdVal;
     }
 
-    // _revRemoteEntityRelationshipId
-    const cJSON *_revRemoteEntityRelationshipId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityRelationshipId");
+    // _revRemoteId
+    const cJSON *_revRemoteId = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteId");
 
-    if (cJSON_IsNumber(_revRemoteEntityRelationshipId))
+    if (cJSON_IsNumber(_revRemoteId))
     {
-        long _revRemoteEntityRelationshipIdVal = _revRemoteEntityRelationshipId->valueint;
-        revEntityRelationship->_revRemoteEntityRelationshipId = _revRemoteEntityRelationshipIdVal;
+        long _revRemoteIdVal = _revRemoteId->valueint;
+        revEntityRelationship->_revRemoteId = _revRemoteIdVal;
     }
 
-    // _revEntityGUID
-    const cJSON *_revEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityGUID");
+    // _revGUID
+    const cJSON *_revGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revGUID");
 
-    if (cJSON_IsNumber(_revEntityGUID))
+    if (cJSON_IsNumber(_revGUID))
     {
-        long _revEntityGUIDVal = _revEntityGUID->valueint;
-        revEntityRelationship->_revEntityGUID = _revEntityGUIDVal;
+        long _revGUIDVal = _revGUID->valueint;
+        revEntityRelationship->_revGUID = _revGUIDVal;
     }
 
-    // _revRemoteEntityGUID
-    const cJSON *_revRemoteEntityGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityGUID");
+    // _revRemoteGUID
+    const cJSON *_revRemoteGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntityGUID))
+    if (cJSON_IsNumber(_revRemoteGUID))
     {
-        long _revRemoteEntityGUIDVal = _revRemoteEntityGUID->valueint;
-        revEntityRelationship->_revRemoteEntityGUID = _revRemoteEntityGUIDVal;
+        long _revRemoteGUIDVal = _revRemoteGUID->valueint;
+        revEntityRelationship->_revRemoteGUID = _revRemoteGUIDVal;
     }
 
-    // _revEntitySubjectGUID
-    const cJSON *_revEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntitySubjectGUID");
+    // _revSubjectGUID
+    const cJSON *_revSubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revSubjectGUID");
 
-    if (cJSON_IsNumber(_revEntitySubjectGUID))
+    if (cJSON_IsNumber(_revSubjectGUID))
     {
-        long _revEntitySubjectGUIDVal = _revEntitySubjectGUID->valueint;
-        revEntityRelationship->_revEntitySubjectGUID = _revEntitySubjectGUIDVal;
+        long _revSubjectGUIDVal = _revSubjectGUID->valueint;
+        revEntityRelationship->_revSubjectGUID = _revSubjectGUIDVal;
     }
 
-    // _revRemoteEntitySubjectGUID
-    const cJSON *_revRemoteEntitySubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntitySubjectGUID");
+    // _revRemoteSubjectGUID
+    const cJSON *_revRemoteSubjectGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteSubjectGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntitySubjectGUID))
+    if (cJSON_IsNumber(_revRemoteSubjectGUID))
     {
-        long _revRemoteEntitySubjectGUIDVal = _revRemoteEntitySubjectGUID->valueint;
-        revEntityRelationship->_revRemoteEntitySubjectGUID = _revRemoteEntitySubjectGUIDVal;
+        long _revRemoteSubjectGUIDVal = _revRemoteSubjectGUID->valueint;
+        revEntityRelationship->_revRemoteSubjectGUID = _revRemoteSubjectGUIDVal;
     }
 
-    // _revEntityTargetGUID
-    const cJSON *_revEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revEntityTargetGUID");
+    // _revTargetGUID
+    const cJSON *_revTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revTargetGUID");
 
-    if (cJSON_IsNumber(_revEntityTargetGUID))
+    if (cJSON_IsNumber(_revTargetGUID))
     {
-        long _revEntityTargetGUIDVal = _revEntityTargetGUID->valueint;
-        revEntityRelationship->_revEntityTargetGUID = _revEntityTargetGUIDVal;
+        long _revTargetGUIDVal = _revTargetGUID->valueint;
+        revEntityRelationship->_revTargetGUID = _revTargetGUIDVal;
     }
 
-    // _revRemoteEntityTargetGUID
-    const cJSON *_revRemoteEntityTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteEntityTargetGUID");
+    // _revRemoteTargetGUID
+    const cJSON *_revRemoteTargetGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_relationship_json, "_revRemoteTargetGUID");
 
-    if (cJSON_IsNumber(_revRemoteEntityTargetGUID))
+    if (cJSON_IsNumber(_revRemoteTargetGUID))
     {
-        long _revRemoteEntityTargetGUIDVal = _revRemoteEntityTargetGUID->valueint;
-        revEntityRelationship->_revRemoteEntityTargetGUID = _revRemoteEntityTargetGUIDVal;
+        long _revRemoteTargetGUIDVal = _revRemoteTargetGUID->valueint;
+        revEntityRelationship->_revRemoteTargetGUID = _revRemoteTargetGUIDVal;
     }
 
     // _revTimeCreated

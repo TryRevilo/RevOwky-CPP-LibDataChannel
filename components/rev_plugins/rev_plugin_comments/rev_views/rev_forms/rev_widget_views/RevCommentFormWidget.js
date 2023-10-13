@@ -49,7 +49,7 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
   }
 
   let revCommentContainerEntity = revVarArgs.revEntity;
-  let revCommentContainerEntityGUID = revCommentContainerEntity._revEntityGUID;
+  let revCommentContainerEntityGUID = revCommentContainerEntity._revGUID;
 
   revCancelFunc = revVarArgs.revCancel;
 
@@ -63,7 +63,7 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
     revIsCommentUpdate
   ) {
     let revInfoEntityGUIDArrStr =
-      RevPersLibRead_React.revPersGetALLRevEntityRelationshipsSubjectGUIDs_BY_RelStr_TargetGUID(
+      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
         'rev_entity_info',
         revCommentContainerEntityGUID,
       );
@@ -80,12 +80,12 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
     let revInfoEntityGUID = revInfoEntityGUIDArr[0];
 
     let revInfoEntityStr =
-      RevPersLibRead_React.revPersGetRevEntityByGUID(revInfoEntityGUID);
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
 
     let revInfoEntity = JSON.parse(revInfoEntityStr);
 
     revCommentTxtVal = revGetMetadataValue(
-      revInfoEntity._revEntityMetadataList,
+      revInfoEntity._revMetadataList,
       'revPostText',
     );
   }

@@ -8,7 +8,7 @@ import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
 import {revPostServerData} from './rev_pers_lib_create';
 
-import {revPersGetALLRevEntityGUIDs_By_ResStatus} from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revPersGetEntityGUIDs_By_ResStatus} from '../rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {useRevSetMetadataArrayRemoteID} from '../rev_pers_metadata/rev_update/RevPersUpdateMetadataCustomHooks';
 import {useRevSetRemoteRelGUID} from '../rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 import {
@@ -67,18 +67,18 @@ export function useRevPersSyncDataComponent() {
           let revCurrFile = revFilterSuccess[i];
 
           let revMetadataStr =
-            RevPersLibRead_React.revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(
+            RevPersLibRead_React.revPersGetMetadata_By_Name_Value(
               'rev_remote_file_name',
               revCurrFile,
             );
 
           let revMetadata = JSON.parse(revMetadataStr);
-          let _revMetadataId = revMetadata._revMetadataId;
+          let _revId = revMetadata._revId;
 
-          if (_revMetadataId > 0) {
-            RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+          if (_revId > 0) {
+            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
               2,
-              _revMetadataId,
+              _revId,
             );
           }
         }
@@ -87,16 +87,16 @@ export function useRevPersSyncDataComponent() {
           let revCurrFile = revFilterFail[i];
 
           let revMetadata =
-            RevPersLibRead_React.revGetRevEntityMetadata_By_revMetadataName_revMetadataValue(
+            RevPersLibRead_React.revPersGetMetadata_By_Name_Value(
               'rev_remote_file_name',
               revCurrFile,
             );
-          let _revMetadataId = revMetadata._metadataId;
+          let _revId = revMetadata._metadataId;
 
-          if (_revMetadataId > 0) {
-            RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+          if (_revId > 0) {
+            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
               0,
-              _revMetadataId,
+              _revId,
             );
           }
         }
@@ -109,11 +109,10 @@ export function useRevPersSyncDataComponent() {
   );
 
   const revCURLFileUploadSync = revCallBack => {
-    let revFilesStr =
-      RevPersLibRead_React.revPersGetALLRevEntityMetadata_BY_ResStatus_revMetadataName(
-        0,
-        'rev_remote_file_name',
-      );
+    let revFilesStr = RevPersLibRead_React.revPersGetMetadata_BY_ResStatus_Name(
+      0,
+      'rev_remote_file_name',
+    );
 
     console.log('>>> revFilesStr', revFilesStr);
 
@@ -133,19 +132,19 @@ export function useRevPersSyncDataComponent() {
       let revCurrFile = revFilesArr[i];
 
       if (
-        !revCurrFile.hasOwnProperty('_revMetadataValue') ||
-        revIsEmptyVar(revCurrFile._revMetadataValue)
+        !revCurrFile.hasOwnProperty('_revValue') ||
+        revIsEmptyVar(revCurrFile._revValue)
       ) {
         continue;
       }
 
-      let revFileURI = revCurrFile._revMetadataValue;
+      let revFileURI = revCurrFile._revValue;
       revFileURI = revSettings.revPublishedMediaDir + '/' + revFileURI;
       revFilesArr[i] = revFileURI;
 
-      RevPersLibUpdate_React.setMetadataResolveStatus_BY_METADATA_ID(
+      RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
         -2,
-        revCurrFile._revMetadataId,
+        revCurrFile._revId,
       );
     }
 
@@ -162,7 +161,7 @@ export function useRevPersSyncDataComponent() {
 
   const revSyncRels = async () => {
     let revEntityRelationshipsStr =
-      RevPersLibRead_React.revPersGetRevEntityRels_By_ResStatus(-1);
+      RevPersLibRead_React.revPersGetRels_By_ResStatus(-1);
 
     let revEntityRelationshipsArr = JSON.parse(revEntityRelationshipsStr);
 
@@ -170,8 +169,7 @@ export function useRevPersSyncDataComponent() {
       return;
     }
 
-    let revLoggedIn_revRemoteEntityGUID =
-      REV_LOGGED_IN_ENTITY._revRemoteEntityGUID;
+    let revLoggedIn_revRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
     let revPersRelsArr = [];
 
@@ -183,21 +181,21 @@ export function useRevPersSyncDataComponent() {
       let revCurrRel = revEntityRelationshipsArr[i];
 
       RevPersLibUpdate_React.revPersUpdateRelResStatus_By_RelId(
-        revCurrRel._revEntityRelationshipId,
+        revCurrRel._revId,
         -101,
       );
 
-      let remoteRevEntitySubjectGUID = revCurrRel._revRemoteEntitySubjectGUID;
+      let remoteRevEntitySubjectGUID = revCurrRel._revRemoteSubjectGUID;
 
       if (remoteRevEntitySubjectGUID < 1) {
         remoteRevEntitySubjectGUID =
-          RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
-            revCurrRel._revEntitySubjectGUID,
+          RevPersLibRead_React.revPersGetRemoteEntityGUID_BY_LocalEntityGUID(
+            revCurrRel._revSubjectGUID,
           );
 
         let revPersUpdateRemoteSubjectGUIDStatus =
-          RevPersLibUpdate_React.revPersUpdateSetRemoteSubjectGUID(
-            revCurrRel._revEntitySubjectGUID,
+          RevPersLibUpdate_React.revPersSetRemoteSubjectGUID(
+            revCurrRel._revSubjectGUID,
             remoteRevEntitySubjectGUID,
           );
 
@@ -210,17 +208,17 @@ export function useRevPersSyncDataComponent() {
         continue;
       }
 
-      let remoteRevEntityTargetGUID = revCurrRel._revRemoteEntityTargetGUID;
+      let remoteRevEntityTargetGUID = revCurrRel._revRemoteTargetGUID;
 
       if (remoteRevEntityTargetGUID < 1) {
         remoteRevEntityTargetGUID =
-          RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
-            revCurrRel._revEntityTargetGUID,
+          RevPersLibRead_React.revPersGetRemoteEntityGUID_BY_LocalEntityGUID(
+            revCurrRel._revTargetGUID,
           );
 
         let revPersUpdateRemoteTargetGUIDStatus =
-          RevPersLibUpdate_React.revPersUpdateSetRemoteTargetGUID(
-            revCurrRel._revEntityTargetGUID,
+          RevPersLibUpdate_React.revPersSetRemoteTargetGUID(
+            revCurrRel._revTargetGUID,
             remoteRevEntityTargetGUID,
           );
 
@@ -233,12 +231,12 @@ export function useRevPersSyncDataComponent() {
         continue;
       }
 
-      revCurrRel['_revOwnerGUID'] = revLoggedIn_revRemoteEntityGUID;
+      revCurrRel['_revOwnerGUID'] = revLoggedIn_revRemoteGUID;
 
       delete revCurrRel['_remoteRevEntityRelationshipId'];
-      delete revCurrRel['_revEntityRelationshipTypeValueId'];
-      delete revCurrRel['_revEntitySubjectGUID'];
-      delete revCurrRel['_revEntityTargetGUID'];
+      delete revCurrRel['_revTypeValueId'];
+      delete revCurrRel['_revSubjectGUID'];
+      delete revCurrRel['_revTargetGUID'];
       delete revCurrRel['_revTimePublished'];
       delete revCurrRel['_revTimePublishedUpdated'];
       delete revCurrRel['_revTimeCreated'];
@@ -260,10 +258,9 @@ export function useRevPersSyncDataComponent() {
         for (let i = 0; i < revRetRelsPersDataFilter.length; i++) {
           let revCurrRetRelsPersData = revRetRelsPersDataFilter[i];
 
-          let revEntityRelationshipId =
-            revCurrRetRelsPersData._revEntityRelationshipId;
+          let revEntityRelationshipId = revCurrRetRelsPersData._revId;
           let revEntityRelationshipRemoteId =
-            revCurrRetRelsPersData._revEntityRelationshipRemoteId;
+            revCurrRetRelsPersData._revRemoteId;
 
           if (
             revEntityRelationshipId < 1 ||
@@ -273,7 +270,7 @@ export function useRevPersSyncDataComponent() {
           }
 
           let revRelRemoteIdUpdateStatus =
-            RevPersLibUpdate_React.revPersSetRemoteRelationshipRemoteId(
+            RevPersLibUpdate_React.revPersSetRemoteRelId(
               revEntityRelationshipId,
               revEntityRelationshipRemoteId,
             );
@@ -336,46 +333,46 @@ export function useRevPersSyncDataComponent() {
 
             if (
               revIsEmptyJSONObject(revCurrData) ||
-              !revCurrData.hasOwnProperty('_revEntityGUID') ||
-              !revCurrData.hasOwnProperty('_revRemoteEntityGUID')
+              !revCurrData.hasOwnProperty('_revGUID') ||
+              !revCurrData.hasOwnProperty('_revRemoteGUID')
             ) {
               continue;
             }
 
-            let revEntityGUID = revCurrData._revEntityGUID;
-            let _revRemoteEntityGUID = revCurrData._revRemoteEntityGUID;
+            let revEntityGUID = revCurrData._revGUID;
+            let _revRemoteGUID = revCurrData._revRemoteGUID;
 
-            if (revEntityGUID < 0 || _revRemoteEntityGUID < 0) {
+            if (revEntityGUID < 0 || _revRemoteGUID < 0) {
               continue;
             }
 
-            RevPersLibUpdate_React.setrevRemoteEntityGUIDByRevEntityGUID(
+            RevPersLibUpdate_React.revPersSetRemoteEntityGUID_By_LocalEntityGUID(
               revEntityGUID,
-              _revRemoteEntityGUID,
+              _revRemoteGUID,
             );
 
-            RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+            RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
               0,
               revEntityGUID,
             );
 
             /** START RELATIONSHIPS */
-            RevPersLibUpdate_React.revPersUpdateSetRemoteSubjectGUID(
+            RevPersLibUpdate_React.revPersSetRemoteSubjectGUID(
               revEntityGUID,
-              _revRemoteEntityGUID,
+              _revRemoteGUID,
             );
 
-            RevPersLibUpdate_React.revPersUpdateSetRemoteTargetGUID(
+            RevPersLibUpdate_React.revPersSetRemoteTargetGUID(
               revEntityGUID,
-              _revRemoteEntityGUID,
+              _revRemoteGUID,
             );
             /** END RELATIONSHIPS */
 
             if (
-              revCurrData.hasOwnProperty('_revEntityMetadataList') &&
-              Array.isArray(revCurrData._revEntityMetadataList)
+              revCurrData.hasOwnProperty('_revMetadataList') &&
+              Array.isArray(revCurrData._revMetadataList)
             ) {
-              let revEntityMetadataList = revCurrData._revEntityMetadataList;
+              let revEntityMetadataList = revCurrData._revMetadataList;
               useRevSetMetadataArrayRemoteID(
                 revEntityGUID,
                 revEntityMetadataList,
@@ -386,54 +383,46 @@ export function useRevPersSyncDataComponent() {
             if (revCurrData.hasOwnProperty('_revInfoEntity')) {
               let revInfoEntity = revCurrData._revInfoEntity;
 
-              let revInfoEntityGUID = revInfoEntity._revEntityGUID;
-              let revInfo_revRemoteEntityGUID =
-                revInfoEntity._revRemoteEntityGUID;
+              let revInfoEntityGUID = revInfoEntity._revGUID;
+              let revInfo_revRemoteGUID = revInfoEntity._revRemoteGUID;
 
-              if (revInfoEntityGUID < 0 || revInfo_revRemoteEntityGUID < 0) {
+              if (revInfoEntityGUID < 0 || revInfo_revRemoteGUID < 0) {
                 continue;
               }
 
               let revInfoRemoteGUIDUpdateStatus =
-                RevPersLibUpdate_React.setrevRemoteEntityGUIDByRevEntityGUID(
+                RevPersLibUpdate_React.revPersSetRemoteEntityGUID_By_LocalEntityGUID(
                   revInfoEntityGUID,
-                  revInfo_revRemoteEntityGUID,
+                  revInfo_revRemoteGUID,
                 );
 
               if (revInfoRemoteGUIDUpdateStatus < 0) {
                 continue;
               }
 
-              RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+              RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
                 0,
                 revInfoEntityGUID,
               );
 
               /** START INFO RELATIONSHIPS */
-              if (revInfo_revRemoteEntityGUID) {
-                revSetRemoteRelGUID(
-                  revInfoEntityGUID,
-                  revInfo_revRemoteEntityGUID,
-                );
+              if (revInfo_revRemoteGUID) {
+                revSetRemoteRelGUID(revInfoEntityGUID, revInfo_revRemoteGUID);
               }
 
-              if (revInfo_revRemoteEntityGUID) {
-                revSetRemoteRelGUID(
-                  revInfoEntityGUID,
-                  revInfo_revRemoteEntityGUID,
-                );
+              if (revInfo_revRemoteGUID) {
+                revSetRemoteRelGUID(revInfoEntityGUID, revInfo_revRemoteGUID);
               }
               /** END INFO RELATIONSHIPS */
 
               if (
-                !revInfoEntity.hasOwnProperty('_revEntityMetadataList') &&
-                !Array.isArray(revInfoEntity._revEntityMetadataList)
+                !revInfoEntity.hasOwnProperty('_revMetadataList') &&
+                !Array.isArray(revInfoEntity._revMetadataList)
               ) {
                 continue;
               }
 
-              let revInfoEntityMetadataList =
-                revInfoEntity._revEntityMetadataList;
+              let revInfoEntityMetadataList = revInfoEntity._revMetadataList;
 
               useRevSetMetadataArrayRemoteID(
                 revInfoEntityGUID,
@@ -452,12 +441,7 @@ export function useRevPersSyncDataComponent() {
   const revPersSyncMetadata = async () => {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
-      revSelect: [
-        '_revMetadataId',
-        '_revMetadataEntityGUID',
-        '_revRemoteMetadataId',
-        '_revMetadataName',
-      ],
+      revSelect: ['_revId', '_revGUID', '_revRemoteId', '_revName'],
       revWhere: {
         _revResolveStatus: {'<': 0},
       },
@@ -489,9 +473,9 @@ export function useRevPersSyncDataComponent() {
 
     if (
       !revIsEmptyJSONObject(revRetData) &&
-      revRetData.hasOwnProperty('_revRemoteEntityGUID')
+      revRetData.hasOwnProperty('_revRemoteGUID')
     ) {
-      revRemoteSiteEntityGUID = revRetData._revRemoteEntityGUID;
+      revRemoteSiteEntityGUID = revRetData._revRemoteGUID;
     }
 
     return revRemoteSiteEntityGUID;
@@ -506,11 +490,11 @@ export function useRevPersSyncDataComponent() {
     SET_REV_LOGGED_IN_ENTITY(revPrev => {
       return {
         ...revPrev,
-        _revRemoteEntityGUID: revRetPersData._revRemoteEntityGUID,
+        _revRemoteGUID: revRetPersData._revRemoteGUID,
       };
     });
 
-    return revRetPersData._revRemoteEntityGUID;
+    return revRetPersData._revRemoteGUID;
   };
 
   let revResStatus = -1;
@@ -523,11 +507,11 @@ export function useRevPersSyncDataComponent() {
     }
 
     let revUnresolvedEntitiesArr =
-      revPersGetALLRevEntityGUIDs_By_ResStatus(revResStatus);
+      revPersGetEntityGUIDs_By_ResStatus(revResStatus);
 
     let revUploadEntitiesArr = [];
 
-    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteEntityGUID;
+    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
     if (revLoggedInRemoteEntityGUID < 1) {
       let revLoggedInRemoteEntityGUID = await revSaveLoggedInUserEntity();
@@ -540,7 +524,7 @@ export function useRevPersSyncDataComponent() {
     }
 
     let revSiteRemoteEntityGUID =
-      RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
+      RevPersLibRead_React.revPersGetRemoteEntityGUID_BY_LocalEntityGUID(
         REV_SITE_ENTITY_GUID,
       );
 
@@ -560,19 +544,19 @@ export function useRevPersSyncDataComponent() {
 
       let revCurrUpdateEntity = revUnresolvedEntitiesArr[i];
 
-      let revCurrUpdateEntityType = revCurrUpdateEntity._revEntityType;
+      let revCurrUpdateEntityType = revCurrUpdateEntity._revType;
 
       let revIsUser = revCurrUpdateEntityType === 'rev_user_entity';
 
       // Make sure that all entities have an owner except if user
-      let revEntityOwnerGUID = revCurrUpdateEntity._revEntityOwnerGUID;
+      let revEntityOwnerGUID = revCurrUpdateEntity._revOwnerGUID;
 
       if (!revIsUser && revEntityOwnerGUID < 1) {
         continue;
       }
 
       let revOwnerRemoteEntityGUID =
-        RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
+        RevPersLibRead_React.revPersGetRemoteEntityGUID_BY_LocalEntityGUID(
           revEntityOwnerGUID,
         );
 
@@ -581,21 +565,21 @@ export function useRevPersSyncDataComponent() {
         continue;
       }
 
-      revCurrUpdateEntity['_revEntityOwnerGUID'] = revOwnerRemoteEntityGUID;
+      revCurrUpdateEntity['_revOwnerGUID'] = revOwnerRemoteEntityGUID;
 
       delete revCurrUpdateEntity['_fromRemote'];
       delete revCurrUpdateEntity['_revPublisherEntity'];
 
       // Info enties are already attached so skip
-      if (revCurrUpdateEntity._revEntitySubType == 'rev_entity_info') {
-        if (revCurrUpdateEntity._revEntityOwnerGUID < 1) {
+      if (revCurrUpdateEntity._revSubType == 'rev_entity_info') {
+        if (revCurrUpdateEntity._revOwnerGUID < 1) {
           continue;
         }
       }
 
-      RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+      RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
         -101,
-        revCurrUpdateEntity._revEntityGUID,
+        revCurrUpdateEntity._revGUID,
       );
 
       // Set an entity's info details
@@ -603,20 +587,20 @@ export function useRevPersSyncDataComponent() {
         revCurrUpdateEntity.hasOwnProperty('_revInfoEntity') &&
         !revIsEmptyJSONObject(revCurrUpdateEntity._revInfoEntity)
       ) {
-        RevPersLibUpdate_React.setRevEntityResolveStatusByRevEntityGUID(
+        RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
           -101,
-          revCurrUpdateEntity._revInfoEntity._revEntityGUID,
+          revCurrUpdateEntity._revInfoEntity._revGUID,
         );
 
-        revCurrUpdateEntity._revInfoEntity['_revEntitySiteGUID'] =
+        revCurrUpdateEntity._revInfoEntity['_revSiteGUID'] =
           revSiteRemoteEntityGUID;
       }
 
       // If has container GUID set remote container GUID
-      let revCurrContainerGUID = revCurrUpdateEntity._revEntityContainerGUID;
+      let revCurrContainerGUID = revCurrUpdateEntity._revContainerGUID;
       if (revCurrContainerGUID && revCurrContainerGUID > 0) {
         let revCurrRemoteContainerGUID =
-          RevPersLibRead_React.revGetRemoteEntityGUID_BY_LocalEntityGUID(
+          RevPersLibRead_React.revPersGetRemoteEntityGUID_BY_LocalEntityGUID(
             revCurrContainerGUID,
           );
 
@@ -624,18 +608,17 @@ export function useRevPersSyncDataComponent() {
           continue;
         }
 
-        revCurrUpdateEntity['_revEntityContainerGUID'] =
-          revCurrRemoteContainerGUID;
+        revCurrUpdateEntity['_revContainerGUID'] = revCurrRemoteContainerGUID;
       }
 
       // Finaly set the Site's REMOTE GUID
-      revCurrUpdateEntity['_revEntitySiteGUID'] = revSiteRemoteEntityGUID;
+      revCurrUpdateEntity['_revSiteGUID'] = revSiteRemoteEntityGUID;
 
       revUploadEntitiesArr.push(revCurrUpdateEntity);
     }
 
     /**
-     * {"result":{"revPersOptions":{"revPersType":"rev_create"},"filter":[{"_revRemoteEntityGUID":534,"_revEntityMetadataList":[{"_revMetadataId":794,"_revRemoteMetadataId":794}]}]}}
+     * {"result":{"revPersOptions":{"revPersType":"rev_create"},"filter":[{"_revRemoteGUID":534,"_revMetadataList":[{"_revId":794,"_revRemoteId":794}]}]}}
      */
 
     await revFetchUnresolvedEntityData(

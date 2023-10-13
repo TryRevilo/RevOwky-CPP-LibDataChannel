@@ -43,20 +43,20 @@ export const useRevCreateNewAdDetailsForm = () => {
     revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
 
     let revOrgRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revOrgRel._revEntityRelationshipType = 'rev_organization_of';
-    revOrgRel._revEntityTargetGUID = -1;
-    revOrgRel._revEntitySubjectGUID = revOrganizationEntityGUID;
+    revOrgRel._revType = 'rev_organization_of';
+    revOrgRel._revTargetGUID = -1;
+    revOrgRel._revSubjectGUID = revOrganizationEntityGUID;
 
     let revProductLineRel = REV_ENTITY_RELATIONSHIP_STRUCT();
-    revProductLineRel._revEntityRelationshipType = 'rev_product_line_of';
-    revProductLineRel._revEntityTargetGUID = -1;
-    revProductLineRel._revEntitySubjectGUID = revProductLineGUID;
+    revProductLineRel._revType = 'rev_product_line_of';
+    revProductLineRel._revTargetGUID = -1;
+    revProductLineRel._revSubjectGUID = revProductLineGUID;
 
     revVarArgs['revTargetRelsArr'] = [revOrgRel, revProductLineRel];
 
     try {
       let revPersEntity = await revSaveNewEntity(revVarArgs);
-      return revPersCallBack(revPersEntity._revEntityGUID);
+      return revPersCallBack(revPersEntity._revGUID);
     } catch (error) {
       console.log('*** error -revCreateNewAdDetailsForm', error);
       return revPersCallBack(-1);

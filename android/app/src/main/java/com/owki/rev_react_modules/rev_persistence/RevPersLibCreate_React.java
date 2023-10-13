@@ -139,8 +139,8 @@ public class RevPersLibCreate_React extends ReactContextBaseJavaModule {
      * START ANNOTATIONS
      **/
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public Integer revPersRevEntityAnnotationWithValues(String _revAnnotationName, String _revAnnotationValue, Integer _revEntityGUID, Integer _ownerEntityGUID) {
-        int revret = (int) revPersLibCreate.revPersRevEntityAnnotationWithValues(_revAnnotationName, _revAnnotationValue, _revEntityGUID, _ownerEntityGUID);
+    public Integer revPersAnn_With_Values(String _revName, String _revValue, Integer _revGUID, Integer _ownerEntityGUID) {
+        int revret = (int) revPersLibCreate.revPersAnn_With_Values(_revName, _revValue, _revGUID, _ownerEntityGUID);
 
         return revret;
     }
