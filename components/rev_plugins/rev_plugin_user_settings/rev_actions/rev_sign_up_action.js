@@ -7,11 +7,7 @@ import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../rev_libs_pers/rev_db_stru
 const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
 
 export const revRegisterUserEntity = revVarArgs => {
-  let revUserId = revVarArgs.revUserId;
-  let revFullNames = revVarArgs.revFullNames;
-  let revPassword1 = revVarArgs.revPassword1;
-  let revPassword2 = revVarArgs.revPassword2;
-  let revEMail = revVarArgs.revEMail;
+  let {revUserId = '', revPassword1 = '', revEMail = '', revPhoneNu = '', revFullNames = ''} = revVarArgs;
 
   let revPersUserEntity = REV_ENTITY_STRUCT();
   revPersUserEntity._revType = 'rev_user_entity';
@@ -33,7 +29,7 @@ export const revRegisterUserEntity = revVarArgs => {
 
   revPersUserEntityInfo._revMetadataList = [
     REV_METADATA_FILLER('rev_entity_unique_id', revUserId),
-    REV_METADATA_FILLER('rev_full_names', revFullNames),
+    REV_METADATA_FILLER('rev_entity_name', revFullNames),
   ];
 
   let revPersUserEntityInfoGUID = RevPersLibCreate_React.revPersInitJSON(
@@ -78,8 +74,8 @@ export const revRegisterUserEntity = revVarArgs => {
 
   revPersEntitySettingsInfo._revMetadataList = [
     REV_METADATA_FILLER('revPassword1', revPassword1),
-    REV_METADATA_FILLER('revPassword2', revPassword2),
     REV_METADATA_FILLER('rev_email', revEMail),
+    REV_METADATA_FILLER('rev_phone_nu', revPhoneNu),
   ];
 
   let revPersEntitySettingsInfoGUID = RevPersLibCreate_React.revPersInitJSON(

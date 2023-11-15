@@ -7,7 +7,7 @@
 
 #include "../../rev_db_models/rev_entity_annotation.h"
 
-long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long revEntityGUID, long revEntityContainerGUID);
+long revPersAnnotation(char *revEntityAnnotationName, char *revEntityAnnotationValue, long revEntityGUID, long revContainerGUID);
 
 long revPersAnnotationStruct(RevEntityAnnotation *revEntityAnnotation);
 

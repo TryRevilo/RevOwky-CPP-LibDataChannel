@@ -13,8 +13,9 @@ export const useRevCreateSitePostAction = () => {
   const {revSaveNewEntity} = useRevSaveNewEntity();
 
   const revCreateSitePostAction = async (revVarArgs, revPersCallBack) => {
-    let revPersEntityGUID = revVarArgs._revGUID;
-    let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
+    const {_revGUID = -1, revEntityOwnerGUID = -1, revSitePostText = ''} = revVarArgs;
+
+    let revPersEntityGUID = _revGUID;
 
     if (revEntityOwnerGUID < 1) {
       return revPersCallBack({});
@@ -23,43 +24,31 @@ export const useRevCreateSitePostAction = () => {
     let revRetData = {};
 
     if (revPersEntityGUID < 0) {
-      revVarArgs['revEntitySubType'] = 'rev_kiwi';
+      revVarArgs['revSubType'] = 'rev_kiwi';
 
       let revPersEntityInfoMetadataList = [
-        REV_METADATA_FILLER('revPostText', revVarArgs.revSitePostText),
+        REV_METADATA_FILLER('rev_entity_desc', revSitePostText),
       ];
 
-      revVarArgs['revPersEntityInfoMetadataList'] =
-        revPersEntityInfoMetadataList;
+      revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
 
       revPersEntityGUID = await revSaveNewEntity(revVarArgs);
       revRetData['revNewEntityGUID'] = revPersEntityGUID;
     } else {
-      let revPostText = revVarArgs.revSitePostText;
+      let rev_entity_desc = revSitePostText;
 
       let revFilledEntity =
         revPersGetFilledRevEntity_By_GUID(revPersEntityGUID);
-      let revCurrMetadata = revGetMetadataContainingMetadataName(
-        revFilledEntity._revInfoEntity._revMetadataList,
-        'revPostText',
-      );
+      let revCurrMetadata = revGetMetadataContainingMetadataName(revFilledEntity._revInfoEntity._revMetadataList, 'rev_entity_desc');
 
       let _revId = revCurrMetadata._revId;
       let revCurrMetadataVal = revCurrMetadata._revValue;
 
-      if (revCurrMetadataVal.localeCompare(revPostText) !== 0) {
-        let revMetadataUpdateStatus =
-          RevPersLibUpdate_React.revPersSetMetadataVal_BY_Id(
-            _revId,
-            revPostText,
-          );
+      if (revCurrMetadataVal.localeCompare(rev_entity_desc) !== 0) {
+        let revMetadataUpdateStatus = RevPersLibUpdate_React.revPersSetMetadataVal_BY_Id(_revId, rev_entity_desc);
 
         if (revMetadataUpdateStatus > 0) {
-          let revEntityUpdateStatus =
-            RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(
-              -101,
-              revPersEntityGUID,
-            );
+          let revEntityUpdateStatus = RevPersLibUpdate_React.revPersSetEntityResStatus_By_EntityGUID(-101, revPersEntityGUID);
 
           if (revEntityUpdateStatus == 1) {
             revRetData['revUpdateMetadataIdsArr'] = [_revId];

@@ -15,6 +15,7 @@ var REV_ENTITY_STRUCT = () => {
     _revAnnotations: [],
     _revChildrenList: [],
     _revInfoEntity: {},
+    _revSettingsEntity: {},
     _revTimeCreated: '',
     _timeUpdated: '',
     _revTimeCreated: new Date().getTime(),

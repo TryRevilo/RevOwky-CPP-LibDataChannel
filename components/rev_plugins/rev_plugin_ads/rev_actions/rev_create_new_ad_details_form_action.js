@@ -32,7 +32,7 @@ export const useRevCreateNewAdDetailsForm = () => {
       return revPersCallBack(-1);
     }
 
-    revVarArgs['revEntitySubType'] = 'rev_ad';
+    revVarArgs['revSubType'] = 'rev_ad';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revEntityNameVal),

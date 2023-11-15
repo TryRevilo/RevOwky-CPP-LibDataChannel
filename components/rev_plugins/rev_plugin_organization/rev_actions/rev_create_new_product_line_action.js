@@ -11,7 +11,7 @@ export const useRevCreateNewProductLineAction = () => {
   const {revSaveNewEntity} = useRevSaveNewEntity();
 
   const revCreateNewProductLineAction = async (revVarArgs, revPersCallBack) => {
-    revVarArgs['revEntitySubType'] = 'rev_product_line';
+    revVarArgs['revSubType'] = 'rev_product_line';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revVarArgs.revEntityNameVal),

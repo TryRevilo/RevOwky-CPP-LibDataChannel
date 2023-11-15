@@ -236,10 +236,10 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibCreate_revPersInit(JNIEn
 
     /** SET REV CONTAINER ENTITY GUID **/
     jmethodID get_revContainerGUID_MID = env->GetMethodID(revEntityClazz, "get_revContainerGUID", "()Ljava/lang/Long;");
-    jobject revEntityContainerGUID_JOB = env->CallObjectMethod(revEntity, get_revContainerGUID_MID);
-    long revEntityContainerGUID = (env)->CallLongMethod(revEntityContainerGUID_JOB, longGetLongValue);
+    jobject revContainerGUID_JOB = env->CallObjectMethod(revEntity, get_revContainerGUID_MID);
+    long revContainerGUID = (env)->CallLongMethod(revContainerGUID_JOB, longGetLongValue);
 
-    c_rev._revContainerGUID = revEntityContainerGUID;
+    c_rev._revContainerGUID = revContainerGUID;
 
     /** SET REV SITE ENTITY GUID **/
     jmethodID get_revSiteGUID_MID = env->GetMethodID(revEntityClazz, "get_revSiteGUID", "()Ljava/lang/Long;");

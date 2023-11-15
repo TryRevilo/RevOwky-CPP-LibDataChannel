@@ -21,41 +21,53 @@
 #include "../../rev_pers_lib/rev_db_init/rev_db_init.h"
 #include "../../rev_gen_functions/rev_gen_functions.h"
 
-char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap) {
+char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap)
+{
     char *revRetWhereStr = "";
     char revAll[] = "*";
 
     // Iterate over the items in the object
-    if (revWhere_CJSON != NULL && revWhere_CJSON->type == cJSON_Array) {
+    if (revWhere_CJSON != NULL && revWhere_CJSON->type == cJSON_Array)
+    {
         int revArrSize = cJSON_GetArraySize(revWhere_CJSON);
 
-        if (revArrSize == 0) {
+        if (revArrSize == 0)
+        {
             return revAll;
         }
 
-        for (int i = 0; i < revArrSize; i++) {
+        for (int i = 0; i < revArrSize; i++)
+        {
             cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere_CJSON, i);
 
-            if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
+            if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL))
+            {
                 char *revArrayElementVal = revCurrArrayElement->valuestring;
 
-                if (strcmp(revArrayElementVal, revAll) == 0) {
+                if (strcmp(revArrayElementVal, revAll) == 0)
+                {
                     return revAll;
                 }
 
                 const char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrayElementVal);
 
-                if (revArrayElementDBTableName == NULL || revArrayElementDBTableName[0] == '\0') {
+                if (revArrayElementDBTableName == NULL || revArrayElementDBTableName[0] == '\0')
+                {
                     continue;
                 }
 
-                if (i == 0) {
+                if (i == 0)
+                {
                     revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
-                } else {
+                }
+                else
+                {
                     revRetWhereStr = revConcatStrings(revRetWhereStr, ", ");
                     revRetWhereStr = revConcatStrings(revRetWhereStr, revArrayElementDBTableName);
                 }
-            } else if (cJSON_IsNumber(revCurrArrayElement)) {
+            }
+            else if (cJSON_IsNumber(revCurrArrayElement))
+            {
                 int revArrayElementVal = revCurrArrayElement->valueint;
 
                 __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revArrayElementVal %d", revArrayElementVal);
@@ -68,7 +80,8 @@ char *revGetSelectionFields(const cJSON *revWhere_CJSON, htable_strstr_t *revMap
     return revRetWhereStr;
 }
 
-cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, htable_strstr_t *revMappedEntityColNameMap) {
+cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, htable_strstr_t *revMappedEntityColNameMap)
+{
     char revAll[] = "*";
 
     cJSON *revRetJSonArray = cJSON_CreateArray();
@@ -80,10 +93,12 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     const cJSON *revSelectDistinct_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revDistinct");
 
-    if (cJSON_IsNumber(revSelectDistinct_JSON) && (revSelectDistinct_JSON->valueint != NULL)) {
+    if (cJSON_IsNumber(revSelectDistinct_JSON) && (revSelectDistinct_JSON->valueint != NULL))
+    {
         long revSelectDistinctVal = revSelectDistinct_JSON->valueint;
 
-        if (revSelectDistinctVal == 1) {
+        if (revSelectDistinctVal == 1)
+        {
             sql = revConcatStrings(sql, "DISTINCT ");
         }
     }
@@ -92,7 +107,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     char *revSelectWhere = revGetSelectionFields(revSelect_JSON, revMap);
 
-    if (revSelectWhere[0] == '\0') {
+    if (revSelectWhere[0] == '\0')
+    {
         goto revEnd;
     }
 
@@ -102,18 +118,20 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     sql = revConcatStrings(sql, revSelectWhere);
 
     // Check for memory allocation failure
-    if (sql == NULL) {
+    if (sql == NULL)
+    {
         // Handle the error
         return NULL;
     }
 
     // Concatenate the second part
     char *revFromTempStr = revConcatStrings(sql, " FROM ");
-    free(sql);  // Free the memory of the previous result
-    sql = revFromTempStr;  // Update the pointer
+    free(sql);            // Free the memory of the previous result
+    sql = revFromTempStr; // Update the pointer
 
     // Check for memory allocation failure
-    if (sql == NULL) {
+    if (sql == NULL)
+    {
         // Handle the error
         return NULL;
     }
@@ -122,7 +140,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     char *revTableNameVal = NULL;
     const char *revDefaultTableName = "REV_ENTITY_TABLE";
 
-    if (cJSON_HasObjectItem(revJSON, "revTableName")) {
+    if (cJSON_HasObjectItem(revJSON, "revTableName"))
+    {
         const cJSON *revTableName_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revTableName");
         const char *revSourceString = revTableName_JSON->valuestring;
 
@@ -130,38 +149,46 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         size_t revSourceStringLength = strlen(revSourceString);
 
         // Allocate memory for revTableNameVal with enough space for the source string
-        revTableNameVal = (char *) malloc(revSourceStringLength + 1);
+        revTableNameVal = (char *)malloc(revSourceStringLength + 1);
 
-        if (revTableNameVal != NULL) {
+        if (revTableNameVal != NULL)
+        {
             // Copy the source string into revTableNameVal
             strcpy(revTableNameVal, revSourceString);
             // Now, revTableNameVal contains the copied string.
-        } else {
+        }
+        else
+        {
             // Handle memory allocation failure
         }
-    } else {
+    }
+    else
+    {
         // Use the default table name if "revTableName" is not present
         size_t revDefaultTableNameLength = strlen(revDefaultTableName);
-        revTableNameVal = (char *) malloc(revDefaultTableNameLength + 1);
-        if (revTableNameVal != NULL) {
+        revTableNameVal = (char *)malloc(revDefaultTableNameLength + 1);
+        if (revTableNameVal != NULL)
+        {
             strcpy(revTableNameVal, revDefaultTableName);
             // Now, revTableNameVal contains the default table name.
             free(revTableNameVal); // Don't forget to free the memory when done.
-        } else {
+        }
+        else
+        {
             // Handle memory allocation failure
         }
     }
 
     // Concatenate the third part
     char *revTableNameTempStr = revConcatStrings(sql, revTableNameVal);
-    free(sql);  // Free the memory of the previous result
+    free(sql); // Free the memory of the previous result
     // free(revTableNameVal);
-    sql = revTableNameTempStr;  // Update the pointer
+    sql = revTableNameTempStr; // Update the pointer
     /** END SET THE TABLE NAME **/
 
-
     // Check for memory allocation failure
-    if (sql == NULL) {
+    if (sql == NULL)
+    {
         // Handle the error
         goto revEnd;
     }
@@ -184,21 +211,26 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     char *revSql_OR_Str = "";
 
-    if (cJSON_IsObject(revWhere_JSON)) {
+    if (cJSON_IsObject(revWhere_JSON))
+    {
         // Iterate over the items in the object
         cJSON *revWhere;
 
-        for (revWhere = revWhere_JSON->child; revWhere; revWhere = revWhere->next) {
+        for (revWhere = revWhere_JSON->child; revWhere; revWhere = revWhere->next)
+        {
             char *revCurrKey = revWhere->string;
 
-            if (revWhere->type == cJSON_String) {
+            if (revWhere->type == cJSON_String)
+            {
                 // Handle string type
                 char *revCurrVal = revWhere->valuestring;
 
                 const char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
 
-                if (revDBTableField != NULL && revDBTableField[0] != '\0') {
-                    if (revPreparedSQL[0] != '\0') {
+                if (revDBTableField != NULL && revDBTableField[0] != '\0')
+                {
+                    if (revPreparedSQL[0] != '\0')
+                    {
                         revPreparedSQL = revConcatStrings(revPreparedSQL, " AND ");
                     }
 
@@ -207,18 +239,23 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
                     // Add another element to the array
                     revStrArrLen++;
-                    revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                    revStrValsArr = (char **)realloc(revStrValsArr, revStrArrLen * sizeof(char *));
 
                     int revArrPos = revStrArrLen < 1 ? 0 : revStrArrLen - 1;
                     revStrValsArr[revArrPos] = strdup(revCurrVal);
-                } else {
-                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found : %s", (revDBTableField != NULL) ? strdup(revDBTableField) : "NULL");
                 }
-            } else if (revWhere->type == cJSON_Object) {
+                else
+                {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSubType value not found : %s", (revDBTableField != NULL) ? strdup(revDBTableField) : "NULL");
+                }
+            }
+            else if (revWhere->type == cJSON_Object)
+            {
                 // Iterate over the key-value pairs in the innerObject
                 cJSON *revQualifiedWhere = revWhere->child;
 
-                if (revQualifiedWhere == NULL) {
+                if (revQualifiedWhere == NULL)
+                {
                     continue;
                 }
 
@@ -229,10 +266,14 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
                 const char *revDBTableField = htable_strstr_get_direct(revMap, revCurrKey);
 
-                if (revDBTableField[0] != '\0') {
-                    if (revPreparedSQL[0] == '\0') {
+                if (revDBTableField[0] != '\0')
+                {
+                    if (revPreparedSQL[0] == '\0')
+                    {
                         revPreparedSQL = revConcatStrings(revPreparedSQL, revDBTableField);
-                    } else {
+                    }
+                    else
+                    {
                         revPreparedSQL = revConcatStrings(revPreparedSQL, " AND ");
                         revPreparedSQL = revConcatStrings(revPreparedSQL, revDBTableField);
                     }
@@ -242,85 +283,109 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                     revPreparedSQL = revConcatStrings(revPreparedSQL, " ?");
 
                     // Add another element to the array
-                    if (revQualifiedWhere->type == cJSON_String) {
+                    if (revQualifiedWhere->type == cJSON_String)
+                    {
                         revStrArrLen++;
 
                         const char *revQualifiedStrValue = cJSON_GetStringValue(revQualifiedWhere);
 
-                        revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                        revStrValsArr = (char **)realloc(revStrValsArr, revStrArrLen * sizeof(char *));
 
                         int revArrPos = revStrArrLen < 1 ? 0 : revStrArrLen - 1;
                         revStrValsArr[revArrPos] = strdup(revQualifiedStrValue);
-                    } else if (revQualifiedWhere->type == cJSON_Number) {
+                    }
+                    else if (revQualifiedWhere->type == cJSON_Number)
+                    {
                         long revQualifiedIntValue = revQualifiedWhere->valueint;
 
                         revIntWhereArrLen++;
-                        revIntWhereValsArr = (int **) realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
+                        revIntWhereValsArr = (int **)realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
 
                         int revArrPos = revIntWhereArrLen < 1 ? 0 : revIntWhereArrLen - 1;
                         revIntWhereValsArr[revArrPos] = revQualifiedIntValue;
                     }
-                } else {
-                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
                 }
-            } else if (revWhere->type == cJSON_Array) {
+                else
+                {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSubType value not found\n");
+                }
+            }
+            else if (revWhere->type == cJSON_Array)
+            {
                 char *revArrDBTableName = revCurrKey;
                 const char *revArrayElementDBTableName = htable_strstr_get_direct(revMap, revArrDBTableName);
 
                 // Handle array type
                 int revArrSize = cJSON_GetArraySize(revWhere);
 
-                for (int i = 0; i < revArrSize; i++) {
+                for (int i = 0; i < revArrSize; i++)
+                {
                     cJSON *revCurrArrayElement = cJSON_GetArrayItem(revWhere, i);
 
-                    if (i == 0) {
-                        if (revPreparedSQL[0] == '\0') {
+                    if (i == 0)
+                    {
+                        if (revPreparedSQL[0] == '\0')
+                        {
                             revSql_OR_Str = " (";
-                        } else {
+                        }
+                        else
+                        {
                             revSql_OR_Str = " AND (";
                         }
 
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, revArrayElementDBTableName);
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, " = ?");
-                    } else {
+                    }
+                    else
+                    {
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, " OR ");
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, revArrayElementDBTableName);
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, " = ?");
                     }
 
-                    if (i == revArrSize - 1) {
+                    if (i == revArrSize - 1)
+                    {
                         revSql_OR_Str = revConcatStrings(revSql_OR_Str, ")");
                     }
 
-                    if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL)) {
+                    if (cJSON_IsString(revCurrArrayElement) && (revCurrArrayElement->valuestring != NULL))
+                    {
                         char *revArrayElementVal = revCurrArrayElement->valuestring;
 
                         revStrArrLen = revStrArrLen + 1;
-                        revStrValsArr = (char **) realloc(revStrValsArr, revStrArrLen * sizeof(char *));
+                        revStrValsArr = (char **)realloc(revStrValsArr, revStrArrLen * sizeof(char *));
 
                         int revArrPos = revStrArrLen < 1 ? 0 : revStrArrLen - 1;
                         revStrValsArr[revArrPos] = revArrayElementVal;
-                    } else if (cJSON_IsNumber(revCurrArrayElement)) {
+                    }
+                    else if (cJSON_IsNumber(revCurrArrayElement))
+                    {
                         int revArrayElementVal = revCurrArrayElement->valueint;
 
                         revIntArrLen = revIntArrLen + 1;
-                        revIntValsArr = (int **) realloc(revIntValsArr, revIntArrLen * sizeof(int *));
+                        revIntValsArr = (int **)realloc(revIntValsArr, revIntArrLen * sizeof(int *));
 
                         int revArrPos = revIntArrLen < 1 ? 0 : revIntArrLen - 1;
                         revIntValsArr[revArrPos] = revArrayElementVal;
                     }
                 }
-            } else if (cJSON_IsNumber(revWhere)) {
+            }
+            else if (cJSON_IsNumber(revWhere))
+            {
                 // Handle string type
                 int revCurrIntVal = revWhere->valueint;
                 const char *revDBTableName = htable_strstr_get_direct(revMap, revCurrKey);
 
-                if (revDBTableName[0] != '\0') {
-                    if (revIntWhereFields[0] == '\0') {
+                if (revDBTableName[0] != '\0')
+                {
+                    if (revIntWhereFields[0] == '\0')
+                    {
                         revIntWhereFields = revConcatStrings(revIntWhereFields, " ");
                         revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
                         revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
-                    } else {
+                    }
+                    else
+                    {
                         revIntWhereFields = revConcatStrings(revIntWhereFields, " AND ");
                         revIntWhereFields = revConcatStrings(revIntWhereFields, revDBTableName);
                         revIntWhereFields = revConcatStrings(revIntWhereFields, " = ?");
@@ -328,12 +393,14 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
                     // Add another element to the array>>
                     revIntWhereArrLen = revIntWhereArrLen + 1;
-                    revIntWhereValsArr = (int **) realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
+                    revIntWhereValsArr = (int **)realloc(revIntWhereValsArr, revIntWhereArrLen * sizeof(int *));
 
                     int revArrPos = revIntWhereArrLen < 1 ? 0 : revIntWhereArrLen - 1;
                     revIntWhereValsArr[revArrPos] = revCurrIntVal;
-                } else {
-                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revEntitySubType value not found\n");
+                }
+                else
+                {
+                    __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revSubType value not found\n");
                 }
             }
         }
@@ -341,35 +408,44 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     revPreparedSQL = revConcatStrings(revPreparedSQL, revSql_OR_Str);
 
-    if (strcmp(revSelectWhere, revAll) != 0 && revPreparedSQL[0] != '\0') {
+    if (strcmp(revSelectWhere, revAll) != 0 && revPreparedSQL[0] != '\0')
+    {
         sql = revConcatStrings(sql, " WHERE ");
         sql = revConcatStrings(sql, revPreparedSQL);
     }
 
-    if (revIntWhereFields[0] != '\0') {
-        if (revSelectWhere[0] == '\0') {
+    if (revIntWhereFields[0] != '\0')
+    {
+        if (revSelectWhere[0] == '\0')
+        {
             sql = revConcatStrings(sql, revIntWhereFields);
-        } else {
+        }
+        else
+        {
             sql = revConcatStrings(sql, " AND ");
             sql = revConcatStrings(sql, revIntWhereFields);
         }
     }
 
     /** START SET ORDER BY **/
-    if (cJSON_HasObjectItem(revJSON, "revOrderBy")) {
+    if (cJSON_HasObjectItem(revJSON, "revOrderBy"))
+    {
         // Get the "revOrderBy" object from the root revJSON JSON object
         cJSON *revOrderByObject = cJSON_GetObjectItem(revJSON, "revOrderBy");
 
-        if (revOrderByObject != NULL && cJSON_IsObject(revOrderByObject)) {
+        if (revOrderByObject != NULL && cJSON_IsObject(revOrderByObject))
+        {
             cJSON *revOrderByTableColumn = cJSON_GetObjectItem(revOrderByObject, "revOrderByTableColumn");
             cJSON *revOrderByDirection = cJSON_GetObjectItem(revOrderByObject, "revOrderByDirection");
 
             if (revOrderByTableColumn != NULL && cJSON_IsString(revOrderByTableColumn) &&
-                revOrderByDirection != NULL && cJSON_IsString(revOrderByDirection)) {
+                revOrderByDirection != NULL && cJSON_IsString(revOrderByDirection))
+            {
                 const char *revOrderByTableColumnVal = revOrderByTableColumn->valuestring;
                 char *revOrderByTableColumnNameVal = htable_strstr_get_direct(revMap, revOrderByTableColumnVal);
 
-                if (revOrderByTableColumnNameVal != NULL && revOrderByTableColumnNameVal[0] != '\0') {
+                if (revOrderByTableColumnNameVal != NULL && revOrderByTableColumnNameVal[0] != '\0')
+                {
                     const char *revOrderByDirectionVal = revOrderByDirection->valuestring;
 
                     sql = revConcatStrings(sql, " ORDER BY ");
@@ -377,10 +453,14 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                     sql = revConcatStrings(sql, " ");
                     sql = revConcatStrings(sql, revOrderByDirectionVal);
                 }
-            } else {
+            }
+            else
+            {
                 printf("Invalid values within the 'person' object.\n");
             }
-        } else {
+        }
+        else
+        {
             printf("The 'person' object not found or is not an object.\n");
         }
     }
@@ -395,17 +475,20 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     int revBoundCount = 0;
 
-    for (int i = 0; i < revStrArrLen; i++) {
+    for (int i = 0; i < revStrArrLen; i++)
+    {
         revBoundCount = revBoundCount + 1;
-        sqlite3_bind_text(stmt, revBoundCount, (const char *) revStrValsArr[i], -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, revBoundCount, (const char *)revStrValsArr[i], -1, SQLITE_STATIC);
     }
 
-    for (int i = 0; i < revIntWhereArrLen; i++) {
+    for (int i = 0; i < revIntWhereArrLen; i++)
+    {
         revBoundCount = revBoundCount + 1;
         sqlite3_bind_int64(stmt, revBoundCount, revIntWhereValsArr[i]);
     }
 
-    for (int i = 0; i < revIntArrLen; i++) {
+    for (int i = 0; i < revIntArrLen; i++)
+    {
         revBoundCount = revBoundCount + 1;
         sqlite3_bind_int64(stmt, revBoundCount, revIntValsArr[i]);
     }
@@ -414,7 +497,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     // LIMIT
     const cJSON *revLimit_JSON = cJSON_GetObjectItemCaseSensitive(revJSON, "revLimit");
-    if (cJSON_IsNumber(revLimit_JSON) && (revLimit_JSON->valueint > 0)) {
+    if (cJSON_IsNumber(revLimit_JSON) && (revLimit_JSON->valueint > 0))
+    {
         revLimit = revLimit_JSON->valueint;
     }
 
@@ -423,7 +507,8 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
     char *revPrepStmt = sqlite3_expanded_sql(stmt);
     __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> revPrepStmt %s", revPrepStmt);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
 
         __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> SQL error : -revPersGetQuery_By_RevVarArgs %s", sqlite3_errmsg(db));
@@ -433,68 +518,74 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
         goto revEnd;
     }
 
-    if (rc == SQLITE_OK) {
+    if (rc == SQLITE_OK)
+    {
         int num_cols = sqlite3_column_count(stmt);
+        char **col_names = (char **)malloc(num_cols * sizeof(char *));
 
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", ">>> num_cols %d", num_cols);
-
-        char **col_names = (char **) malloc(num_cols * sizeof(char *));
-
-        for (int i = 0; i < num_cols; i++) {
+        for (int i = 0; i < num_cols; i++)
+        {
             col_names[i] = strdup(sqlite3_column_name(stmt, i));
         }
 
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
+        while (sqlite3_step(stmt) == SQLITE_ROW)
+        {
             cJSON *revCurrJsonObject = cJSON_CreateObject();
 
-            for (int i = 0; i < num_cols; i++) {
+            for (int i = 0; i < num_cols; i++)
+            {
                 const char **revColName = col_names[i];
                 const char *revMappedEntityColName = htable_strstr_get_direct(revMappedEntityColNameMap, revColName);
 
                 int revType = sqlite3_column_type(stmt, i);
 
-                switch (revType) {
-                    case SQLITE_INTEGER: {
-                        long revEntityIntPtrVal = sqlite3_column_int64(stmt, i);
-                        cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateNumber(revEntityIntPtrVal)); // Set the value using the member pointer address
+                switch (revType)
+                {
+                case SQLITE_INTEGER:
+                {
+                    long long revEntityIntPtrVal = sqlite3_column_int64(stmt, i);
+                    cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateNumber(revEntityIntPtrVal)); // Set the value using the member pointer address
 
-                        break;
-                    }
-                    case SQLITE_FLOAT:
-                        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "%.2f ", sqlite3_column_double(stmt, i));
-                        break;
-                    case SQLITE_TEXT: {
-                        const char *revEntityDbCharVal = strdup((const char *) sqlite3_column_text(stmt, i));  // The new string value you want to set
+                    break;
+                }
+                case SQLITE_FLOAT:
+                    __android_log_print(ANDROID_LOG_ERROR, "MyApp", "%.2f ", sqlite3_column_double(stmt, i));
+                    break;
+                case SQLITE_TEXT:
+                {
+                    const char *revEntityDbCharVal = strdup((const char *)sqlite3_column_text(stmt, i)); // The new string value you want to set
 
-                        // Allocate memory for the new string value
-                        char *revNewString = malloc(strlen(revEntityDbCharVal) + 1);  // +1 for the null terminator
+                    // Allocate memory for the new string value
+                    char *revNewString = malloc(strlen(revEntityDbCharVal) + 1); // +1 for the null terminator
 
-                        // Copy the new value to the dynamically allocated string
-                        strcpy(revNewString, revEntityDbCharVal);
+                    // Copy the new value to the dynamically allocated string
+                    strcpy(revNewString, revEntityDbCharVal);
 
-                        // Update the pointer to the string
-                        cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateString(revNewString)); // Set the value using the member pointer address
+                    // Update the pointer to the string
+                    cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateString(revNewString)); // Set the value using the member pointer address
 
-                        free(revNewString);
+                    free(revNewString);
 
-                        break;
-                    }
-                    case SQLITE_BLOB:
-                        __android_log_print(ANDROID_LOG_ERROR, "MyApp", "<BLOB> ");
-                        break;
-                    case SQLITE_NULL:
-                        __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> NULL <<<");
-                        break;
-                    default: {
-                        __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> DEFAULT <<<");
-                    }
+                    break;
+                }
+                case SQLITE_BLOB:
+                    __android_log_print(ANDROID_LOG_ERROR, "MyApp", "<BLOB> ");
+                    break;
+                case SQLITE_NULL:
+                    __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> NULL <<<");
+                    break;
+                default:
+                {
+                    __android_log_print(ANDROID_LOG_ERROR, "MyApp", ">>> DEFAULT <<<");
+                }
                 }
             }
 
             cJSON_AddItemToArray(revRetJSonArray, revCurrJsonObject);
         }
 
-        for (int i = 0; i < num_cols; i++) {
+        for (int i = 0; i < num_cols; i++)
+        {
             free(col_names[i]);
         }
 
@@ -511,7 +602,7 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
 
     // htable_strstr_destroy(revMap);
 
-    revEnd:
+revEnd:
 
     return revRetJSonArray;
 }

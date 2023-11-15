@@ -15,7 +15,7 @@ export const useRevCreateNewOrganizationAction = () => {
     revVarArgs,
     revPersCallBack,
   ) => {
-    revVarArgs['revEntitySubType'] = 'rev_organization';
+    revVarArgs['revSubType'] = 'rev_organization';
 
     const {revEntityNameVal, revEntityDescVal, revMainOrganizationIconPath} =
       revVarArgs;

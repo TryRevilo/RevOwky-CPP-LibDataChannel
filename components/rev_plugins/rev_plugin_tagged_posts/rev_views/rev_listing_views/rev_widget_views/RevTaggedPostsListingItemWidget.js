@@ -27,8 +27,7 @@ import {
   revGetEntityChildren_By_Subtype,
 } from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {
-  revTruncateString,
-  revSplitStringToArray,
+    revTruncateFullNamesString,
   revStringEmpty,
 } from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -75,18 +74,12 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revPublisherEntityNames = revGetMetadataValue(
     revPublisherInfoEntityMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
-  let revPublisherEntityNamesArr = revSplitStringToArray(
+  
+  let revPublisherEntityNames_Trunc = revTruncateFullNamesString(
     revPublisherEntityNames,
   );
-  let revPublisherEntityNamesFirst = revPublisherEntityNamesArr[0];
-  let revPublisherEntityNamesSecondInitial =
-    revPublisherEntityNamesArr[1].split('')[0];
-  let revPublisherEntityNames_Trunc =
-    revTruncateString(revPublisherEntityNamesFirst, 3, false) +
-    ' .' +
-    revPublisherEntityNamesSecondInitial;
 
   const [revIsCommetForm, setRevIsCommetForm] = useState(false);
 
@@ -111,7 +104,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revKiwiTxtVal = revGetMetadataValue(
     revInfoEntity._revMetadataList,
-    'revPostText',
+    'rev_entity_desc',
   );
 
   if (!revKiwiTxtVal) {
@@ -177,36 +170,27 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     revVarArgs: revVarArgs,
   });
 
-  const RevCreateImagesMediaView = revPicsAlbum => {
+  const RevCreateImagesMediaView = revPicsAlbum => {    
     let revImagesViews = [];
 
     let revPicsArr = revPicsAlbum._revChildrenList;
 
     for (let i = 0; i < revPicsArr.length; i++) {
-      let revPic = revPicsArr[i];
+      const {_revInfoEntity = {}} = revPicsArr[i];
 
-      let revEntityImageURI = revGetMetadataValue(
-        revPic._revMetadataList,
-        'rev_remote_file_name',
-      );
-
-      if (revVarArgs.hasOwnProperty('_fromRemote')) {
-        revEntityImageURI =
-          'file://' +
-          revSettings.revPublishedMediaDir +
-          '/' +
-          revEntityImageURI;
-      } else {
-        revEntityImageURI =
-          revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
+      if (!_revInfoEntity._revMetadataList) {
+        continue;
       }
 
-      let revLastImageStyle =
-        i == revPicsArr.length - 1
-          ? {
-              borderRightWidth: 0,
-            }
-          : null;
+      let revEntityImageURI = revGetMetadataValue(_revInfoEntity._revMetadataList,'rev_remote_file_name');
+
+      if (revVarArgs.hasOwnProperty('_fromRemote')) {
+        revEntityImageURI = 'file://' + revSettings.revPublishedMediaDir + '/' + revEntityImageURI;
+      } else {
+        revEntityImageURI = revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
+      }
+
+      let revLastImageStyle = i == revPicsArr.length - 1 ? {borderRightWidth: 0} : null;
 
       let revImage = (
         <TouchableOpacity

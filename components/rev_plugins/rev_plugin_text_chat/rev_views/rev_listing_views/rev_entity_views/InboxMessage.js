@@ -43,7 +43,7 @@ export default function InboxMessage({revVarArgs}) {
 
   let revPublisherEntityNames = revGetMetadataValue(
     revPublisherEntity._revInfoEntity._revMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
     revPublisherEntityNames,

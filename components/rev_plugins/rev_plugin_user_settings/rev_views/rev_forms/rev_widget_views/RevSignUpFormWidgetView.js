@@ -28,6 +28,7 @@ export const RevSignUpFormWidgetView = () => {
     const [revPassword1, setRevPassword1] = useState('');
     const [revPassword2, setRevUPassword2] = useState('');
     const [revEMail, setRevEMail] = useState('');
+    const [revPhoneNu, setRevPhoneNu] = useState('');
 
     const revHandleSignUpInTabPress = () => {
       revRegisterUserEntity({
@@ -36,6 +37,7 @@ export const RevSignUpFormWidgetView = () => {
         revPassword1: revPassword1.trim(),
         revPassword2: revPassword2.trim(),
         revEMail: revEMail.trim(),
+        revPhoneNu: revPhoneNu.trim(),
       });
     };
 
@@ -44,7 +46,7 @@ export const RevSignUpFormWidgetView = () => {
         style={[revSiteStyles.revFlexContainer, styles.revLoginFormContainer]}>
         <RevTextInput
           revVarArgs={{
-            revPlaceHolderTxt: 'Phone #',
+            revPlaceHolderTxt: 'username',
             revTextInputOnChangeCallBack: newText => {
               setRevUserId(newText);
             },
@@ -88,6 +90,18 @@ export const RevSignUpFormWidgetView = () => {
               revDefaultText: revEMail,
             }}
           />
+        </View>
+
+        <View style={{marginTop: 8}}>
+        <RevTextInput
+            revVarArgs={{
+            revPlaceHolderTxt: 'Phone # (optional)',
+            revTextInputOnChangeCallBack: newText => {
+                setRevPhoneNu(newText);
+            },
+            revDefaultText: revPhoneNu,
+            }}
+        />
         </View>
 
         <View

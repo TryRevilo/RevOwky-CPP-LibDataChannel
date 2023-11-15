@@ -34,7 +34,7 @@ export const useRevCreateCommentAction = () => {
     let revPersEntityGUID = -1;
 
     if (!revIsCommentUpdate) {
-      revVarArgs['revEntitySubType'] = 'rev_message';
+      revVarArgs['revSubType'] = 'rev_message';
 
       let revPersEntityInfoMetadataList = [
         REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),

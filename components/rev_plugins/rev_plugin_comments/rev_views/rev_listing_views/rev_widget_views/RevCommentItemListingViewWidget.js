@@ -76,7 +76,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
 
   let revPublisherEntityNames = revGetMetadataValue(
     revPublisherInfoEntityMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
     revSplitStringToArray(revPublisherEntityNames)[0],

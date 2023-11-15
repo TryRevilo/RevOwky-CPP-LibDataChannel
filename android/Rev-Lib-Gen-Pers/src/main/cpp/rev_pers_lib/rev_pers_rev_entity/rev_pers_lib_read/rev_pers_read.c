@@ -48,7 +48,7 @@ cJSON *revPersGetData_By_RevVarArgs(char *revTableName, char *revVarArgs) {
     return revJsonArr;
 }
 
-int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntitySubtype) {
+int revSubTypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revSubType) {
     int exists = -1;
 
     sqlite3 *db = revDb();
@@ -62,7 +62,7 @@ int revEntitySubtypeExists_BY_OWNER_GUID(int revEntityOwnerGUID, char *revEntity
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int64(stmt, 1, revEntityOwnerGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -160,7 +160,7 @@ long revPersGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID) {
     return revEntityOwnerGUID;
 }
 
-void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUID, char *revEntitySubType) {
+void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUID, char *revSubType) {
     list_new(revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
@@ -181,7 +181,7 @@ void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUI
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int64(stmt, 1, revSiteEntityGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubType, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -195,7 +195,7 @@ void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUI
         int revEntityAccessPermission = sqlite3_column_int(stmt, 4);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 5));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 6));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 6));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 7);
 
@@ -207,7 +207,7 @@ void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUI
         revEntity->_revSiteGUID = revSiteEntityGUID;
         revEntity->_revAccessPermission = revEntityAccessPermission;
         revEntity->_revType = revEntityType;
-        revEntity->_revSubType = revEntitySubType;
+        revEntity->_revSubType = revSubType;
         revEntity->_revTimeCreated = _revTimeCreated;
 
         list_append(revList, revEntity);
@@ -217,7 +217,7 @@ void revPersGetEntities_By_SiteGUID_SubType(list *revList, long revSiteEntityGUI
     sqlite3_close(db);
 }
 
-void revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(list *revList, const char *revDBTableFieldName_, long revSiteEntityGUID, const char *revEntitySubType) {
+void revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(list *revList, const char *revDBTableFieldName_, long revSiteEntityGUID, const char *revSubType) {
     htable_strstr_t *revMap = revGetEntityDB_Keys();
 
     list_new(revList, sizeof(long), NULL);
@@ -236,7 +236,7 @@ void revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(list *revList, co
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int64(stmt, 1, (long) revSiteEntityGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubType, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -341,7 +341,7 @@ long revPersGetLocalEntityGUID_BY_RemoteEntityGUID(long revRemoteEntityGUID) {
     return revLocalEntityGUID;
 }
 
-long revEntitySubtypeExists_BY_CONTAINER_GUID(int revEntityContainerGUID, char *revEntitySubtype) {
+long revSubTypeExists_BY_CONTAINER_GUID(int revContainerGUID, char *revSubType) {
     long exists = -1;
 
     sqlite3 *db = revDb();
@@ -353,8 +353,8 @@ long revEntitySubtypeExists_BY_CONTAINER_GUID(int revEntityContainerGUID, char *
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int64(stmt, 1, revEntityContainerGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_int64(stmt, 1, revContainerGUID);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -416,7 +416,7 @@ RevEntity revPersGetEntity_By_GUID(long revEntityGUID) {
         int revEntityAccessPermission = sqlite3_column_int(stmt, 6);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 7));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 8));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 8));
 
         long revTimeCreated = sqlite3_column_int64(stmt, 9);
         long revTimePublishedUpdated = sqlite3_column_int64(stmt, 10);
@@ -431,7 +431,7 @@ RevEntity revPersGetEntity_By_GUID(long revEntityGUID) {
         revEntity._revSiteGUID = revSiteEntityGUID;
         revEntity._revAccessPermission = revEntityAccessPermission;
         revEntity._revType = revEntityType;
-        revEntity._revSubType = revEntitySubType;
+        revEntity._revSubType = revSubType;
         revEntity._revTimeCreated = revTimeCreated;
         revEntity._revTimePublishedUpdated = revTimePublishedUpdated;
     }
@@ -479,7 +479,7 @@ RevEntity revPersGetEntity_By_RemoteEntityGUID(long revRemoteEntityGUID) {
         int revEntityAccessPermission = sqlite3_column_int(stmt, 5);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 6));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 7));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 7));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 8);
 
@@ -491,7 +491,7 @@ RevEntity revPersGetEntity_By_RemoteEntityGUID(long revRemoteEntityGUID) {
         revEntity._revSiteGUID = revSiteEntityGUID;
         revEntity._revAccessPermission = revEntityAccessPermission;
         revEntity._revType = revEntityType;
-        revEntity._revSubType = revEntitySubType;
+        revEntity._revSubType = revSubType;
 
         revEntity._revTimeCreated = _revTimeCreated;
     }
@@ -530,7 +530,7 @@ void revPersGetALLRevEntityGUIDs_By_revType(list *revList, char *revEntityType) 
     sqlite3_close(db);
 }
 
-void revPersGetALLRevEntityGUIDs_By_ContainerGUID(list *revList, long revEntityContainerGUID) {
+void revPersGetALLRevEntityGUIDs_By_ContainerGUID(list *revList, long revContainerGUID) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -543,7 +543,7 @@ void revPersGetALLRevEntityGUIDs_By_ContainerGUID(list *revList, long revEntityC
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revEntityContainerGUID);
+    sqlite3_bind_int(stmt, 1, revContainerGUID);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -594,7 +594,7 @@ void revPersGetALLRevEntityTYPE(list *revList, char *revEntityType) {
         int revEntityAccessPermission = sqlite3_column_int(stmt, 5);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 6));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 7));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 7));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 8);
 
@@ -607,7 +607,7 @@ void revPersGetALLRevEntityTYPE(list *revList, char *revEntityType) {
         revEntity->_revSiteGUID = revSiteEntityGUID;
         revEntity->_revAccessPermission = revEntityAccessPermission;
         revEntity->_revType = revEntityType;
-        revEntity->_revSubType = revEntitySubType;
+        revEntity->_revSubType = revSubType;
 
         revEntity->_revTimeCreated = _revTimeCreated;
 
@@ -618,7 +618,7 @@ void revPersGetALLRevEntityTYPE(list *revList, char *revEntityType) {
     sqlite3_close(db);
 }
 
-void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revEntityContainerGUID, char *revEntitySubType) {
+void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revContainerGUID, char *revSubType) {
     list_new(revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
@@ -638,8 +638,8 @@ void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revEntityCo
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int(stmt, 1, revEntityContainerGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubType, -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 1, revContainerGUID);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -653,7 +653,7 @@ void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revEntityCo
         int revEntityAccessPermission = sqlite3_column_int(stmt, 4);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 5));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 6));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 6));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 7);
 
@@ -665,7 +665,7 @@ void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revEntityCo
         revEntity->_revSiteGUID = revSiteEntityGUID;
         revEntity->_revAccessPermission = revEntityAccessPermission;
         revEntity->_revType = revEntityType;
-        revEntity->_revSubType = revEntitySubType;
+        revEntity->_revSubType = revSubType;
         revEntity->_revTimeCreated = _revTimeCreated;
 
         list_append(revList, revEntity);
@@ -675,7 +675,7 @@ void revPersGetEntities_By_ContainerGUID_SubTYPE(list *revList, long revEntityCo
     sqlite3_close(db);
 }
 
-void revPersGetEntities_By_SubType(list *revList, char *revEntitySubType) {
+void revPersGetEntities_By_SubType(list *revList, char *revSubType) {
     list_new(revList, sizeof(RevEntity), NULL);
 
     sqlite3 *db = revDb();
@@ -695,7 +695,7 @@ void revPersGetEntities_By_SubType(list *revList, char *revEntitySubType) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_text(stmt, 1, (const char *) revEntitySubType, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -709,7 +709,7 @@ void revPersGetEntities_By_SubType(list *revList, char *revEntitySubType) {
         int revEntityAccessPermission = sqlite3_column_int(stmt, 4);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 5));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 6));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 6));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 7);
 
@@ -721,7 +721,7 @@ void revPersGetEntities_By_SubType(list *revList, char *revEntitySubType) {
         revEntity->_revSiteGUID = revSiteEntityGUID;
         revEntity->_revAccessPermission = revEntityAccessPermission;
         revEntity->_revType = revEntityType;
-        revEntity->_revSubType = revEntitySubType;
+        revEntity->_revSubType = revSubType;
         revEntity->_revTimeCreated = _revTimeCreated;
 
         list_append(revList, revEntity);
@@ -787,7 +787,7 @@ void revPersGetALLrevRemoteEntityGUIDs_By_ResStatus(list *revList, int revResolv
     sqlite3_close(db);
 }
 
-void revPersGetEntityGUIDs_By_ResolveStatus_SubType(list *revList, int revResolveStatus, char *revEntitySubtype) {
+void revPersGetEntityGUIDs_By_ResolveStatus_SubType(list *revList, int revResolveStatus, char *revSubType) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -801,7 +801,7 @@ void revPersGetEntityGUIDs_By_ResolveStatus_SubType(list *revList, int revResolv
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int(stmt, 1, revResolveStatus);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: revPersGetEntityGUIDs_By_ResolveStatus_SubType %s",
@@ -856,7 +856,7 @@ void revPersGetALLRevEntityUnSyched(list *revList) {
             int revEntityAccessPermission = sqlite3_column_int(stmt, 6);
 
             char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 7));
-            char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 8));
+            char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 8));
 
             long _revTimeCreated = sqlite3_column_int64(stmt, 9);
 
@@ -870,7 +870,7 @@ void revPersGetALLRevEntityUnSyched(list *revList) {
             revEntity->_revSiteGUID = revSiteEntityGUID;
             revEntity->_revAccessPermission = revEntityAccessPermission;
             revEntity->_revType = revEntityType;
-            revEntity->_revSubType = revEntitySubType;
+            revEntity->_revSubType = revSubType;
             revEntity->_revTimeCreated = _revTimeCreated;
 
             list_append(revList, revEntity);
@@ -921,7 +921,7 @@ void revPersGetALLRevEntityUnSychedByType(list *revList, char *revEntityType) {
         int revEntityAccessPermission = sqlite3_column_int(stmt, 6);
 
         char *revEntityType = strdup((const char *) sqlite3_column_text(stmt, 7));
-        char *revEntitySubType = strdup((const char *) sqlite3_column_text(stmt, 8));
+        char *revSubType = strdup((const char *) sqlite3_column_text(stmt, 8));
 
         long _revTimeCreated = sqlite3_column_int64(stmt, 9);
 
@@ -935,7 +935,7 @@ void revPersGetALLRevEntityUnSychedByType(list *revList, char *revEntityType) {
         revEntity._revSiteGUID = revSiteEntityGUID;
         revEntity._revAccessPermission = revEntityAccessPermission;
         revEntity._revType = revEntityType;
-        revEntity._revSubType = revEntitySubType;
+        revEntity._revSubType = revSubType;
         revEntity._revTimeCreated = _revTimeCreated;
 
         list_append(revList, &revEntity);
@@ -945,7 +945,7 @@ void revPersGetALLRevEntityUnSychedByType(list *revList, char *revEntityType) {
     sqlite3_close(db);
 }
 
-void revPersGetALLEntitySubtypeGUIDsByOwnerGUID(list *revList, char *revEntitySubtype, long ownerGUID) {
+void revPersGetALLEntitySubtypeGUIDsByOwnerGUID(list *revList, char *revSubType, long ownerGUID) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -958,7 +958,7 @@ void revPersGetALLEntitySubtypeGUIDsByOwnerGUID(list *revList, char *revEntitySu
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_text(stmt, 1, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, (const char *) revSubType, -1, SQLITE_STATIC);
     sqlite3_bind_int64(stmt, 2, ownerGUID);
 
     if (rc != SQLITE_OK) {
@@ -1109,7 +1109,7 @@ int getNumberOfUnreadRevEntites() {
     return revUnreadEntities;
 }
 
-void revPersGetALLRevEntitySubTYPEs(list *revList, char *revEntitySubtype) {
+void revPersGetALLrevSubTypes(list *revList, char *revSubType) {
     list_new(revList, sizeof(long), NULL);
 
     sqlite3 *db = revDb();
@@ -1122,7 +1122,7 @@ void revPersGetALLRevEntitySubTYPEs(list *revList, char *revEntitySubtype) {
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_text(stmt, 1, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -1137,7 +1137,7 @@ void revPersGetALLRevEntitySubTYPEs(list *revList, char *revEntitySubtype) {
     sqlite3_close(db);
 }
 
-long revGetRevEntityGUID_By_revOwnerGUID_Subtype(int revEntityOwnerGUID, char *revEntitySubtype) {
+long revGetRevEntityGUID_By_revOwnerGUID_Subtype(int revEntityOwnerGUID, char *revSubType) {
     long revEntityGUID = (long) -1;
 
     struct sqlite3 *db = revDb();
@@ -1151,7 +1151,7 @@ long revGetRevEntityGUID_By_revOwnerGUID_Subtype(int revEntityOwnerGUID, char *r
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
     sqlite3_bind_int64(stmt, 1, revEntityOwnerGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -1165,7 +1165,7 @@ long revGetRevEntityGUID_By_revOwnerGUID_Subtype(int revEntityOwnerGUID, char *r
     return revEntityGUID;
 }
 
-long revGetRevEntityGUID_By_revContainerGUID_Subtype(int revEntityContainerGUID, char *revEntitySubtype) {
+long revGetRevEntityGUID_By_revContainerGUID_Subtype(int revContainerGUID, char *revSubType) {
     long revEntityGUID = (long) -1;
 
     struct sqlite3 *db = revDb();
@@ -1178,8 +1178,8 @@ long revGetRevEntityGUID_By_revContainerGUID_Subtype(int revEntityContainerGUID,
 
     int rc = sqlite3_prepare(db, sql, -1, &stmt, 0);
 
-    sqlite3_bind_int64(stmt, 1, revEntityContainerGUID);
-    sqlite3_bind_text(stmt, 2, (const char *) revEntitySubtype, -1, SQLITE_STATIC);
+    sqlite3_bind_int64(stmt, 1, revContainerGUID);
+    sqlite3_bind_text(stmt, 2, (const char *) revSubType, -1, SQLITE_STATIC);
 
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
@@ -1229,7 +1229,7 @@ char *revGetRevEntityType_By_revGUID(int revEntityGUID) {
     return NULL;
 }
 
-char *revGetRevEntitySubType_By_revGUID(int revEntityGUID) {
+char *revGetrevSubType_By_revGUID(int revEntityGUID) {
     struct sqlite3 *db = revDb();
 
     struct sqlite3_stmt *stmt;

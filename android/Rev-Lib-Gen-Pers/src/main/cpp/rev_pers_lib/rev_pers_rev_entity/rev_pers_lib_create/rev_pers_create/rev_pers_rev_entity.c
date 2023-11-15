@@ -20,13 +20,13 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
     long revEntityResolveStatus = revEntity->_revResolveStatus;
     long revEntityChildableStatus = revEntity->_revChildableStatus;
     long revEntityOwnerGUID = revEntity->_revOwnerGUID;
-    long revEntityContainerGUID = revEntity->_revContainerGUID;
+    long revContainerGUID = revEntity->_revContainerGUID;
     long revEntitySiteGUID = revEntity->_revSiteGUID;
 
     int revEntityAccessPermission = revEntity->_revAccessPermission;
 
     char *revEntityType = revEntity->_revType;
-    char *revEntitySubType = revEntity->_revSubType;
+    char *revSubType = revEntity->_revSubType;
 
     long _revTimeCreated = revCurrentTimestampMillSecs();
     long _revTimePublished = revEntity->_revTimePublished;
@@ -55,11 +55,11 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
             "@revEntityResolveStatus, "
             "@_revChildableStatus, "
             "@revEntityOwnerGUID, "
-            "@revEntityContainerGUID, "
+            "@revContainerGUID, "
             "@revEntitySiteGUID, "
             "@revEntityAccessPermission, "
             "@revEntityType, "
-            "@revEntitySubType, "
+            "@revSubType, "
             "@_revTimeCreated, "
             "@_revTimePublished, "
             "@_revTimePublishedUpdated);";
@@ -79,8 +79,8 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
         int revEntityOwnerGUID_idx = sqlite3_bind_parameter_index(stmt, "@revEntityOwnerGUID");
         sqlite3_bind_int64(stmt, revEntityOwnerGUID_idx, revEntityOwnerGUID);
 
-        int revEntityContainerGUID_idx = sqlite3_bind_parameter_index(stmt, "@revEntityContainerGUID");
-        sqlite3_bind_int64(stmt, revEntityContainerGUID_idx, revEntityContainerGUID);
+        int revContainerGUID_idx = sqlite3_bind_parameter_index(stmt, "@revContainerGUID");
+        sqlite3_bind_int64(stmt, revContainerGUID_idx, revContainerGUID);
 
         int revEntitySiteGUID_idx = sqlite3_bind_parameter_index(stmt, "@revEntitySiteGUID");
         sqlite3_bind_int64(stmt, revEntitySiteGUID_idx, revEntitySiteGUID);
@@ -91,8 +91,8 @@ long revPersSaveRevEntity(RevEntity *revEntity) {
         int revEntityType_idx = sqlite3_bind_parameter_index(stmt, "@revEntityType");
         sqlite3_bind_text(stmt, revEntityType_idx, revEntityType, -1, SQLITE_STATIC);
 
-        int revEntitySubType_idx = sqlite3_bind_parameter_index(stmt, "@revEntitySubType");
-        sqlite3_bind_text(stmt, revEntitySubType_idx, revEntitySubType, -1, SQLITE_STATIC);
+        int revSubType_idx = sqlite3_bind_parameter_index(stmt, "@revSubType");
+        sqlite3_bind_text(stmt, revSubType_idx, revSubType, -1, SQLITE_STATIC);
 
         int _revTimeCreated_idx = sqlite3_bind_parameter_index(stmt, "@_revTimeCreated");
         sqlite3_bind_int64(stmt, _revTimeCreated_idx, _revTimeCreated);

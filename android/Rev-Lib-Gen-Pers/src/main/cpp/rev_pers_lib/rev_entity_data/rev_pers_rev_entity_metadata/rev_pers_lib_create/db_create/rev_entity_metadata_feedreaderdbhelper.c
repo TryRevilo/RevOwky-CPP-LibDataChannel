@@ -25,8 +25,6 @@ int revTableCreate_REV_ENTITY_METADATA() {
           "METADATA_ENTITY_GUID   INTEGER      NOT NULL,"
           "METADATA_NAME     TEXT     NOT NULL,"
           "METADATA_VALUE     TEXT     NOT NULL,"
-          "CREATED_DATE            TEXT     NOT NULL,"
-          "UPDATED_DATE           TEXT     NOT NULL,"
           "REV_CREATED_DATE INTEGER NOT NULL,"
           "REV_PUBLISHED_DATE INTEGER NOT NULL,"
           "REV_UPDATED_DATE INTEGER NOT NULL);";

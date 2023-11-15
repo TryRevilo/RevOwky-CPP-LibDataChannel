@@ -15,11 +15,11 @@ public class RevPersLibRead {
 
     public native long revPersGetEntityOwnerGUID_BY_EntityGUID(long revEntityGUID);
 
-    public native RevEntity[] revPersGetEntities_By_SiteGUID_SubType(long revSiteEntityGUID, String revEntitySubType);
+    public native RevEntity[] revPersGetEntities_By_SiteGUID_SubType(long revSiteEntityGUID, String revSubType);
 
-    public native List<Long> revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, long revSiteEntityGUID, String revEntitySubType);
+    public native List<Long> revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, long revSiteEntityGUID, String revSubType);
 
-    public native RevEntity[] revPersGetEntities_By_SubType(String revEntitySubType);
+    public native RevEntity[] revPersGetEntities_By_SubType(String revSubType);
 
     public native List revPersQuery_By_RevVarArgs(String revTableName, String revVarArgs);
 
@@ -31,13 +31,13 @@ public class RevPersLibRead {
 
     public native long revPersGetLocalEntityGUID_BY_RemoteEntityGUID(long revRemoteEntityGUID);
 
-    public native RevEntity revPersGetEntity_By_OwnerGUID_Subtype(long revEntityOwnerGUID, String revEntitySubtype);
+    public native RevEntity revPersGetEntity_By_OwnerGUID_Subtype(long revEntityOwnerGUID, String revSubType);
 
     public native List<Long> revPersGetEntityGUIDs_By_ResStatus(int revResolveStatus);
 
-    public native List<Long> revPersGetEntityGUIDs_By_ResolveStatus_SubType(int revResolveStatus, String revEntitySubtype);
+    public native List<Long> revPersGetEntityGUIDs_By_ResolveStatus_SubType(int revResolveStatus, String revSubType);
 
-    public native RevEntity[] revPersGetEntities_By_ContainerGUID_SubTYPE(long revEntityContainerGUID, String revEntitySubType);
+    public native RevEntity[] revPersGetEntities_By_ContainerGUID_SubTYPE(long revContainerGUID, String revSubType);
 
     /**
      * RELATIONSHIPS

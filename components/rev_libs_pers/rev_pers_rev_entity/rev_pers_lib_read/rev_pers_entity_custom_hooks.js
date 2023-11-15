@@ -28,12 +28,12 @@ export function useRevPersGetRevEnty_By_EntityGUID() {
 export function userevPersGetEntities_By_SiteGUID_SubType() {
   const revPersGetEntities_By_SiteGUID_SubType = (
     revSiteEntityGUID,
-    revEntitySubType,
+    revSubType,
   ) => {
     let revEntitiesStr =
       RevPersLibRead_React.revPersGetEntities_By_SiteGUID_SubType(
         revSiteEntityGUID,
-        revEntitySubType,
+        revSubType,
       );
     return JSON.parse(revEntitiesStr);
   };
@@ -45,13 +45,13 @@ export function useRevPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE() {
   const revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE = (
     revDBTableFieldName,
     revSiteEntityGUID,
-    revEntitySubType,
+    revSubType,
   ) => {
     let revEntitiesStr =
       RevPersLibRead_React.revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(
         revDBTableFieldName,
         revSiteEntityGUID,
-        revEntitySubType,
+        revSubType,
       );
     return JSON.parse(revEntitiesStr);
   };
@@ -120,12 +120,12 @@ export function revPersGetEntityGUIDs_By_ResStatus(revResStatus) {
 export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
   const revPersGetRevEntities_By_ResolveStatus_SubType = (
     revResStatus,
-    revEntitySubType,
+    revSubType,
   ) => {
     let revUnresolvedEntityGUIDsStr =
       RevPersLibRead_React.revPersGetEntityGUIDs_By_ResolveStatus_SubType(
         revResStatus,
-        revEntitySubType,
+        revSubType,
       );
 
     return revPersGetRevEntities_By_EntityGUIDsArr(
@@ -261,9 +261,9 @@ export function revPersGetFilledRevEntity_By_GUID(revEntityGUID) {
   return revEntity;
 }
 
-export function useRevPersGetALLFilledRevEntity_By_SubType(revEntitySubType) {
+export function useRevPersGetALLFilledRevEntity_By_SubType(revSubType) {
   let revEntitiesStr =
-    RevPersLibRead_React.revPersGetEntities_By_SubType(revEntitySubType);
+    RevPersLibRead_React.revPersGetEntities_By_SubType(revSubType);
 
   let revEntitiesArr = JSON.parse(revEntitiesStr);
 

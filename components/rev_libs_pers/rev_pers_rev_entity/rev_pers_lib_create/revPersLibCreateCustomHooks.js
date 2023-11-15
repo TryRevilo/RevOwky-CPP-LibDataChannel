@@ -100,25 +100,29 @@ var usRevSetNewRemoteFile = () => {
 export const useRevSetFileObject = () => {
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const revSetFileObject = (
-    revEntitySubType,
-    revEntityContainerGUID,
-    revFileName,
-  ) => {
+  const revSetFileObject = (revSubType, revContainerGUID, revFileName) => {
     let revFileEntity = REV_ENTITY_STRUCT();
     revFileEntity._revResolveStatus = -1;
     revFileEntity._revType = 'rev_object';
-    revFileEntity._revSubType = revEntitySubType;
+    revFileEntity._revSubType = revSubType;
     revFileEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
-    revFileEntity._revContainerGUID = revEntityContainerGUID;
+    revFileEntity._revContainerGUID = revContainerGUID;
     revFileEntity._revTimeCreated = new Date().getTime();
     revFileEntity._revChildableStatus = 2;
 
-    let revFileEntityMetadataList = [
-      REV_METADATA_FILLER('rev_remote_file_name', revFileName),
-    ];
+    let revFileInfoEntity = REV_ENTITY_STRUCT();
+    revFileInfoEntity._revResolveStatus = 0;
+    revFileInfoEntity._revType = "rev_object";
+    revFileInfoEntity._revSubType = 'rev_entity_info';
+    revFileInfoEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
+    revFileInfoEntity._revTimeCreated = new Date().getTime();
+    revFileInfoEntity._revChildableStatus = 2;
 
-    revFileEntity._revMetadataList = revFileEntityMetadataList;
+    revFileInfoEntity._revMetadataList = [
+        REV_METADATA_FILLER('rev_remote_file_name', revFileName),
+      ];
+
+    revFileEntity._revInfoEntity = revFileInfoEntity;
 
     return revFileEntity;
   };
@@ -159,13 +163,10 @@ export const useRevCreateMediaAlbum = () => {
   const {revSetNewRemoteFile} = usRevSetNewRemoteFile();
   const {revSetFileObject} = useRevSetFileObject();
 
-  const revCreateMediaAlbum = async (
-    revEntityContainerGUID,
-    revFileObjectsArr,
-  ) => {
+  const revCreateMediaAlbum = async (revContainerGUID, revFileObjectsArr) => {
     let revPicAlbumEntityGUID = revPersGetSubjectGUID_BY_RelStr_TargetGUID(
       'rev_pics_album_of',
-      revEntityContainerGUID,
+      revContainerGUID,
     );
 
     if (revPicAlbumEntityGUID < 1) {
@@ -175,7 +176,7 @@ export const useRevCreateMediaAlbum = () => {
       revPicAlbumObject._revType = 'rev_object';
       revPicAlbumObject._revSubType = 'rev_pics_album';
       revPicAlbumObject._revOwnerGUID = REV_LOGGED_IN_ENTITY_GUID;
-      revPicAlbumObject.revEntityContainerGUID = revEntityContainerGUID;
+      revPicAlbumObject.revContainerGUID = revContainerGUID;
       revPicAlbumObject._revTimeCreated = new Date().getTime();
 
       revPicAlbumEntityGUID = revCreateNewEntity(revPicAlbumObject);
@@ -187,7 +188,7 @@ export const useRevCreateMediaAlbum = () => {
       /** START CREATE PICS ALBUM REL */
       let revPicsAlbumRel = REV_ENTITY_RELATIONSHIP_STRUCT();
       revPicsAlbumRel._revType = 'rev_pics_album_of';
-      revPicsAlbumRel._revTargetGUID = revEntityContainerGUID;
+      revPicsAlbumRel._revTargetGUID = revContainerGUID;
       revPicsAlbumRel._revSubjectGUID = revPicAlbumEntityGUID;
 
       let revPicsAlbumRelId = RevPersLibCreate_React.revPersRelationshipJSON(
@@ -252,9 +253,11 @@ export const useRevCreateMediaAlbum = () => {
       revEntityFileObject._revMetadataList.push(
         REV_METADATA_FILLER(revFileType, revFileType),
       );
+
       revEntityFileObject._revMetadataList.push(
         REV_METADATA_FILLER('revFileName', revFile.name),
       );
+      
       revEntityFileObject._revMetadataList.push(
         REV_METADATA_FILLER('revFileSize', revFile.size.toString()),
       );
@@ -287,7 +290,7 @@ export const useRevCreateMediaAlbum = () => {
           let revCurrEntityIconGUIDsArr =
             revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
               'rev_entity_icon_of',
-              revEntityContainerGUID,
+              revContainerGUID,
             );
 
           if (revCurrEntityIconGUIDsArr.length) {
@@ -303,7 +306,7 @@ export const useRevCreateMediaAlbum = () => {
 
           let revMainEntityIconRel = REV_ENTITY_RELATIONSHIP_STRUCT();
           revMainEntityIconRel._revType = 'rev_entity_icon_of';
-          revMainEntityIconRel._revTargetGUID = revEntityContainerGUID;
+          revMainEntityIconRel._revTargetGUID = revContainerGUID;
           revMainEntityIconRel._revSubjectGUID = revPersFileEntityGUID;
 
           RevPersLibCreate_React.revPersRelationshipJSON(
@@ -314,7 +317,7 @@ export const useRevCreateMediaAlbum = () => {
         if ('revEntityBannerIcon' in revFile) {
           let revEntityBannerIconRel = REV_ENTITY_RELATIONSHIP_STRUCT();
           revEntityBannerIconRel._revType = 'rev_entity_banner_icon_of';
-          revEntityBannerIconRel._revTargetGUID = revEntityContainerGUID;
+          revEntityBannerIconRel._revTargetGUID = revContainerGUID;
           revEntityBannerIconRel._revSubjectGUID = revPersFileEntityGUID;
 
           RevPersLibCreate_React.revPersRelationshipJSON(
@@ -377,7 +380,7 @@ export const useRevCreateNewTag = () => {
       return revSavedTagMetadata._revGUID;
     }
 
-    revVarArgs['revEntitySubType'] = 'rev_tag';
+    revVarArgs['revSubType'] = 'rev_tag';
     revVarArgs['revEntityOwnerGUID'] = REV_LOGGED_IN_ENTITY_GUID;
 
     let revPersEntityInfoMetadataList = [
@@ -420,19 +423,11 @@ export const useRevSaveNewEntity = () => {
       return;
     }
 
-    if (
-      !revVarArgs.hasOwnProperty(
-        'revEntityOwnerGUID' || revVarArgs.revEntityOwnerGUID < 1,
-      )
-    ) {
+    if (!revVarArgs.hasOwnProperty('revEntityOwnerGUID' || revVarArgs.revEntityOwnerGUID < 1)) {
       return -1;
     }
 
-    if (
-      !revVarArgs.hasOwnProperty(
-        'revEntitySubType' || revIsEmptyVar(revVarArgs._revSubType),
-      )
-    ) {
+    if (!revVarArgs.hasOwnProperty('revSubType' || revIsEmptyVar(revVarArgs._revSubType))) {
       return -1;
     }
 
@@ -504,7 +499,7 @@ export const useRevSaveNewEntity = () => {
 
       let revPersEntityData = REV_ENTITY_STRUCT();
       revPersEntityData._revType = 'rev_object';
-      revPersEntityData._revSubType = revVarArgs.revEntitySubType;
+      revPersEntityData._revSubType = revVarArgs.revSubType;
       revPersEntityData._revOwnerGUID = revEntityOwnerGUID;
       revPersEntityData._revContainerGUID =
         'revContainerEntityGUID' in revVarArgs &&

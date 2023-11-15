@@ -108,7 +108,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
 
   let revFullNames = revGetMetadataValue(
     revInfoEntityMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
   let revEntityDesc = revGetMetadataValue(
     revInfoEntityMetadataList,

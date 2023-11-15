@@ -74,10 +74,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetEntities_By_SiteGUID_SubType(Integer revSiteEntityGUID, String revEntitySubType) {
+    public String revPersGetEntities_By_SiteGUID_SubType(Integer revSiteEntityGUID, String revSubType) {
         String revEntitiesStr = "[]";
 
-        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_SiteGUID_SubType(revSiteEntityGUID, revEntitySubType);
+        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_SiteGUID_SubType(revSiteEntityGUID, revSubType);
 
         if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
@@ -85,17 +85,17 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, Integer revSiteEntityGUID, String revEntitySubType) {
-        List<Long> revEntityGUIDs = revPersLibRead.revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(revDBTableFieldName, revSiteEntityGUID, revEntitySubType);
+    public String revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(String revDBTableFieldName, Integer revSiteEntityGUID, String revSubType) {
+        List<Long> revEntityGUIDs = revPersLibRead.revPersGet_ALL_UNIQUE_GUIDs_By_FieldName_SiteGUID_SubTYPE(revDBTableFieldName, revSiteEntityGUID, revSubType);
 
         return revEntityGUIDs.toString();
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetEntities_By_ContainerGUID_SubTYPE(Integer revEntityGUID, String revEntitySubType) {
+    public String revPersGetEntities_By_ContainerGUID_SubTYPE(Integer revEntityGUID, String revSubType) {
         String revEntitiesStr = "[]";
 
-        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_ContainerGUID_SubTYPE(revEntityGUID, revEntitySubType);
+        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_ContainerGUID_SubTYPE(revEntityGUID, revSubType);
 
         if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
@@ -117,10 +117,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetEntities_By_SubType(String revEntitySubType) {
+    public String revPersGetEntities_By_SubType(String revSubType) {
         String revEntitiesStr = "[]";
 
-        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_SubType(revEntitySubType);
+        RevEntity[] revEntities = revPersLibRead.revPersGetEntities_By_SubType(revSubType);
 
         if (revEntities.length > 0) revEntitiesStr = new RevJSONEntityConstructor().revObjectSerializer(revEntities);
 
@@ -154,10 +154,10 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetEntity_By_OwnerGUID_Subtype(Integer revEntityOwnerGUID, String revEntitySubtype) {
+    public String revPersGetEntity_By_OwnerGUID_Subtype(Integer revEntityOwnerGUID, String revSubType) {
         String revEntityStr = "{}";
 
-        RevEntity revEntity = revPersLibRead.revPersGetEntity_By_OwnerGUID_Subtype(revEntityOwnerGUID, revEntitySubtype);
+        RevEntity revEntity = revPersLibRead.revPersGetEntity_By_OwnerGUID_Subtype(revEntityOwnerGUID, revSubType);
 
         if (revEntity != null) revEntityStr = new RevJSONEntityConstructor().revObjectSerializer(revEntity);
 
@@ -172,8 +172,8 @@ public class RevPersLibRead_React extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
-    public String revPersGetEntityGUIDs_By_ResolveStatus_SubType(Integer revResolveStatus, String revEntitySubtype) {
-        List<Long> revEntityGUIDs = revPersLibRead.revPersGetEntityGUIDs_By_ResolveStatus_SubType(revResolveStatus, revEntitySubtype);
+    public String revPersGetEntityGUIDs_By_ResolveStatus_SubType(Integer revResolveStatus, String revSubType) {
+        List<Long> revEntityGUIDs = revPersLibRead.revPersGetEntityGUIDs_By_ResolveStatus_SubType(revResolveStatus, revSubType);
 
         return revEntityGUIDs.toString();
     }

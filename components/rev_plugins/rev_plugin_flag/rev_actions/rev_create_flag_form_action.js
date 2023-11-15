@@ -38,7 +38,7 @@ export const useRevCreateFlagFormAction = () => {
     let revPersEntityGUID = revFlagEntityGUID;
 
     if (revPersEntityGUID < 0) {
-      revVarArgs['revEntitySubType'] = 'rev_flag_val';
+      revVarArgs['revSubType'] = 'rev_flag_val';
 
       revVarArgs['revPersEntityInfoMetadataList'] = [];
 

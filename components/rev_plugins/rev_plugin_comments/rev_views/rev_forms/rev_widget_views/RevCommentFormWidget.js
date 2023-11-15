@@ -86,7 +86,7 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
 
     revCommentTxtVal = revGetMetadataValue(
       revInfoEntity._revMetadataList,
-      'revPostText',
+      'rev_entity_desc',
     );
   }
 

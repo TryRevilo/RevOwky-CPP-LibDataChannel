@@ -29,6 +29,8 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
+  const {revGetData} = revVarArgs;
+
   if (
     revIsEmptyJSONObject(revVarArgs) ||
     !revVarArgs.hasOwnProperty('revTimelineEntities') ||
@@ -71,10 +73,9 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       revLastEntityGUID = revLastEntity._revGUID;
     }
 
-    revVarArgs
-      .revGetData(revLastEntityGUID, REV_INCREMENTALS)
+    revGetData(revLastEntityGUID, REV_INCREMENTALS)
       .then(revRetData => {
-        if (revRetData.length) {
+        if (Array.isArray(revRetData) && revRetData.length) {
           setRevListingData(prev => {
             let revNewArr = [...prev, ...revRetData];
 

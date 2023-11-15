@@ -12,7 +12,7 @@ export const useRevEditUserInfoFormAction = () => {
   const {revSaveNewEntity} = useRevSaveNewEntity();
 
   const revEditUserInfoFormAction = async (revVarArgs, revPersCallBack) => {
-    revVarArgs['revEntitySubType'] = 'rev_user_info';
+    revVarArgs['revSubType'] = 'rev_user_info';
 
     const {
       revEntityNameVal,
@@ -31,7 +31,7 @@ export const useRevEditUserInfoFormAction = () => {
     }
 
     let revPersEntityInfoMetadataList = [
-      REV_METADATA_FILLER('rev_full_names', revEntityNameVal),
+      REV_METADATA_FILLER('rev_entity_name', revEntityNameVal),
       REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
       REV_METADATA_FILLER('rev_about_entity_info', revAboutEntityInfo),
       REV_METADATA_FILLER('rev_main_entity_icon_val', revMainEntityIconPath),

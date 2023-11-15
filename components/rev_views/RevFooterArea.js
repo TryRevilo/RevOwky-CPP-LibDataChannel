@@ -9,18 +9,17 @@ import {
 } from 'react-native';
 
 import DocumentPicker from 'react-native-document-picker';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../rev_plugins_loader';
 import {revGetServerData_JSON} from '../rev_libs_pers/rev_server/rev_pers_lib_read';
-import {
-  useRevPersQuery_By_RevVarArgs,
-  revPersGetFilledRevEntity_By_GUID,
-  revPersGetRevEntities_By_EntityGUIDsArr,
-} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {useRevPersQuery_By_RevVarArgs, revPersGetFilledRevEntity_By_GUID, revPersGetRevEntities_By_EntityGUIDsArr,} from '../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import RevVideoCallModal from '../rev_plugins/rev_plugin_video_call/rev_views/rev_object_views/rev_wideget_views/RevVideoCallModal';
 
@@ -163,32 +162,28 @@ function RevFooterArea() {
       });
   };
 
-  let revHandleTaggedPostsTabPress = () => {
+  let revHandleTaggedPostsTabPress = async () => {
     /**** */
-    let revURL =
-      REV_ROOT_URL +
-      '/rev_api?' +
-      'rev_logged_in_entity_guid=' +
-      REV_LOGGED_IN_ENTITY_GUID +
-      '&rev_entity_guid=' +
-      -1 +
-      '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
+    let revURL = REV_ROOT_URL + '/rev_api?' + 'rev_logged_in_entity_guid=' + REV_LOGGED_IN_ENTITY_GUID + '&rev_entity_guid=' + -1 + '&revPluginHookContextsRemoteArr=revHookRemoteHandlerReadOwkyTimelineEntities';
 
-    revGetServerData_JSON(revURL, revRetData => {
-      revRetData['revGetData'] = revLastGUID => {};
-
-      if (revRetData.hasOwnProperty('revError')) {
-        revLoadLocalDataView();
-      } else {
-        let revTaggedPostsListing = revPluginsLoader({
-          revPluginName: 'rev_plugin_tagged_posts',
-          revViewName: 'RevTaggedPostsListing',
-          revVarArgs: revRetData,
-        });
-
-        SET_REV_SITE_BODY(revTaggedPostsListing);
+      try {
+        let revRetData = await revGetServerData_JSON(revURL);
+        revRetData['revGetData'] = async revLastGUID => {return null};
+        
+        if (revRetData.hasOwnProperty('revError')) {
+          revLoadLocalDataView();
+        } else {
+          let revTaggedPostsListing = revPluginsLoader({
+            revPluginName: 'rev_plugin_tagged_posts',
+            revViewName: 'RevTaggedPostsListing',
+            revVarArgs: revRetData,
+          });
+    
+          SET_REV_SITE_BODY(revTaggedPostsListing);
+        }
+      } catch (error) {
+        console.log('>>> Error - revHandleTaggedPostsTabPress', error);
       }
-    });
   };
 
   const revHandleGetSiteUsersTabPress = async () => {
@@ -297,6 +292,24 @@ function RevFooterArea() {
         />
       </TouchableOpacity>
 
+      <MaterialIcons
+        name="stream"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtNormal,
+          styles.revChannelOptionItem,
+        ]}
+      />
+
+      <MaterialCommunityIcons
+        name="select-group"
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtLarge,
+          styles.revChannelOptionItem,
+        ]}
+      />
+
       <TouchableOpacity
         onPress={() => {
           handleDocumentSelection();
@@ -311,23 +324,6 @@ function RevFooterArea() {
             styles.revChannelOptionItem,
           ]}></FontAwesome>
       </TouchableOpacity>
-
-      <FontAwesome
-        name="object-ungroup"
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-          styles.revChannelOptionItem,
-        ]}
-      />
-      <FontAwesome
-        name="asterisk"
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-          styles.revChannelOptionItem,
-        ]}
-      />
 
       <TouchableOpacity onPress={handleRevShowUserAdsTabPress}>
         <Text

@@ -16,9 +16,9 @@ import {useRevSiteStyles} from './RevSiteStyles';
 
 import RevWalledGarden from './RevWalledGarden';
 import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
+import { useRevPersSyncDataComponent } from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
-import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 const {RevPersLibCreate_React} = NativeModules;
 
@@ -30,9 +30,8 @@ const RevSiteLoading = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [revPageReady, setRevPageReady] = useState(false);
 
-  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} =
-    useContext(RevSiteDataContext);
-
+  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} = useContext(RevSiteDataContext);
+  
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   let revAppRootDir = revSettings.revAppRootDir;
@@ -66,15 +65,6 @@ const RevSiteLoading = () => {
     </View>,
   );
 
-  const revSync = async () => {
-    let revRetData = await revPersSyncDataComponent();
-    console.log('>>> revRetData', JSON.stringify(revRetData));
-  };
-
-  useEffect(() => {
-    revSync();
-  }, [REV_SITE_ENTITY_GUID]);
-
   useEffect(() => {
     if (Platform.OS === 'android') {
       StatusBar.setBarStyle('dark-content');
@@ -95,6 +85,8 @@ const RevSiteLoading = () => {
       SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
       setIsLoading(false);
     }, 1000);
+
+    revPersSyncDataComponent();
   }, [revPageReady]);
 
   setTimeout(() => {

@@ -40,7 +40,7 @@ export const useRevCreateNewTagFormAction = () => {
       return revSavedTagMetadata._revGUID;
     }
 
-    revVarArgs['revEntitySubType'] = 'rev_tag';
+    revVarArgs['revSubType'] = 'rev_tag';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revEntityNameValPers),

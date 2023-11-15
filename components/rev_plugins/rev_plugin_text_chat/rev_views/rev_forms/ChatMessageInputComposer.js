@@ -222,7 +222,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
     let revFullNames = revGetMetadataValue(
       revInfoEntity._revMetadataList,
-      'rev_full_names',
+      'rev_entity_name',
     );
 
     return (
@@ -344,7 +344,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
       let revInfoEntity = revActivePeerEntity._revInfoEntity;
       revFullNames = revGetMetadataValue(
         revInfoEntity._revMetadataList,
-        'rev_full_names',
+        'rev_entity_name',
       );
     }
 

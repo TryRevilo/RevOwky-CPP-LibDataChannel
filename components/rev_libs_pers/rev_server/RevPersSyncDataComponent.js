@@ -43,84 +43,81 @@ export function useRevPersSyncDataComponent() {
 
   let revSaveNewEntityURL = REV_ROOT_URL + REV_CREATE_NEW_REV_ENTITY_URL;
 
-  DeviceEventEmitter.addListener(
-    'rev_curl_file_upload_ret_data_event',
-    event => {
+  const revGetUploadFilesArr = () => {
+    let revFilesStr = RevPersLibRead_React.revPersGetMetadata_BY_ResStatus_Name(-2, 'rev_remote_file_name');
+
+    if (revStringEmpty(revFilesStr)) {
+    return revCallBack();
+    }
+
+    try {
+        return JSON.parse(revFilesStr);
+    } catch (error) {
+        console.log('>>> Rrror - revGetUploadFilesArr', error);
+        return [];
+    }
+  }
+
+  DeviceEventEmitter.addListener('rev_curl_file_upload_ret_data_event', event => {
       let revRetDataStr = event.eventProperty;
 
       if (revIsEmptyVar(revRetDataStr)) {
         return;
       }
 
+      console.log('>>> ', revRetDataStr);
+
       try {
         let revRetData = JSON.parse(revRetDataStr);
 
-        if (!revRetData.hasOwnProperty('revFilterSuccess')) {
+        if (revIsEmptyJSONObject(revRetData)) {
           console.log('>>> rev_curl <<< revRetDataStr ' + revRetDataStr);
           return;
         }
 
-        let revFilterSuccess = revRetData.revFilterSuccess;
-        let revFilterFail = revRetData.revFilterFail;
+        const {revFilterSuccess = [], revFilterFail = []} = revRetData.revFilterSuccess;
 
         for (let i = 0; i < revFilterSuccess.length; i++) {
           let revCurrFile = revFilterSuccess[i];
 
-          let revMetadataStr =
-            RevPersLibRead_React.revPersGetMetadata_By_Name_Value(
-              'rev_remote_file_name',
-              revCurrFile,
-            );
+          let revMetadataStr = RevPersLibRead_React.revPersGetMetadata_By_Name_Value('rev_remote_file_name', revCurrFile);
 
           let revMetadata = JSON.parse(revMetadataStr);
           let _revId = revMetadata._revId;
 
           if (_revId > 0) {
-            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
-              2,
-              _revId,
-            );
+            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(2, _revId);
           }
         }
 
         for (let i = 0; i < revFilterFail.length; i++) {
           let revCurrFile = revFilterFail[i];
 
-          let revMetadata =
-            RevPersLibRead_React.revPersGetMetadata_By_Name_Value(
-              'rev_remote_file_name',
-              revCurrFile,
-            );
+          let revMetadata = RevPersLibRead_React.revPersGetMetadata_By_Name_Value('rev_remote_file_name', revCurrFile);
           let _revId = revMetadata._metadataId;
 
           if (_revId > 0) {
-            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
-              0,
-              _revId,
-            );
+            RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(0, _revId);
           }
         }
+    
+        let revFilesArr = revGetUploadFilesArr();
 
-        revCURLFileUploadSync();
+        if (revFilesArr.length) {
+            revCURLFileUploadSync(null, {revFilesArr});
+        }
       } catch (error) {
-        console.log('>>> ' + error);
+        console.log('>>> Error -rev_curl_file_upload_ret_data_event' + error);
       }
     },
   );
 
-  const revCURLFileUploadSync = revCallBack => {
-    let revFilesStr = RevPersLibRead_React.revPersGetMetadata_BY_ResStatus_Name(
-      0,
-      'rev_remote_file_name',
-    );
+  const revCURLFileUploadSync = (revCallBack = () => {}, revVaArgs = {}) => {
+    let {revFilesArr = []} = revVaArgs;
 
-    console.log('>>> revFilesStr', revFilesStr);
-
-    if (revStringEmpty(revFilesStr)) {
-      return revCallBack();
+    if (!revFilesArr.length) {
+        revFilesArr = revGetUploadFilesArr();
     }
-
-    let revFilesArr = JSON.parse(revFilesStr);
 
     if (!revFilesArr.length) {
       return revCallBack();
@@ -143,7 +140,7 @@ export function useRevPersSyncDataComponent() {
       revFilesArr[i] = revFileURI;
 
       RevPersLibUpdate_React.revPersSetMetadataResStatus_BY_Metadata_Id(
-        -2,
+        0,
         revCurrFile._revId,
       );
     }
@@ -290,10 +287,7 @@ export function useRevPersSyncDataComponent() {
     }
   };
 
-  const revFetchUnresolvedEntityData = async (
-    revURL,
-    revUnresolvedEntitiesArr,
-  ) => {
+  const revFetchUnresolvedEntityData = async (revURL, revUnresolvedEntitiesArr,) => {
     if (!revUnresolvedEntitiesArr.length) {
       return null;
     }
@@ -301,29 +295,20 @@ export function useRevPersSyncDataComponent() {
     const {revSetRemoteRelGUID} = useRevSetRemoteRelGUID();
 
     return new Promise((resolve, reject) => {
-      revPostServerData(
-        revURL,
-        {filter: revUnresolvedEntitiesArr},
-        revRetPersData => {
-          if (
-            revIsEmptyJSONObject(revRetPersData) ||
-            revRetPersData.hasOwnProperty('error') ||
-            !revRetPersData.hasOwnProperty('result')
-          ) {
-            return [];
+      revPostServerData(revURL, {filter: revUnresolvedEntitiesArr}, revResult => {
+          if (revIsEmptyJSONObject(revResult) || revResult.hasOwnProperty('error')) {
+            return resolve([]);
           }
 
-          let revResult = revRetPersData.result;
-
           if (revIsEmptyJSONObject(revResult)) {
-            return [];
+            return resolve([]);
           }
 
           if (
             !revResult.hasOwnProperty('filter') ||
             !Array.isArray(revResult.filter)
           ) {
-            return [];
+            return resolve([]);
           }
 
           let revFilter = revResult.filter;
@@ -441,17 +426,16 @@ export function useRevPersSyncDataComponent() {
   const revPersSyncMetadata = async () => {
     let revPassVarArgs = {
       revTableName: 'REV_ENTITY_METADATA_TABLE',
-      revSelect: ['_revId', '_revGUID', '_revRemoteId', '_revName'],
+      revSelect: ['_revId', '_revGUID', '_revRemoteId', '_revTimeCreated', '_revName', '_revValue'],
       revWhere: {
-        _revResolveStatus: {'<': 0},
+        _revResolveStatus: {'=': -1},
       },
       revLimit: 22,
     };
 
-    let revMetadataArr = revPersQuery_By_RevVarArgs(
-      revPassVarArgs,
-      'REV_ENTITY_METADATA_TABLE',
-    );
+    let revMetadataArr = revPersQuery_By_RevVarArgs(revPassVarArgs, 'REV_ENTITY_METADATA_TABLE');
+
+    console.log('>>> revMetadataArr', JSON.stringify(revMetadataArr));
 
     if (revMetadataArr.length) {
       // await revPersSyncMetadata();
@@ -488,10 +472,7 @@ export function useRevPersSyncDataComponent() {
     );
 
     SET_REV_LOGGED_IN_ENTITY(revPrev => {
-      return {
-        ...revPrev,
-        _revRemoteGUID: revRetPersData._revRemoteGUID,
-      };
+      return {...revPrev, _revRemoteGUID: revRetPersData._revRemoteGUID,};
     });
 
     return revRetPersData._revRemoteGUID;
@@ -503,7 +484,10 @@ export function useRevPersSyncDataComponent() {
     let revServerStatus = revRetData.revServerStatus;
 
     if (revServerStatus !== 200 || REV_SITE_ENTITY_GUID < 1) {
+        revPingCounter = 1;
       return revRetData;
+    } else {
+        revPingCounter = 0;
     }
 
     let revUnresolvedEntitiesArr =
@@ -514,7 +498,7 @@ export function useRevPersSyncDataComponent() {
     let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
     if (revLoggedInRemoteEntityGUID < 1) {
-      let revLoggedInRemoteEntityGUID = await revSaveLoggedInUserEntity();
+      revLoggedInRemoteEntityGUID = await revSaveLoggedInUserEntity();
 
       if (revLoggedInRemoteEntityGUID > 0) {
         return revPingServerCallBack(revRetData);
@@ -547,6 +531,8 @@ export function useRevPersSyncDataComponent() {
       let revCurrUpdateEntityType = revCurrUpdateEntity._revType;
 
       let revIsUser = revCurrUpdateEntityType === 'rev_user_entity';
+
+      console.log('>>> revIsUser', revIsUser);
 
       // Make sure that all entities have an owner except if user
       let revEntityOwnerGUID = revCurrUpdateEntity._revOwnerGUID;
@@ -626,22 +612,12 @@ export function useRevPersSyncDataComponent() {
       revUploadEntitiesArr,
     );
 
-    if (revUnresolvedEntitiesArr.length) {
-      let revPingVarArgs = {
-        revInterval: 1000,
-        revIP: REV_ROOT_URL,
-        revCallBack: revPingServerCallBack,
-      };
-
-      revPingServer(revPingVarArgs);
-    }
-
     await revPersSyncMetadata();
     await revSyncRels();
     return revCURLFileUploadSync(() => 'Success');
   };
 
-  const revPersSyncDataComponent = async => {
+  const revPersSyncDataComponent = async () => {
     let revResStatusArr = [-1];
 
     for (let i = 0; i < revResStatusArr.length; i++) {
@@ -650,18 +626,14 @@ export function useRevPersSyncDataComponent() {
       let revPingVarArgs = {
         revInterval: 1000,
         revIP: REV_ROOT_URL,
-        revCallBack: revPingServerCallBack,
       };
 
-      revPingServer(revPingVarArgs);
+      let revPingRes = await revPingServer(revPingVarArgs);
+      await revPingServerCallBack(revPingRes);
     }
 
     return 'Success !';
   };
-
-  useEffect(() => {
-    console.log('>>> REV_LOGGED_IN_ENTITY_GUID', REV_LOGGED_IN_ENTITY_GUID);
-  }, [REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID]);
 
   return {revPersSyncDataComponent};
 }

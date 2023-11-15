@@ -68,7 +68,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
 
     revKiwiTxtVal = revGetMetadataValue(
       revInfoEntity._revMetadataList,
-      'revPostText',
+      'rev_entity_desc',
     );
 
     if (revVarArgs.hasOwnProperty('revHideKiwiPublisherForm')) {

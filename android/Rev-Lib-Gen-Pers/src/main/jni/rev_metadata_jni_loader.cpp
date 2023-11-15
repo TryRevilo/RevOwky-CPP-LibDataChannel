@@ -11,25 +11,33 @@
 #include <malloc.h>
 #include <cstring>
 
-extern "C" {
+extern "C"
+{
 #include "../cpp/rev_pers_lib/rev_entity_data/rev_pers_rev_entity_metadata/rev_db_models/rev_entity_metadata.h"
 }
 
-REV_ENTITY_METADATA_JNI_POSREC *LoadRevEntityMetadataJniPosRec(JNIEnv *env) {
+REV_ENTITY_METADATA_JNI_POSREC *LoadRevEntityMetadataJniPosRec(JNIEnv *env)
+{
     REV_ENTITY_METADATA_JNI_POSREC *revEntityMetadataJniPosRec = new REV_ENTITY_METADATA_JNI_POSREC;
 
     revEntityMetadataJniPosRec->cls = env->FindClass("rev/ca/rev_gen_lib_pers/RevDBModels/RevEntityMetadata");
 
-    if (revEntityMetadataJniPosRec->cls != NULL) {
+    if (revEntityMetadataJniPosRec->cls != NULL)
+    {
         printf("+ sucessfully created class");
-    } else {
+    }
+    else
+    {
         printf("! sucessfully created class");
     }
 
     revEntityMetadataJniPosRec->constructortor_ID = env->GetMethodID(revEntityMetadataJniPosRec->cls, "<init>", "()V");
-    if (revEntityMetadataJniPosRec->constructortor_ID != NULL) {
+    if (revEntityMetadataJniPosRec->constructortor_ID != NULL)
+    {
         printf("+ sucessfully created ctorID");
-    } else {
+    }
+    else
+    {
         printf("! sucessfully created ctorID");
     }
 
@@ -43,11 +51,11 @@ REV_ENTITY_METADATA_JNI_POSREC *LoadRevEntityMetadataJniPosRec(JNIEnv *env) {
     revEntityMetadataJniPosRec->_revTimePublished_ID = env->GetFieldID(revEntityMetadataJniPosRec->cls, "_revTimePublished", "Ljava/lang/Long;");
     revEntityMetadataJniPosRec->_revTimePublishedUpdated_ID = env->GetFieldID(revEntityMetadataJniPosRec->cls, "_revTimePublishedUpdated", "Ljava/lang/Long;");
 
-
     return revEntityMetadataJniPosRec;
 }
 
-jstring revGetJString(JNIEnv *env, char *cStringValue) {
+jstring revGetJString(JNIEnv *env, char *cStringValue)
+{
     jobject bb = env->NewDirectByteBuffer(cStringValue, strlen(cStringValue));
 
     jclass cls_Charset = env->FindClass("java/nio/charset/Charset");
@@ -64,24 +72,28 @@ jstring revGetJString(JNIEnv *env, char *cStringValue) {
     return str;
 }
 
-jobject revGetFilledRevMetadataJniObject(JNIEnv *env, RevEntityMetadata revEntityMetadata) {
+jobject revGetFilledRevMetadataJniObject(JNIEnv *env, RevEntityMetadata revEntityMetadata)
+{
     REV_ENTITY_METADATA_JNI_POSREC *revEntityMetadataJniPosRec = LoadRevEntityMetadataJniPosRec(env);
     jobject jPosRec = env->NewObject(revEntityMetadataJniPosRec->cls, revEntityMetadataJniPosRec->constructortor_ID);
 
-    if (!revEntityMetadata._revName || !revEntityMetadata._revValue) {
+    if (!revEntityMetadata._revName || !revEntityMetadata._revValue)
+    {
         return jPosRec;
     }
 
     char *revMetadataName = revEntityMetadata._revName;
     char *revMetadataValue = revEntityMetadata._revValue;
 
-    if (revMetadataName[0] != '\0') {
+    if (revMetadataName[0] != '\0')
+    {
         jstring revJMetadataName = revGetJString(env, revMetadataName);
         env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revName, revJMetadataName);
         env->DeleteLocalRef(revJMetadataName);
     }
 
-    if (revMetadataValue[0] != '\0') {
+    if (revMetadataValue[0] != '\0')
+    {
         jstring revJMetadataValue = revGetJString(env, revMetadataValue);
         env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revValue, revJMetadataValue);
         env->DeleteLocalRef(revJMetadataValue);
@@ -90,50 +102,49 @@ jobject revGetFilledRevMetadataJniObject(JNIEnv *env, RevEntityMetadata revEntit
     jclass clsLong = (env)->FindClass("java/lang/Long");
     jmethodID const_MethodId = env->GetMethodID(clsLong, "<init>", "(J)V");
 
-    if (!revEntityMetadata._revId) {
+    if (!revEntityMetadata._revId)
+    {
         revEntityMetadata._revId = -1;
     }
 
     long _revId = revEntityMetadata._revId;
-    jobject _revId_Obj = env->NewObject(clsLong, const_MethodId, (long long) _revId);
+    jobject _revId_Obj = env->NewObject(clsLong, const_MethodId, (long long)_revId);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revId, _revId_Obj);
     env->DeleteLocalRef(_revId_Obj);
 
-    if (!revEntityMetadata._revId) {
-        revEntityMetadata._revId = -1;
-    }
-
     long _revRemoteId = revEntityMetadata._revRemoteId;
-    jobject _revRemoteId_Obj = env->NewObject(clsLong, const_MethodId, (long long) _revRemoteId);
+    jobject _revRemoteId_Obj = env->NewObject(clsLong, const_MethodId, (long long)_revRemoteId);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revRemoteId, _revRemoteId_Obj);
     env->DeleteLocalRef(_revRemoteId_Obj);
 
-    if (!revEntityMetadata._revGUID) {
+    if (!revEntityMetadata._revGUID)
+    {
         revEntityMetadata._revGUID = -1;
     }
 
     long revMetadataOwnerGUID = revEntityMetadata._revGUID;
 
-    jobject _revGUID_Obj = env->NewObject(clsLong, const_MethodId, (long long) revMetadataOwnerGUID);
+    jobject _revGUID_Obj = env->NewObject(clsLong, const_MethodId, (long long)revMetadataOwnerGUID);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revGUID, _revGUID_Obj);
     env->DeleteLocalRef(_revGUID_Obj);
 
-    jobject _revTimeCreated_Obj = env->NewObject(clsLong, const_MethodId, (long long) revEntityMetadata._revTimeCreated);
+    jobject _revTimeCreated_Obj = env->NewObject(clsLong, const_MethodId, (long long)revEntityMetadata._revTimeCreated);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revTimeCreated_ID, _revTimeCreated_Obj);
     env->DeleteLocalRef(_revTimeCreated_Obj);
 
-    jobject _revTimePublished_ID_Obj = env->NewObject(clsLong, const_MethodId, (long long) revEntityMetadata._revTimePublished);
+    jobject _revTimePublished_ID_Obj = env->NewObject(clsLong, const_MethodId, (long long)revEntityMetadata._revTimePublished);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revTimePublished_ID, _revTimePublished_ID_Obj);
     env->DeleteLocalRef(_revTimePublished_ID_Obj);
 
-    jobject _revTimePublishedUpdated_ID_Obj = env->NewObject(clsLong, const_MethodId, (long long) revEntityMetadata._revTimePublishedUpdated);
+    jobject _revTimePublishedUpdated_ID_Obj = env->NewObject(clsLong, const_MethodId, (long long)revEntityMetadata._revTimePublishedUpdated);
     env->SetObjectField(jPosRec, revEntityMetadataJniPosRec->_revTimePublishedUpdated_ID, _revTimePublishedUpdated_ID_Obj);
     env->DeleteLocalRef(_revTimePublishedUpdated_ID_Obj);
 
     return jPosRec;
 }
 
-jobject revGetFilledRevMetadataJniObjectFromJsonStr(JNIEnv *env, const char *revEntityMetadataStr) {
+jobject revGetFilledRevMetadataJniObjectFromJsonStr(JNIEnv *env, const char *revEntityMetadataStr)
+{
     RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataStr);
     jobject jPosRec = revGetFilledRevMetadataJniObject(env, *revEntityMetadata);
 

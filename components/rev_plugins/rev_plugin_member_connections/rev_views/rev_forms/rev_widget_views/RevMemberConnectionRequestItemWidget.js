@@ -55,7 +55,7 @@ export const RevMemberConnectionRequestItemWidget = ({revVarArgs}) => {
 
   let revUserEntityNames = revGetMetadataValue(
     revUserInfoEntity._revMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
   let revUserEntityNames_Trunc = revTruncateString(revUserEntityNames, 22);
 

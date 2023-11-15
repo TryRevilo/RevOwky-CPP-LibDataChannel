@@ -1,9 +1,9 @@
 {
-    "revPort": 4000,
-    "revIP": "192.168.16.220",
-    "revSiteURL": "http://192.168.16.220:4000",
-    "revSiteUploadDirPath": "http://192.168.16.220:4000/file_upload",
-    "revSiteUploadDirURL": "http://192.168.16.220/rev_wip/rev_ca_final_09_12_2021_02.56/rev_ca_heroku_2021/rev_uploads",
-    "revAppRootDir": "/storage/emulated/0/Documents/Owki",
-    "revPublishedMediaDir": "/storage/emulated/0/Documents/Owki/rev_media"
+  "revPort": 4000,
+  "revIP": "192.168.77.220",
+  "revSiteURL": "http://192.168.77.220:4000",
+  "revSiteUploadDirPath": "http://192.168.77.220:4000/rev_api/file_upload",
+  "revSiteUploadDirURL": "http://192.168.77.220/rev_wip/rev_pers_api/rev_pers_node/rev_uploads",
+  "revAppRootDir": "/storage/emulated/0/Documents/Owki",
+  "revPublishedMediaDir": "/storage/emulated/0/Documents/Owki/rev_media"
 }

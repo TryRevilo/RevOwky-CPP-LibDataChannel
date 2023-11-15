@@ -31,7 +31,7 @@ export const RevEntityInfoDetailsWidget = ({revVarArgs}) => {
 
   let revEntityFullNames = revGetMetadataValue(
     revInfoEntity._revMetadataList,
-    'rev_full_names',
+    'rev_entity_name',
   );
 
   let revEntityDescVal = revGetMetadataValue(

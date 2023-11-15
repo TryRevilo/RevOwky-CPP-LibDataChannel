@@ -5,7 +5,6 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

@@ -23,7 +23,7 @@ export const useRevHandleSendMsgAction = () => {
       return {revEntityOwnerGUID: revEntityOwnerGUID};
     }
 
-    revVarArgs['revEntitySubType'] = 'rev_stranger_chat_message';
+    revVarArgs['revSubType'] = 'rev_stranger_chat_message';
 
     let revPersEntityInfoMetadataList = [
       REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),

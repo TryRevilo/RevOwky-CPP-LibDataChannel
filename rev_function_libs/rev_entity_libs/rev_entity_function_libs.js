@@ -99,10 +99,10 @@ export const revGetPublisherEntity = (revPublishersArr, revEntityGUID) => {
 
 export const revGetEntityChildren_By_Subtype = (
   revEntityChildrenArr,
-  revEntitySubtype,
+  revSubType,
   limit,
 ) => {
-  if (!Array.isArray(revEntityChildrenArr) || !revEntitySubtype) {
+  if (!Array.isArray(revEntityChildrenArr) || !revSubType) {
     return null;
   }
 
@@ -115,7 +115,7 @@ export const revGetEntityChildren_By_Subtype = (
       continue;
     }
 
-    if (revEntityChild._revSubType.localeCompare(revEntitySubtype) == 0) {
+    if (revEntityChild._revSubType.localeCompare(revSubType) == 0) {
       if (limit && limit > 0) {
         if (limit == 1) {
           revEntityChildrenSubtypesArr = revEntityChild;
@@ -155,13 +155,13 @@ export const revGetFileObjectSubType = revFile => {
     return;
   }
 
-  let revEntitySubType;
+  let revSubType;
 
   switch (revFileType) {
     case 'jpg':
     case 'jpeg':
     case 'png':
-      revEntitySubType = 'rev_file';
+      revSubType = 'rev_file';
       break;
 
     case 'mp4':
@@ -177,18 +177,18 @@ export const revGetFileObjectSubType = revFile => {
     case 'WEBM':
     case 'HTML5':
     case 'MPEG-2':
-      revEntitySubType = 'rev_video';
+      revSubType = 'rev_video';
       break;
 
     case 'mp3':
-      revEntitySubType = 'rev_audio';
+      revSubType = 'rev_audio';
       break;
 
     default:
-      revEntitySubType = 'rev_file';
+      revSubType = 'rev_file';
   }
 
-  console.log('revEntitySubType : ' + revEntitySubType);
+  console.log('revSubType : ' + revSubType);
 
-  return revEntitySubType;
+  return revSubType;
 };
