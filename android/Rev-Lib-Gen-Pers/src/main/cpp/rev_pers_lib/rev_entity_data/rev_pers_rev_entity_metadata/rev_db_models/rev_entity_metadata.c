@@ -121,13 +121,16 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
     }
 
     // _revResolveStatus
+    int _revResolveStatusVal = -1;
+
     const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revResolveStatus");
 
     if (cJSON_IsNumber(_revResolveStatus))
     {
-        int _revResolveStatusVal = _revResolveStatus->valueint;
-        revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
+        _revResolveStatusVal = _revResolveStatus->valueint;
     }
+    
+    revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
 
     // _revGUID
     long _revGUIDVal = -1;
@@ -204,8 +207,7 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
     return revEntityMetadata;
 }
 
-void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr)
-{
+void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetadataJSONArrStr) {
     list_new(revList, sizeof(RevEntityMetadata), revFreeMetadata);
 
     // _revMetadataList
@@ -238,16 +240,31 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
             }
 
             // _revResolveStatus
+            int _revResolveStatusVal = -1;
+
             const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revResolveStatus");
 
             if (cJSON_IsNumber(_revResolveStatus))
             {
-                int _revResolveStatusVal = _revResolveStatus->valueint;
-                revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
+                _revResolveStatusVal = _revResolveStatus->valueint;
             }
+            
+            revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
 
             // _revGUID
             revEntityMetadata->_revGUID = -1;
+
+            // _revId
+            const cJSON *_revId = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revId");
+
+            long _revIdVal = -1l;
+
+            if (cJSON_IsNumber(_revId))
+            {
+                _revIdVal = _revId->valueint;
+            }
+
+            revEntityMetadata->_revId = _revIdVal;
 
             // _revRemoteId
             const cJSON *_revRemoteId = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revRemoteId");

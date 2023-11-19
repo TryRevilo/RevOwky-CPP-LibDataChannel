@@ -1,5 +1,7 @@
-import React, {createContext, useState, useEffect} from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
 import {NativeModules} from 'react-native';
+
+import {ReViewsContext} from './ReViewsContext';
 
 const {RevPersLibRead_React, RevPersLibUpdate_React} = NativeModules;
 
@@ -13,9 +15,13 @@ import {
 } from '../rev_function_libs/rev_gen_helper_functions';
 import {useRevGetEntityPictureAlbums} from '../components/rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
+import RevWalledGarden from '../components/rev_views/RevWalledGarden';
+
 const RevSiteDataContext = createContext();
 
 const RevSiteDataContextProvider = ({children}) => {
+  const {SET_REV_SITE_INIT_VIEW} = useContext(ReViewsContext);
+
   const [REV_SITE_VAR_ARGS, SET_REV_SITE_VAR_ARGS] = useState({
     revRemoteEntityGUID: 0,
   });
@@ -82,6 +88,8 @@ const RevSiteDataContextProvider = ({children}) => {
 
       SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);
       /** END SET UP SITE */
+    } else {
+      SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
     }
   }, [REV_LOGGED_IN_ENTITY_GUID]);
 

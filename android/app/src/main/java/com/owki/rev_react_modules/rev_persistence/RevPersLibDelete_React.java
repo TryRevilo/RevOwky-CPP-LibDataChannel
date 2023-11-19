@@ -46,6 +46,18 @@ public class RevPersLibDelete_React extends ReactContextBaseJavaModule {
      **/
 
     /**
+     * START METADATA
+     **/
+    @NonNull
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    Integer revDeleteEntityMetadata_By_ID(@NonNull Integer _revId) {
+        return revPersLibDelete.revDeleteEntityMetadata_By_ID((long) _revId);
+    }
+    /**
+     * END METADATA
+     **/
+
+    /**
      * START ANNOTATIONS
      **/
     @ReactMethod(isBlockingSynchronousMethod = true)

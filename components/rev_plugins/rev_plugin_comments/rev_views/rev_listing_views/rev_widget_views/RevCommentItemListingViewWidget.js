@@ -27,6 +27,8 @@ import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev
 export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  console.log('>>> revVarArgs', JSON.stringify(revVarArgs));
+
   revVarArgs = revVarArgs.revVarArgs;
 
   let revEntityGUID = revGetLocal_OR_RemoteGUID(revVarArgs);
@@ -46,7 +48,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
 
   let revCommentTxtVal = revGetMetadataValue(
     revCommentInfoEntity._revMetadataList,
-    'rev_comment_value',
+    'rev_entity_desc',
   );
 
   if (revIsEmptyVar(revCommentTxtVal)) {

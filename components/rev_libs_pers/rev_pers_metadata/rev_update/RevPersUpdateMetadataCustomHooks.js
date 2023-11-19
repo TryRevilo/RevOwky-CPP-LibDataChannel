@@ -13,6 +13,10 @@ export const useRevSetMetadataArrayRemoteID = (
   revEntityGUID,
   revMetadataArr,
 ) => {
+  if (!Array.isArray(revMetadataArr)) {
+    return false;
+  }
+
   for (let i = 0; i < revMetadataArr.length; i++) {
     let revCurrMetadata = revMetadataArr[i];
 

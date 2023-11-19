@@ -103,11 +103,13 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
       revCommentContainerGUID: revCommentContainerEntityGUID,
       revIsCommentUpdate: revIsCommentUpdate,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revCommentText: revCommentText,
+      revCommentText,
       revSelectedMedia: revSelectedMedia,
     };
 
     revCreateCommentAction(revPassVaArgs, revRetData => {
+      console.log('>>> revRetData', JSON.stringify(revRetData));
+
       if (revRetData) {
         setRevCommentText('');
         handleRevSitePublisherCancelTab();

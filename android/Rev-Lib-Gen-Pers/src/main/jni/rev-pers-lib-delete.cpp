@@ -176,6 +176,12 @@ Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revDeleteEntity_1
 
 extern "C"
 JNIEXPORT jint JNICALL
+Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revDeleteEntityMetadata_1By_1ID(JNIEnv *env, jobject thiz, jlong _rev_id) {
+    return revDeleteEntityMetadata_By_ID(_rev_id);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
 Java_rev_ca_rev_1gen_1lib_1pers_c_1libs_1core_RevPersLibDelete_revPersDeleteAnn_1By_1AnnId(JNIEnv *env, jobject thiz, jlong rev_annotation_id) {
     // TODO: implement revPersDeleteAnn_By_AnnId()
     return revPersDeleteAnn_By_AnnId(rev_annotation_id);

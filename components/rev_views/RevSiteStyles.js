@@ -265,7 +265,6 @@ export const useRevSiteStyles = () => {
       alignItems: 'center',
       borderColor: '#F7F7F7',
       borderWidth: 1,
-      paddingHorizontal: 5,
       paddingVertical: 2,
       marginTop: 8,
     },

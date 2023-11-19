@@ -11,12 +11,11 @@ import {
 var RNFS = require('react-native-fs');
 
 import {RevSiteDataContext} from '../../rev_contexts/RevSiteDataContext';
-
-import {useRevSiteStyles} from './RevSiteStyles';
+import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 
 import RevWalledGarden from './RevWalledGarden';
 import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
-import { useRevPersSyncDataComponent } from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
+import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
 
@@ -25,13 +24,14 @@ const {RevPersLibCreate_React} = NativeModules;
 const revSettings = require('../../rev_res/rev_settings.json');
 
 const RevSiteLoading = () => {
-  const {revSiteStyles} = useRevSiteStyles();
-
   const [isLoading, setIsLoading] = useState(true);
   const [revPageReady, setRevPageReady] = useState(false);
 
-  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} = useContext(RevSiteDataContext);
-  
+  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} =
+    useContext(RevSiteDataContext);
+  const {REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW} =
+    useContext(ReViewsContext);
+
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   let revAppRootDir = revSettings.revAppRootDir;
@@ -50,20 +50,6 @@ const RevSiteLoading = () => {
   }
 
   const {revGetLoggedInSiteEntity} = useRevGetLoggedInSiteEntity();
-
-  const [REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW] = useState(
-    <View style={styles.revSiteLoadingContainer}>
-      <Text
-        style={[
-          revSiteStyles.revSiteTxtColor,
-          revSiteStyles.revSiteTxtBold,
-          revSiteStyles.revSiteTxtTiny,
-          styles.revSiteLoadingTxt,
-        ]}>
-        Owki Loading . . .
-      </Text>
-    </View>,
-  );
 
   useEffect(() => {
     if (Platform.OS === 'android') {

@@ -10,20 +10,17 @@
 #include "../../../../../../../../libs/rev_list/rev_linked_list.h"
 #include "../../../../../../../../libs/sqlite3/include/sqlite3.h"
 
-bool iterator_revPersSaveRevMetadata(void *data)
-{
+bool iterator_revPersSaveRevMetadata(void *data) {
     revPersSaveRevEntityMetadata((RevEntityMetadata *)data);
     return TRUE;
 }
 
-long revPersSaveRevMetadata(void *revEntityMetadataList)
-{
+long revPersSaveRevMetadata(void *revEntityMetadataList) {
     list_for_each(revEntityMetadataList, iterator_revPersSaveRevMetadata);
     return 0;
 }
 
-long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr)
-{
+long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr) {
     RevEntityMetadata *revEntityMetadata = revJSONStrMetadataFiller(revEntityMetadataJSONStr);
 
     long _revId = revPersSaveRevEntityMetadata(revEntityMetadata);
@@ -31,14 +28,14 @@ long revPersSaveRevEntityMetadataJSONStr(const char *revEntityMetadataJSONStr)
     return _revId;
 }
 
-long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata)
-{
+long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata) {
     long revReturnVal;
 
     sqlite3 *db = revDb();
 
-    if (!db)
+    if (!db) {
         return -1;
+    }
 
     int _revResolveStatus = revEntityMetadata->_revResolveStatus;
     long revMetadataOwnerGUID = revEntityMetadata->_revGUID;
@@ -50,8 +47,7 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata)
     long _revTimePublished = revEntityMetadata->_revTimePublished;
     long _revTimePublishedUpdated = revEntityMetadata->_revTimePublishedUpdated;
 
-    if (revMetadataOwnerGUID < 1 || (revMetadataName[0] == '\0') || (revMetadataValue[0] == '\0'))
-    {
+    if (revMetadataOwnerGUID < 1 || (revMetadataName[0] == '\0') || (revMetadataValue[0] == '\0')) {
         return -1;
     }
 
@@ -77,8 +73,7 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata)
 
     rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, 0);
 
-    if (rc == SQLITE_OK)
-    {
+    if (rc == SQLITE_OK) {
         int _revResolveStatus_idx = sqlite3_bind_parameter_index(stmt, "@_revResolveStatus");
         sqlite3_bind_int(stmt, _revResolveStatus_idx, _revResolveStatus);
 
@@ -104,14 +99,11 @@ long revPersSaveRevEntityMetadata(RevEntityMetadata *revEntityMetadata)
         sqlite3_bind_int64(stmt, _revTimePublishedUpdated_idx, _revTimePublishedUpdated);
     }
 
-    if (rc != SQLITE_OK)
-    {
+    if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: revPersSaveRevEntityMetadata %s", sqlite3_errmsg(db));
 
         revReturnVal = -1;
-    }
-    else
-    {
+    } else {
         sqlite3_step(stmt);
         revReturnVal = sqlite3_last_insert_rowid(db);
     }

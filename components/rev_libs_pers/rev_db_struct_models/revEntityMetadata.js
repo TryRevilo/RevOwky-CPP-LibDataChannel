@@ -1,13 +1,14 @@
 var REV_ENTITY_METADATA_STRUCT = () => {
   return {
     _revResolveStatus: -1,
+    _revId: -1,
     _revRemoteId: -1,
     _revGUID: -1,
     _revName: '',
     _revValue: '',
-    _revTimeCreated: '',
-    _revTimeCreated: '',
-    _revTimePublished: '',
+    _revTimeCreated: -1,
+    _revTimeCreated: -1,
+    _revTimePublished: -1,
   };
 };
 

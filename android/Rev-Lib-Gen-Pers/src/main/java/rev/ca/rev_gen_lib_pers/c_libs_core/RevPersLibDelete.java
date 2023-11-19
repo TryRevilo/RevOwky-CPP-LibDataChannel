@@ -12,6 +12,8 @@ public class RevPersLibDelete {
 
     public native int revDeleteEntity_By_EntityGUID(long revEntityGUID);
 
+    public native int revDeleteEntityMetadata_By_ID(long _revId);
+
     public native int revPersDeleteAnn_By_AnnId(long revAnnotationID);
 
     // FILES

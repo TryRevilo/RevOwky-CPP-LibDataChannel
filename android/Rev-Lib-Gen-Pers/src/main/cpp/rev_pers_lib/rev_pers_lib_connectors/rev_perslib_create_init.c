@@ -23,6 +23,7 @@ bool setMetadataOwnerGUID(void *data, long ownerGUID) {
 void loopMetadata(list *list, long revEntityGUID) {
     listNode *node = list->head;
     bool result = TRUE;
+    
     while (node != NULL && result) {
         result = setMetadataOwnerGUID(node->data, revEntityGUID);
         node = node->next;
@@ -45,9 +46,8 @@ long revPersInit(RevEntity *revEntity) {
     char *revEntityType = revInfoEntity->_revType;
     char *revInfoEntitySubType = revInfoEntity->_revSubType;
 
-    if (revInfoEntity
-        && (revEntityType != NULL) && (revEntityType[0] != '\0')
-        && (revInfoEntitySubType != NULL) && (revInfoEntitySubType[0] != '\0')) {
+    if (revInfoEntity && (revEntityType != NULL) && (revEntityType[0] != '\0') && (revInfoEntitySubType != NULL) && (revInfoEntitySubType[0] != '\0')) {
+        revInfoEntity->_revContainerGUID = revEntityGUID;
 
         long revInfoEntityGUID = revPersInit(revInfoEntity);
 

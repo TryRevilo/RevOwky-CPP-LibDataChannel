@@ -25,11 +25,7 @@ int revDeleteEntityMetadata_By_ID(long _revId) {
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
         __android_log_print(ANDROID_LOG_ERROR, "MyApp", "ERR revDeleteEntityMetadata_By_ID %d", _revId);
     } else {
-        // commit
         sqlite3_step(stmt);
-
-        __android_log_print(ANDROID_LOG_WARN, "MyApp", "revDeleteEntityMetadata_By_ID %d", _revId);
-
         revRetVal = 1;
     }
 

@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import {
+  Text,
   View,
   Animated,
   PanResponder,
@@ -20,9 +21,27 @@ const ReViewsContext = createContext();
 import RevNullMessagesView from '../components/rev_views/RevNullMessagesView';
 import RevFooter1_Center from '../components/rev_views/rev_site_footer_views/RevFooter1_Center';
 
+import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
+
 const ReViewsContextProvider = ({children}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   const [REV_PAGE_HEADER_CONTENT_VIEWER, SET_REV_PAGE_HEADER_CONTENT_VIEWER] =
     useState(null);
+
+  const [REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW] = useState(
+    <View style={styles.revSiteLoadingContainer}>
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny,
+          styles.revSiteLoadingTxt,
+        ]}>
+        Owki Loading . . .
+      </Text>
+    </View>,
+  );
 
   const [REV_SITE_BODY, setRevSiteBody] = useState(<RevNullMessagesView />);
 
@@ -156,6 +175,8 @@ const ReViewsContextProvider = ({children}) => {
       value={{
         REV_PAGE_HEADER_CONTENT_VIEWER,
         SET_REV_PAGE_HEADER_CONTENT_VIEWER,
+        REV_SITE_INIT_VIEW,
+        SET_REV_SITE_INIT_VIEW,
         REV_SITE_BODY,
         SET_REV_SITE_BODY,
         REV_SITE_FOOTER_1_CONTENT_VIEWER,
