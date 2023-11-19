@@ -41,8 +41,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
     revVarArgs.hasOwnProperty('revVarArgs')
   ) {
     revVarArgs = revVarArgs.revVarArgs;
-
-    revEntityGUID = revVarArgs._revGUID;
+    const {_revGUID: revEntityGUID = -1} = revVarArgs;
 
     let revInfoEntityGUIDArrStr =
       RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
