@@ -20,10 +20,10 @@ export const revRemoveAllWhiteSpaces = revStr => {
 };
 
 export const revSplitStringToArray = revStr => {
-    if (revStringEmpty(revStr)) {
-        return '';
-    }
-    
+  if (revStringEmpty(revStr)) {
+    return '';
+  }
+
   revStr = revRemoveLinebreaks(revStr);
   return revStr.split(/\s+/);
 };
@@ -165,15 +165,18 @@ export const revTruncateString = (revStr, revLen, revIncludeHellipse) => {
     : revStr;
 };
 
-export const revTruncateFullNamesString = (revFullNames, { revFirstPartLen = 5, revSecondPartLen = 1 } = {}) => {
-    if (revFullNames.length <= 8) {
-        return revFullNames;
-    } else {
-        let revFirstPart = revFullNames.slice(0, revFirstPartLen);
-        let revSecondPart = revFullNames.split(' ')[1].slice(0, revSecondPartLen);
-        return revFirstPart + '. ' + revSecondPart;
-    }
-}
+export const revTruncateFullNamesString = (
+  revFullNames,
+  {revMaxLen = 8, revFirstPartLen = 5, revSecondPartLen = 1} = {},
+) => {
+  if (revFullNames.length <= revMaxLen) {
+    return revFullNames;
+  } else {
+    let revFirstPart = revFullNames.slice(0, revFirstPartLen);
+    let revSecondPart = revFullNames.split(' ')[1].slice(0, revSecondPartLen);
+    return revFirstPart + '. ' + revSecondPart;
+  }
+};
 
 export const revCompareStrings = (revStr1, revStr2) => {
   const collator = new Intl.Collator(undefined, {

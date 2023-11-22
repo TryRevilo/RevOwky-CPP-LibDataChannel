@@ -650,13 +650,13 @@ export function useRevPersSyncDataComponent() {
     let revUnresolvedEntitiesArr =
       revPersGetEntityGUIDs_By_ResStatus(revResStatus);
 
-    let revLoggedInRemoteEntityGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+    let revLoggedInRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
-    if (revLoggedInRemoteEntityGUID < 1) {
-      revLoggedInRemoteEntityGUID = await revSaveLoggedInUserEntity();
+    if (revLoggedInRemoteGUID < 1) {
+      revLoggedInRemoteGUID = await revSaveLoggedInUserEntity();
     }
 
-    if (revLoggedInRemoteEntityGUID < 1) {
+    if (revLoggedInRemoteGUID < 1) {
       return SET_REV_LOGGED_IN_ENTITY_GUID(-1);
     }
 

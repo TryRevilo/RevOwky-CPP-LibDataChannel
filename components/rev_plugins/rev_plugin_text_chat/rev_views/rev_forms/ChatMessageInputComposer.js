@@ -9,6 +9,9 @@ import {
   ScrollView,
 } from 'react-native';
 
+import {REV_ENTITY_STRUCT} from '../../../../rev_libs_pers/rev_db_struct_models/revEntity';
+import {REV_METADATA_FILLER} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -29,11 +32,11 @@ import {revPostServerData} from '../../../../rev_libs_pers/rev_server/rev_pers_l
 
 import {revOnDisplayNotification} from '../../../../../rev_function_libs/rev_live_noticias_functions';
 
+import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 import {
-  revArraysEqual,
-  revIsEmptyJSONObject,
-} from '../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revSplitStringToArray} from '../../../../../rev_function_libs/rev_string_function_libs';
+  revSplitStringToArray,
+  revTruncateFullNamesString,
+} from '../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
@@ -46,7 +49,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const [revRandLoggedInEntities, setRevRandLoggedInEntities] = useState([]);
   const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
-  const [revActivePeerEntity, setRevActivePeerEntity] = useState(null);
+  const [revActivePeerEntity, setRevActivePeerEntity] = useState({});
   const [revActivePeerTab, setRevActivePeerTab] = useState(null);
   const [isRevShowComposer, setIsRevShowComposer] = useState(false);
 
@@ -69,6 +72,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const {sendMessage} = useContext(RevWebRTCContext);
 
+  const revPrevConnectionsArrref = useRef([]);
+
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
 
   const sendTypingMessage = () => {
@@ -77,10 +82,10 @@ export function ChatMessageInputComposer({revVarArgs}) {
     }
 
     if (!hasSentTypingMessage) {
-      sendMessage(revActivePeerEntity._revRemoteGUID, {
-        revMsg: 'User is typing...',
-        revSender: REV_LOGGED_IN_ENTITY._revRemoteGUID,
-      });
+      //   sendMessage(revActivePeerEntity._revRemoteGUID, {
+      //     revMsg: 'User is typing...',
+      //     revSender: REV_LOGGED_IN_ENTITY._revRemoteGUID,
+      //   });
     }
   };
 
@@ -125,11 +130,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revChatUserTab = revNewActivePeer => {
-    let revNewActivePeerGUID = revNewActivePeer._revRemoteGUID;
+    const {_revRemoteGUID = -1} = revNewActivePeer;
 
     return (
       <TouchableOpacity
-        key={revNewActivePeerGUID}
+        key={_revRemoteGUID}
         onPress={() => {
           setRevActivePeerEntity(revNewActivePeer);
         }}>
@@ -139,8 +144,6 @@ export function ChatMessageInputComposer({revVarArgs}) {
       </TouchableOpacity>
     );
   };
-
-  const revUserIcons = Array.from({length: 3}, (_, i) => revChatUserTab(i));
 
   const revHandleNextStrangerChat = isRevShowComposer => {
     if (isRevShowComposer) {
@@ -157,37 +160,45 @@ export function ChatMessageInputComposer({revVarArgs}) {
       revPostServerData(
         revURL,
         {
-          revLoggedInRemoteEntityGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
-          filter: [],
+          revLoggedInRemoteGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
+          filter: revPrevConnectionsArrref.current,
         },
         revRetPersData => {
           if ('revError' in revRetPersData) {
             setRevRandLoggedInEntities([]);
-          } else if (revRetPersData && 'filter' in revRetPersData) {
-            let revRetLoggedInEntitiesDataFilter = revRetPersData.filter;
+          } else if (revRetPersData) {
+            const {filter = []} = revRetPersData;
 
             setRevRandLoggedInEntities(prevState => {
               let revNewActivePeerEntitiesArr = [];
+              let revNewActivePeerEntity = null;
 
-              for (
-                let i = 0;
-                i < revRetLoggedInEntitiesDataFilter.length;
-                i++
-              ) {
-                const {revRemoteAddress, revRemotePort, revEntity} =
-                  revRetLoggedInEntitiesDataFilter[i];
-                if (
-                  revEntity &&
-                  revEntity._revRemoteGUID ==
-                    REV_LOGGED_IN_ENTITY._revRemoteGUID
-                ) {
+              for (let i = 0; i < filter.length; i++) {
+                const {revRemoteAddress, revRemotePort, revEntity} = filter[i];
+                const {_revRemoteGUID = -1} = revEntity;
+
+                if (revIsEmptyJSONObject(revEntity) || _revRemoteGUID < 1) {
+                  continue;
+                }
+
+                if (_revRemoteGUID !== REV_LOGGED_IN_ENTITY._revRemoteGUID) {
                   revNewActivePeerEntitiesArr.push(revEntity);
+                } else {
+                  continue;
+                }
+
+                if (
+                  !revPrevConnectionsArrref.current.includes(_revRemoteGUID)
+                ) {
+                  // revPrevConnectionsArrref.current.push(_revRemoteGUID);
+                }
+
+                if (revNewActivePeerEntity == null) {
+                  revNewActivePeerEntity = revEntity;
                 }
               }
 
-              let revNewActivePeerEntity = revNewActivePeerEntitiesArr[0];
               setRevActivePeerEntity(revNewActivePeerEntity);
-              setRevActivePeerTab(revCurrChatTargetTab(revNewActivePeerEntity));
 
               return revNewActivePeerEntitiesArr;
             });
@@ -210,25 +221,21 @@ export function ChatMessageInputComposer({revVarArgs}) {
       return null;
     }
 
-    if (!('_revInfoEntity' in revEntity)) {
+    const {_revInfoEntity = {}} = revEntity;
+
+    if (revIsEmptyJSONObject(_revInfoEntity)) {
       return null;
     }
 
-    let revInfoEntity = revEntity._revInfoEntity;
+    const {_revMetadataList = []} = _revInfoEntity;
 
-    if (!('_revMetadataList' in revInfoEntity)) {
-      return null;
-    }
-
-    let revFullNames = revGetMetadataValue(
-      revInfoEntity._revMetadataList,
-      'rev_entity_name',
-    );
+    let revFullNames = revGetMetadataValue(_revMetadataList, 'rev_entity_name');
+    revFullNames = revTruncateFullNamesString(revFullNames);
 
     return (
       <TouchableOpacity
         style={[
-          revSiteStyles.revFlexWrapper,
+          revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revCurrChatTargetTabWrapper,
         ]}>
         {revChatUserTab(revEntity)}
@@ -236,7 +243,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
           <Text
             style={[
               revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtSmall,
+              revSiteStyles.revSiteTxtTiny_X,
               revSiteStyles.revSiteTxtBold,
             ]}>
             {revFullNames}
@@ -341,9 +348,10 @@ export function ChatMessageInputComposer({revVarArgs}) {
     let revFullNames = '';
 
     if (revActivePeerEntity) {
-      let revInfoEntity = revActivePeerEntity._revInfoEntity;
+      const {_revInfoEntity = {_revMetadataList: []}} = revActivePeerEntity;
+
       revFullNames = revGetMetadataValue(
-        revInfoEntity._revMetadataList,
+        _revInfoEntity._revMetadataList,
         'rev_entity_name',
       );
     }
@@ -359,15 +367,16 @@ export function ChatMessageInputComposer({revVarArgs}) {
             revSiteStyles.revSiteTxtTiny,
             styles.revChatInputArea,
           ]}
-          placeholder={` Chat away with ${
-            revSplitStringToArray(revFullNames)[0]
-          } !`}
+          placeholder={` Chat away with ${revTruncateFullNamesString(
+            revFullNames,
+            {revMaxLen: 22},
+          )} !`}
           placeholderTextColor="#999"
           multiline={true}
           numberOfLines={5}
           onChangeText={newText => {
             revChatMessageTxtLatest.current = newText;
-            handleTextInputChange();
+            // handleTextInputChange();
           }}
           onBlur={handleTypingStop}
           defaultValue={revChatMessageTxtLatest.current}
@@ -379,22 +388,59 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revSubmitChatOptionsMenuArea = revCallBackFunc => {
-    let revTargetEntityGUID = REV_LOGGED_IN_ENTITY_GUID == 6 ? 1 : 6;
-
     return (
       <RevSubmitChatTab
         revGetCurrentChatTarget={() => {
-          return revTargetEntityGUID; // revChatEntityVarArgsLatest.current;
+          const {_revRemoteGUID = -1} = revActivePeerEntity;
+          return _revRemoteGUID;
         }}
         revGetChatTextImput={() => revChatMessageTxtLatest.current}
         revCallback={revRetData => {
           let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
 
-          sendMessage(revRemoteTargetEntityGUID, {
-            revMsg: revChatMessageTxtLatest.current,
-          });
-          revOnDisplayNotification();
+          let revPersEntity = REV_ENTITY_STRUCT();
+          revPersEntity._revType = 'rev_object';
+          revPersEntity._revSubType = 'rev_im_msg';
+          revPersEntity._revRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+          revPersEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
+          /** START REV INFO */
+          let revPersEntityInfo = REV_ENTITY_STRUCT();
+
+          revPersEntityInfo._revChildableStatus = 3;
+          revPersEntityInfo._revType = 'revObject';
+          revPersEntityInfo._revSubType = 'rev_entity_info';
+          revPersEntityInfo._revChildableStatus = 3;
+          revPersEntityInfo._revTimeCreated = new Date().getTime();
+          /** END REV INFO */
+
+          revPersEntityInfo._revMetadataList = [
+            REV_METADATA_FILLER(
+              'rev_entity_desc',
+              revChatMessageTxtLatest.current,
+            ),
+            REV_METADATA_FILLER(
+              'rev_entity_desc_html',
+              revChatMessageTxtLatest.current,
+            ),
+          ];
+
+          /** REV START ATTACH INFO */
+          revPersEntity._revInfoEntity = revPersEntityInfo;
+          /** REV END ATTACH INFO */
+
+          let revMsgData = {
+            revType: 'revText',
+            revMsg: revPersEntity,
+            revSelectedPicsFiles: 0,
+            revSelectedVideoFiles: 0,
+          };
+
+          sendMessage(revRemoteTargetEntityGUID, {
+            revMsg: revMsgData,
+          });
+
+          revOnDisplayNotification();
           revCallBackFunc(revRetData);
 
           revChatMessageTxtLatest.current = '';
