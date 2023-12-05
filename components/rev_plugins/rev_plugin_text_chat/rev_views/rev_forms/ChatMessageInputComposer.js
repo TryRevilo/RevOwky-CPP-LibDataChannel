@@ -70,7 +70,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
-  const {sendMessage} = useContext(RevWebRTCContext);
+  const {revInitPeerConn, sendMessage, revRecconnectPeer} =
+    useContext(RevWebRTCContext);
 
   const revPrevConnectionsArrref = useRef([]);
 
@@ -550,6 +551,34 @@ export function ChatMessageInputComposer({revVarArgs}) {
         {revRandLoggedInUserTabsArea.map(revView => revView)}
       </View>,
     );
+
+    let revPeerId = revActivePeerEntity._revRemoteGUID;
+
+    revInitPeerConn({
+      revPeerId,
+      revOnConnSuccess: () => {
+        console.log('>>> CONN - SUCCESS ! ! !');
+      },
+      revOnConnFail: revStatus => {
+        console.log('>>> FAIL', revStatus);
+
+        revRecconnectPeer(revPeerId);
+      },
+      revOnMessageSent: revMessage => {
+        console.log(
+          '>>> revOnMessageSent - SUCCESS ! ! !\n\n',
+          JSON.stringify(revMessage),
+          '\n\n',
+        );
+      },
+      revOnMessageReceived: revMessage => {
+        console.log(
+          '>>> revOnMessageReceived - SUCCESS ! ! !\n\n',
+          JSON.stringify(revMessage),
+          '\n\n',
+        );
+      },
+    });
 
     setRevActivePeerTab(revCurrChatTargetTab(revActivePeerEntity));
   }, [revRandLoggedInEntities, revActivePeerEntity]);

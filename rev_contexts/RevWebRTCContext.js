@@ -29,28 +29,36 @@ import {revGetMetadataValue} from '../rev_function_libs/rev_entity_libs/rev_meta
 import DeviceInfo from 'react-native-device-info';
 
 import {RevDialingCall} from '../components/rev_views/rev_web_rtc_views/rev_views/rev_object_views/RevDialingCall';
-import {RevIncomingCall} from '../components/rev_views/rev_web_rtc_views/rev_views/rev_object_views/RevIncomingCall';
 
 import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
 
-// create the context
-const RevWebRTCContext = createContext();
+const rev_settings = require('../rev_res/rev_settings.json');
 
-const config = {
-  iceCandidatePoolSize: 5,
+// create the context
+var RevWebRTCContext = createContext();
+
+const revPeerConnConfig = {
   iceServers: [
     {
-      urls: 'stun:stun.l.google.com:19302',
+      urls: ['stun:stun.l.google.com:19302'],
+    },
+    {
+      urls: `turn:${rev_settings.revIP}:${rev_settings.revTurnServerPort}`,
+      username: 'rev',
+      credential: '123',
     },
   ],
 };
 
-const sessionConstraints = {
-  OfferToReceiveAudio: true,
-  OfferToReceiveVideo: true,
+var revChanOptions = {
+  id: 1,
+  ordered: true,
+  maxPacketLifeTime: 5000, // 5 seconds
+  // maxRetransmits: 3,
+  protocol: 'udp',
 };
 
-const mediaConstraints = {
+var mediaConstraints = {
   audio: true,
   video: {
     frameRate: 30,
@@ -58,25 +66,17 @@ const mediaConstraints = {
   },
 };
 
-const channelConfig = {
-  ordered: true, // data packets are sent in order
-  maxPacketLifeTime: 10000, // packets will expire after 10 seconds
-  maxRetransmits: 10, // the sender will retransmit a packet up to 3 times if it doesn't receive an ACK from the receiver
-  label: 'my-channel', // a name for the channel
-};
-
-const RevWebRTCContextProvider = ({children}) => {
+var RevWebRTCContextProvider = ({children}) => {
   const {revSiteStyles} = useRevSiteStyles();
   const deviceModel = DeviceInfo.getModel();
 
   const {revInitSiteModal, revCloseSiteModal} = useContext(ReViewsContext);
 
   // initialize state variable
-  const [revPeerConnsData, setRevPeerConnsData] = useState([]);
+  const revPeerConnsDataRef = useRef([]);
+  const revPeerConnsCallBacksRef = useRef({});
 
   const [revQuedMessages, setRevQuedMessages] = useState([]);
-
-  const [revWebServerOpen, setRevWebServerOpen] = useState(true);
 
   const [REV_WEB_SOCKET_SERVER, SET_REV_WEB_SOCKET_SERVER] = useState(null);
   const [revLoggedInEntityGUID, setRevLoggedInEntityGUID] = useState(0);
@@ -89,71 +89,139 @@ const RevWebRTCContextProvider = ({children}) => {
   const [revLocalVideoStream, setRevLocalVideoStream] = useState(null);
   const [revRemoteVideoStreamsArr, setRevRemoteVideoStreamsArr] = useState([]);
 
-  const [revOffer, setRevOffer] = useState(null);
-  const [revAnswer, setRevAnswer] = useState(null);
-  const [revCandidate, setRevCandidate] = useState(null);
+  const revRestartingPeerIdsArr = useRef([]);
 
-  let revOKGo = async (revVarArgs, revType = '') => {
-    const {revEntity = {}, revDataType = ''} = revVarArgs;
+  var revInitPeerConn = async revVarArgs => {
+    let revPassVarArgs = {};
+
+    /** START CONN SUCCESS */
+    let revOnConnSuccess = null;
+
+    if (revVarArgs.revOnConnSuccess) {
+      revOnConnSuccess = revVarArgs.revOnConnSuccess;
+    }
+
+    revPassVarArgs['revOnConnSuccess'] = revOnConnSuccess;
+    /** END CONN SUCCESS */
+
+    /** START CONN FAIL */
+    let revOnConnFail = null;
+
+    if (revVarArgs.revOnConnFail) {
+      revOnConnFail = revVarArgs.revOnConnFail;
+    }
+
+    revPassVarArgs['revOnConnFail'] = revOnConnFail;
+    /** END CONN FAIL */
+
+    /** START message sent */
+    let revOnMessageSent = null;
+
+    if (revVarArgs.revOnMessageSent) {
+      revOnMessageSent = revVarArgs.revOnMessageSent;
+    }
+
+    revPassVarArgs['revOnMessageSent'] = revOnMessageSent;
+    /** END message sent */
+
+    /** START message received */
+    let revOnMessageReceived = null;
+
+    if (revVarArgs.revOnMessageReceived) {
+      revOnMessageReceived = revVarArgs.revOnMessageReceived;
+    }
+
+    revPassVarArgs['revOnMessageReceived'] = revOnMessageReceived;
+    /** END message received */
+
+    revPeerConnsCallBacksRef.current[revVarArgs.revPeerId] = revPassVarArgs;
+
+    await revCreatePeerConn(revVarArgs.revPeerId, {
+      isRevCaller: true,
+      revDataType: '',
+      revCallBacks: revPassVarArgs,
+    });
+  };
+
+  var revOKGo = async revVarArgs => {
+    const {revEntity = {}, revDataType = '', isRevCaller = false} = revVarArgs;
     const {_revRemoteGUID = -1} = revEntity;
 
     if (_revRemoteGUID < 1) {
       return;
     }
 
-    await revCreatePeerConnection(_revRemoteGUID);
-  };
-
-  const revInitWebServer = () => {
-    const ws = new WebSocket(`ws://${REV_IP}:${REV_PORT}`);
-
-    SET_REV_WEB_SOCKET_SERVER(ws);
-
-    ws.addEventListener('open', event => {
-      setRevWebServerOpen(true);
+    await revCreatePeerConn(_revRemoteGUID, {
+      isRevCaller,
+      revDataType,
     });
   };
 
-  // function to initialize WebSocket and set up event listeners
-  const initSocket = () => {
-    REV_WEB_SOCKET_SERVER.onmessage = async event => {
-      const message = JSON.parse(event.data);
+  var revWSLogIn = () => {
+    let revMessage = {type: 'login', revEntity: REV_LOGGED_IN_ENTITY};
+    revSendWebServerMessage(revMessage);
+  };
 
-      const {type: revMsgType} = message;
+  var revInitWebServer = () => {
+    const ws = new WebSocket(`ws://${REV_IP}:${REV_PORT}`);
+    SET_REV_WEB_SOCKET_SERVER(ws);
+  };
+
+  // function to initialize WebSocket and set up event listeners
+  var initSocket = () => {
+    REV_WEB_SOCKET_SERVER.onmessage = async event => {
+      const revData = JSON.parse(event.data);
+
+      const {type: revMsgType} = revData;
 
       console.log('>>> revMsgType', revMsgType);
 
       switch (revMsgType) {
-        case 'rev_connection':
+        case 'connection':
+          console.log('connected : ' + JSON.stringify(revData.success));
           break;
         case 'login':
-          handleLogin(message.success);
+          handleLogin(revData);
           break;
         case 'offer':
-          setRevOffer(message);
+          handleOffer(revData);
           break;
         case 'answer':
-          setRevAnswer(message);
+          handleAnswer(revData);
           break;
         case 'candidate':
-          setRevCandidate(message);
+          handleCandidate(revData);
+          break;
+        case 'rev_init_close_peer_conn':
+          revHandleInitClosePeerConn(revData);
+          break;
+        case 'rev_peer_close_complete':
+          revHandlePeerClosed(revData);
           break;
         case 'rev_rand_logged_in_conns':
-          revHandleRandLoggedInConnGUIDs(message);
+          revHandleRandLoggedInConnGUIDs(revData);
           break;
         case 'revConnEntity':
-          await revOKGo(message);
+          revOKGo({...revData, isRevCaller: true});
           break;
         case 'rev_unavailable':
-          console.log(deviceModel, message, JSON.stringify(message));
+          console.log(deviceModel, JSON.stringify(revData));
+          break;
+        case 'leave':
+          handleLeave(revData);
+          break;
+        case 'rev_unavailable':
+          console.log('ERR - rev_unavailable', JSON.stringify(revData));
           break;
         default:
-          console.warn(`Received unknown message: ${JSON.stringify(message)}`);
+          console.warn(`Received unknown message: ${JSON.stringify(revData)}`);
       }
     };
+
+    revWSLogIn();
   };
 
-  const revSendWebServerMessage = (message, revWS = null) => {
+  var revSendWebServerMessage = (message, revWS = null) => {
     if (revWS == null) {
       revWS = REV_WEB_SOCKET_SERVER;
     }
@@ -171,7 +239,7 @@ const RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  const revGetRandLoggedInGUIDs = revLoggedInEntityGUID => {
+  var revGetRandLoggedInGUIDs = revLoggedInEntityGUID => {
     let revMessage = {
       type: 'rev_get_rand_connected_users',
       revEntityId: revLoggedInEntityGUID,
@@ -179,28 +247,48 @@ const RevWebRTCContextProvider = ({children}) => {
     revSendWebServerMessage(revMessage);
   };
 
-  const revHandleRandLoggedInConnGUIDs = () => {};
+  var handleLogin = revData => {
+    const {success = false, revError} = revData;
 
-  const revWSLogIn = () => {
-    let revMessage = {type: 'login', revEntity: REV_LOGGED_IN_ENTITY};
-    revSendWebServerMessage(revMessage);
-  };
-
-  const handleLogin = success => {
     if (success === false) {
       REV_WEB_SOCKET_SERVER(null);
-      alert('Ooops...try a different username');
-    } else {
-      console.log(deviceModel, '+++ Logged In +++');
     }
+
+    console.log(deviceModel, '+++ Logged In : revError', revError);
   };
 
-  const revGetConnData = revPeerId => {
-    return revPeerConnsData.find(c => c && c.peerId === revPeerId);
+  var revUpdateConnDataState = revNewData => {
+    const {revPeerId} = revNewData;
+
+    revPeerConnsDataRef.current = revPeerConnsDataRef.current.map(revCurr => {
+      const {revPeerId: revCurrrevPeerId = -1} = revCurr;
+
+      if (revPeerId == revCurrrevPeerId) {
+        revCurr = revNewData;
+      }
+
+      return revCurr;
+    });
   };
 
-  const getDataChannel = peerId => {
-    const connection = revGetConnData(peerId);
+  var revUpdateConnDataItemState = (revPeerId, revKey, revNewData) => {
+    revPeerConnsDataRef.current = revPeerConnsDataRef.current.map(revCurr => {
+      if (revCurr && revCurr.revPeerId == revPeerId) {
+        revCurr[revKey] = revNewData;
+      }
+
+      return revCurr;
+    });
+  };
+
+  var revGetConnData = revPeerId => {
+    return revPeerConnsDataRef.current.find(
+      c => c && c.revPeerId === revPeerId,
+    );
+  };
+
+  var getDataChannel = revPeerId => {
+    const connection = revGetConnData(revPeerId);
 
     if (connection && connection.dataChannel) {
       return connection.dataChannel;
@@ -209,43 +297,138 @@ const RevWebRTCContextProvider = ({children}) => {
     return null;
   };
 
-  const getPeerConnection = peerId => {
-    const connection = revGetConnData(peerId);
-    if (connection) {
-      return connection.pc;
+  var getPeerConnection = revPeerId => {
+    const connection = revGetConnData(revPeerId);
+    if (!revIsEmptyJSONObject(connection)) {
+      return connection.revPeerConn;
     }
     return null;
   };
 
-  const revUpdateConnDataState = revNewData => {
-    const {peerId} = revNewData;
-
-    setRevPeerConnsData(revPrev => {
-      return revPrev.map(revCurr => {
-        let revCurrPeerId = revCurr.peerId;
-
-        if (peerId == revCurrPeerId) {
-          revCurr = revNewData;
+  var revDelConnData = _revRemoteGUID => {
+    revPeerConnsDataRef.current = revPeerConnsDataRef.current.filter(
+      revCurr => {
+        if (revIsEmptyJSONObject(revCurr)) {
+          return false;
         }
 
-        return revCurr;
-      });
+        const {revPeerId} = revCurr;
+        return revPeerId !== _revRemoteGUID;
+      },
+    );
+  };
+
+  var revInitClosePeerConn = revPeerId => {
+    revRestartingPeerIdsArr.current.push(revPeerId);
+
+    let revMessage = {
+      type: 'rev_init_close_peer_conn',
+      revRecipientId: revPeerId,
+      revSenderId: revLoggedInEntityGUID,
+    };
+
+    revSendWebServerMessage(revMessage);
+  };
+
+  var revPeerCloseComplete = revPeerId => {
+    let revMessage = {
+      type: 'rev_peer_close_complete',
+      revRecipientId: revPeerId,
+      revSenderId: revLoggedInEntityGUID,
+    };
+
+    revSendWebServerMessage(revMessage);
+  };
+
+  var revRecconnectPeer = revPeerId => {
+    revRestartingPeerIdsArr.current.push(revPeerId);
+
+    let revMessage = {
+      type: 'rev_reconnect',
+      revRecipientId: revPeerId,
+      revEntity: REV_LOGGED_IN_ENTITY,
+    };
+
+    revSendWebServerMessage(revMessage);
+  };
+
+  var revRestartPeerConn = async revPeerId => {
+    await revCloseConn(revPeerId);
+    revRecconnectPeer(revPeerId);
+  };
+
+  var revConnRestartComplete = revPeerId => {
+    revRestartingPeerIdsArr.current = revRestartingPeerIdsArr.current.filter(
+      revCurr => revCurr !== revPeerId,
+    );
+  };
+
+  var revCloseConn = async (_revRemoteGUID, isRevPeerClosed = false) => {
+    revConnRestartComplete(_revRemoteGUID);
+
+    return new Promise((resolve, reject) => {
+      const revOnConnCloseCallBack = () => {
+        const revExitInterval = revIntervalId => {
+          revDelConnData(_revRemoteGUID);
+          clearInterval(revIntervalId);
+
+          const revFinIntval = () => {
+            if (!revRestartingPeerIdsArr.current.includes(_revRemoteGUID)) {
+              revConnRestartComplete(_revRemoteGUID);
+              revPeerCloseComplete(_revRemoteGUID);
+
+              clearInterval(revFinIntvalId);
+              resolve();
+            }
+          };
+
+          const revFinIntvalId = setInterval(revFinIntval, 1000);
+        };
+
+        let revDataChannel = getDataChannel(_revRemoteGUID);
+
+        if (revDataChannel) {
+          revDataChannel.close();
+        }
+
+        let revPeerConn = getPeerConnection(_revRemoteGUID);
+
+        if (revPeerConn == null) {
+          revConnRestartComplete(_revRemoteGUID);
+          return revExitInterval(revIntervalId);
+        }
+
+        revPeerConn.close();
+        revPeerConn.onicecandidate = null;
+        revPeerConn.onaddstream = null;
+
+        const {connectionState} = revPeerConn;
+
+        if (connectionState == 'closed' || connectionState == 'disconnected') {
+          if (!isRevPeerClosed) {
+            revInitClosePeerConn(_revRemoteGUID);
+          }
+
+          return revExitInterval(revIntervalId);
+        }
+      };
+
+      const revIntervalId = setInterval(revOnConnCloseCallBack, 1000);
     });
   };
 
-  const revCreateDataChannel = (pc, _revRemoteGUID) => {
-    const revChanOptions = {
-      id: 1,
-      ordered: true,
-      maxPacketLifeTime: 5000, // 5 seconds
-      // maxRetransmits: 3,
-      protocol: 'udp',
-    };
+  var revHandleInitClosePeerConn = async revVarArgs => {
+    const {revSenderId} = revVarArgs;
+    await revCloseConn(revSenderId, true);
+  };
 
-    const revDataChannel = pc.createDataChannel(
-      'rev_data_channel',
-      revChanOptions,
-    );
+  var revHandlePeerClosed = revVarArgs => {
+    const {revSenderId} = revVarArgs;
+    revConnRestartComplete(revSenderId);
+  };
+
+  const revCreateDataChannel = revPeerConn => {
+    const revDataChannel = revPeerConn.createDataChannel('rev_data_channel');
 
     // set up event listeners for data channel
     revDataChannel.onopen = () => {
@@ -279,17 +462,80 @@ const RevWebRTCContextProvider = ({children}) => {
     return revDataChannel;
   };
 
-  // function to create peer connection and add to state JSON object
-  const revCreatePeerConnection = async (
-    peerId,
-    {revIsVideoCall = false} = {},
+  var revInitOffer = async (
+    _revRemoteGUID,
+    {revIsVideoCall = false, revOfferOptions = {}} = {},
   ) => {
-    const pc = new RTCPeerConnection(config);
+    let revConnData = revGetConnData(_revRemoteGUID);
+
+    if (revIsEmptyJSONObject(revConnData)) {
+      return;
+    }
+
+    const {revPeerId, revPeerConn} = revConnData;
+
+    let revSessionConstraints = {
+      offerToReceiveAudio: revIsVideoCall,
+      offerToReceiveVideo: revIsVideoCall,
+      voiceActivityDetection: revIsVideoCall,
+    };
+
+    try {
+      let revOfferDesc = await revPeerConn.createOffer(revSessionConstraints);
+      await revPeerConn.setLocalDescription(revOfferDesc);
+
+      revConnData['revPeerConn'] = revPeerConn;
+
+      revUpdateConnDataState(revConnData);
+
+      let revOfferMsgData = {
+        type: 'offer',
+        revOfferDescription: revOfferDesc,
+        revRecipientId: _revRemoteGUID,
+        revSenderId: revLoggedInEntityGUID,
+        revDataType: revIsVideoCall ? 'revVideo' : 'revData',
+      };
+
+      if (revIsVideoCall) {
+        revOfferMsgData['revIsVideoCall'] = true;
+      }
+
+      revSendWebServerMessage(revOfferMsgData);
+    } catch (error) {
+      console.log('*** ERROR -revInitOffer', error);
+    }
+  };
+
+  // function to create peer connection and add to state JSON object
+  const revCreatePeerConn = async (revPeerId, revVarArgs = {}) => {
+    const {
+      isRevCaller = false,
+      revIsVideoCall = false,
+      revCallBacks = {},
+    } = revVarArgs;
+
+    let _revCallBacks = revCallBacks;
+
+    if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
+      let revPassVarArgs = revPeerConnsCallBacksRef.current[revPeerId];
+      _revCallBacks = {...revCallBacks, ...revPassVarArgs};
+    }
+
+    const {revOnConnSuccess, revOnConnFail, revOnMessageReceived} =
+      _revCallBacks;
+
+    await revCloseConn(revPeerId);
+
+    revRestartingPeerIdsArr.current = revRestartingPeerIdsArr.current.filter(
+      revCurr => revCurr !== revPeerId,
+    );
+
+    let revPeerConn = new RTCPeerConnection(revPeerConnConfig);
 
     // Remote side: Receive and process incoming tracks
-    pc.ontrack = function (event) {
+    revPeerConn.ontrack = function (event) {
       const remoteStream = event.streams[0];
-      remoteStream.id = peerId;
+      remoteStream.id = revPeerId;
 
       remoteStream.getTracks().forEach(track => {
         console.log(deviceModel, '--- Received remote track:', track);
@@ -311,7 +557,7 @@ const RevWebRTCContextProvider = ({children}) => {
         );
         revLocalMediaStream
           .getTracks()
-          .forEach(track => pc.addTrack(track, revLocalMediaStream));
+          .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
 
         setRevLocalVideoStream(revLocalMediaStream);
       } catch (error) {
@@ -322,7 +568,7 @@ const RevWebRTCContextProvider = ({children}) => {
     // Accumulate incoming chunks
     let receivedChunks = [];
 
-    pc.addEventListener('datachannel', event => {
+    revPeerConn.addEventListener('datachannel', event => {
       let datachannel = event.channel;
 
       datachannel.addEventListener('message', event => {
@@ -342,92 +588,96 @@ const RevWebRTCContextProvider = ({children}) => {
             );
 
             console.log('! ! ! Received msg:', revMsgVal);
+
+            if (revOnMessageReceived) {
+              revOnMessageReceived(revMsg);
+            }
           } catch (error) {
             console.log('>>> ERROR - revDataChannel.onmessage', error);
           }
 
-          // Clear the receivedChunks array for the next file
+          // Clear the receivedChunks array for the next msg
           receivedChunks = [];
         } else {
           // Regular data chunk, accumulate it
           receivedChunks.push(revChunkDataStr);
         }
-        /** END REV CALL PLUGIN HOOK HANDLERS */
       });
     });
 
     // create data channel
-    let dataChannel = revCreateDataChannel(pc, peerId);
+    let dataChannel = revCreateDataChannel(revPeerConn);
 
-    pc.onicecandidate = event => {
+    revPeerConn.oniceconnectionstatechange = async () => {
+      const {iceConnectionState: revICEConnState} = revPeerConn;
+
+      console.log('>>> ', deviceModel, 'revICEConnState :', revICEConnState);
+
+      switch (revICEConnState) {
+        case 'connected':
+          revConnRestartComplete(revPeerId);
+
+          revSendWebServerMessage({
+            type: 'rev_connected_success',
+            revRecipientId: revPeerId,
+            revSenderId: revLoggedInEntityGUID,
+          });
+
+          if (revOnConnSuccess) {
+            revOnConnSuccess();
+          }
+          break;
+
+        case 'disconnected':
+        case 'failed':
+          if (revOnConnFail) {
+            revOnConnFail(revICEConnState);
+          }
+          break;
+
+        case 'closed':
+          break;
+
+        default:
+          break;
+      }
+    };
+
+    revPeerConn.onicecandidate = event => {
+      if (revRestartingPeerIdsArr.current.includes(revPeerId)) {
+        return;
+      }
+
       if (event.candidate) {
         revSendWebServerMessage({
           type: 'candidate',
           revCandidate: event.candidate,
-          revRecipientId: peerId,
+          revRecipientId: revPeerId,
           revSenderId: revLoggedInEntityGUID,
         });
       }
     };
 
-    pc.oniceconnectionstatechange = async event => {
-      let revICEConnectionState = pc.iceConnectionState;
+    let revNewConns = revPeerConnsDataRef.current.filter(
+      revCurr => revCurr && revCurr.revPeerId !== revPeerId,
+    );
 
-      if (revICEConnectionState === 'connected') {
-        console.log('! ! ! Peer connection established');
-      } else if (pc.iceConnectionState === 'failed') {
-        console.log(deviceModel, '*** Connection failed, retrying...');
-      } else if (revICEConnectionState == 'closed') {
-      }
-    };
+    revPeerConnsDataRef.current = [
+      ...revNewConns,
+      {revPeerId, revPeerConn, dataChannel, revRemoteCandidatesArr: []},
+    ];
 
-    setRevPeerConnsData(revPrev => {
-      let revNewConns = revPrev.filter(
-        revCurr => revCurr && revCurr.peerId !== peerId,
-      );
+    if (isRevCaller) {
+      await revInitOffer(revPeerId);
+    }
 
-      return [...revNewConns, {peerId, pc, dataChannel}];
-    });
-
-    return {pc, dataChannel};
+    return {revPeerConn, dataChannel};
   };
 
   const sendMessage = async (revPeerId, message) => {
     setRevQuedMessages(prevState => {
       return [...prevState, {revPeerId, ...message}];
     });
-  };
-
-  const revCloseLocalStream = () => {
-    setRevIsCaller(false);
-
-    if (revLocalVideoStream) {
-      // Stop the tracks in the local stream object
-      revLocalVideoStream.getTracks().forEach(track => {
-        if (track.readyState === 'live') {
-          track.stop();
-        }
-      });
-
-      // Release the local stream object
-      revLocalVideoStream.release();
-
-      // Remove the local video feed
-      setRevLocalVideoStream(null);
-    }
-  };
-
-  const revCloseRemotelStream = () => {
-    if (revRemoteVideoStreamsArr.length > 0) {
-      revRemoteVideoStreamsArr.forEach(stream => {
-        stream.getTracks().forEach(track => {
-          if (track.readyState === 'live') {
-            track.stop();
-          }
-        });
-      });
-      setRevRemoteVideoStreamsArr([]);
-    }
   };
 
   const revAsyncFilter = async (arr, predicate) => {
@@ -439,42 +689,12 @@ const RevWebRTCContextProvider = ({children}) => {
     }
   };
 
+  const revInitVideoCall = async ({revTargetrevPeerId}) => {};
+
   const revEndVideoCall = async revPeerId => {};
 
-  const revInitVideoCall = async ({revTargetPeerId}) => {
-    setRevIsCaller(true);
-
-    let revConnection = null;
-
-    try {
-      const {pc} = await revCreatePeerConnection(revTargetPeerId, {
-        revIsVideoCall: true,
-      });
-
-      revConnection = pc;
-    } catch (error) {
-      console.log('*** error -revInitVideoCall', error);
-    }
-
-    if (!revConnection) {
-      console.log('*** ERR revConnection empty', revTargetPeerId);
-    }
-  };
-
-  // function to send answer message to remote peer
-  const sendAnswer = (answer, revRecipientId) => {
-    const answerMessage = {
-      type: 'answer',
-      answer: answer,
-      revRecipientId,
-      revSenderId: revLoggedInEntityGUID,
-    };
-
-    revSendWebServerMessage(answerMessage);
-  };
-
   // function to handle incoming offer message from remote peer
-  const handleOffer = async revVarArgs => {
+  var handleOffer = async revVarArgs => {
     if (revIsEmptyJSONObject(revVarArgs)) {
       return;
     }
@@ -488,64 +708,45 @@ const RevWebRTCContextProvider = ({children}) => {
 
     const revIsVideoCall = revDataType == 'revVideo';
 
-    let revConnData = revGetConnData(_revRemoteGUID);
+    let revPeerConn = getPeerConnection(_revRemoteGUID);
 
-    let _isRevAnswerPending = false;
-
-    if (revIsEmptyJSONObject(revConnData)) {
-      const {pc} = await revCreatePeerConnection(_revRemoteGUID);
-      revConn = pc;
-    } else {
-      let {pc, isRevAnswerPending = false} = revConnData;
-      revConn = pc;
-      _isRevAnswerPending = isRevAnswerPending;
-    }
-
-    if (_isRevAnswerPending) {
-      return;
-    }
-
-    const revInitAnswer = async () => {
-      try {
-        await revConn.setRemoteDescription(offer);
-        let answerDescription = await revConn.createAnswer();
-        await revConn.setLocalDescription(answerDescription);
-
-        setRevPeerConnsData(revPrev => {
-          return revPrev.map(revCurr => {
-            if (revCurr && revCurr.peerId == _revRemoteGUID) {
-              sendAnswer(revConn.localDescription, _revRemoteGUID);
-              revCurr['isRevAnswerPending'] = true;
-            }
-
-            return revCurr;
-          });
-        });
-      } catch (error) {
-        console.log(deviceModel, '*** handleOffer', error);
+    try {
+      if (revPeerConn) {
+        await revRestartPeerConn(_revRemoteGUID);
+        return;
       }
-    };
 
-    if (revIsVideoCall) {
-      revInitSiteModal(
-        <RevIncomingCall
-          revVarArgs={{
-            revCancelCallBackFunc: async () => {
-              await revEndVideoCall(_revRemoteGUID);
-            },
-            revAcceptCallBackFunc: async () => {
-              await revInitAnswer();
-            },
-          }}
-        />,
-      );
-    } else {
-      await revInitAnswer();
+      ({revPeerConn} = await revCreatePeerConn(_revRemoteGUID, {
+        revIsVideoCall,
+      }));
+
+      let revRemDesc = new RTCSessionDescription(offer);
+      await revPeerConn.setRemoteDescription(revRemDesc);
+
+      let revAnswerDesc = await revPeerConn.createAnswer();
+      await revPeerConn.setLocalDescription(revAnswerDesc);
+
+      revUpdateConnDataItemState(_revRemoteGUID, 'revPeerConn', revPeerConn);
+
+      await revProcessCandidates(_revRemoteGUID);
+
+      // Send the answer to the remote peer via WebSocket
+      const answerMessage = {
+        type: 'answer',
+        answer: revAnswerDesc,
+        revRecipientId: _revRemoteGUID,
+        revSenderId: revLoggedInEntityGUID,
+      };
+
+      revSendWebServerMessage(answerMessage);
+      console.log('>>> INIT - answer . . .');
+    } catch (error) {
+      console.log(deviceModel, '*** ERROR - handleOffer', error);
     }
   };
 
   // function to handle incoming answer message from remote peer
-  const handleAnswer = async revData => {
+  var handleAnswer = async revData => {
     if (!revData) {
       return;
     }
@@ -557,48 +758,80 @@ const RevWebRTCContextProvider = ({children}) => {
     }
 
     let revConnData = revGetConnData(revSenderId);
-    const {peerId, pc} = revConnData;
 
-    if (peerId == revSenderId) {
-      try {
-        await pc.setRemoteDescription(new RTCSessionDescription(answer));
-      } catch (e) {
-        if (e.name === 'InvalidStateError' && pc.signalingState === 'stable') {
-          // The connection is not in the correct state to set a remote description
-          // Wait for the next signaling state change event to try again
-          await new Promise(resolve => {
-            pc.addEventListener('signalingstatechange', resolve, {
-              once: true,
-            });
-          });
-          // Try setting the remote description again
-          await pc.setRemoteDescription(answer);
-        } else {
-          // Handle other errors
-          console.log('Error setting remote description:', e);
-        }
-      }
+    if (revIsEmptyJSONObject(revConnData)) {
+      return;
     }
 
-    revConnData['pc'] = pc;
+    const {revPeerConn} = revConnData;
+
+    let revRemDesc = new RTCSessionDescription(answer);
+
+    try {
+      await revPeerConn.setRemoteDescription(revRemDesc);
+      console.log('>>> INIT - answer . . .');
+
+      revConnData['revPeerConn'] = revPeerConn;
+      revUpdateConnDataState(revConnData);
+    } catch (e) {
+      console.log('*** ERROR - handleAnswer', e);
+    }
+  };
+
+  var isRevConnectionReady = revPeerConn => {
+    // Check if both local and remote descriptions are set
+    return (
+      revPeerConn.localDescription !== null &&
+      revPeerConn.remoteDescription !== null
+    );
+  };
+
+  var revProcessCandidates = async revPeerId => {
+    let revConnData = revGetConnData(revPeerId);
+
+    if (revIsEmptyJSONObject(revConnData)) {
+      return;
+    }
+
+    const {revPeerConn, revRemoteCandidatesArr = []} = revConnData;
+
+    if (revRemoteCandidatesArr.length < 1) {
+      return;
+    }
+
+    for (const candidate of revRemoteCandidatesArr) {
+      await revPeerConn.addIceCandidate(candidate);
+    }
+
+    revConnData['revPeerConn'] = revPeerConn;
+    revConnData['revRemoteCandidatesArr'] = [];
     revUpdateConnDataState(revConnData);
   };
 
   // function to handle incoming candidate message from remote peer
-  const handleCandidate = async revData => {
-    if (revIsEmptyJSONObject(revData)) {
+  var handleCandidate = async (revData = {}) => {
+    const {revSenderId, revCandidate} = revData;
+    let revConnData = revGetConnData(revSenderId);
+
+    if (revIsEmptyJSONObject(revConnData)) {
       return;
     }
 
-    const {revSenderId, revCandidate} = revData;
+    const {revPeerConn, revRemoteCandidatesArr = []} = revConnData;
+    let revConnectionReady = isRevConnectionReady(revPeerConn);
 
-    let revConnData = revGetConnData(revSenderId);
-    const {peerId, pc} = revConnData;
+    let revRTCCand = new RTCIceCandidate(revCandidate);
 
-    if (peerId == revSenderId) {
+    if (
+      revRestartingPeerIdsArr.current.includes(revSenderId) ||
+      !revConnectionReady
+    ) {
+      revRemoteCandidatesArr.push(revRTCCand);
+      revConnData['revRemoteCandidatesArr'] = revRemoteCandidatesArr;
+    } else {
       try {
-        await pc.addIceCandidate(new RTCIceCandidate(revCandidate));
-        revConnData['pc'] = pc;
+        await revPeerConn.addIceCandidate(revRTCCand);
+        revConnData['revPeerConn'] = revPeerConn;
       } catch (error) {
         console.log(deviceModel, '*** ERROR - handleCandidate', error);
       }
@@ -607,47 +840,14 @@ const RevWebRTCContextProvider = ({children}) => {
     revUpdateConnDataState(revConnData);
   };
 
-  const revCreateOffer = async (
-    _revRemoteGUID,
-    {revIsVideoCall = false} = {},
-  ) => {
-    let revOfferDescription;
+  var handleLeave = async revVarArgs => {
+    const {revPeerId = -1} = revVarArgs;
 
-    let revConnData = revGetConnData(_revRemoteGUID);
-
-    if (revIsEmptyJSONObject(revConnData)) {
-      return;
-    }
-
-    const {peerId, pc} = revConnData;
-
-    if (peerId == _revRemoteGUID) {
-      try {
-        revOfferDescription = await pc.createOffer(sessionConstraints);
-        await pc.setLocalDescription(revOfferDescription);
-
-        let revOfferMsgData = {
-          type: 'offer',
-          revOfferDescription: pc.localDescription,
-          revRecipientId: peerId,
-          revSenderId: revLoggedInEntityGUID,
-          revDataType: revIsVideoCall ? 'revVideo' : 'revData',
-        };
-
-        if (revIsVideoCall) {
-          revOfferMsgData['revIsVideoCall'] = true;
-        }
-
-        revSendWebServerMessage(revOfferMsgData);
-
-        revConnData = {...revConnData, ...{isRevOfferPending: true}};
-      } catch (error) {
-        console.log('*** ERROR -revCreateOffer', error);
-      }
-    }
-
-    revUpdateConnDataState(revConnData);
+    await revCloseConn(revPeerId, true);
+    console.log('>>> LEAVE - success . . .');
   };
+
+  var revHandleRandLoggedInConnGUIDs = () => {};
 
   // Function to send message chunks
   function revSendChunks(revDataChannel, revMessage) {
@@ -675,7 +875,7 @@ const RevWebRTCContextProvider = ({children}) => {
     revSendNextChunk();
   }
 
-  const revInitSendMsgs = async () => {
+  var revInitSendMsgs = async () => {
     let revQuedMessagesLen = revQuedMessages.length;
 
     if (revQuedMessagesLen < 1) {
@@ -684,7 +884,11 @@ const RevWebRTCContextProvider = ({children}) => {
 
     let revNewMsgsQueArr = [];
 
-    let revPeer;
+    let revPeerConn = getPeerConnection(770);
+
+    if (!revPeerConn) {
+      ({revPeerConn} = await revCreatePeerConn(revPeerId));
+    }
 
     for (let i = 0; i < revQuedMessagesLen; i++) {
       if (revIsEmptyJSONObject(revQuedMessages[i])) {
@@ -693,18 +897,9 @@ const RevWebRTCContextProvider = ({children}) => {
 
       const {revPeerId} = revQuedMessages[i];
 
-      revPeer = getPeerConnection(revPeerId);
       let revDataChannel = getDataChannel(revPeerId);
 
-      try {
-        if (!revPeer) {
-          await revCreatePeerConnection(revPeerId);
-        }
-      } catch (error) {
-        console.log('ERR await revCreatePeerConnection', error);
-      }
-
-      if (!revPeer) {
+      if (!revPeerConn) {
         revNewMsgsQueArr.push(revQuedMessages[i]);
         return;
       }
@@ -715,6 +910,16 @@ const RevWebRTCContextProvider = ({children}) => {
             revDataChannel,
             JSON.stringify(revQuedMessages[i].revMsg),
           );
+
+          if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
+            const {revOnMessageSent} =
+              revPeerConnsCallBacksRef.current[revPeerId];
+
+            if (revOnMessageSent) {
+              revOnMessageSent(revQuedMessages[i].revMsg);
+            }
+          }
+
           continue;
         }
 
@@ -733,7 +938,7 @@ const RevWebRTCContextProvider = ({children}) => {
     setRevQuedMessages(revNewMsgsQueArr);
   };
 
-  const revVideoParticipantView = revRemoteVideoStream => {
+  var revVideoParticipantView = revRemoteVideoStream => {
     return (
       <View>
         {revRemoteVideoStream && (
@@ -814,13 +1019,7 @@ const RevWebRTCContextProvider = ({children}) => {
   };
 
   useEffect(() => {
-    setRevWebServerOpen(false);
-    revInitWebServer();
-  }, []);
-
-  useEffect(() => {
     if (!REV_LOGGED_IN_ENTITY) {
-      console.log(deviceModel, 'NOT LOGGED IN');
       return;
     }
 
@@ -831,7 +1030,6 @@ const RevWebRTCContextProvider = ({children}) => {
     }
 
     setRevLoggedInEntityGUID(_revRemoteGUID);
-    console.log(deviceModel, 'LOGGED IN');
   }, [REV_LOGGED_IN_ENTITY]);
 
   useEffect(() => {
@@ -847,35 +1045,10 @@ const RevWebRTCContextProvider = ({children}) => {
       return;
     }
 
-    initSocket();
+    REV_WEB_SOCKET_SERVER.addEventListener('open', event => {
+      initSocket();
+    });
   }, [REV_WEB_SOCKET_SERVER]);
-
-  useEffect(() => {
-    if (revWebServerOpen) {
-      revWSLogIn();
-    } else {
-      console.log(deviceModel, 'WebSocket is not open');
-    }
-  }, [revWebServerOpen]);
-
-  useEffect(() => {
-    for (let i = 0; i < revPeerConnsData.length; i++) {
-      if (revIsEmptyJSONObject(revPeerConnsData[i])) {
-        continue;
-      }
-
-      const {peerId, pc = {}} = [i];
-      const {localDescription = {type: ''}} = pc;
-
-      if (
-        revIsEmptyJSONObject(localDescription) ||
-        !localDescription.type ||
-        localDescription.type !== 'offer'
-      ) {
-        revCreateOffer(peerId);
-      }
-    }
-  }, [revPeerConnsData]);
 
   useEffect(() => {
     revInitSendMsgs();
@@ -904,26 +1077,15 @@ const RevWebRTCContextProvider = ({children}) => {
     }
   }, [revLocalVideoStream]);
 
-  useEffect(() => {
-    handleOffer(revOffer);
-  }, [revOffer]);
-
-  useEffect(() => {
-    handleAnswer(revAnswer);
-  }, [revAnswer]);
-
-  useEffect(() => {
-    handleCandidate(revCandidate);
-  }, [revCandidate]);
-
   // create context value with state variables and functions
   const contextValue = {
-    revPeerConnsData,
-    revCreatePeerConnection,
+    revPeerConnsData: revPeerConnsDataRef.current,
+    revInitPeerConn,
     sendMessage,
     revInitVideoCall,
     revEndVideoCall,
     revGetRandLoggedInGUIDs,
+    revRecconnectPeer,
   };
 
   return (
