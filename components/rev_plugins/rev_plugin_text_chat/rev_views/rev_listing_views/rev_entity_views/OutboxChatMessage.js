@@ -18,32 +18,35 @@ import RevChatMessageOptions from '../../RevChatMessageOptions';
 
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revFormatLongDate,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export default function OutboxChatMessage({revVarArgs}) {
+  const {revSiteStyles} = useRevSiteStyles();
+
   if (!revVarArgs) {
     return null;
   }
+
+  const {_revPublisherEntity, revMsg} = revVarArgs;
 
   let revEntityGUID = revVarArgs._revGUID;
 
   /** START GET PUBLISHER */
   if (
-    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
-    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
+    revIsEmptyJSONObject(_revPublisherEntity) ||
+    _revPublisherEntity._revType !== 'rev_user_entity'
   ) {
     return null;
   }
 
-  let revPublisherEntity = revVarArgs._revPublisherEntity;
-
-  if (revPublisherEntity._revType !== 'rev_user_entity') {
-    return null;
-  }
-
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revMetadataList,
+    _revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_entity_name',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -52,20 +55,21 @@ export default function OutboxChatMessage({revVarArgs}) {
   );
   /** END GET PUBLISHER */
 
-  let revMsgInfoEntity = revVarArgs._revInfoEntity;
+  let revMsgInfoEntity = revMsg._revInfoEntity;
 
   let revChatMsgStr = revGetMetadataValue(
     revMsgInfoEntity._revMetadataList,
-    'rev_entity_desc_val',
+    'rev_entity_desc_html',
   );
 
-  let revTimeCreated = revVarArgs._revTimeCreated;
+  let revTimeCreated = revFormatLongDate(revMsg._revTimeCreated);
 
   let maxMessageLen = 200;
 
   let chatMessageText = chatMsg => {
     let chatMessageView = (
-      <Text style={styles.chatMsgContentTxt}>
+      <Text
+        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
         {chatMsg.length > maxMessageLen
           ? chatMsg.substring(0, maxMessageLen) + ' . . .'
           : chatMsg}
@@ -105,7 +109,14 @@ export default function OutboxChatMessage({revVarArgs}) {
           <View
             style={[styles.chatMsgContentContainer, styles.chatMsgInboxBlue]}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>me</Text>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
+                me
+              </Text>
               <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
@@ -229,12 +240,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  chatMsgOwnerTxt: {
-    color: '#444',
-    fontSize: 10,
-    lineHeight: 10,
-    fontWeight: 'bold',
-  },
   chatMsgSendTime: {
     color: '#8d8d8d',
     fontSize: 9,
@@ -268,10 +273,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     maxWidth: chatMsgContentTxtContainerWidth,
     marginTop: 4,
-  },
-  chatMsgContentTxt: {
-    color: '#444',
-    fontSize: 10,
   },
   readMoreTextTab: {
     color: '#009688',

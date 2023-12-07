@@ -17,32 +17,36 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revFormatLongDate,
+  revIsEmptyJSONObject,
+} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export default function InboxMessage({revVarArgs}) {
+  const {revSiteStyles} = useRevSiteStyles();
+
   if (!revVarArgs) {
     return null;
   }
 
-  let revEntityGUID = revVarArgs._revGUID;
+  const {revMsg, _revPublisherEntity = {}} = revVarArgs;
+
+  let revEntityGUID = revMsg._revGUID;
 
   /** START GET PUBLISHER */
-  if (
-    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
-    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
-  ) {
+  if (revIsEmptyJSONObject(_revPublisherEntity)) {
     return null;
   }
 
-  let revPublisherEntity = revVarArgs._revPublisherEntity;
-
-  if (revPublisherEntity._revType !== 'rev_user_entity') {
+  if (_revPublisherEntity._revType !== 'rev_user_entity') {
     return null;
   }
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revMetadataList,
+    _revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_entity_name',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -51,14 +55,14 @@ export default function InboxMessage({revVarArgs}) {
   );
   /** END GET PUBLISHER */
 
-  let revMsgInfoEntity = revVarArgs._revInfoEntity;
+  let revMsgInfoEntity = revMsg._revInfoEntity;
 
   let revChatMsgStr = revGetMetadataValue(
     revMsgInfoEntity._revMetadataList,
-    'rev_entity_desc_val',
+    'rev_entity_desc',
   );
 
-  let revTimeCreated = revVarArgs._revInfoEntity._revTimeCreated;
+  let revTimeCreated = revFormatLongDate(revMsg._revTimeCreated);
 
   let minMessageLen = 1;
   let maxMessageLen = 200;
@@ -97,7 +101,8 @@ export default function InboxMessage({revVarArgs}) {
 
   let chatMessageText = _chatMsg => {
     let chatMessageView = (
-      <Text style={styles.chatMsgContentTxt}>
+      <Text
+        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
         {_chatMsg.length > maxMessageLen
           ? _chatMsg.substring(0, maxMessageLen) + ' . . .'
           : _chatMsg}
@@ -147,7 +152,12 @@ export default function InboxMessage({revVarArgs}) {
           </View>
           <View style={styles.chatMsgContentContainer}>
             <View style={styles.chatMsgHeaderWrapper}>
-              <Text style={styles.chatMsgOwnerTxt}>
+              <Text
+                style={[
+                  revSiteStyles.revSiteTxtColorLight,
+                  revSiteStyles.revSiteTxtTiny_X,
+                  revSiteStyles.revSiteTxtBold,
+                ]}>
                 {revPublisherEntityNames_Trunc}
               </Text>
               <Text style={styles.chatMsgSendTime}>{revTimeCreated}</Text>
@@ -289,12 +299,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  chatMsgOwnerTxt: {
-    color: '#444',
-    fontSize: 10,
-    lineHeight: 10,
-    fontWeight: 'bold',
-  },
   chatMsgSendTime: {
     color: '#8d8d8d',
     fontSize: 9,
@@ -328,10 +332,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingBottom: 4,
     marginTop: 2,
-  },
-  chatMsgContentTxt: {
-    color: '#444',
-    fontSize: 10,
   },
   readMoreTextTab: {
     color: '#009688',

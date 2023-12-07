@@ -92,9 +92,10 @@ var RevWebRTCContextProvider = ({children}) => {
   const revRestartingPeerIdsArr = useRef([]);
 
   var revInitPeerConn = async revVarArgs => {
-    const {revPeerId = -1} = revVarArgs;
+    const {revEntity = {}} = revVarArgs;
+    const {_revRemoteGUID = -1} = revEntity;
 
-    if (revPeerId < 1) {
+    if (_revRemoteGUID < 1) {
       return;
     }
 
@@ -140,9 +141,9 @@ var RevWebRTCContextProvider = ({children}) => {
     revPassVarArgs['revOnMessageReceived'] = revOnMessageReceived;
     /** END message received */
 
-    revPeerConnsCallBacksRef.current[revPeerId] = revPassVarArgs;
+    revPeerConnsCallBacksRef.current[_revRemoteGUID] = revPassVarArgs;
 
-    await revCreatePeerConn(revPeerId, {
+    await revCreatePeerConn(revEntity, {
       isRevCaller: true,
       revDataType: '',
       revCallBacks: revPassVarArgs,
@@ -157,7 +158,7 @@ var RevWebRTCContextProvider = ({children}) => {
       return;
     }
 
-    await revCreatePeerConn(_revRemoteGUID, {
+    await revCreatePeerConn(revEntity, {
       isRevCaller,
       revDataType,
     });
@@ -572,7 +573,9 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   // function to create peer connection and add to state JSON object
-  const revCreatePeerConn = async (revPeerId, revVarArgs = {}) => {
+  const revCreatePeerConn = async (revEntity, revVarArgs = {}) => {
+    const {_revRemoteGUID: revPeerId = -1} = revEntity;
+
     if (revPeerId < 1) {
       return;
     }
@@ -596,7 +599,7 @@ var RevWebRTCContextProvider = ({children}) => {
     let revConnData = revGetConnData(revPeerId);
 
     if (revConnData) {
-      const {revPeerConn} = revConnData;
+      const {revPeerConn = {}} = revConnData;
       const {connectionState} = revPeerConn;
 
       if (connectionState == 'connected') {
@@ -667,10 +670,13 @@ var RevWebRTCContextProvider = ({children}) => {
               'rev_entity_desc',
             );
 
-            console.log('! ! ! Received msg:', revMsgVal);
+            if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
+              let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
+              const {revOnMessageReceived} = revCallBacks;
 
-            if (revOnMessageReceived) {
-              revOnMessageReceived(revMsg);
+              if (revOnMessageReceived) {
+                revOnMessageReceived({_revPublisherEntity: revEntity, revMsg});
+              }
             }
           } catch (error) {
             console.log('>>> ERROR - revDataChannel.onmessage', error);
@@ -800,7 +806,7 @@ var RevWebRTCContextProvider = ({children}) => {
         return;
       }
 
-      ({revPeerConn} = await revCreatePeerConn(_revRemoteGUID, {
+      ({revPeerConn} = await revCreatePeerConn(revEntity, {
         revIsVideoCall,
       }));
 

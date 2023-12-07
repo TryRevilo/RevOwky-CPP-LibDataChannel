@@ -32,13 +32,17 @@ import {revPostServerData} from '../../../../rev_libs_pers/rev_server/rev_pers_l
 
 import {revOnDisplayNotification} from '../../../../../rev_function_libs/rev_live_noticias_functions';
 
-import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyJSONObject,
+} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 import {
   revSplitStringToArray,
   revTruncateFullNamesString,
 } from '../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
+import {RevPurchaseReceipt} from '../../../rev_plugin_check_out/rev_views/rev_object_views/RevPurchaseReceipt';
 
 export function ChatMessageInputComposer({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
@@ -59,9 +63,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const [typingTimer, setTypingTimer] = useState(null);
   const [hasSentTypingMessage, setHasSentTypingMessage] = useState(false);
 
-  const [revTargetGUID, setRevTargetGUID] = useState(
-    REV_LOGGED_IN_ENTITY_GUID == 6 ? 1 : 6,
-  );
+  const [revTargetGUID, setRevTargetGUID] = useState(-1);
 
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
@@ -76,6 +78,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const revPrevConnectionsArrref = useRef([]);
 
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
+
+  const [revMessagesArr, setRevMessagesArr] = useState([]);
 
   const sendTypingMessage = () => {
     if (revIsEmptyJSONObject(revActivePeerEntity)) {
@@ -209,8 +213,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
     };
 
     revInitChatMessagesListingArea({
+      revMessagesArr,
       revOnViewChangeCallBack,
-      revTargetGUID: REV_LOGGED_IN_ENTITY_GUID,
       revSubjectGUID: revTargetGUID,
     });
 
@@ -398,11 +402,13 @@ export function ChatMessageInputComposer({revVarArgs}) {
         revGetChatTextImput={() => revChatMessageTxtLatest.current}
         revCallback={revRetData => {
           let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
+          let revMsgGUID = revGetRandInteger();
 
           let revPersEntity = REV_ENTITY_STRUCT();
           revPersEntity._revType = 'rev_object';
           revPersEntity._revSubType = 'rev_im_msg';
-          revPersEntity._revRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+          revPersEntity._revGUID = revMsgGUID;
+          revPersEntity._revRemoteGUID = revMsgGUID;
           revPersEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
           /** START REV INFO */
@@ -441,8 +447,13 @@ export function ChatMessageInputComposer({revVarArgs}) {
             revMsg: revMsgData,
           });
 
+          setRevMessagesArr(revPrev => [...revPrev, revMsgData]);
+
           revOnDisplayNotification();
-          revCallBackFunc(revRetData);
+          revCallBackFunc({
+            _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+            revMsg: revPersEntity,
+          });
 
           revChatMessageTxtLatest.current = '';
           revTextInputRef.current.clear();
@@ -464,11 +475,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
         ]}>
         {isRevShowComposer ? (
           revSubmitChatOptionsMenuArea(revRetData => {
-            if (
-              !revIsEmptyJSONObject(revRetData) &&
-              'revEntity' in revRetData
-            ) {
-              revAddChatMessage(revRetData.revEntity);
+            if (!revIsEmptyJSONObject(revRetData)) {
+              revAddChatMessage(revRetData);
             }
           })
         ) : (
@@ -555,7 +563,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
     let revPeerId = revActivePeerEntity._revRemoteGUID;
 
     revInitPeerConn({
-      revPeerId,
+      revEntity: revActivePeerEntity,
       revOnConnSuccess: () => {
         console.log('>>> CONN - SUCCESS ! ! !');
       },
@@ -565,18 +573,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
         revRecconnectPeer(revPeerId);
       },
       revOnMessageSent: revMessage => {
-        console.log(
-          '>>> revOnMessageSent - SUCCESS ! ! !\n\n',
-          JSON.stringify(revMessage),
-          '\n\n',
-        );
+        setRevMessagesArr(revPrev => [...revPrev, revMessage]);
       },
-      revOnMessageReceived: revMessage => {
-        console.log(
-          '>>> revOnMessageReceived - SUCCESS ! ! !\n\n',
-          JSON.stringify(revMessage),
-          '\n\n',
-        );
+      revOnMessageReceived: revData => {
+        setRevMessagesArr(revPrev => [...revPrev, revData]);
+        revAddChatMessage(revData);
       },
     });
 
