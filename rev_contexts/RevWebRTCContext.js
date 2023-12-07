@@ -39,9 +39,9 @@ var RevWebRTCContext = createContext();
 
 const revPeerConnConfig = {
   iceServers: [
-    {
-      urls: ['stun:stun.l.google.com:19302'],
-    },
+    // {
+    //   urls: ['stun:stun.l.google.com:19302'],
+    // },
     {
       urls: `turn:${rev_settings.revIP}:${rev_settings.revTurnServerPort}`,
       username: 'rev',
@@ -92,6 +92,12 @@ var RevWebRTCContextProvider = ({children}) => {
   const revRestartingPeerIdsArr = useRef([]);
 
   var revInitPeerConn = async revVarArgs => {
+    const {revPeerId = -1} = revVarArgs;
+
+    if (revPeerId < 1) {
+      return;
+    }
+
     let revPassVarArgs = {};
 
     /** START CONN SUCCESS */
@@ -134,9 +140,9 @@ var RevWebRTCContextProvider = ({children}) => {
     revPassVarArgs['revOnMessageReceived'] = revOnMessageReceived;
     /** END message received */
 
-    revPeerConnsCallBacksRef.current[revVarArgs.revPeerId] = revPassVarArgs;
+    revPeerConnsCallBacksRef.current[revPeerId] = revPassVarArgs;
 
-    await revCreatePeerConn(revVarArgs.revPeerId, {
+    await revCreatePeerConn(revPeerId, {
       isRevCaller: true,
       revDataType: '',
       revCallBacks: revPassVarArgs,
@@ -205,7 +211,7 @@ var RevWebRTCContextProvider = ({children}) => {
           revOKGo({...revData, isRevCaller: true});
           break;
         case 'rev_unavailable':
-          console.log(deviceModel, JSON.stringify(revData));
+          revHandlePeerUnavailable(revData);
           break;
         case 'leave':
           handleLeave(revData);
@@ -240,6 +246,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revGetRandLoggedInGUIDs = revLoggedInEntityGUID => {
+    if (revLoggedInEntityGUID < 1) {
+      return;
+    }
+
     let revMessage = {
       type: 'rev_get_rand_connected_users',
       revEntityId: revLoggedInEntityGUID,
@@ -258,7 +268,15 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revUpdateConnDataState = revNewData => {
-    const {revPeerId} = revNewData;
+    if (revIsEmptyJSONObject(revNewData)) {
+      return;
+    }
+
+    const {revPeerId = -1} = revNewData;
+
+    if (revPeerId < 1) {
+      return;
+    }
 
     revPeerConnsDataRef.current = revPeerConnsDataRef.current.map(revCurr => {
       const {revPeerId: revCurrrevPeerId = -1} = revCurr;
@@ -272,6 +290,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revUpdateConnDataItemState = (revPeerId, revKey, revNewData) => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     revPeerConnsDataRef.current = revPeerConnsDataRef.current.map(revCurr => {
       if (revCurr && revCurr.revPeerId == revPeerId) {
         revCurr[revKey] = revNewData;
@@ -282,6 +304,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revGetConnData = revPeerId => {
+    if (revPeerId < 1) {
+      return null;
+    }
+
     return revPeerConnsDataRef.current.find(
       c => c && c.revPeerId === revPeerId,
     );
@@ -298,9 +324,14 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var getPeerConnection = revPeerId => {
+    if (revPeerId < 1) {
+      return null;
+    }
+
     const connection = revGetConnData(revPeerId);
     if (!revIsEmptyJSONObject(connection)) {
-      return connection.revPeerConn;
+      const {revPeerConn = null} = connection;
+      return revPeerConn;
     }
     return null;
   };
@@ -319,6 +350,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revInitClosePeerConn = revPeerId => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     revRestartingPeerIdsArr.current.push(revPeerId);
 
     let revMessage = {
@@ -331,6 +366,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revPeerCloseComplete = revPeerId => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     let revMessage = {
       type: 'rev_peer_close_complete',
       revRecipientId: revPeerId,
@@ -341,6 +380,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revRecconnectPeer = revPeerId => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     revRestartingPeerIdsArr.current.push(revPeerId);
 
     let revMessage = {
@@ -353,17 +396,29 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revRestartPeerConn = async revPeerId => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     await revCloseConn(revPeerId);
     revRecconnectPeer(revPeerId);
   };
 
   var revConnRestartComplete = revPeerId => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     revRestartingPeerIdsArr.current = revRestartingPeerIdsArr.current.filter(
       revCurr => revCurr !== revPeerId,
     );
   };
 
   var revCloseConn = async (_revRemoteGUID, isRevPeerClosed = false) => {
+    if (_revRemoteGUID < 1) {
+      return;
+    }
+
     revConnRestartComplete(_revRemoteGUID);
 
     return new Promise((resolve, reject) => {
@@ -419,7 +474,17 @@ var RevWebRTCContextProvider = ({children}) => {
 
   var revHandleInitClosePeerConn = async revVarArgs => {
     const {revSenderId} = revVarArgs;
+
+    if (revSenderId < 1) {
+      return;
+    }
+
     await revCloseConn(revSenderId, true);
+  };
+
+  var revHandlePeerUnavailable = async revVarArgs => {
+    const {revSenderId, revRecipientId} = revVarArgs;
+    await revCloseConn(revRecipientId, true);
   };
 
   var revHandlePeerClosed = revVarArgs => {
@@ -468,11 +533,11 @@ var RevWebRTCContextProvider = ({children}) => {
   ) => {
     let revConnData = revGetConnData(_revRemoteGUID);
 
-    if (revIsEmptyJSONObject(revConnData)) {
+    if (_revRemoteGUID < 1 || revIsEmptyJSONObject(revConnData)) {
       return;
     }
 
-    const {revPeerId, revPeerConn} = revConnData;
+    const {revPeerConn} = revConnData;
 
     let revSessionConstraints = {
       offerToReceiveAudio: revIsVideoCall,
@@ -508,6 +573,10 @@ var RevWebRTCContextProvider = ({children}) => {
 
   // function to create peer connection and add to state JSON object
   const revCreatePeerConn = async (revPeerId, revVarArgs = {}) => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     const {
       isRevCaller = false,
       revIsVideoCall = false,
@@ -524,13 +593,24 @@ var RevWebRTCContextProvider = ({children}) => {
     const {revOnConnSuccess, revOnConnFail, revOnMessageReceived} =
       _revCallBacks;
 
-    await revCloseConn(revPeerId);
+    let revConnData = revGetConnData(revPeerId);
+
+    if (revConnData) {
+      const {revPeerConn} = revConnData;
+      const {connectionState} = revPeerConn;
+
+      if (connectionState == 'connected') {
+        return revConnData;
+      } else {
+        await revCloseConn(revPeerId);
+      }
+    }
 
     revRestartingPeerIdsArr.current = revRestartingPeerIdsArr.current.filter(
       revCurr => revCurr !== revPeerId,
     );
 
-    let revPeerConn = new RTCPeerConnection(revPeerConnConfig);
+    revPeerConn = new RTCPeerConnection(revPeerConnConfig);
 
     // Remote side: Receive and process incoming tracks
     revPeerConn.ontrack = function (event) {
@@ -675,6 +755,10 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   const sendMessage = async (revPeerId, message) => {
+    if (revPeerId < 1) {
+      return;
+    }
+
     setRevQuedMessages(prevState => {
       return [...prevState, {revPeerId, ...message}];
     });
@@ -753,7 +837,7 @@ var RevWebRTCContextProvider = ({children}) => {
 
     const {answer = {}, revSenderId} = revData;
 
-    if (revIsEmptyJSONObject(answer)) {
+    if (revSenderId < 1 || revIsEmptyJSONObject(answer)) {
       return;
     }
 
@@ -813,7 +897,7 @@ var RevWebRTCContextProvider = ({children}) => {
     const {revSenderId, revCandidate} = revData;
     let revConnData = revGetConnData(revSenderId);
 
-    if (revIsEmptyJSONObject(revConnData)) {
+    if (revSenderId < 1 || revIsEmptyJSONObject(revConnData)) {
       return;
     }
 
@@ -842,6 +926,10 @@ var RevWebRTCContextProvider = ({children}) => {
 
   var handleLeave = async revVarArgs => {
     const {revPeerId = -1} = revVarArgs;
+
+    if (revPeerId < 1) {
+      return;
+    }
 
     await revCloseConn(revPeerId, true);
     console.log('>>> LEAVE - success . . .');
@@ -884,20 +972,19 @@ var RevWebRTCContextProvider = ({children}) => {
 
     let revNewMsgsQueArr = [];
 
-    let revPeerConn = getPeerConnection(770);
-
-    if (!revPeerConn) {
-      ({revPeerConn} = await revCreatePeerConn(revPeerId));
-    }
-
     for (let i = 0; i < revQuedMessagesLen; i++) {
       if (revIsEmptyJSONObject(revQuedMessages[i])) {
         continue;
       }
 
       const {revPeerId} = revQuedMessages[i];
+      let revConnData = revGetConnData(revPeerId);
 
-      let revDataChannel = getDataChannel(revPeerId);
+      if (revIsEmptyJSONObject(revConnData)) {
+        continue;
+      }
+
+      const {revPeerConn, dataChannel: revDataChannel} = revConnData;
 
       if (!revPeerConn) {
         revNewMsgsQueArr.push(revQuedMessages[i]);
