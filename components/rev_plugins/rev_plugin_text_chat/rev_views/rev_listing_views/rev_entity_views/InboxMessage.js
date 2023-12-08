@@ -32,7 +32,7 @@ export default function InboxMessage({revVarArgs}) {
     return null;
   }
 
-  const {revMsg, _revPublisherEntity = {}} = revVarArgs;
+  const {revMsg, _revPublisherEntity = {}, revPeersArr = []} = revVarArgs;
 
   let revEntityGUID = revMsg._revGUID;
 
@@ -164,12 +164,6 @@ export default function InboxMessage({revVarArgs}) {
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="retweet" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="list" />
                 </Text>
               </View>
             </View>

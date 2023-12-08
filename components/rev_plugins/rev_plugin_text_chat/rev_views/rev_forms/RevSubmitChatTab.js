@@ -7,11 +7,7 @@ import {useRevHandleSendMsgAction} from '../../rev_actions.js/rev_stranger_chat_
 
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 
-export function RevSubmitChatTab({
-  revGetCurrentChatTarget,
-  revGetChatTextImput,
-  revCallback,
-}) {
+export function RevSubmitChatTab({}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);

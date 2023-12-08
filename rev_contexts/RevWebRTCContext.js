@@ -665,17 +665,16 @@ var RevWebRTCContextProvider = ({children}) => {
             const {revMsg = {}} = JSON.parse(revReceivedMsgStr);
             const {_revInfoEntity = {_revMetadataList: []}} = revMsg;
 
-            let revMsgVal = revGetMetadataValue(
-              _revInfoEntity._revMetadataList,
-              'rev_entity_desc',
-            );
-
             if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
               let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
               const {revOnMessageReceived} = revCallBacks;
 
               if (revOnMessageReceived) {
-                revOnMessageReceived({_revPublisherEntity: revEntity, revMsg});
+                revOnMessageReceived({
+                  _revPublisherEntity: revEntity,
+                  revPeersArr: [revEntity],
+                  revMsg,
+                });
               }
             }
           } catch (error) {

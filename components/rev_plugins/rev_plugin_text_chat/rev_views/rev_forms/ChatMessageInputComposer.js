@@ -52,8 +52,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const revTextInputRef = useRef(null);
 
   const [revRandLoggedInEntities, setRevRandLoggedInEntities] = useState([]);
+  const [revActivePeerTabsArea, setRevActivePeerTabsArea] = useState(null);
   const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
-  const [revActivePeerEntity, setRevActivePeerEntity] = useState({});
+  const [revActivePeerEntitiesArr, setRevActivePeerEntitiesArr] = useState([]);
+  const revActivePeerEntitiesArrRef = useRef([]);
+
   const [revActivePeerTab, setRevActivePeerTab] = useState(null);
   const [isRevShowComposer, setIsRevShowComposer] = useState(false);
 
@@ -62,8 +65,6 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const [typingTimer, setTypingTimer] = useState(null);
   const [hasSentTypingMessage, setHasSentTypingMessage] = useState(false);
-
-  const [revTargetGUID, setRevTargetGUID] = useState(-1);
 
   const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
     useContext(RevSiteDataContext);
@@ -79,10 +80,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
 
-  const [revMessagesArr, setRevMessagesArr] = useState([]);
+  const revMessagesArrRef = useRef([]);
+  const revActivePeerMessagesArrRef = useRef([]);
 
   const sendTypingMessage = () => {
-    if (revIsEmptyJSONObject(revActivePeerEntity)) {
+    if (revIsEmptyJSONObject(revActivePeerEntitiesArr)) {
       return;
     }
 
@@ -137,16 +139,123 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const revChatUserTab = revNewActivePeer => {
     const {_revRemoteGUID = -1} = revNewActivePeer;
 
+    const revAddChatPeer = () => {
+      let revCurrPeers = revActivePeerEntitiesArrRef.current;
+
+      let revNewPeers = revCurrPeers.find(
+        revCurr => revCurr._revRemoteGUID == _revRemoteGUID,
+      );
+
+      if (revIsEmptyJSONObject(revNewPeers)) {
+        setRevActivePeerEntitiesArr([...revCurrPeers, revNewActivePeer]);
+      } else {
+        if (revCurrPeers.length == 1) {
+          return;
+        }
+
+        setRevActivePeerEntitiesArr(revPrev => {
+          return revCurrPeers.filter(
+            revCurr => revCurr._revRemoteGUID !== _revRemoteGUID,
+          );
+        });
+      }
+    };
+
     return (
-      <TouchableOpacity
-        key={_revRemoteGUID}
-        onPress={() => {
-          setRevActivePeerEntity(revNewActivePeer);
-        }}>
+      <TouchableOpacity key={_revRemoteGUID} onPress={revAddChatPeer}>
         <View style={styles.revChatMsgUserIcon}>
           <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
         </View>
       </TouchableOpacity>
+    );
+  };
+
+  const revSetNullPeersMessage = revNullMsg => {
+    if (!revNullMsg) {
+      revNullMsg = 'Error retrieving Peers ! Please try again later . . .';
+    }
+
+    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColor,
+          revSiteStyles.revSiteTxtTiny,
+          {paddingHorizontal: 12, paddingVertical: 22},
+        ]}>
+        {revNullMsg}
+      </Text>,
+    );
+  };
+
+  const revFetchNewPeers = () => {
+    let revURL = REV_ROOT_URL + '/rev_api/rev_get_rand_logged_in_guids';
+
+    revPostServerData(
+      revURL,
+      {
+        revLoggedInRemoteGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
+        filter: revPrevConnectionsArrref.current,
+      },
+      revRetPersData => {
+        if ('revError' in revRetPersData) {
+          revSetNullPeersMessage(
+            'Network error ! Please check your internet configuration, then try again . . .',
+          );
+          setRevRandLoggedInEntities([]);
+        } else if (revRetPersData) {
+          const {filter = []} = revRetPersData;
+
+          if (!filter.length) {
+            revSetNullPeersMessage();
+            return;
+          }
+
+          let revNewActivePeerEntitiesArr = [];
+          let revNewActivePeerEntity = null;
+
+          for (let i = 0; i < filter.length; i++) {
+            const {revRemoteAddress, revRemotePort, revEntity} = filter[i];
+
+            if (revIsEmptyJSONObject(revEntity)) {
+              continue;
+            }
+
+            const {_revRemoteGUID = -1} = revEntity;
+
+            if (_revRemoteGUID < 1) {
+              continue;
+            }
+
+            if (_revRemoteGUID !== REV_LOGGED_IN_ENTITY._revRemoteGUID) {
+              revNewActivePeerEntitiesArr.push(revEntity);
+            } else {
+              continue;
+            }
+
+            if (!revPrevConnectionsArrref.current.includes(_revRemoteGUID)) {
+              // revPrevConnectionsArrref.current.push(_revRemoteGUID);
+            }
+
+            if (revNewActivePeerEntity == null) {
+              revNewActivePeerEntity = revEntity;
+            }
+          }
+
+          if (!revIsEmptyJSONObject(revNewActivePeerEntity)) {
+            const {_revRemoteGUID = -1} = revNewActivePeerEntity;
+
+            if (_revRemoteGUID > 0) {
+              setRevActivePeerEntitiesArr([revNewActivePeerEntity]);
+            }
+          }
+
+          if (!revNewActivePeerEntitiesArr.length) {
+            return revSetNullPeersMessage();
+          }
+
+          setRevRandLoggedInEntities(revNewActivePeerEntitiesArr);
+        }
+      },
     );
   };
 
@@ -157,71 +266,12 @@ export function ChatMessageInputComposer({revVarArgs}) {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
     }
 
-    const revOnViewChangeCallBack = revUpdatedView => {
-      SET_REV_SITE_BODY(revUpdatedView);
-
-      let revURL = REV_ROOT_URL + '/rev_api/rev_get_rand_logged_in_guids';
-
-      revPostServerData(
-        revURL,
-        {
-          revLoggedInRemoteGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
-          filter: revPrevConnectionsArrref.current,
-        },
-        revRetPersData => {
-          if ('revError' in revRetPersData) {
-            setRevRandLoggedInEntities([]);
-          } else if (revRetPersData) {
-            const {filter = []} = revRetPersData;
-
-            setRevRandLoggedInEntities(prevState => {
-              let revNewActivePeerEntitiesArr = [];
-              let revNewActivePeerEntity = null;
-
-              for (let i = 0; i < filter.length; i++) {
-                const {revRemoteAddress, revRemotePort, revEntity} = filter[i];
-                const {_revRemoteGUID = -1} = revEntity;
-
-                if (revIsEmptyJSONObject(revEntity) || _revRemoteGUID < 1) {
-                  continue;
-                }
-
-                if (_revRemoteGUID !== REV_LOGGED_IN_ENTITY._revRemoteGUID) {
-                  revNewActivePeerEntitiesArr.push(revEntity);
-                } else {
-                  continue;
-                }
-
-                if (
-                  !revPrevConnectionsArrref.current.includes(_revRemoteGUID)
-                ) {
-                  // revPrevConnectionsArrref.current.push(_revRemoteGUID);
-                }
-
-                if (revNewActivePeerEntity == null) {
-                  revNewActivePeerEntity = revEntity;
-                }
-              }
-
-              setRevActivePeerEntity(revNewActivePeerEntity);
-
-              return revNewActivePeerEntitiesArr;
-            });
-          }
-        },
-      );
-    };
-
-    revInitChatMessagesListingArea({
-      revMessagesArr,
-      revOnViewChangeCallBack,
-      revSubjectGUID: revTargetGUID,
-    });
+    revFetchNewPeers();
 
     setRevNextChatTab(<RevChatSubmitOptions />);
   };
 
-  const revCurrChatTargetTab = revEntity => {
+  const RevCurrChatTargetTab = ({revEntity}) => {
     if (!revEntity) {
       return null;
     }
@@ -235,13 +285,17 @@ export function ChatMessageInputComposer({revVarArgs}) {
     const {_revMetadataList = []} = _revInfoEntity;
 
     let revFullNames = revGetMetadataValue(_revMetadataList, 'rev_entity_name');
-    revFullNames = revTruncateFullNamesString(revFullNames);
+    revFullNames = revTruncateFullNamesString(revFullNames, {
+      revMaxLen: 2,
+      revFirstPartLen: 1,
+      revSecondPartLen: 1,
+    });
 
     return (
       <TouchableOpacity
         style={[
-          revSiteStyles.revFlexWrapper_WidthAuto,
-          styles.revCurrChatTargetTabWrapper,
+          revSiteStyles.revFlexContainer,
+          {alignItems: 'center', justifyContent: 'center'},
         ]}>
         {revChatUserTab(revEntity)}
         <View>
@@ -317,6 +371,48 @@ export function ChatMessageInputComposer({revVarArgs}) {
     );
   };
 
+  const revInitActivePeerChatArea = async () => {
+    for (let i = 0; i < revActivePeerEntitiesArr.length; i++) {
+      const {_revRemoteGUID = -1} = revActivePeerEntitiesArr[i];
+
+      await revInitPeerConn({
+        revEntity: revActivePeerEntitiesArr[i],
+        revOnConnSuccess: () => {
+          console.log('>>> CONN - SUCCESS ! ! !');
+        },
+        revOnConnFail: revStatus => {
+          console.log('>>> FAIL', revStatus);
+
+          revRecconnectPeer(_revRemoteGUID);
+        },
+        revOnMessageSent: revMessage => {},
+        revOnMessageReceived: revData => {
+          revMessagesArrRef.current = [...revMessagesArrRef.current, revData];
+          revAddChatMessage(revData);
+        },
+      });
+    }
+
+    /** START list messages */
+    const revOnViewChangeCallBack = revUpdatedView => {
+      SET_REV_SITE_BODY(revUpdatedView);
+    };
+
+    revInitChatMessagesListingArea({
+      revMessagesArr: revActivePeerMessagesArrRef.current,
+      revOnViewChangeCallBack,
+      revPeerEntitiesArr: revActivePeerEntitiesArr,
+    });
+
+    let revCurrChatTargetTabsArr = revActivePeerEntitiesArr.map(
+      (revCurr, revIndex) => (
+        <RevCurrChatTargetTab key={revIndex} revEntity={revCurr} />
+      ),
+    );
+
+    setRevActivePeerTabsArea(revCurrChatTargetTabsArr);
+  };
+
   const RevChatHeaderArea = () => {
     return (
       <View
@@ -335,14 +431,37 @@ export function ChatMessageInputComposer({revVarArgs}) {
             }></ScrollView>
         </View>
         <View style={[styles.revChatHeaderAreaRightView]}>
-          <View
-            style={[
-              revSiteStyles.revFlexWrapper,
-              styles.revChatHeaderAreaRightWrapper,
-            ]}>
-            {revChatSettingsTab()}
-            {revRandLoggedInUserTabs}
-            <RevHeaderNextStrangerTab />
+          <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
+            {revActivePeerTabsArea}
+
+            <TouchableOpacity
+              onPress={() => {
+                setRevActivePeerEntitiesArr([
+                  revActivePeerEntitiesArrRef.current[0],
+                ]);
+              }}
+              style={{
+                alignSelf: 'flex-start',
+                paddingHorizontal: 10,
+                paddingVertical: 8,
+              }}>
+              <AntDesign
+                name="sync"
+                style={[
+                  revSiteStyles.revSiteTxtMedium,
+                  revSiteStyles.revSiteTxtColor,
+                ]}
+              />
+            </TouchableOpacity>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                {alignItems: 'center', marginLeft: 'auto'},
+              ]}>
+              {revChatSettingsTab()}
+              {revRandLoggedInUserTabs}
+              <RevHeaderNextStrangerTab />
+            </View>
           </View>
         </View>
       </View>
@@ -350,21 +469,43 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revChatInputArea = () => {
-    let revFullNames = '';
+    let revCurrActivePeerEntitiesArr = revActivePeerEntitiesArrRef.current;
 
-    if (revActivePeerEntity) {
-      const {_revInfoEntity = {_revMetadataList: []}} = revActivePeerEntity;
-
-      revFullNames = revGetMetadataValue(
-        _revInfoEntity._revMetadataList,
-        'rev_entity_name',
-      );
+    if (
+      !revCurrActivePeerEntitiesArr ||
+      revIsEmptyJSONObject(revCurrActivePeerEntitiesArr[0])
+    ) {
+      return;
     }
+
+    const {_revInfoEntity = {_revMetadataList: []}} =
+      revCurrActivePeerEntitiesArr[0];
+
+    let revFullNames = revGetMetadataValue(
+      _revInfoEntity._revMetadataList,
+      'rev_entity_name',
+    );
+
+    let revPromptTxt = `Chat away with ${revTruncateFullNamesString(
+      revFullNames,
+      {revMaxLen: 22},
+    )}`;
+
+    if (revCurrActivePeerEntitiesArr.length > 1) {
+      revPromptTxt = `${revPromptTxt} + ${
+        revCurrActivePeerEntitiesArr.length - 1
+      } others`;
+    }
+
+    revPromptTxt = revPromptTxt + ' !';
 
     let revRetView = (
       <View
         style={[revSiteStyles.revFlexContainer, styles.revChatInputContainer]}>
-        <RevChatHeaderArea />
+        <RevChatHeaderArea
+          revActivePeerEntitiesArr={revCurrActivePeerEntitiesArr}
+          revActivePeerTabsArea={revActivePeerTabsArea}
+        />
         <TextInput
           ref={revTextInputRef}
           style={[
@@ -372,10 +513,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
             revSiteStyles.revSiteTxtTiny,
             styles.revChatInputArea,
           ]}
-          placeholder={` Chat away with ${revTruncateFullNamesString(
-            revFullNames,
-            {revMaxLen: 22},
-          )} !`}
+          placeholder={revPromptTxt}
           placeholderTextColor="#999"
           multiline={true}
           numberOfLines={5}
@@ -392,73 +530,99 @@ export function ChatMessageInputComposer({revVarArgs}) {
     return revRetView;
   };
 
-  const revSubmitChatOptionsMenuArea = revCallBackFunc => {
+  const revInitMsgData = () => {
+    let revMsgGUID = revMessagesArrRef.current.length + 1;
+
+    let revPersEntity = REV_ENTITY_STRUCT();
+    revPersEntity._revType = 'rev_object';
+    revPersEntity._revSubType = 'rev_im_msg';
+    revPersEntity._revGUID = revMsgGUID;
+    revPersEntity._revRemoteGUID = revMsgGUID;
+    revPersEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+
+    /** START REV INFO */
+    let revPersEntityInfo = REV_ENTITY_STRUCT();
+
+    revPersEntityInfo._revChildableStatus = 3;
+    revPersEntityInfo._revType = 'revObject';
+    revPersEntityInfo._revSubType = 'rev_entity_info';
+    revPersEntityInfo._revChildableStatus = 3;
+    revPersEntityInfo._revTimeCreated = new Date().getTime();
+    /** END REV INFO */
+
+    revPersEntityInfo._revMetadataList = [
+      REV_METADATA_FILLER('rev_entity_desc', revChatMessageTxtLatest.current),
+      REV_METADATA_FILLER(
+        'rev_entity_desc_html',
+        revChatMessageTxtLatest.current,
+      ),
+    ];
+
+    /** REV START ATTACH INFO */
+    revPersEntity._revInfoEntity = revPersEntityInfo;
+    /** REV END ATTACH INFO */
+
+    let revMsgData = {
+      _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+      revPeersArr: [...revActivePeerEntitiesArrRef.current],
+      revType: 'revText',
+      revMsg: revPersEntity,
+      revSelectedPicsFiles: 0,
+      revSelectedVideoFiles: 0,
+    };
+
+    return revMsgData;
+  };
+
+  const handleRevSendChatMsg = async () => {
+    let revCurrPeersArr = revActivePeerEntitiesArrRef.current;
+
+    let revMsgData = revInitMsgData();
+    const {revMsg} = revMsgData;
+
+    for (let i = 0; i < revCurrPeersArr.length; i++) {
+      let revActivePeerEntity = revCurrPeersArr[i];
+
+      let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
+
+      sendMessage(revRemoteTargetEntityGUID, {
+        revMsg: revMsgData,
+      });
+
+      let revBody = revGetMetadataValue(
+        revMsg._revInfoEntity._revMetadataList,
+        'rev_entity_desc',
+      );
+
+      await revOnDisplayNotification({revBody});
+    }
+
+    revAddChatMessage(revMsgData);
+    revMessagesArrRef.current.push(revMsgData);
+
+    revChatMessageTxtLatest.current = '';
+    revTextInputRef.current.clear();
+  };
+
+  const revSubmitChatOptionsMenuArea = () => {
     return (
-      <RevSubmitChatTab
-        revGetCurrentChatTarget={() => {
-          const {_revRemoteGUID = -1} = revActivePeerEntity;
-          return _revRemoteGUID;
-        }}
-        revGetChatTextImput={() => revChatMessageTxtLatest.current}
-        revCallback={revRetData => {
-          let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
-          let revMsgGUID = revGetRandInteger();
-
-          let revPersEntity = REV_ENTITY_STRUCT();
-          revPersEntity._revType = 'rev_object';
-          revPersEntity._revSubType = 'rev_im_msg';
-          revPersEntity._revGUID = revMsgGUID;
-          revPersEntity._revRemoteGUID = revMsgGUID;
-          revPersEntity._revOwnerGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
-
-          /** START REV INFO */
-          let revPersEntityInfo = REV_ENTITY_STRUCT();
-
-          revPersEntityInfo._revChildableStatus = 3;
-          revPersEntityInfo._revType = 'revObject';
-          revPersEntityInfo._revSubType = 'rev_entity_info';
-          revPersEntityInfo._revChildableStatus = 3;
-          revPersEntityInfo._revTimeCreated = new Date().getTime();
-          /** END REV INFO */
-
-          revPersEntityInfo._revMetadataList = [
-            REV_METADATA_FILLER(
-              'rev_entity_desc',
-              revChatMessageTxtLatest.current,
-            ),
-            REV_METADATA_FILLER(
-              'rev_entity_desc_html',
-              revChatMessageTxtLatest.current,
-            ),
-          ];
-
-          /** REV START ATTACH INFO */
-          revPersEntity._revInfoEntity = revPersEntityInfo;
-          /** REV END ATTACH INFO */
-
-          let revMsgData = {
-            revType: 'revText',
-            revMsg: revPersEntity,
-            revSelectedPicsFiles: 0,
-            revSelectedVideoFiles: 0,
-          };
-
-          sendMessage(revRemoteTargetEntityGUID, {
-            revMsg: revMsgData,
-          });
-
-          setRevMessagesArr(revPrev => [...revPrev, revMsgData]);
-
-          revOnDisplayNotification();
-          revCallBackFunc({
-            _revPublisherEntity: REV_LOGGED_IN_ENTITY,
-            revMsg: revPersEntity,
-          });
-
-          revChatMessageTxtLatest.current = '';
-          revTextInputRef.current.clear();
-        }}
-      />
+      <TouchableOpacity onPress={handleRevSendChatMsg}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            styles.revSubmitChatTabWrapper,
+          ]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorWhite,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
+              styles.revSubmitChatTab,
+            ]}>
+            Send
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -474,11 +638,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
           styles.revFooterSubmitOptionsLeftWrapper,
         ]}>
         {isRevShowComposer ? (
-          revSubmitChatOptionsMenuArea(revRetData => {
-            if (!revIsEmptyJSONObject(revRetData)) {
-              revAddChatMessage(revRetData);
-            }
-          })
+          revSubmitChatOptionsMenuArea()
         ) : (
           <TouchableOpacity
             onPress={() => {
@@ -540,14 +700,14 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   useEffect(() => {
     if (!revRandLoggedInEntities || !Array.isArray(revRandLoggedInEntities)) {
-      return;
+      return revSetNullPeersMessage();
     }
 
-    let revRandLoggedInUserTabsArea = [];
+    let revRandLoggedInUserTabsArr = [];
 
     for (let i = 0; i < revRandLoggedInEntities.length; i++) {
       let revRandLoggedInEntity = revRandLoggedInEntities[i];
-      revRandLoggedInUserTabsArea.push(revChatUserTab(revRandLoggedInEntity));
+      revRandLoggedInUserTabsArr.push(revChatUserTab(revRandLoggedInEntity));
     }
 
     setRevRandLoggedInUserTabs(
@@ -556,37 +716,46 @@ export function ChatMessageInputComposer({revVarArgs}) {
           revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revChatUserIconTabsWrapper,
         ]}>
-        {revRandLoggedInUserTabsArea.map(revView => revView)}
+        {revRandLoggedInUserTabsArr}
       </View>,
     );
+  }, [revRandLoggedInEntities]);
 
-    let revPeerId = revActivePeerEntity._revRemoteGUID;
+  useEffect(() => {
+    if (!revActivePeerEntitiesArr.length) {
+      return;
+    }
 
-    revInitPeerConn({
-      revEntity: revActivePeerEntity,
-      revOnConnSuccess: () => {
-        console.log('>>> CONN - SUCCESS ! ! !');
-      },
-      revOnConnFail: revStatus => {
-        console.log('>>> FAIL', revStatus);
+    revActivePeerEntitiesArrRef.current = revActivePeerEntitiesArr;
 
-        revRecconnectPeer(revPeerId);
-      },
-      revOnMessageSent: revMessage => {
-        setRevMessagesArr(revPrev => [...revPrev, revMessage]);
-      },
-      revOnMessageReceived: revData => {
-        setRevMessagesArr(revPrev => [...revPrev, revData]);
-        revAddChatMessage(revData);
-      },
-    });
+    revActivePeerMessagesArrRef.current = revMessagesArrRef.current.filter(
+      revCurr => {
+        const {revPeersArr = []} = revCurr;
 
-    setRevActivePeerTab(revCurrChatTargetTab(revActivePeerEntity));
-  }, [revRandLoggedInEntities, revActivePeerEntity]);
+        let revMessagesPeerGUIDsArr = revPeersArr
+          .map(revCurr => revCurr._revRemoteGUID)
+          .sort();
+
+        let revActivePeerGUIDsArr = revActivePeerEntitiesArr
+          .map(revCurr => revCurr._revRemoteGUID)
+          .sort();
+
+        return (
+          JSON.stringify(revMessagesPeerGUIDsArr) ==
+          JSON.stringify(revActivePeerGUIDsArr)
+        );
+      },
+    );
+
+    revInitActivePeerChatArea();
+  }, [revActivePeerEntitiesArr]);
+
+  useEffect(() => {
+    SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
+  }, [revActivePeerTabsArea]);
 
   useEffect(() => {
     if (isRevShowComposer) {
-      SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
       setRevNextChatTab(<RevChatSubmitOptions />);
     } else {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
@@ -629,9 +798,6 @@ const styles = StyleSheet.create({
   revChatHeaderAreaRightView: {
     alignItems: 'flex-end',
   },
-  revChatHeaderAreaRightWrapper: {
-    alignItems: 'center',
-  },
   revChatHeaderAreaScrollView: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -664,8 +830,18 @@ const styles = StyleSheet.create({
   },
   /** */
 
-  revCurrChatTargetTabWrapper: {
-    alignItems: 'baseline',
+  revSubmitChatTabWrapper: {
+    backgroundColor: '#FFF',
+    alignItems: 'center',
+    marginRight: 5,
+  },
+
+  revSubmitChatTab: {
+    backgroundColor: '#444',
+    paddingHorizontal: 17,
+    paddingVertical: 3,
+    marginTop: 2,
+    borderRadius: 8,
   },
 
   revChatInputContainer: {

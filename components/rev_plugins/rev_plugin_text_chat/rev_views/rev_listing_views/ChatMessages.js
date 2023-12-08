@@ -29,10 +29,11 @@ export function useChatMessages() {
   let revLoggedInRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
   const [revMessagesArr, setRevMessagesArr] = useState([]);
+  const revMessagesArrRef = useRef([]);
 
   const revDisplayCallBackRef = useRef(null);
 
-  const [revCurrSubjectGUID, setRevCurrSubjectGUID] = useState(-1);
+  const revPeerEntitiesArrRef = useRef([]);
 
   const revMessagesArrLatestRef = useRef(null);
 
@@ -62,13 +63,7 @@ export function useChatMessages() {
       revView = <InboxMessage key={revKey} revVarArgs={chatMsg} />;
     }
 
-    let revPastChatConversationsArr = (
-      <View key={_revGUID + '_revRenderItem_' + revGetRandInteger()}>
-        {revView}
-      </View>
-    );
-
-    return revPastChatConversationsArr;
+    return revView;
   };
 
   const revScrollEndReached = () => {
@@ -84,7 +79,7 @@ export function useChatMessages() {
         renderItem={revRenderItem}
         keyExtractor={item => {
           let _revGUID = item.revMsg._revGUID;
-          return _revGUID > 0 ? _revGUID : revGetRandInteger();
+          return _revGUID + '_' + revGetRandInteger();
         }}
         onLayout={() => {
           // revFlatListRef.current.scrollToEnd({animated: true});
@@ -137,7 +132,7 @@ export function useChatMessages() {
   };
 
   const revAddChatMessage = revChatMessage => {
-    setRevMessagesArr([...revMessagesArr, revChatMessage]);
+    setRevMessagesArr([...revMessagesArrRef.current, revChatMessage]);
   };
 
   let revChatMessagesCountView = revTotChatMessagesCount => {
@@ -164,17 +159,11 @@ export function useChatMessages() {
   const revInitChatMessagesListingArea = ({
     revMessagesArr: _revMessagesArr,
     revOnViewChangeCallBack,
-    revSubjectGUID,
+    revPeerEntitiesArr,
   }) => {
-    setRevMessagesArr(_revMessagesArr);
-
     revDisplayCallBackRef.current = revOnViewChangeCallBack;
-
-    setRevCurrSubjectGUID(-1);
-
-    setTimeout(() => {
-      setRevCurrSubjectGUID(revSubjectGUID);
-    }, 0);
+    revPeerEntitiesArrRef.current = revPeerEntitiesArr;
+    setRevMessagesArr([..._revMessagesArr]);
   };
 
   useEffect(() => {
@@ -189,6 +178,8 @@ export function useChatMessages() {
       let revListingView = revChatMessagesListingView(revFlatListRef.current);
       revDisplayCallBackRef.current(revListingView);
     }
+
+    revMessagesArrRef.current = revMessagesArr;
   }, [revMessagesArr]);
 
   return {

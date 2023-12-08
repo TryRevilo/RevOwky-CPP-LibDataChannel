@@ -1,6 +1,7 @@
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
-export const revOnDisplayNotification = async () => {
+export const revOnDisplayNotification = async revVarArgs => {
+  const {revTitle = '. . .', revBody = ''} = revVarArgs;
   // Request permissions (required for iOS)
   await notifee.requestPermission();
 
@@ -12,8 +13,8 @@ export const revOnDisplayNotification = async () => {
 
   // Display a notification
   await notifee.displayNotification({
-    title: 'Mary Cooking Lunch - Ugali',
-    body: 'Main body content of the notification. pressAction is needed if you want the notification to open the app when pressed . . .',
+    title: revTitle,
+    body: revBody,
     android: {
       channelId,
       smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.

@@ -14,6 +14,8 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -33,11 +35,13 @@ export default function OutboxChatMessage({revVarArgs}) {
     return null;
   }
 
-  const {_revPublisherEntity, revMsg} = revVarArgs;
+  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
+  const {revPeersArr = [], revMsg} = revVarArgs;
 
   let revEntityGUID = revVarArgs._revGUID;
 
   /** START GET PUBLISHER */
+  let _revPublisherEntity = REV_LOGGED_IN_ENTITY;
   if (
     revIsEmptyJSONObject(_revPublisherEntity) ||
     _revPublisherEntity._revType !== 'rev_user_entity'
@@ -121,12 +125,6 @@ export default function OutboxChatMessage({revVarArgs}) {
               <View style={styles.chatMsgOptionsWrapper}>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="reply" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="retweet" />
-                </Text>
-                <Text style={styles.chatMsgOptions}>
-                  <FontAwesome name="list" />
                 </Text>
                 <Text style={styles.chatMsgOptions}>
                   <FontAwesome name="check" />
