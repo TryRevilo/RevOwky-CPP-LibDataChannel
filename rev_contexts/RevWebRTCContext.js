@@ -23,7 +23,10 @@ import {RevSiteDataContext} from './RevSiteDataContext';
 import {RevRemoteSocketContext} from './RevRemoteSocketContext';
 import {ReViewsContext} from './ReViewsContext';
 
-import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyJSONObject,
+  revTimeoutAsync,
+} from '../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 import DeviceInfo from 'react-native-device-info';
@@ -76,7 +79,10 @@ var RevWebRTCContextProvider = ({children}) => {
   const revPeerConnsDataRef = useRef([]);
   const revPeerConnsCallBacksRef = useRef({});
 
-  const [revQuedMessages, setRevQuedMessages] = useState([]);
+  const revIsSendingQueRef = useRef(false);
+
+  const revQuedMessagesRef = useRef([]);
+  const revNewMessagesArrRef = useRef([]);
 
   const [REV_WEB_SOCKET_SERVER, SET_REV_WEB_SOCKET_SERVER] = useState(null);
   const [revLoggedInEntityGUID, setRevLoggedInEntityGUID] = useState(0);
@@ -497,16 +503,11 @@ var RevWebRTCContextProvider = ({children}) => {
     const revDataChannel = revPeerConn.createDataChannel('rev_data_channel');
 
     // set up event listeners for data channel
-    revDataChannel.onopen = () => {
+    revDataChannel.onopen = async () => {
       console.log('Data channel state:', revDataChannel.readyState);
 
-      try {
-        revInitSendMsgs().then(() => {
-          console.log(deviceModel, '>>> ++ MSG SENT ++ <<<');
-        });
-      } catch (error) {
-        console.log(deviceModel, '*** revDataChannel.onopen', error);
-      }
+      await revInitSendMsgs();
+      console.log(deviceModel, '>>> ++ MSG SENT ++ <<<');
     };
 
     revDataChannel.onclose = () => {
@@ -649,21 +650,26 @@ var RevWebRTCContextProvider = ({children}) => {
     }
 
     // Accumulate incoming chunks
-    let receivedChunks = [];
+    let receivedChunks = {};
 
     revPeerConn.addEventListener('datachannel', event => {
       let datachannel = event.channel;
 
       datachannel.addEventListener('message', event => {
-        let revChunkDataStr = event.data;
+        let revDataStr = event.data;
+        let revData = JSON.parse(revDataStr);
+        const {revMsgGUID, revChunk} = revData;
+
+        if (!receivedChunks.hasOwnProperty(revMsgGUID)) {
+          receivedChunks[revMsgGUID] = [];
+        }
 
         /** START REV CALL PLUGIN HOOK HANDLERS */
-        if (revChunkDataStr === 'EOF') {
-          let revReceivedMsgStr = receivedChunks.join('');
+        if (revChunk === 'EOF') {
+          let revReceivedMsgStr = receivedChunks[revMsgGUID].join('');
 
           try {
             const {revMsg = {}} = JSON.parse(revReceivedMsgStr);
-            const {_revInfoEntity = {_revMetadataList: []}} = revMsg;
 
             if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
               let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
@@ -682,10 +688,10 @@ var RevWebRTCContextProvider = ({children}) => {
           }
 
           // Clear the receivedChunks array for the next msg
-          receivedChunks = [];
+          receivedChunks[revMsgGUID] = [];
         } else {
           // Regular data chunk, accumulate it
-          receivedChunks.push(revChunkDataStr);
+          receivedChunks[revMsgGUID].push(revChunk);
         }
       });
     });
@@ -764,9 +770,11 @@ var RevWebRTCContextProvider = ({children}) => {
       return;
     }
 
-    setRevQuedMessages(prevState => {
-      return [...prevState, {revPeerId, ...message}];
-    });
+    revNewMessagesArrRef.current.push({revPeerId, ...message});
+
+    if (!revIsSendingQueRef.current) {
+      await revInitSendMsgs();
+    }
   };
 
   const revAsyncFilter = async (arr, predicate) => {
@@ -943,91 +951,111 @@ var RevWebRTCContextProvider = ({children}) => {
   var revHandleRandLoggedInConnGUIDs = () => {};
 
   // Function to send message chunks
-  function revSendChunks(revDataChannel, revMessage) {
-    const REV_CHUNK_SIZE = 64; // Set the chunk size as needed
-    const revTotalChunks = Math.ceil(revMessage.length / REV_CHUNK_SIZE);
+  var revSendChunks = async (revDataChannel, revMessage) => {
+    const REV_CHUNK_SIZE = 128 * 1024; // 256KB
+
+    const {revMsgGUID} = revMessage;
+
+    let revMessageStr = JSON.stringify(revMessage);
+    const revTotalChunks = Math.ceil(revMessageStr.length / REV_CHUNK_SIZE);
     let revChunkIndex = 0;
 
-    function revSendNextChunk() {
-      const revStart = revChunkIndex * REV_CHUNK_SIZE;
-      const revEnd = Math.min(revStart + REV_CHUNK_SIZE, revMessage.length);
-      const revChunk = revMessage.substring(revStart, revEnd);
-
-      revDataChannel.send(revChunk);
-
-      revChunkIndex++;
-
+    async function revSendNextChunk() {
       if (revChunkIndex < revTotalChunks) {
-        revSendNextChunk();
+        const revStart = revChunkIndex * REV_CHUNK_SIZE;
+        const revEnd = Math.min(
+          revStart + REV_CHUNK_SIZE,
+          revMessageStr.length,
+        );
+        const revChunk = revMessageStr.substring(revStart, revEnd);
+        revDataChannel.send(JSON.stringify({revMsgGUID, revChunk: revChunk}));
+
+        revChunkIndex++;
+
+        // Continue sending next chunk after a delay
+        await revTimeoutAsync({revCallback: revSendNextChunk});
       } else {
-        revDataChannel.send('EOF');
+        // After sending all chunks, send 'EOF'
+        revDataChannel.send(JSON.stringify({revMsgGUID, revChunk: 'EOF'}));
       }
     }
 
     // Start sending the chunks
-    revSendNextChunk();
-  }
+    await revSendNextChunk();
+  };
 
   var revInitSendMsgs = async () => {
+    revIsSendingQueRef.current = true;
+
+    let revQuedMessages = revQuedMessagesRef.current;
     let revQuedMessagesLen = revQuedMessages.length;
 
-    if (revQuedMessagesLen < 1) {
-      return;
-    }
+    revQuedMessagesRef.current = [];
 
-    let revNewMsgsQueArr = [];
+    let revUnsentMessages = [];
 
     for (let i = 0; i < revQuedMessagesLen; i++) {
       if (revIsEmptyJSONObject(revQuedMessages[i])) {
         continue;
       }
 
-      const {revPeerId} = revQuedMessages[i];
+      let revQuedMessage = revQuedMessages[i];
+
+      const {revType, revPeerId, revMsg, revSendTryCount = 0} = revQuedMessage;
       let revConnData = revGetConnData(revPeerId);
 
       if (revIsEmptyJSONObject(revConnData)) {
         continue;
       }
 
+      if (revSendTryCount >= 5) {
+        console.log('>>> revSendTryCount', revSendTryCount);
+      }
+
       const {revPeerConn, dataChannel: revDataChannel} = revConnData;
 
-      if (!revPeerConn) {
-        revNewMsgsQueArr.push(revQuedMessages[i]);
-        return;
+      if (!revPeerConn || !revDataChannel) {
+        continue;
       }
 
       try {
-        if (revDataChannel && revDataChannel.readyState === 'open') {
-          revSendChunks(
-            revDataChannel,
-            JSON.stringify(revQuedMessages[i].revMsg),
-          );
+        if (revDataChannel.readyState === 'open') {
+          delete revMsg['_revPublisherEntity'];
+          delete revMsg['revPeersArr'];
+
+          await revSendChunks(revDataChannel, revMsg);
 
           if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
             const {revOnMessageSent} =
               revPeerConnsCallBacksRef.current[revPeerId];
 
             if (revOnMessageSent) {
-              revOnMessageSent(revQuedMessages[i].revMsg);
+              revOnMessageSent(revMsg);
             }
           }
 
           continue;
         }
-
-        let revSendTryCount = revQuedMessages[i][revSendTryCount];
-        revSendTryCount = revSendTryCount ? revSendTryCount : 0;
-        revQuedMessages[i][revSendTryCount] = revSendTryCount + 1;
-
-        revNewMsgsQueArr.push(revQuedMessages[i]);
       } catch (error) {
         console.log(deviceModel, '*** revInitSendMsgs', error);
       }
+
+      revQuedMessage['revSendTryCount'] = revSendTryCount + 1;
+      revUnsentMessages.push(revQuedMessage);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    revQuedMessagesRef.current = [
+      ...revUnsentMessages,
+      ...revNewMessagesArrRef.current,
+    ];
 
-    setRevQuedMessages(revNewMsgsQueArr);
+    revNewMessagesArrRef.current = [];
+
+    if (revQuedMessagesRef.current.length) {
+      await revInitSendMsgs();
+    } else {
+      revIsSendingQueRef.current = false;
+    }
   };
 
   var revVideoParticipantView = revRemoteVideoStream => {
@@ -1141,10 +1169,6 @@ var RevWebRTCContextProvider = ({children}) => {
       initSocket();
     });
   }, [REV_WEB_SOCKET_SERVER]);
-
-  useEffect(() => {
-    revInitSendMsgs();
-  }, [revQuedMessages]);
 
   useEffect(() => {
     if (revRemoteVideoStreamsArr.length > 0) {

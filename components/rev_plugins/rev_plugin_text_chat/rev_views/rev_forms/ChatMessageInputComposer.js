@@ -14,6 +14,9 @@ import {REV_METADATA_FILLER} from '../../../../rev_libs_pers/rev_db_struct_model
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+
+import DocumentPicker, {isInProgress} from 'react-native-document-picker';
 
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
 import {ReViewsContext} from '../../../../../rev_contexts/ReViewsContext';
@@ -21,25 +24,22 @@ import {RevWebRTCContext} from '../../../../../rev_contexts/RevWebRTCContext';
 import {RevRemoteSocketContext} from '../../../../../rev_contexts/RevRemoteSocketContext';
 
 import {useChatMessages} from '../rev_listing_views/ChatMessages';
-import {RevSubmitChatTab} from './RevSubmitChatTab';
-import {useRevChatMessagesHelperFunctions} from '../../rev_func_libs/rev_chat_messages_helper_functions';
 
 import {revGetMetadataValue} from '../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
+import {
+  revCurrDelayedTime,
+  revReadFileAsBinaryString,
+} from '../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import DeviceInfo from 'react-native-device-info';
 
 import {revPostServerData} from '../../../../rev_libs_pers/rev_server/rev_pers_lib_create';
+import {useRevInitPersFile} from '../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
 import {revOnDisplayNotification} from '../../../../../rev_function_libs/rev_live_noticias_functions';
 
-import {
-  revGetRandInteger,
-  revIsEmptyJSONObject,
-} from '../../../../../rev_function_libs/rev_gen_helper_functions';
-import {
-  revSplitStringToArray,
-  revTruncateFullNamesString,
-} from '../../../../../rev_function_libs/rev_string_function_libs';
+import {revIsEmptyJSONObject} from '../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateFullNamesString} from '../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 import {RevPurchaseReceipt} from '../../../rev_plugin_check_out/rev_views/rev_object_views/RevPurchaseReceipt';
@@ -50,6 +50,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const revChatMessageTxtLatest = useRef('');
   const revTextInputRef = useRef(null);
+  const revSelectedMediaRef = useRef([]);
 
   const [revRandLoggedInEntities, setRevRandLoggedInEntities] = useState([]);
   const [revActivePeerTabsArea, setRevActivePeerTabsArea] = useState(null);
@@ -79,6 +80,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const revPrevConnectionsArrref = useRef([]);
 
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
+
+  const {revInitPersFile, revInitPersFilesArr} = useRevInitPersFile();
 
   const revMessagesArrRef = useRef([]);
   const revActivePeerMessagesArrRef = useRef([]);
@@ -385,7 +388,19 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
           revRecconnectPeer(_revRemoteGUID);
         },
-        revOnMessageSent: revMessage => {},
+        revOnMessageSent: revMessage => {
+          const {revType} = revMessage;
+
+          console.log('>>> revType', revType);
+
+          switch (revType) {
+            case 'revFile':
+              break;
+
+            default:
+              break;
+          }
+        },
         revOnMessageReceived: revData => {
           revMessagesArrRef.current = [...revMessagesArrRef.current, revData];
           revAddChatMessage(revData);
@@ -530,8 +545,14 @@ export function ChatMessageInputComposer({revVarArgs}) {
     return revRetView;
   };
 
-  const revInitMsgData = () => {
-    let revMsgGUID = revMessagesArrRef.current.length + 1;
+  const revInitMsgData = async ({
+    revSelectedPicsFiles = [],
+    revSelectedVideoFiles = [],
+  }) => {
+    let revDelayedTime = await revCurrDelayedTime();
+
+    let revMsgGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID + '' + revDelayedTime;
+    revMsgGUID = Number(revMsgGUID);
 
     let revPersEntity = REV_ENTITY_STRUCT();
     revPersEntity._revType = 'rev_object';
@@ -547,7 +568,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
     revPersEntityInfo._revType = 'revObject';
     revPersEntityInfo._revSubType = 'rev_entity_info';
     revPersEntityInfo._revChildableStatus = 3;
-    revPersEntityInfo._revTimeCreated = new Date().getTime();
+    revPersEntityInfo._revTimeCreated = revDelayedTime;
     /** END REV INFO */
 
     revPersEntityInfo._revMetadataList = [
@@ -559,16 +580,17 @@ export function ChatMessageInputComposer({revVarArgs}) {
     ];
 
     /** REV START ATTACH INFO */
-    revPersEntity._revInfoEntity = revPersEntityInfo;
+    revPersEntity['_revInfoEntity'] = revPersEntityInfo;
     /** REV END ATTACH INFO */
 
     let revMsgData = {
+      revMsgGUID,
       _revPublisherEntity: REV_LOGGED_IN_ENTITY,
       revPeersArr: [...revActivePeerEntitiesArrRef.current],
       revType: 'revText',
       revMsg: revPersEntity,
-      revSelectedPicsFiles: 0,
-      revSelectedVideoFiles: 0,
+      revSelectedPicsFiles: revSelectedPicsFiles.length,
+      revSelectedVideoFiles: revSelectedVideoFiles.length,
     };
 
     return revMsgData;
@@ -577,7 +599,14 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const handleRevSendChatMsg = async () => {
     let revCurrPeersArr = revActivePeerEntitiesArrRef.current;
 
-    let revMsgData = revInitMsgData();
+    let revSelectedPicsFiles = [];
+    let revSelectedVideoFiles = [];
+
+    let revMsgData = await revInitMsgData({
+      revSelectedPicsFiles,
+      revSelectedVideoFiles,
+    });
+
     const {revMsg} = revMsgData;
 
     for (let i = 0; i < revCurrPeersArr.length; i++) {
@@ -585,7 +614,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
       let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
 
-      sendMessage(revRemoteTargetEntityGUID, {
+      await sendMessage(revRemoteTargetEntityGUID, {
         revMsg: revMsgData,
       });
 
@@ -602,11 +631,54 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
     revChatMessageTxtLatest.current = '';
     revTextInputRef.current.clear();
+
+    /** Send Files */
+    const {_revRemoteGUID} = revMsg;
+
+    let revSelectedFilesArr = revSelectedMediaRef.current;
+
+    for (let i = 0; i < revCurrPeersArr.length; i++) {
+      let revActivePeerEntity = revCurrPeersArr[i];
+      let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
+
+      for (let j = 0; j < revSelectedFilesArr.length; j++) {
+        let revSelectedFile = revSelectedFilesArr[j];
+        const {revFileAbsolutePath} = revSelectedFile;
+
+        try {
+          let revArrayBuffer = await revReadFileAsBinaryString(
+            revFileAbsolutePath,
+            'base64',
+          );
+
+          revSelectedFile['revMsgGUID'] = revSelectedFile._revRemoteGUID;
+          revSelectedFile['_revContainerGUID'] = _revRemoteGUID;
+          revSelectedFile['revArrayBuffer'] = revArrayBuffer;
+          revSelectedFile['revIsStringArr'] = true;
+          revSelectedFile['revType'] = 'revFile';
+
+          let revMsgData = {
+            _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+            revType: 'revFile',
+            revMsg: revSelectedFile,
+          };
+
+          await sendMessage(revRemoteTargetEntityGUID, revMsgData);
+        } catch (error) {
+          console.log('>>> ERROR - revSelectedFilesArr', error);
+        }
+      }
+    }
+
+    revSelectedMediaRef.current = [];
   };
 
   const revSubmitChatOptionsMenuArea = () => {
     return (
-      <TouchableOpacity onPress={handleRevSendChatMsg}>
+      <TouchableOpacity
+        onPress={async () => {
+          await handleRevSendChatMsg();
+        }}>
         <View
           style={[
             revSiteStyles.revFlexWrapper,
@@ -630,11 +702,45 @@ export function ChatMessageInputComposer({revVarArgs}) {
     setIsRevShowComposer(!revComposingStatus);
   };
 
+  const revHandleError = err => {
+    if (DocumentPicker.isCancel(err)) {
+      console.warn('cancelled');
+    } else if (isInProgress(err)) {
+      console.warn(
+        'multiple pickers were opened, only the last will be considered',
+      );
+    } else {
+      throw err;
+    }
+  };
+
+  const revHandleOnMediaSelectTab = async () => {
+    try {
+      let revResponseArr = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        presentationStyle: 'fullScreen',
+        allowMultiSelection: true,
+      });
+
+      if (!Array.isArray(revResponseArr)) {
+        return;
+      }
+
+      let revPersFilesArr = await revInitPersFilesArr(revResponseArr);
+      revSelectedMediaRef.current = [
+        ...revSelectedMediaRef.current,
+        ...revPersFilesArr,
+      ];
+    } catch (err) {
+      revHandleError(err);
+    }
+  };
+
   let RevChatSubmitOptions = () => {
     return (
       <View
         style={[
-          revSiteStyles.revFlexWrapper,
+          revSiteStyles.revFlexWrapper_WidthAuto,
           styles.revFooterSubmitOptionsLeftWrapper,
         ]}>
         {isRevShowComposer ? (
@@ -660,23 +766,58 @@ export function ChatMessageInputComposer({revVarArgs}) {
           </TouchableOpacity>
         )}
 
-        <TouchableOpacity
-          onPress={async () => {
-            revWebRTCSendFile(2);
-          }}>
-          <View
+        <TouchableOpacity onPress={revHandleOnMediaSelectTab}>
+          <Feather
+            name="upload"
             style={[
+              revSiteStyles.revSiteTxtColorBlueLink,
               revSiteStyles.revSiteTxtBold,
-              styles.revCancelComposeChatMsg,
+              revSiteStyles.revSiteTxtMedium,
+              styles.revSitePublisherUpload,
+            ]}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <FontAwesome
+            name="flag-o"
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtSmall,
+              styles.revSitePublisherUpload,
+            ]}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            handleRevSitePublisherCancelTab();
+          }}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtTiny_X,
+              revSiteStyles.revSiteTxtBold,
+              styles.revSitePublisherCancelTab,
             ]}>
             <FontAwesome
-              name="image"
+              name="dot-circle-o"
               style={[
                 revSiteStyles.revSiteTxtColor,
-                revSiteStyles.revSiteTxtMedium,
-              ]}></FontAwesome>
-          </View>
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />
+            <FontAwesome
+              name="long-arrow-right"
+              style={[
+                revSiteStyles.revSiteTxtColor,
+                revSiteStyles.revSiteTxtTiny_X,
+              ]}
+            />{' '}
+            Cancel
+          </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             revHandleHideComposingForm(isRevShowComposer);
@@ -684,14 +825,15 @@ export function ChatMessageInputComposer({revVarArgs}) {
           <View
             style={[
               revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
               styles.revCancelComposeChatMsg,
             ]}>
-            <FontAwesome
-              name={isRevShowComposer ? 'times' : 'expand'}
+            <AntDesign
+              name={isRevShowComposer ? 'close' : 'arrowsalt'}
               style={[
                 revSiteStyles.revSiteTxtColor,
                 revSiteStyles.revSiteTxtMedium,
-              ]}></FontAwesome>
+              ]}></AntDesign>
           </View>
         </TouchableOpacity>
       </View>
@@ -896,5 +1038,11 @@ const styles = StyleSheet.create({
     width: 'auto',
     marginRight: 14,
     marginLeft: 'auto',
+  },
+  revSitePublisherUpload: {
+    paddingHorizontal: 8,
+  },
+  revSitePublisherCancelTab: {
+    paddingHorizontal: 5,
   },
 });

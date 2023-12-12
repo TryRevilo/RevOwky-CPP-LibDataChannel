@@ -26,6 +26,8 @@ import {
   revIsEmptyVar,
   revGetFileType,
   revGetFileAbsolutePath,
+  revTimeoutAsync,
+  revCurrDelayedTime,
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {
@@ -81,19 +83,23 @@ export const useRevCreateNewEntity = () => {
 var usRevSetNewRemoteFile = () => {
   const {REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
 
-  const revSetNewRemoteFile = (revLocalFile, revSeedId) => {
-    let revCurrTime = new Date().getTime();
+  const revSetNewRemoteFile = async (revLocalFile, revSeedId) => {
+    const revCallback = () => {
+      let revCurrTime = new Date().getTime();
 
-    let revNewFileNameConst = REV_LOGGED_IN_ENTITY_GUID + '_' + revCurrTime;
+      let revNewFileNameConst = REV_LOGGED_IN_ENTITY_GUID + '_' + revCurrTime;
 
-    if (revSeedId >= 0) {
-      revNewFileNameConst = revSeedId + '_' + revNewFileNameConst;
-    }
+      if (revSeedId >= 0) {
+        revNewFileNameConst = revSeedId + '_' + revNewFileNameConst;
+      }
 
-    let revFileType = revGetFileType(revLocalFile);
-    let revNewFileName = revNewFileNameConst + '.' + revFileType;
+      let revFileType = revGetFileType(revLocalFile);
+      let revNewFileName = revNewFileNameConst + '.' + revFileType;
 
-    return revNewFileName;
+      return revNewFileName;
+    };
+
+    return await revTimeoutAsync({revCallback});
   };
 
   return {revSetNewRemoteFile};
@@ -156,6 +162,50 @@ export const revWriteFile = async revFile => {
   } catch (error) {
     console.log('*** error -revWriteFile', error);
   }
+};
+
+export const useRevInitPersFile = () => {
+  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
+
+  const {revSetNewRemoteFile} = usRevSetNewRemoteFile();
+
+  const revInitPersFile = async (revFile, revSeed) => {
+    const {uri: revURI} = revFile;
+
+    revFile['revFileName'] = revFile.name;
+
+    let revFileExt = revGetFileType(revFile);
+    revFile['revFileExt'] = revFileExt;
+
+    let revFileObjectSubType = revGetFileObjectSubType(revFile);
+    revFile['revFileObjectSubType'] = revFileObjectSubType;
+
+    revFile['revMIME'] = revFile.type;
+
+    let revFileAbsolutePath = await revGetFileAbsolutePath(revURI);
+    revFile['revFileAbsolutePath'] = revFileAbsolutePath;
+
+    let revNewFileName = await revSetNewRemoteFile(revFile, revSeed);
+    revFile['revNewFileName'] = revNewFileName;
+
+    let revFileDelayedTime = await revCurrDelayedTime();
+    let revFileGUID =
+      REV_LOGGED_IN_ENTITY._revRemoteGUID + '' + revFileDelayedTime;
+
+    revFile['_revRemoteGUID'] = Number(revFileGUID);
+
+    return revFile;
+  };
+
+  const revInitPersFilesArr = async revFilesArr => {
+    for (let i = 0; i < revFilesArr.length; i++) {
+      revFilesArr[i] = await revInitPersFile(revFilesArr[i]);
+    }
+
+    return revFilesArr;
+  };
+
+  return {revInitPersFile, revInitPersFilesArr};
 };
 
 export const useRevCreateMediaAlbum = () => {
@@ -242,7 +292,7 @@ export const useRevCreateMediaAlbum = () => {
         continue;
       }
 
-      let revNewFileName = revSetNewRemoteFile(revFile, i);
+      let revNewFileName = await revSetNewRemoteFile(revFile, i);
 
       if (revIsEmptyVar(revNewFileName)) {
         continue;

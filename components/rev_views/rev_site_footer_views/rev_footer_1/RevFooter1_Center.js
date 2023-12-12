@@ -3,11 +3,11 @@ import React, {useContext} from 'react';
 
 import Feather from 'react-native-vector-icons/Feather';
 
-import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
-import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
+import {ReViewsContext} from '../../../../rev_contexts/ReViewsContext';
+import {RevSiteDataContext} from '../../../../rev_contexts/RevSiteDataContext';
 
-import {useRevSiteStyles} from '../RevSiteStyles';
-import {revPluginsLoader} from '../../rev_plugins_loader';
+import {useRevSiteStyles} from '../../RevSiteStyles';
+import {revPluginsLoader} from '../../../rev_plugins_loader';
 
 const RevFooter1_Center = () => {
   const {revSiteStyles} = useRevSiteStyles();

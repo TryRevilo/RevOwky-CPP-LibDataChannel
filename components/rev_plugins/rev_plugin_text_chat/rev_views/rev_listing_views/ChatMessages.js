@@ -74,7 +74,7 @@ export function useChatMessages() {
     let revRetView = (
       <FlatList
         ref={revFlatListRef}
-        inverted={true}
+        inverted={false}
         data={revFlatListData}
         renderItem={revRenderItem}
         keyExtractor={item => {
@@ -207,6 +207,6 @@ const styles = StyleSheet.create({
   },
   revChatMessagesContainer: {
     marginTop: 3,
-    marginBottom: 3,
+    marginBottom: 42,
   },
 });

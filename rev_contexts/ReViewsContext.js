@@ -19,7 +19,7 @@ import Modal from 'react-native-modal';
 const ReViewsContext = createContext();
 
 import RevNullMessagesView from '../components/rev_views/RevNullMessagesView';
-import RevFooter1_Center from '../components/rev_views/rev_site_footer_views/RevFooter1_Center';
+import RevFooter1_Center from '../components/rev_views/rev_site_footer_views/rev_footer_1/RevFooter1_Center';
 
 import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
 

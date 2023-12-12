@@ -15,6 +15,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
@@ -68,28 +69,6 @@ export default function OutboxChatMessage({revVarArgs}) {
 
   let revTimeCreated = revFormatLongDate(revMsg._revTimeCreated);
 
-  let maxMessageLen = 200;
-
-  let chatMessageText = chatMsg => {
-    let chatMessageView = (
-      <Text
-        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
-        {chatMsg.length > maxMessageLen
-          ? chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : chatMsg}
-      </Text>
-    );
-
-    return (
-      <View style={styles.chatMsgContentTxtContainer}>
-        {chatMessageView}
-        {chatMsg.length > maxMessageLen ? (
-          <Text style={styles.readMoreTextTab}>Read more</Text>
-        ) : null}
-      </View>
-    );
-  };
-
   const [revIsChatOptionsModalVissible, setRevIsChatOptionsModalVissible] =
     useState(false);
 
@@ -131,7 +110,7 @@ export default function OutboxChatMessage({revVarArgs}) {
                 </Text>
               </View>
             </View>
-            {chatMessageText(revChatMsgStr)}
+            <RevReadMoreTextView revText={revChatMsgStr} revMaxLength={255} />
           </View>
           <View style={styles.chatMsgContentCarretView}>
             <FontAwesome

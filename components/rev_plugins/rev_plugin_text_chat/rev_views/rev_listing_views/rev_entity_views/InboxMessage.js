@@ -14,6 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {LoremIpsum} from 'lorem-ipsum';
 
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
+import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
@@ -62,10 +63,14 @@ export default function InboxMessage({revVarArgs}) {
     'rev_entity_desc',
   );
 
+  let revChatMsgStrHTML = revGetMetadataValue(
+    revMsgInfoEntity._revMetadataList,
+    'rev_entity_desc_html',
+  );
+
   let revTimeCreated = revFormatLongDate(revMsg._revTimeCreated);
 
   let minMessageLen = 1;
-  let maxMessageLen = 200;
 
   function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -95,28 +100,6 @@ export default function InboxMessage({revVarArgs}) {
           style={styles.imageStyle}
           source={{uri: `data:image/jpeg;base64,${imageBytes}`}}
         />
-      </View>
-    );
-  };
-
-  let chatMessageText = _chatMsg => {
-    let chatMessageView = (
-      <Text
-        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
-        {_chatMsg.length > maxMessageLen
-          ? _chatMsg.substring(0, maxMessageLen) + ' . . .'
-          : _chatMsg}
-      </Text>
-    );
-
-    return (
-      <View
-        key={'chatMessageText_' + revEntityGUID}
-        style={styles.chatMsgContentTxtContainer}>
-        {chatMessageView}
-        {_chatMsg.length > maxMessageLen ? (
-          <Text style={styles.readMoreTextTab}>Read more</Text>
-        ) : null}
       </View>
     );
   };
@@ -168,7 +151,11 @@ export default function InboxMessage({revVarArgs}) {
               </View>
             </View>
             <View style={styles.chatMsgContentTxtContainer}>
-              {chatMessageText(revChatMsgStr)}
+              <RevReadMoreTextView
+                revText={revChatMsgStr}
+                revFullText={revChatMsgStrHTML}
+                revMaxLength={255}
+              />
               <RevImages />
             </View>
           </View>

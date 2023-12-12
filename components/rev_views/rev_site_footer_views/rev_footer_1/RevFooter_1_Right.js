@@ -36,7 +36,7 @@ const RevFooter_1_Right = () => {
           name="gear"
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtTiny,
             styles.rightFooterOptionTab,
           ]}></FontAwesome>
       </TouchableOpacity>
@@ -51,10 +51,9 @@ const RevFooter_1_Right = () => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
+            revSiteStyles.revSiteTxtTiny_X,
             revSiteStyles.revSiteFontBold,
             styles.rightFooterOptionTab,
-            styles.rightFooterHelpTab,
           ]}>
           Help
         </Text>
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
   },
   rightFooterOptionTab: {
     paddingHorizontal: 10,
-    paddingBottom: 3,
   },
   rightFooterHelpTab: {
     paddingBottom: 1,

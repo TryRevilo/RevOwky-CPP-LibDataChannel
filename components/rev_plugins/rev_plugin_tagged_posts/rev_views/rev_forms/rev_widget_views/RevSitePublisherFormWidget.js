@@ -1,4 +1,4 @@
-import React, {useContext, useState, useCallback} from 'react';
+import React, {useContext, useState, useCallback, useRef} from 'react';
 
 import {
   StyleSheet,
@@ -81,7 +81,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
   const [revTagText, setRevTagText] = useState('');
   const [revSitePostText, setRevSitePostText] = useState(revKiwiTxtVal);
 
-  const [revSelectedMedia, setRevSelectedMedia] = useState(null);
+  const revSelectedMediaRef = useRef([]);
 
   const {revCreateSitePostAction} = useRevCreateSitePostAction();
 
@@ -90,7 +90,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
       _revGUID: revEntityGUID,
       revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revSitePostText,
-      revSelectedMedia,
+      revSelectedMedia: revSelectedMediaRef.current,
     };
 
     revCreateSitePostAction(revVaArgs, revRetData => {
@@ -113,7 +113,7 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
     }
   };
 
-  const revHandleOnMediaSelectTab = useCallback(async () => {
+  const revHandleOnMediaSelectTab = async () => {
     try {
       const response = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
@@ -121,11 +121,11 @@ export const RevSitePublisherFormWidget = ({revVarArgs}) => {
         allowMultiSelection: true,
       });
 
-      setRevSelectedMedia(response);
+      revSelectedMediaRef.current = response;
     } catch (err) {
       revHandleError(err);
     }
-  }, [revSelectedMedia]);
+  };
 
   let revBtnTxt = revEntityGUID < 0 ? 'Publish' : 'Update';
 

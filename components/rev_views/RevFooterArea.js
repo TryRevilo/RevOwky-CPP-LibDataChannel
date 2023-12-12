@@ -245,7 +245,7 @@ function RevFooterArea() {
 
   let RevFooter1 = revPluginsLoader({
     revPluginName: 'rev_plugin_text_chat',
-    revViewName: 'RevFooter1Left',
+    revViewName: 'RevFooter1',
     revData: {},
   });
 
@@ -402,7 +402,8 @@ function RevFooterArea() {
         {RevFooter3}
         {RevFooter2}
         {REV_SITE_FOOTER_1_CONTENT_VIEWER}
-        <View style={styles.footerContainer}>{RevFooter1}</View>
+
+        {RevFooter1}
       </View>
 
       {revChatStatus ? (
@@ -462,11 +463,5 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
     paddingHorizontal: 5,
     marginRight: 8,
-  },
-  footerContainer: {
-    backgroundColor: '#FFF',
-    flex: 0,
-    flexDirection: 'column',
-    paddingVertical: 12,
   },
 });

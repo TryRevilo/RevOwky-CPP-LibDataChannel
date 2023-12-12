@@ -9,12 +9,16 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import RenderHtml from 'react-native-render-html';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 // import Svg, {Defs, ClipPath, Path} from 'react-native-svg';
 import {Svg, Path} from 'react-native-svg';
 
-import {revGetRandInteger} from '../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revGetRandInteger,
+  revIsEmptyVar,
+} from '../../rev_function_libs/rev_gen_helper_functions';
 import {
   revStringEmpty,
   revTruncateString,
@@ -22,12 +26,12 @@ import {
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
-export const RevReadMoreTextView = ({revText, revMaxLength}) => {
+export const RevReadMoreTextView = ({revText, revFullText, revMaxLength}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   const [revExpanded, setRevExpanded] = useState(false);
 
-  const togglerevExpanded = () => {
+  const revTogglerevExpanded = () => {
     setRevExpanded(!revExpanded);
   };
 
@@ -43,7 +47,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
     if (revText.length > revMaxLength) {
       if (revExpanded) {
         return (
-          <TouchableOpacity onPress={togglerevExpanded}>
+          <TouchableOpacity onPress={revTogglerevExpanded}>
             <Text
               style={[
                 revSiteStyles.revSiteTxtColorBlueLink,
@@ -57,7 +61,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
         );
       } else {
         return (
-          <TouchableOpacity onPress={togglerevExpanded}>
+          <TouchableOpacity onPress={revTogglerevExpanded}>
             <Text
               style={[
                 revSiteStyles.revSiteTxtColorBlueLink,
@@ -78,7 +82,7 @@ export const RevReadMoreTextView = ({revText, revMaxLength}) => {
   return (
     <View style={revSiteStyles.revFlexContainer}>
       <Text
-        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny_X]}>
+        style={[revSiteStyles.revSiteTxtColor, revSiteStyles.revSiteTxtTiny]}>
         {revRenderText()}
       </Text>
       {revRenderReadMoreButton()}
@@ -331,7 +335,7 @@ export const RevScrollView_V = ({revScrollViewContent, revStyles}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{width: '100%', paddingVertical: 0}}>
+      contentContainerStyle={{paddingVertical: 0}}>
       <View
         style={[
           revSiteStyles.revFlexContainer,

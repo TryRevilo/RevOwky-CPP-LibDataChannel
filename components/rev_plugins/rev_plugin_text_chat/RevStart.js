@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
-import {RevFooter1Left} from '../../rev_views/rev_site_footer_views/RevFooter1Left';
+import {RevFooter1} from '../../rev_views/rev_site_footer_views/rev_footer_1/RevFooter1';
+import {RevFooter1Left} from '../../rev_views/rev_site_footer_views/rev_footer_1/RevFooter1Left';
 import {RevFooter2} from '../../rev_views/rev_site_footer_views/RevFooter2';
 import {RevFooter3} from '../../rev_views/rev_site_footer_views/RevFooter3';
 import {RevChatMessageNotificationsListing} from './rev_views/rev_listing_views/RevChatMessageNotificationsListing';
@@ -13,6 +14,10 @@ export default function RevStart({revVarArgs}) {
   let revViewName = revVarArgs.revViewName;
 
   switch (revViewName) {
+    case 'RevFooter1':
+      RevView = <RevFooter1 revVarArgs={revVarArgs} />;
+      break;
+
     case 'RevFooter1Left':
       RevView = <RevFooter1Left revVarArgs={revVarArgs} />;
       break;

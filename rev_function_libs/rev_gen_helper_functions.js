@@ -1,4 +1,5 @@
 import RNFetchBlob from 'react-native-fetch-blob';
+import RNFS from 'react-native-fs';
 
 import {revGetServerData_JSON} from '../components/rev_libs_pers/rev_server/rev_pers_lib_read';
 
@@ -27,6 +28,16 @@ export const revGetFileNameFromPath = revPath => {
 
 export const revGetFileExtension = revPath => {
   return revPath.match(/\.[^.]+$/)?.[0];
+};
+
+export const revReadFileAsBinaryString = async (revFilePath, revEncoding) => {
+  try {
+    let revContent = await RNFS.readFile(revFilePath, revEncoding); // 'ascii' encoding reads the file as binary string
+    return revContent;
+  } catch (error) {
+    console.error('Error reading file:', error.message);
+    return null;
+  }
 };
 
 export function revGetRandInteger(min = 1, max = 1000) {
@@ -143,7 +154,24 @@ export const revGetFileObjectSubType = revFile => {
   return revSubType;
 };
 
-export const revSetInterval = (revElementID, revCallback) => {
+export var revCurrDelayedTime = async ({revTimeDelay = 10} = {}) => {
+  return await revTimeoutAsync({
+    revTimeDelay,
+    revCallback: () => new Date().getTime(),
+  });
+};
+
+export var revTimeoutAsync = async ({revTimeDelay = 10, revCallback} = {}) => {
+  let revTimeoutPromise = new Promise(resolve => {
+    setTimeout(function () {
+      resolve(revCallback());
+    }, revTimeDelay);
+  });
+
+  return await revTimeoutPromise;
+};
+
+export var revSetInterval = (revElementID, revCallback) => {
   if (!revElementID) {
     console.log('ERR -> !revElementID : -> ' + revElementID);
     return;
@@ -157,7 +185,7 @@ export const revSetInterval = (revElementID, revCallback) => {
   }, 100);
 };
 
-export const revSetIntervalBoolean = (revBooleanCallback, revCallback) => {
+export var revSetIntervalBoolean = (revBooleanCallback, revCallback) => {
   let checkExist = setInterval(function () {
     if (revBooleanCallback()) {
       revCallback();
@@ -166,7 +194,7 @@ export const revSetIntervalBoolean = (revBooleanCallback, revCallback) => {
   }, 100);
 };
 
-export const revFormatDate = (date, format, utc) => {
+export var revFormatDate = (date, format, utc) => {
   var MMMM = [
     '\x00',
     'January',
