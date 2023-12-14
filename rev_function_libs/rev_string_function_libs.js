@@ -149,7 +149,7 @@ export const revIsEmptyHTML = revHTMLString => {
   );
 };
 
-export const revTruncateString = (revStr, revLen, revIncludeHellipse) => {
+export const revTruncateString = (revStr, revLen = 100, revIncludeHellipse) => {
   if (revStringEmpty(revStr)) {
     return '';
   }

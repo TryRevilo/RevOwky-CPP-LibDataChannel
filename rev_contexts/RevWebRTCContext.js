@@ -669,30 +669,30 @@ var RevWebRTCContextProvider = ({children}) => {
           let revReceivedMsgStr = receivedChunks[revMsgGUID].join('');
 
           try {
-            const {revMsg = {}} = JSON.parse(revReceivedMsgStr);
+            /** START REV CALL PLUGIN HOOK HANDLERS */
+            let revReceivedMsgStr = receivedChunks[revMsgGUID].join('');
+            let revReceivedMsg = JSON.parse(revReceivedMsgStr);
 
             if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
               let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
               const {revOnMessageReceived} = revCallBacks;
 
               if (revOnMessageReceived) {
-                revOnMessageReceived({
-                  _revPublisherEntity: revEntity,
-                  revPeersArr: [revEntity],
-                  revMsg,
-                });
+                revOnMessageReceived(revReceivedMsg);
               }
             }
           } catch (error) {
-            console.log('>>> ERROR - revDataChannel.onmessage', error);
+            console.log('*** ERROR - revReceivedMsgStr', error);
+            console.log('*** ERROR - revReceivedMsgStr', revReceivedMsgStr);
           }
 
-          // Clear the receivedChunks array for the next msg
-          receivedChunks[revMsgGUID] = [];
+          // Clear the receivedChunks array for the next file
+          delete receivedChunks[revMsgGUID];
         } else {
           // Regular data chunk, accumulate it
           receivedChunks[revMsgGUID].push(revChunk);
         }
+        /** END REV CALL PLUGIN HOOK HANDLERS */
       });
     });
 
@@ -786,7 +786,23 @@ var RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  const revInitVideoCall = async ({revTargetrevPeerId}) => {};
+  const revInitVideoCall = async ({revPeerId = -[1]}) => {
+    if (revPeerId < 1) {
+      return;
+    }
+
+    let revPeerConn = getPeerConnection(revPeerId);
+
+    try {
+      let revLocalMediaStream = await mediaDevices.getDisplayMedia();
+
+      revLocalMediaStream
+        .getTracks()
+        .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
+    } catch (error) {
+      console.log('*** ERROR [- revInitVideoCall', error);
+    }
+  };
 
   const revEndVideoCall = async revPeerId => {};
 
@@ -952,7 +968,7 @@ var RevWebRTCContextProvider = ({children}) => {
 
   // Function to send message chunks
   var revSendChunks = async (revDataChannel, revMessage) => {
-    const REV_CHUNK_SIZE = 128 * 1024; // 256KB
+    const REV_CHUNK_SIZE = 128 * 1024; // 128KB
 
     const {revMsgGUID} = revMessage;
 
@@ -1020,17 +1036,16 @@ var RevWebRTCContextProvider = ({children}) => {
 
       try {
         if (revDataChannel.readyState === 'open') {
-          delete revMsg['_revPublisherEntity'];
-          delete revMsg['revPeersArr'];
+          let revSendMsg = {...revMsg};
 
-          await revSendChunks(revDataChannel, revMsg);
+          await revSendChunks(revDataChannel, revSendMsg);
 
           if (revPeerConnsCallBacksRef.current.hasOwnProperty(revPeerId)) {
             const {revOnMessageSent} =
               revPeerConnsCallBacksRef.current[revPeerId];
 
             if (revOnMessageSent) {
-              revOnMessageSent(revMsg);
+              revOnMessageSent(revSendMsg);
             }
           }
 

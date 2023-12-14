@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {
   StyleSheet,
@@ -11,34 +11,148 @@ import {
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {LoremIpsum} from 'lorem-ipsum';
+import RNFS from 'react-native-fs';
 
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
-import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
+import {
+  RevReadMoreTextView,
+  RevScrollView_H,
+} from '../../../../../rev_views/rev_page_views';
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
 import {
+  revDecode,
   revFormatLongDate,
   revIsEmptyJSONObject,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {
+  revSplitStringToArray,
+  revTruncateString,
+} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {revIsEmptyInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
-export default function InboxMessage({revVarArgs}) {
+function useForceUpdate() {
+  const [, forceUpdate] = useState();
+
+  return () => forceUpdate(prevState => !prevState);
+}
+
+export default function InboxMessage({revVarArgs, revGetChildFilesArr}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   if (!revVarArgs) {
     return null;
   }
 
-  const {revMsg, _revPublisherEntity = {}, revPeersArr = []} = revVarArgs;
+  const {
+    revData,
+    _revPublisherEntity = {},
+    revPeersArr = [],
+    revChildFilesArr = [],
+    revDataSetter,
+  } = revVarArgs;
+  const {revMsgGUID, revType, revMsg = {}} = revData;
 
-  let revEntityGUID = revMsg._revGUID;
+  const revImagesArrRef = useRef([]);
+
+  for (let i = 0; i < revChildFilesArr.length; i++) {
+    let revChildFile = revChildFilesArr[i];
+
+    const {_revPublisherEntity, revPeersArr, revData} = revChildFile;
+    const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
+
+    revImagesArrRef.current.push(revMsg);
+  }
+
+  const [revImagesView, setRevImagesView] = useState(
+    revInitImages(revImagesArrRef.current),
+  );
+
+  function RevImageView({revData}) {
+    const {
+      _revRemoteGUID,
+      _revContainerGUID: revFileContainerGUID,
+      revFileName,
+      revFileObjectSubType,
+      revMIME,
+      revIsStringArr = false,
+      revArrayBuffer,
+    } = revData;
+
+    const [revRetImage, setRevRetImage] = useState(null);
+
+    const revInitImage = async () => {
+      const revTempFilePath = `${
+        RNFS.ExternalStorageDirectoryPath
+      }/Documents/temp_image_${_revRemoteGUID}.${revMIME.split('/')[1]}`;
+
+      await RNFS.writeFile(revTempFilePath, revArrayBuffer, 'base64');
+
+      let revRet = (
+        <Image
+          key={_revRemoteGUID}
+          style={[styles.revImageStyle]}
+          source={{uri: `file://${revTempFilePath}`}}
+        />
+      );
+
+      setRevRetImage(revRet);
+    };
+
+    useEffect(() => {
+      const initializeImage = async () => {
+        await revInitImage();
+      };
+      initializeImage();
+    }, []);
+
+    return revRetImage;
+  }
+
+  function revInitImages(revImagesArr) {
+    if (revImagesArr.length < 1) {
+      return null;
+    }
+
+    let revUpdatedImagesViewsArr = revImagesArr.map((revCurr, revIndex) => (
+      <RevImageView key={revIndex} revData={revCurr} />
+    ));
+
+    let revUpdatedImagesView = (
+      <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+        {revUpdatedImagesViewsArr}
+      </View>
+    );
+
+    return <RevScrollView_H revScrollViewContent={revUpdatedImagesView} />;
+  }
+
+  const revDataSetterCallBack = () => {
+    let revChildFilesArr = revGetChildFilesArr(revMsgGUID);
+
+    revImagesArrRef.current = [];
+
+    for (let i = 0; i < revChildFilesArr.length; i++) {
+      let revChildFile = revChildFilesArr[i];
+
+      const {_revPublisherEntity, revPeersArr, revData} = revChildFile;
+      const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
+
+      revImagesArrRef.current.push(revMsg);
+    }
+
+    setRevImagesView(revInitImages(revImagesArrRef.current));
+  };
+
+  if (revDataSetter) {
+    revDataSetter(revDataSetterCallBack);
+  }
 
   /** START GET PUBLISHER */
-  if (revIsEmptyJSONObject(_revPublisherEntity)) {
+  if (revIsEmptyInfo(_revPublisherEntity) || revIsEmptyInfo(revMsg)) {
     return null;
   }
 
@@ -70,58 +184,22 @@ export default function InboxMessage({revVarArgs}) {
 
   let revTimeCreated = revFormatLongDate(revMsg._revTimeCreated);
 
-  let minMessageLen = 1;
-
-  function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-
-  const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-      max: 8,
-      min: 4,
-    },
-    wordsPerSentence: {
-      max: getRndInteger(minMessageLen, 22),
-      min: getRndInteger(1, 2),
-    },
-  });
-
-  let RevImages = () => {
-    let imageBytes = null;
-
-    if (revVarArgs.hasOwnProperty('bytesArrayBuffer')) {
-      imageBytes = revVarArgs.bytesArrayBuffer;
-    } else return null;
-
-    return (
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.imageStyle}
-          source={{uri: `data:image/jpeg;base64,${imageBytes}`}}
-        />
-      </View>
-    );
-  };
-
   const [revIsChatOptionsModalVissible, setRevIsChatOptionsModalVissible] =
     useState(false);
 
   let revChatOptions = () => {
+    let revPassvarArgs = {
+      ...revVarArgs,
+      revCallback: () => setRevIsChatOptionsModalVissible(false),
+    };
+
     return revIsChatOptionsModalVissible ? (
-      <RevChatMessageOptions
-        revData={revVarArgs}
-        revCallback={() => setRevIsChatOptionsModalVissible(false)}
-      />
+      <RevChatMessageOptions revVarArgs={revPassvarArgs} />
     ) : null;
   };
 
   return (
-    <TouchableOpacity
-      key={'InboxMessage_' + revEntityGUID}
-      onLongPress={() => {
-        setRevIsChatOptionsModalVissible(true);
-      }}>
+    <View style={revSiteStyles.revFlexContainer}>
       <View style={styles.chatMsgWrapper}>
         <View style={styles.chatMsgUserIcon}>
           <FontAwesome name="user" style={styles.availableChatPeopleNonIcon} />
@@ -156,14 +234,15 @@ export default function InboxMessage({revVarArgs}) {
                 revFullText={revChatMsgStrHTML}
                 revMaxLength={255}
               />
-              <RevImages />
             </View>
+
+            {revImagesView}
           </View>
         </View>
       </View>
 
       {revChatOptions()}
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -173,32 +252,17 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 75;
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    backgroundColor: '#444',
-    width: maxChatMessageContainerWidth - 12,
-    maxHeight: 200,
-    borderRadius: 3,
-    marginTop: 4,
-  },
-  imageStyle: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 3,
+  revImageStyle: {
+    width: 37,
+    height: 37,
+    marginRight: 1,
+    borderRadius: 32,
   },
   chatMsgWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
     width: 'auto',
-  },
-  inboxChatMsgWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    width: 'auto',
-    marginLeft: 'auto',
   },
   chatMsgUserIcon: {
     width: 22,
@@ -215,15 +279,6 @@ const styles = StyleSheet.create({
     color: '#c5e1a5',
     fontSize: 17,
   },
-  chatMsgUserIconMe: {
-    width: 22,
-    height: 32,
-    borderStyle: 'solid',
-    borderColor: '#b2ebf2',
-    borderWidth: 1,
-    borderRadius: 100,
-    marginTop: 2,
-  },
   chatMsgContentWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -231,13 +286,6 @@ const styles = StyleSheet.create({
     maxWidth: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
-  },
-  chatMsgContentWrapperInbox: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    maxWidth: maxChatMessageContainerWidth,
-    marginTop: 2,
   },
   chatMsgContentCarretView: {
     backgroundColor: '#FFF',
@@ -252,11 +300,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
   },
-  chatMsgContentCarretInbox: {
-    color: '#dcedc8',
-    textAlign: 'center',
-    fontSize: 15,
-  },
   chatMsgContentContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -266,9 +309,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 4,
     borderRadius: 5,
-  },
-  chatMsgInboxBlue: {
-    backgroundColor: '#b2ebf2',
   },
   chatMsgHeaderWrapper: {
     display: 'flex',
@@ -300,26 +340,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 8,
   },
-  chatMsgOptionsOutbox: {
-    color: '#388e3c',
-    fontSize: 12,
-    paddingHorizontal: 4,
-    marginLeft: 4,
-  },
   chatMsgContentTxtContainer: {
-    color: '#444',
-    fontSize: 10,
-    display: 'flex',
-    alignItems: 'flex-start',
     paddingBottom: 4,
     marginTop: 2,
-  },
-  readMoreTextTab: {
-    color: '#009688',
-    fontWeight: 'bold',
-    fontSize: 9,
-    width: 'auto',
-    paddingTop: 5,
-    marginBottom: 4,
   },
 });

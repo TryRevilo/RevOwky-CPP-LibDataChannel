@@ -43,24 +43,46 @@ export function useChatMessages() {
 
   const revGetMessagesArr = () => revMessagesArr;
 
-  const revRenderItem = ({item}) => {
-    let chatMsg = item;
+  const revDataSetterCallBacksArrRef = useRef({});
+  const revChildFilesRef = useRef({});
 
-    if (revIsEmptyJSONObject(chatMsg)) {
+  const revGetChildFilesArr = revGUID => {
+    if (revChildFilesRef.current.hasOwnProperty(revGUID)) {
+      return revChildFilesRef.current[revGUID];
+    }
+
+    return [];
+  };
+
+  const revRenderItem = ({item: revChatMessage}) => {
+    if (revIsEmptyJSONObject(revChatMessage)) {
       return null;
     }
 
-    const {revMsg = {}} = chatMsg;
-    const {_revGUID = -1, _revOwnerGUID = -1} = revMsg;
+    const {_revPublisherEntity, revPeersArr, revData} = revChatMessage;
+    const {_revRemoteGUID = -1} = _revPublisherEntity;
+    const {revMsgGUID} = revData;
 
-    let revKey = _revGUID > 0 ? _revGUID : revGetRandInteger();
+    let revChildFilesArr = revGetChildFilesArr(revMsgGUID);
 
     let revView = null;
 
-    if (revLoggedInRemoteGUID == _revOwnerGUID) {
-      revView = <OutboxChatMessage key={revKey} revVarArgs={chatMsg} />;
+    if (revLoggedInRemoteGUID == _revRemoteGUID) {
+      revView = (
+        <OutboxChatMessage
+          key={revMsgGUID}
+          revVarArgs={{...revChatMessage, revChildFilesArr}}
+          revGetChildFilesArr={revGetChildFilesArr}
+        />
+      );
     } else {
-      revView = <InboxMessage key={revKey} revVarArgs={chatMsg} />;
+      revView = (
+        <InboxMessage
+          key={revMsgGUID}
+          revVarArgs={{...revChatMessage, revChildFilesArr}}
+          revGetChildFilesArr={revGetChildFilesArr}
+        />
+      );
     }
 
     return revView;
@@ -78,8 +100,10 @@ export function useChatMessages() {
         data={revFlatListData}
         renderItem={revRenderItem}
         keyExtractor={item => {
-          let _revGUID = item.revMsg._revGUID;
-          return _revGUID + '_' + revGetRandInteger();
+          const {revData = {revMsgGUID: -1}} = item;
+
+          let revMsgGUID = revData.revMsgGUID;
+          return revMsgGUID + '_' + revGetRandInteger();
         }}
         onLayout={() => {
           // revFlatListRef.current.scrollToEnd({animated: true});
@@ -132,6 +156,44 @@ export function useChatMessages() {
   };
 
   const revAddChatMessage = revChatMessage => {
+    console.log('>>> revChatMessage', JSON.stringify(revChatMessage));
+
+    const {_revPublisherEntity, revPeersArr, revData} = revChatMessage;
+    const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
+
+    if (
+      revType !== 'revFile' &&
+      !revDataSetterCallBacksArrRef.current.hasOwnProperty(revMsgGUID)
+    ) {
+      const revDataSetter = revDataSetterCallBack => {
+        revDataSetterCallBacksArrRef.current[revMsgGUID] =
+          revDataSetterCallBack;
+      };
+
+      revChatMessage = {...revChatMessage, revDataSetter};
+    }
+
+    if (revType == 'revFile') {
+      if (!revChildFilesRef.current.hasOwnProperty(_revContainerGUID)) {
+        revChildFilesRef.current[_revContainerGUID] = [];
+      }
+
+      revChildFilesRef.current[_revContainerGUID].push(revChatMessage);
+
+      if (
+        revDataSetterCallBacksArrRef.current.hasOwnProperty(_revContainerGUID)
+      ) {
+        let revDataSetterCallBack =
+          revDataSetterCallBacksArrRef.current[_revContainerGUID];
+
+        if (revDataSetterCallBack) {
+          revDataSetterCallBack();
+        }
+      }
+
+      return;
+    }
+
     setRevMessagesArr([...revMessagesArrRef.current, revChatMessage]);
   };
 

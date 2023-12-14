@@ -29,20 +29,28 @@ import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
-export default function OutboxChatMessage({revVarArgs}) {
+export default function OutboxChatMessage({revVarArgs, revGetChildFilesArr}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   if (!revVarArgs) {
     return null;
   }
 
+  const {
+    revData,
+    revPeersArr = [],
+    revChildFilesArr = [],
+    revDataSetter,
+  } = revVarArgs;
+  const {revMsgGUID, revType, revMsg = {}} = revData;
+
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
-  const {revPeersArr = [], revMsg} = revVarArgs;
 
   let revEntityGUID = revVarArgs._revGUID;
 
   /** START GET PUBLISHER */
   let _revPublisherEntity = REV_LOGGED_IN_ENTITY;
+
   if (
     revIsEmptyJSONObject(_revPublisherEntity) ||
     _revPublisherEntity._revType !== 'rev_user_entity'

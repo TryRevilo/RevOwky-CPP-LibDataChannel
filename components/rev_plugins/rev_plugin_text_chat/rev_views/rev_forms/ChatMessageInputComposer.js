@@ -46,7 +46,8 @@ import {RevPurchaseReceipt} from '../../../rev_plugin_check_out/rev_views/rev_ob
 
 export function ChatMessageInputComposer({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
-  const deviceModel = DeviceInfo.getModel();
+
+  const {_revContainerGUID = -1} = revVarArgs;
 
   const revChatMessageTxtLatest = useRef('');
   const revTextInputRef = useRef(null);
@@ -582,13 +583,17 @@ export function ChatMessageInputComposer({revVarArgs}) {
     /** REV START ATTACH INFO */
     revPersEntity['_revInfoEntity'] = revPersEntityInfo;
     /** REV END ATTACH INFO */
-
-    let revMsgData = {
-      revMsgGUID,
-      _revPublisherEntity: REV_LOGGED_IN_ENTITY,
-      revPeersArr: [...revActivePeerEntitiesArrRef.current],
+    let revData = {
       revType: 'revText',
       revMsg: revPersEntity,
+      revMsgGUID,
+      _revContainerGUID: _revContainerGUID,
+    };
+
+    let revMsgData = {
+      revData,
+      _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+      revPeersArr: [...revActivePeerEntitiesArrRef.current],
       revSelectedPicsFiles: revSelectedPicsFiles.length,
       revSelectedVideoFiles: revSelectedVideoFiles.length,
     };
@@ -607,7 +612,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
       revSelectedVideoFiles,
     });
 
-    const {revMsg} = revMsgData;
+    const {revMsg} = revMsgData.revData;
 
     for (let i = 0; i < revCurrPeersArr.length; i++) {
       let revActivePeerEntity = revCurrPeersArr[i];
@@ -651,19 +656,25 @@ export function ChatMessageInputComposer({revVarArgs}) {
             'base64',
           );
 
-          revSelectedFile['revMsgGUID'] = revSelectedFile._revRemoteGUID;
-          revSelectedFile['_revContainerGUID'] = _revRemoteGUID;
-          revSelectedFile['revArrayBuffer'] = revArrayBuffer;
-          revSelectedFile['revIsStringArr'] = true;
-          revSelectedFile['revType'] = 'revFile';
-
-          let revMsgData = {
-            _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+          let revData = {
             revType: 'revFile',
-            revMsg: revSelectedFile,
+            revMsgGUID: revSelectedFile._revRemoteGUID,
+            _revContainerGUID: _revRemoteGUID,
+            revMsg: {
+              _revContainerGUID: _revRemoteGUID,
+              ...revSelectedFile,
+              revArrayBuffer,
+              revIsStringArr: true,
+            },
           };
 
-          await sendMessage(revRemoteTargetEntityGUID, revMsgData);
+          let revMsgData = {
+            revData,
+            _revPublisherEntity: REV_LOGGED_IN_ENTITY,
+            revPeersArr: [...revActivePeerEntitiesArrRef.current],
+          };
+
+          await sendMessage(revRemoteTargetEntityGUID, {revMsg: revMsgData});
         } catch (error) {
           console.log('>>> ERROR - revSelectedFilesArr', error);
         }

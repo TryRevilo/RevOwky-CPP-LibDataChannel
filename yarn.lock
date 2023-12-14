@@ -7421,6 +7421,11 @@
   dependencies:
     "prop-types" "^15.7.2"
 
+"react-native-base64@^0.2.1":
+  "integrity" "sha512-eHgt/MA8y5ZF0aHfZ1aTPcIkDWxza9AaEk4GcpIX+ZYfZ04RcaNahO+527KR7J44/mD3efYfM23O2C1N44ByWA=="
+  "resolved" "https://registry.npmjs.org/react-native-base64/-/react-native-base64-0.2.1.tgz"
+  "version" "0.2.1"
+
 "react-native-codegen@^0.71.5":
   "integrity" "sha512-rfsuc0zkuUuMjFnrT55I1mDZ+pBRp2zAiRwxck3m6qeGJBGK5OV5JH66eDQ4aa+3m0of316CqrJDRzVlYufzIg=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.71.5.tgz"

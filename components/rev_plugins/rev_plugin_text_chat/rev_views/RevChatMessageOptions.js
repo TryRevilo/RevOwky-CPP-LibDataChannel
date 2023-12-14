@@ -21,34 +21,33 @@ import {revGetMetadataValue} from '../../../../rev_function_libs/rev_entity_libs
 import {revPluginsLoader} from '../../../rev_plugins_loader';
 
 import {revIsEmptyJSONObject} from '../../../../rev_function_libs/rev_gen_helper_functions';
+import {revIsEmptyInfo} from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {revTruncateString} from '../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../rev_views/RevSiteStyles';
 
-export default function RevChatMessageOptions({revData, revCallback}) {
+export default function RevChatMessageOptions({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   const [revIsSiteMessageForm, setRevIsSiteMessageForm] = useState(false);
 
-  let revEntityGUID = revData._revGUID;
-  let revMsgInfoEntity = revData._revInfoEntity;
+  const {
+    revData,
+    _revPublisherEntity = {},
+    revPeersArr = [],
+    revDataSetter,
+    revCallback,
+  } = revVarArgs;
+  const {revMsgGUID, revType, revMsg = {}} = revData;
 
-  /** START GET PUBLISHER */
-  if (
-    !revData.hasOwnProperty('_revPublisherEntity') ||
-    revIsEmptyJSONObject(revData._revPublisherEntity)
-  ) {
+  if (revIsEmptyInfo(_revPublisherEntity) || revIsEmptyInfo(revMsg)) {
     return null;
   }
 
-  let revPublisherEntity = revData._revPublisherEntity;
-
-  if (revPublisherEntity._revType !== 'rev_user_entity') {
-    return null;
-  }
+  let revMsgInfoEntity = revMsg._revInfoEntity;
 
   let revPublisherEntityNames = revGetMetadataValue(
-    revPublisherEntity._revInfoEntity._revMetadataList,
+    _revPublisherEntity._revInfoEntity._revMetadataList,
     'rev_entity_name',
   );
   let revPublisherEntityNames_Trunc = revTruncateString(
@@ -93,7 +92,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
       revPluginName: 'rev_plugin_site_messages',
       revViewName: 'RevCreateSiteMessageForm',
       revVarArgs: {
-        revEntity: revPublisherEntity,
+        revEntity: _revPublisherEntity,
         revIsCommentUpdate: false,
         revCancel: () => {
           setRevIsSiteMessageForm(false);
@@ -110,7 +109,7 @@ export default function RevChatMessageOptions({revData, revCallback}) {
 
   return (
     <Modal
-      key={Math.abs(revEntityGUID)}
+      key={Math.abs(revMsgGUID)}
       isVisible={isModalVisible}
       animationIn="slideInUp"
       animationOut="slideOutDown"

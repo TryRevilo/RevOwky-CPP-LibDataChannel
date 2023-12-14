@@ -1,5 +1,15 @@
 import {revIsEmptyJSONObject} from '../rev_gen_helper_functions';
 
+export const revIsEmptyInfo = revEntity => {
+  return (
+    revIsEmptyJSONObject(revEntity) ||
+    !revEntity.hasOwnProperty('_revInfoEntity') ||
+    !revEntity._revInfoEntity.hasOwnProperty('_revMetadataList') ||
+    !Array.isArray(revEntity._revInfoEntity._revMetadataList) ||
+    !revEntity._revInfoEntity._revMetadataList.length
+  );
+};
+
 export const revIsUserEntity_WithInfo = revEntity => {
   if (revIsEmptyJSONObject(revEntity)) {
     return false;

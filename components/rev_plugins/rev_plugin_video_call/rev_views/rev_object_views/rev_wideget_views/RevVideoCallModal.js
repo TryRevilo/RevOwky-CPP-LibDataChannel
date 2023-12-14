@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,15 +12,20 @@ function RevVideoCallModal({revVarArgs}) {
   }
 
   const {revInitVideoCall} = useContext(RevWebRTCContext);
-
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
 
+  const revPeerIdsArrRef = useRef([]);
+
+  const revSetPeerIdsArr = _revPeerIdsArr => {
+    revPeerIdsArrRef.current = _revPeerIdsArr;
+  };
+
   const handleRevInitVideoCallTabPress = async () => {
-    let revTargetPeerId = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+    let revPeerId = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
     try {
       await revInitVideoCall({
-        revTargetPeerId: revTargetPeerId,
+        revPeerId: revPeerId,
       });
     } catch (error) {
       console.log('*** error -handleRevInitVideoCallTabPress', error);

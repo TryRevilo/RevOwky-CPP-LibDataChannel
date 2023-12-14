@@ -495,3 +495,82 @@ export const revGenerateVideoThumbnail = async revParams => {
     throw error;
   }
 };
+
+// Detect free variables `exports`.
+var freeExports = typeof exports == 'object' && exports;
+
+// Detect free variable `module`.
+var freeModule =
+  typeof module == 'object' &&
+  module &&
+  module.exports == freeExports &&
+  module;
+
+// Detect free variable `global`, from Node.js or Browserified code, and use
+// it as `root`.
+var freeGlobal = typeof global == 'object' && global;
+if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
+  root = freeGlobal;
+}
+
+/*--------------------------------------------------------------------------*/
+
+var InvalidCharacterError = function (message) {
+  this.message = message;
+};
+InvalidCharacterError.prototype = new Error();
+InvalidCharacterError.prototype.name = 'InvalidCharacterError';
+
+var error = function (message) {
+  // Note: the error messages used throughout this file match those used by
+  // the native `atob`/`btoa` implementation in Chromium.
+  throw new InvalidCharacterError(message);
+};
+
+var TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+// http://whatwg.org/html/common-microsyntaxes.html#space-character
+var REGEX_SPACE_CHARACTERS = /[\t\n\f\r ]/g;
+
+// `decode` is designed to be fully compatible with `atob` as described in the
+// HTML Standard. http://whatwg.org/html/webappapis.html#dom-windowbase64-atob
+// The optimized base64-decoding algorithm used is based on @atk’s excellent
+// implementation. https://gist.github.com/atk/1020396
+export var revDecode = function (input) {
+  input = String(input).replace(REGEX_SPACE_CHARACTERS, '');
+  var length = input.length;
+
+  if (length % 4 == 0) {
+    input = input.replace(/==?$/, '');
+    length = input.length;
+  }
+
+  if (
+    length % 4 == 1 ||
+    // http://whatwg.org/C#alphanumeric-ascii-characters
+    /[^+a-zA-Z0-9/]/.test(input)
+  ) {
+    error(
+      'Invalid character: the string to be decoded is not correctly encoded.',
+    );
+  }
+
+  var bitCounter = 0;
+  var bitStorage;
+  var buffer;
+  var output = '';
+  var position = -1;
+
+  while (++position < length) {
+    buffer = TABLE.indexOf(input.charAt(position));
+    bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
+    // Unless this is the first of a group of 4 characters…
+    if (bitCounter++ % 4) {
+      // …convert the first 8 bits to a single ASCII character.
+      output += String.fromCharCode(
+        0xff & (bitStorage >> ((-2 * bitCounter) & 6)),
+      );
+    }
+  }
+
+  return output;
+};
