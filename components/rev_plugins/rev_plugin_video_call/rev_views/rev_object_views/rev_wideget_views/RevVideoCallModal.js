@@ -5,14 +5,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {RevWebRTCContext} from '../../../../../../rev_contexts/RevWebRTCContext';
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
+import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
 function RevVideoCallModal({revVarArgs}) {
   if (RevWebRTCContext == undefined) {
     return;
   }
 
-  const {revInitVideoCall} = useContext(RevWebRTCContext);
+  const {revPeerConnsData, revInitVideoCall} = useContext(RevWebRTCContext);
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   const revPeerIdsArrRef = useRef([]);
 
@@ -21,11 +23,15 @@ function RevVideoCallModal({revVarArgs}) {
   };
 
   const handleRevInitVideoCallTabPress = async () => {
-    let revPeerId = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+    const {revPeerId} = revPeerConnsData[0];
+
+    console.log('>>> revPeerId - handleRevInitVideoCallTabPress', revPeerId);
 
     try {
-      await revInitVideoCall({
-        revPeerId: revPeerId,
+      revInitVideoCall({
+        revPeerId,
+      }).then(revRes => {
+        SET_REV_SITE_BODY(null);
       });
     } catch (error) {
       console.log('*** error -handleRevInitVideoCallTabPress', error);

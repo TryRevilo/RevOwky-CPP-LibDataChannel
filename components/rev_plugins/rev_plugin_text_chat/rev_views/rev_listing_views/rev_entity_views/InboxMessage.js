@@ -34,11 +34,7 @@ import {
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {revIsEmptyInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
-function useForceUpdate() {
-  const [, forceUpdate] = useState();
-
-  return () => forceUpdate(prevState => !prevState);
-}
+const rev_settings = require('../../../../../../rev_res/rev_settings.json');
 
 export default function InboxMessage({revVarArgs, revGetChildFilesArr}) {
   const {revSiteStyles} = useRevSiteStyles();
@@ -86,8 +82,10 @@ export default function InboxMessage({revVarArgs, revGetChildFilesArr}) {
 
     const revInitImage = async () => {
       const revTempFilePath = `${
-        RNFS.ExternalStorageDirectoryPath
-      }/Documents/temp_image_${_revRemoteGUID}.${revMIME.split('/')[1]}`;
+        rev_settings.revAppRootDir
+      }/rev_web_rtc_temp_files/rev_temp_image_${_revRemoteGUID}.${
+        revMIME.split('/')[1]
+      }`;
 
       await RNFS.writeFile(revTempFilePath, revArrayBuffer, 'base64');
 

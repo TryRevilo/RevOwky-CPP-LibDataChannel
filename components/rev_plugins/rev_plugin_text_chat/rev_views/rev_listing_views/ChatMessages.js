@@ -156,8 +156,6 @@ export function useChatMessages() {
   };
 
   const revAddChatMessage = revChatMessage => {
-    console.log('>>> revChatMessage', JSON.stringify(revChatMessage));
-
     const {_revPublisherEntity, revPeersArr, revData} = revChatMessage;
     const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
 
