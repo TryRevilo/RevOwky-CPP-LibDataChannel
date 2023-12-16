@@ -8,6 +8,8 @@ import {
 import React from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {
@@ -26,8 +28,6 @@ import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev
 
 export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
-
-  console.log('>>> revVarArgs', JSON.stringify(revVarArgs));
 
   revVarArgs = revVarArgs.revVarArgs;
 
@@ -137,7 +137,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
               revSiteStyles.revFlexWrapper_WidthAuto,
               styles.revChatMsgOptionsWrapper,
             ]}>
-            <FontAwesome
+            <AntDesign
               name="retweet"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
@@ -146,8 +146,8 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
               ]}
             />
 
-            <FontAwesome
-              name="flag-o"
+            <MaterialIcons
+              name="emoji-flags"
               style={[
                 revSiteStyles.revSiteTxtColorLight,
                 revSiteStyles.revSiteTxtSmall,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   revChatMsgOptions: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
   },
   revChatMsgCommentContentTxtContainer: {
     paddingRight: 5,

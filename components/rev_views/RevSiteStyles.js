@@ -12,8 +12,17 @@ export const useRevSiteStyles = () => {
   var maxChatMessageContainerWidth = revPageWidth - 17;
 
   const revSiteStyles = StyleSheet.create({
+    revSiteTxtItalics: {
+      fontStyle: 'italic',
+    },
     revSiteTxtAlertDangerColor: {
       color: 'red',
+    },
+    revSiteTxtAlertDangerColor_Light: {
+      color: '#ec407a',
+    },
+    revSiteTxtOrange: {
+      color: 'orange',
     },
     revSiteTxtAlertSafe: {
       color: 'green',
@@ -35,6 +44,9 @@ export const useRevSiteStyles = () => {
     },
     revSiteTxtColorBlueLink: {
       color: '#5c6bc0',
+    },
+    revSiteColorIconGreen: {
+      color: '#c5e1a5',
     },
     revSiteTxtTiny_X: {
       fontSize: 8,
@@ -59,6 +71,16 @@ export const useRevSiteStyles = () => {
     },
     revSiteTxtWeightNormal: {
       fontWeight: 'normal',
+    },
+    revFlex_1_Wrapper: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    revFlex_1_Container: {
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
     },
     revFlexWrapper: {
       display: 'flex',

@@ -64,7 +64,7 @@ const ReViewsContextProvider = ({children}) => {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [slideAnim] = useState(new Animated.Value(-3000));
 
-  const panResponder = useRef(
+  const revPanResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         // Check if horizontal swipe is more than vertical swipe
@@ -145,7 +145,7 @@ const ReViewsContextProvider = ({children}) => {
               transform: [{translateY: slideAnim}],
             },
           ]}
-          {...panResponder.panHandlers}>
+          {...revPanResponder.panHandlers}>
           {revModalContent}
         </Animated.View>
       </View>

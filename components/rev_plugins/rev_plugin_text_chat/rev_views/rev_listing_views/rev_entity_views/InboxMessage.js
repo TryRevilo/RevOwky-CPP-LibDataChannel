@@ -1,13 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, Text, View, Image, Dimensions} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -21,15 +14,8 @@ import {
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
-import {
-  revDecode,
-  revFormatLongDate,
-  revIsEmptyJSONObject,
-} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-import {
-  revSplitStringToArray,
-  revTruncateString,
-} from '../../../../../../rev_function_libs/rev_string_function_libs';
+import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
+import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {revIsEmptyInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';

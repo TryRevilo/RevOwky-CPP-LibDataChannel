@@ -50,7 +50,7 @@ const RevFooter_1_Right = () => {
       <TouchableOpacity onPress={revHandleHelpTabPressed}>
         <Text
           style={[
-            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtOrange,
             revSiteStyles.revSiteTxtTiny_X,
             revSiteStyles.revSiteFontBold,
             styles.rightFooterOptionTab,

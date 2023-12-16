@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../../../rev_plugins_loader';
@@ -27,7 +29,7 @@ import {
   revGetEntityChildren_By_Subtype,
 } from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 import {
-    revTruncateFullNamesString,
+  revTruncateFullNamesString,
   revStringEmpty,
 } from '../../../../../../rev_function_libs/rev_string_function_libs';
 import {revFormatLongDate} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -76,7 +78,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     revPublisherInfoEntityMetadataList,
     'rev_entity_name',
   );
-  
+
   let revPublisherEntityNames_Trunc = revTruncateFullNamesString(
     revPublisherEntityNames,
   );
@@ -170,7 +172,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     revVarArgs: revVarArgs,
   });
 
-  const RevCreateImagesMediaView = revPicsAlbum => {    
+  const RevCreateImagesMediaView = revPicsAlbum => {
     let revImagesViews = [];
 
     let revPicsArr = revPicsAlbum._revChildrenList;
@@ -182,15 +184,24 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
         continue;
       }
 
-      let revEntityImageURI = revGetMetadataValue(_revInfoEntity._revMetadataList,'rev_remote_file_name');
+      let revEntityImageURI = revGetMetadataValue(
+        _revInfoEntity._revMetadataList,
+        'rev_remote_file_name',
+      );
 
       if (revVarArgs.hasOwnProperty('_fromRemote')) {
-        revEntityImageURI = 'file://' + revSettings.revPublishedMediaDir + '/' + revEntityImageURI;
+        revEntityImageURI =
+          'file://' +
+          revSettings.revPublishedMediaDir +
+          '/' +
+          revEntityImageURI;
       } else {
-        revEntityImageURI = revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
+        revEntityImageURI =
+          revSettings.revSiteUploadDirURL + '/' + revEntityImageURI;
       }
 
-      let revLastImageStyle = i == revPicsArr.length - 1 ? {borderRightWidth: 0} : null;
+      let revLastImageStyle =
+        i == revPicsArr.length - 1 ? {borderRightWidth: 0} : null;
 
       let revImage = (
         <TouchableOpacity
@@ -464,7 +475,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                   styles.revChatMsgOptionsWrapper,
                   {marginRight: 4},
                 ]}>
-                <FontAwesome
+                <AntDesign
                   name="retweet"
                   style={[
                     revSiteStyles.revSiteTxtColorLight,
@@ -474,8 +485,8 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 />
 
                 <TouchableOpacity onPress={handleRevOnFlagTabPressed}>
-                  <FontAwesome
-                    name="flag-o"
+                  <MaterialIcons
+                    name="emoji-flags"
                     style={[
                       revSiteStyles.revSiteTxtColorLight,
                       revSiteStyles.revSiteTxtSmall,
@@ -574,10 +585,9 @@ const styles = StyleSheet.create({
   revChatMsgOptionsWrapper: {
     alignItems: 'center',
     marginLeft: 'auto',
-    position: 'relative',
   },
   revChatMsgOptions: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
   },
   revPostTagsListWrapper: {
     alignItems: 'flex-end',

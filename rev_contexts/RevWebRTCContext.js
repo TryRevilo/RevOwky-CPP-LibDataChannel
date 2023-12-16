@@ -5,9 +5,9 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {revPluginsLoader} from '../components/rev_plugins_loader';
 
 import {
   RTCPeerConnection,
@@ -27,13 +27,10 @@ import {
   revIsEmptyJSONObject,
   revTimeoutAsync,
 } from '../rev_function_libs/rev_gen_helper_functions';
-import {revGetMetadataValue} from '../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
 import DeviceInfo from 'react-native-device-info';
 
 import {RevDialingCall} from '../components/rev_views/rev_web_rtc_views/rev_views/rev_object_views/RevDialingCall';
-
-import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
 
 const rev_settings = require('../rev_res/rev_settings.json');
 
@@ -52,7 +49,6 @@ const revPeerConnConfig = {
     },
   ],
 };
-
 var revChanOptions = {
   id: 1,
   ordered: true,
@@ -70,10 +66,9 @@ var mediaConstraints = {
 };
 
 var RevWebRTCContextProvider = ({children}) => {
-  const {revSiteStyles} = useRevSiteStyles();
   const deviceModel = DeviceInfo.getModel();
 
-  const {revInitSiteModal, revCloseSiteModal} = useContext(ReViewsContext);
+  const {revInitSiteModal} = useContext(ReViewsContext);
 
   // initialize state variable
   const revPeerConnsDataRef = useRef([]);
@@ -93,7 +88,11 @@ var RevWebRTCContextProvider = ({children}) => {
 
   const [revIsCaller, setRevIsCaller] = useState(false);
   const [revLocalVideoStream, setRevLocalVideoStream] = useState(null);
-  const [revRemoteVideoStreamsArr, setRevRemoteVideoStreamsArr] = useState([]);
+  const revRemoteVideoStreamsArrRef = useRef({});
+
+  let revOnAddLocalStream = null;
+  let revOnAddRemoteStream = null;
+  let revOnVideoChatMessageReceived = null;
 
   const revRestartingPeerIdsArr = useRef([]);
 
@@ -145,6 +144,16 @@ var RevWebRTCContextProvider = ({children}) => {
     }
 
     revPassVarArgs['revOnMessageReceived'] = revOnMessageReceived;
+    /** END message received */
+
+    /** START message received */
+    let revOnRemoteVideoStreamAdded = null;
+
+    if (revVarArgs.revOnRemoteVideoStreamAdded) {
+      revOnRemoteVideoStreamAdded = revVarArgs.revOnRemoteVideoStreamAdded;
+    }
+
+    revPassVarArgs['revOnRemoteVideoStreamAdded'] = revOnRemoteVideoStreamAdded;
     /** END message received */
 
     revPeerConnsCallBacksRef.current[_revRemoteGUID] = revPassVarArgs;
@@ -577,8 +586,6 @@ var RevWebRTCContextProvider = ({children}) => {
   const revCreatePeerConn = async (revEntity, revVarArgs = {}) => {
     const {_revRemoteGUID: revPeerId = -1} = revEntity;
 
-    console.log('>>> revPeerId - revCreatePeerConn', revPeerId);
-
     if (revPeerId < 1) {
       return;
     }
@@ -605,11 +612,6 @@ var RevWebRTCContextProvider = ({children}) => {
       const {revPeerConn = {}} = revConnData;
       const {connectionState} = revPeerConn;
 
-      console.log(
-        '>>> is - UP',
-        connectionState == 'connected' && !revIsVideoCall,
-      );
-
       if (connectionState == 'connected' && !revIsVideoCall) {
         return revConnData;
       } else {
@@ -634,14 +636,30 @@ var RevWebRTCContextProvider = ({children}) => {
       });
 
       if (revIsVideoCall) {
-        setRevRemoteVideoStreamsArr([
-          ...revRemoteVideoStreamsArr,
-          remoteStream,
-        ]);
+        revOnAddRemoteStream({revPeerId, revRemoteStream: remoteStream});
+        revRemoteVideoStreamsArrRef.current[revPeerId] = remoteStream;
       }
     };
 
     if (revIsVideoCall) {
+      let revVideoCall = revPluginsLoader({
+        revPluginName: 'rev_plugin_video_call',
+        revViewName: 'RevVideoCall',
+        revVarArgs: {
+          revOnAddLocalStream: revCallBack => {
+            revOnAddLocalStream = revCallBack;
+          },
+          revOnAddRemoteStream: revCallBack => {
+            revOnAddRemoteStream = revCallBack;
+          },
+          revOnVideoChatMessageReceived: revCallBack => {
+            revOnVideoChatMessageReceived = revCallBack;
+          },
+        },
+      });
+
+      revInitSiteModal(revVideoCall);
+
       try {
         let revLocalMediaStream = await mediaDevices.getUserMedia(
           mediaConstraints,
@@ -650,6 +668,7 @@ var RevWebRTCContextProvider = ({children}) => {
           .getTracks()
           .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
 
+        revOnAddLocalStream(revLocalMediaStream);
         setRevLocalVideoStream(revLocalMediaStream);
       } catch (error) {
         console.log('>>> error -set local streeam', error);
@@ -686,6 +705,10 @@ var RevWebRTCContextProvider = ({children}) => {
 
               if (revOnMessageReceived) {
                 revOnMessageReceived(revReceivedMsg);
+              }
+
+              if (revOnVideoChatMessageReceived) {
+                revOnVideoChatMessageReceived(revReceivedMsg);
               }
             }
           } catch (error) {
@@ -800,26 +823,32 @@ var RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  const revInitVideoCall = async ({revPeerId = -[1]}) => {
-    if (revPeerId < 1) {
+  const revInitVideoCall = async ({revPeerIdsArr = []}) => {
+    if (!Array.isArray(revPeerIdsArr)) {
       return;
     }
 
-    const {revEntity, revPeerConn} = revGetConnData(revPeerId);
+    for (let i = 0; i < revPeerIdsArr.length; i++) {
+      const {revEntity} = revGetConnData(revPeerIdsArr[i]);
 
-    await revCreatePeerConn(revEntity, {
-      revIsVideoCall: true,
-      isRevCaller: true,
-    });
+      await revCreatePeerConn(revEntity, {
+        revIsVideoCall: true,
+        isRevCaller: true,
+      });
 
-    try {
-      let revLocalMediaStream = await mediaDevices.getDisplayMedia();
+      const {revPeerConn: revNewVidPeerConn} = revGetConnData(revPeerIdsArr[i]);
 
-      revLocalMediaStream
-        .getTracks()
-        .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
-    } catch (error) {
-      console.log('*** ERROR - revInitVideoCall', error);
+      try {
+        let revLocalMediaStream = await mediaDevices.getDisplayMedia();
+
+        revLocalMediaStream
+          .getTracks()
+          .forEach(track =>
+            revNewVidPeerConn.addTrack(track, revLocalMediaStream),
+          );
+      } catch (error) {
+        console.log('*** ERROR - revInitVideoCall', error);
+      }
     }
   };
 
@@ -1092,86 +1121,6 @@ var RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  var revVideoParticipantView = revRemoteVideoStream => {
-    return (
-      <View>
-        {revRemoteVideoStream && (
-          <View style={styles.revParticipantVideoContainer}>
-            <RTCView
-              mirror={true}
-              objectFit={'cover'}
-              streamURL={revRemoteVideoStream.toURL()}
-              zOrder={0}
-              style={styles.revParticipantVideoStyle}
-            />
-          </View>
-        )}
-      </View>
-    );
-  };
-
-  let RevModalContent = ({revVideoStream}) => {
-    if (!revVideoStream) {
-      console.log('>>> Failed to laod remote data stream !');
-      return;
-    }
-
-    let revPeerId = revVideoStream.id;
-
-    return (
-      <View style={styles.revModalVideoChatArea}>
-        <View style={styles.revModalrevPeerVideoContainer}>
-          {revVideoStream && (
-            <RTCView
-              mirror={true}
-              objectFit={'cover'}
-              streamURL={revVideoStream.toURL()}
-              zOrder={0}
-              style={styles.revRemoteVideoStyle}
-            />
-          )}
-        </View>
-        <View style={styles.revMyVideoStreamContainer}>
-          {revLocalVideoStream && (
-            <RTCView
-              mirror={true}
-              objectFit={'cover'}
-              streamURL={revLocalVideoStream.toURL()}
-              zOrder={0}
-              style={styles.revVideoStyle}
-            />
-          )}
-        </View>
-        <View
-          style={[
-            revSiteStyles.revFlexContainer,
-            styles.revVideoAudiencetContainer,
-          ]}>
-          <View
-            style={[
-              revSiteStyles.revFlexWrapper,
-              styles.revVideoParticipantsWrapper,
-            ]}>
-            {revLocalVideoStream &&
-              revVideoParticipantView(revLocalVideoStream)}
-            {revLocalVideoStream &&
-              revVideoParticipantView(revLocalVideoStream)}
-            {revLocalVideoStream &&
-              revVideoParticipantView(revLocalVideoStream)}
-          </View>
-        </View>
-        <View style={styles.revEndCallBtnWrapper}>
-          <TouchableOpacity
-            onPress={async () => await revEndVideoCall(revPeerId)}>
-            <Text style={styles.revEndCallBtn}>
-              <FontAwesome name="power-off" style={styles.revEndCallBtnIcon} />
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
   useEffect(() => {
     if (!REV_LOGGED_IN_ENTITY) {
       return;
@@ -1203,14 +1152,6 @@ var RevWebRTCContextProvider = ({children}) => {
       initSocket();
     });
   }, [REV_WEB_SOCKET_SERVER]);
-
-  useEffect(() => {
-    if (revRemoteVideoStreamsArr.length > 0) {
-      revInitSiteModal(
-        <RevModalContent revVideoStream={revRemoteVideoStreamsArr[0]} />,
-      );
-    }
-  }, [revRemoteVideoStreamsArr]);
 
   useEffect(() => {
     if (revIsCaller && revLocalVideoStream) {
@@ -1246,111 +1187,3 @@ var RevWebRTCContextProvider = ({children}) => {
 };
 
 export {RevWebRTCContextProvider, RevWebRTCContext};
-
-const styles = StyleSheet.create({
-  revModalVideoChatArea: {
-    flex: 1,
-    alignItems: 'flex-start',
-    width: '100%',
-    position: 'relative',
-    backgroundColor: '#444',
-    borderRadius: 5,
-  },
-  revModalrevPeerVideoContainer: {
-    flex: 1,
-    width: '100%',
-    position: 'relative',
-  },
-  revPeerVideoContainer: {
-    backgroundColor: '#F7F7F7',
-    height: '100%',
-    overflow: 'hidden',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-    position: 'relative',
-  },
-  revRemoteVideoStyle: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#F7F7F7',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-  },
-  revVideoStyle: {
-    height: '100%',
-    backgroundColor: '#F7F7F7',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-  },
-  revMyVideoStreamContainer: {
-    backgroundColor: '#FFF',
-    width: 75,
-    height: 105,
-    borderColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    left: 10,
-    top: 10,
-    borderRadius: 3,
-  },
-  revEndCallBtnWrapper: {
-    backgroundColor: '#e57373',
-    alignSelf: 'center',
-    padding: 1,
-    position: 'absolute',
-    bottom: '5%',
-    borderRadius: 100,
-  },
-  revEndCallBtn: {
-    backgroundColor: '#ba000d',
-    width: 'auto',
-    padding: 15,
-    borderRadius: 100,
-  },
-  revEndCallBtnIcon: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    fontSize: 22,
-  },
-  /** START Collective call audience */
-  revVideoAudiencetContainer: {
-    position: 'absolute',
-    bottom: '20%', // adjust as needed
-    left: 0,
-    right: 0,
-  },
-  revVideoParticipantsWrapper: {
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  revParticipantVideoContainer: {
-    backgroundColor: '#CCC',
-    width: 55,
-    height: 105,
-    borderColor: '#DDD',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    overflow: 'hidden',
-    marginRight: 4,
-    borderRadius: 3,
-  },
-  revParticipantVideoStyle: {
-    backgroundColor: '#CCC',
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-  },
-
-  /** END Collective call audience */
-});

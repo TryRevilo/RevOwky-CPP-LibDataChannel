@@ -118,6 +118,12 @@ var REV_PLUGINS = {
       import(`./rev_plugins/rev_plugin_video/RevStart`),
     ),
   },
+  rev_plugin_video_call: {
+    revPluginName: 'rev_plugin_video_call',
+    revPlugin: loadable(() =>
+      import(`./rev_plugins/rev_plugin_video_call/RevStart`),
+    ),
+  },
 };
 
 export function revPluginsViews(revVarArgs) {
