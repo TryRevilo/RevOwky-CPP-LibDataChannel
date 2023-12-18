@@ -21,7 +21,7 @@ import {revConvertNumberToDecimal} from '../../../../../rev_function_libs/rev_st
 export function RevContacts({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const revIncrementals = 10;
+  const revIncrementals = 22;
 
   const [revTotDataCount, setRevTotDataCount] = useState(0);
   const [revListingData, setRevListingData] = useState([]);
@@ -85,8 +85,10 @@ export function RevContacts({revVarArgs}) {
     }
   };
 
-  const revRenderFLItem = ({item}) => {
-    return <RevContact revVarArgs={item} />;
+  const revRenderFLItem = revContactData => {
+    const {index: revIndex, item} = revContactData;
+
+    return <RevContact revVarArgs={{...item, revIndex}} />;
   };
 
   const renderFooter = () => {

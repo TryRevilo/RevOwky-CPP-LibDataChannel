@@ -132,28 +132,56 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
             ]}>
             {revFormatLongDate(revVarArgs._revTimeCreated)}
           </Text>
+
           <View
             style={[
-              revSiteStyles.revFlexWrapper_WidthAuto,
-              styles.revChatMsgOptionsWrapper,
+              styles.revChatMsgOptionsTabWrapper,
+              {width: 'auto', position: 'relative', top: -3},
             ]}>
-            <AntDesign
-              name="retweet"
+            <View
               style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtNormal,
-                styles.revChatMsgOptions,
+                {
+                  backgroundColor: '#DDD',
+                  width: '100%',
+                  position: 'relative',
+                  height: 1,
+                  top: '50%',
+                },
               ]}
             />
 
-            <MaterialIcons
-              name="emoji-flags"
-              style={[
-                revSiteStyles.revSiteTxtColorLight,
-                revSiteStyles.revSiteTxtSmall,
-                styles.revChatMsgOptions,
-              ]}
-            />
+            <View
+              style={[revSiteStyles.revFlexWrapper_WidthAuto, {marginLeft: 8}]}>
+              <View
+                style={[
+                  styles.revChatMsgOptionsTab,
+                  {backgroundColor: '#F7F7F7'},
+                ]}>
+                <AntDesign
+                  name="retweet"
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtNormal,
+                  ]}
+                />
+              </View>
+
+              <View
+                style={[
+                  styles.revChatMsgOptionsTab,
+                  {backgroundColor: '#F7F7F7'},
+                ]}>
+                <TouchableOpacity>
+                  <MaterialIcons
+                    name="emoji-flags"
+                    style={[
+                      revSiteStyles.revSiteTxtColorLight,
+                      revSiteStyles.revSiteTxtSmall,
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
         <View
@@ -193,21 +221,21 @@ const styles = StyleSheet.create({
   },
   revChatMsgHeaderWrapper: {
     alignItems: 'baseline',
-    borderBottomColor: '#rgba(27, 31, 35, 0.06)',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
+    marginBottom: 2,
   },
   revChatMsgSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
-  revChatMsgOptionsWrapper: {
+  revChatMsgOptionsTabWrapper: {
     alignItems: 'center',
     marginLeft: 'auto',
-    position: 'relative',
   },
-  revChatMsgOptions: {
+  revChatMsgOptionsTab: {
     paddingHorizontal: 10,
+    paddingVertical: 3,
+    marginRight: 2,
+    borderRadius: 32,
   },
   revChatMsgCommentContentTxtContainer: {
     paddingRight: 5,

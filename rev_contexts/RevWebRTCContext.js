@@ -68,7 +68,7 @@ var mediaConstraints = {
 var RevWebRTCContextProvider = ({children}) => {
   const deviceModel = DeviceInfo.getModel();
 
-  const {revInitSiteModal} = useContext(ReViewsContext);
+  const {revInitSiteModal, SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
   // initialize state variable
   const revPeerConnsDataRef = useRef([]);
@@ -92,6 +92,7 @@ var RevWebRTCContextProvider = ({children}) => {
 
   let revOnAddLocalStream = null;
   let revOnAddRemoteStream = null;
+  let revOnVideoChatMessageSent = null;
   let revOnVideoChatMessageReceived = null;
 
   const revRestartingPeerIdsArr = useRef([]);
@@ -652,13 +653,16 @@ var RevWebRTCContextProvider = ({children}) => {
           revOnAddRemoteStream: revCallBack => {
             revOnAddRemoteStream = revCallBack;
           },
+          revOnVideoChatMessageSent: revCallBack => {
+            revOnVideoChatMessageSent = revCallBack;
+          },
           revOnVideoChatMessageReceived: revCallBack => {
             revOnVideoChatMessageReceived = revCallBack;
           },
         },
       });
 
-      revInitSiteModal(revVideoCall);
+      SET_REV_SITE_BODY(revVideoCall);
 
       try {
         let revLocalMediaStream = await mediaDevices.getUserMedia(
@@ -669,7 +673,7 @@ var RevWebRTCContextProvider = ({children}) => {
           .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
 
         revOnAddLocalStream(revLocalMediaStream);
-        setRevLocalVideoStream(revLocalMediaStream);
+        // setRevLocalVideoStream(revLocalMediaStream);
       } catch (error) {
         console.log('>>> error -set local streeam', error);
       }
@@ -703,12 +707,10 @@ var RevWebRTCContextProvider = ({children}) => {
               let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
               const {revOnMessageReceived} = revCallBacks;
 
-              if (revOnMessageReceived) {
-                revOnMessageReceived(revReceivedMsg);
-              }
-
               if (revOnVideoChatMessageReceived) {
                 revOnVideoChatMessageReceived(revReceivedMsg);
+              } else if (revOnMessageReceived) {
+                revOnMessageReceived(revReceivedMsg);
               }
             }
           } catch (error) {
@@ -835,20 +837,6 @@ var RevWebRTCContextProvider = ({children}) => {
         revIsVideoCall: true,
         isRevCaller: true,
       });
-
-      const {revPeerConn: revNewVidPeerConn} = revGetConnData(revPeerIdsArr[i]);
-
-      try {
-        let revLocalMediaStream = await mediaDevices.getDisplayMedia();
-
-        revLocalMediaStream
-          .getTracks()
-          .forEach(track =>
-            revNewVidPeerConn.addTrack(track, revLocalMediaStream),
-          );
-      } catch (error) {
-        console.log('*** ERROR - revInitVideoCall', error);
-      }
     }
   };
 
@@ -1092,7 +1080,9 @@ var RevWebRTCContextProvider = ({children}) => {
             const {revOnMessageSent} =
               revPeerConnsCallBacksRef.current[revPeerId];
 
-            if (revOnMessageSent) {
+            if (revOnVideoChatMessageSent) {
+              revOnVideoChatMessageSent(revSendMsg);
+            } else if (revOnMessageSent) {
               revOnMessageSent(revSendMsg);
             }
           }

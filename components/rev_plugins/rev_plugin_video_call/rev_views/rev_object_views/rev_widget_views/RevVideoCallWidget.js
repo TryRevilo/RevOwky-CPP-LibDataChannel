@@ -13,7 +13,13 @@ import {RTCView} from 'react-native-webrtc';
 
 import {RevWebRTCContext} from '../../../../../../rev_contexts/RevWebRTCContext';
 
+import {revPluginsLoader} from '../../../../../rev_plugins_loader';
+
+import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
+
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
+const revBorderRadius = 2;
 
 export const RevVideoCallWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -21,8 +27,10 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
   revVarArgs = revVarArgs.revVarArgs;
 
   const {
+    revMessages: _revMessages = [1, 2, 3, 4],
     revOnAddLocalStream,
     revOnAddRemoteStream,
+    revOnVideoChatMessageSent,
     revOnVideoChatMessageReceived,
   } = revVarArgs;
 
@@ -36,21 +44,11 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
   const [revMainPeerStreamView, setRevMainPeerStreamView] = useState(null);
   const [revPeerStreamsViewsArr, setRevPeerStreamsViewsArr] = useState([]);
 
-  revOnAddLocalStream(revLocalStream => {
-    revLocalStreamRef.current = revLocalStream;
+  const [revMessages, setRevMessages] = useState(_revMessages);
 
+  revOnAddLocalStream(revLocalStream => {
     if (revLocalStream) {
-      setRevLocalStreamView(
-        <View style={styles.revMyVideoStreamContainer}>
-          <RTCView
-            mirror={true}
-            objectFit={'cover'}
-            streamURL={revLocalStream.toURL()}
-            zOrder={0}
-            style={styles.revVideoStyle}
-          />
-        </View>,
-      );
+      revLocalStreamRef.current = revLocalStream;
     }
   });
 
@@ -72,39 +70,118 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
         }
 
         revNewVideoParticipantViewsArr.push(
-          <RevVideoParticipantView
+          <TouchableOpacity
             key={revPeerId}
-            revRemoteVideoStream={revRemoteStream}
-          />,
+            onPress={() => {
+              console.log('>>> revPeerId', revPeerId);
+            }}
+            style={[
+              styles.revRTCVideoContainer,
+              {width: 55, height: 75, marginRight: 2},
+            ]}>
+            <RTCView
+              mirror={true}
+              objectFit={'cover'}
+              streamURL={revRemoteStream.toURL()}
+              style={styles.revRTCVideo}
+            />
+          </TouchableOpacity>,
         );
       },
     );
 
     setRevMainPeerStream(revMainPeer);
     setRevPeerStreamsViewsArr(revNewVideoParticipantViewsArr);
+    setRevLocalStreamView(
+      <RTCView
+        mirror={true}
+        objectFit={'cover'}
+        streamURL={revLocalStreamRef.current.toURL()}
+        style={styles.revRTCVideo}
+      />,
+    );
   });
 
-  revOnVideoChatMessageReceived(revMessage => {
-    console.log('>>> revMessage', JSON.stringify(revMessage));
+  revOnVideoChatMessageSent(revNewMessage => {
+    setRevMessages([...revMessages, revNewMessage]);
   });
 
-  var RevVideoParticipantView = ({revRemoteVideoStream}) => {
+  revOnVideoChatMessageReceived(revNewMessage => {
+    setRevMessages([...revMessages, revNewMessage]);
+  });
+
+  const revCallPeersListingCallBack = revSelectedPeerIdsArr => {
+    revSelectedPeerIdsArrRef.current = revSelectedPeerIdsArr;
+  };
+
+  const RevMsgItem = ({revIndex}) => {
     return (
-      <View>
-        {revRemoteVideoStream && (
-          <View style={styles.revParticipantVideoContainer}>
-            <RTCView
-              mirror={true}
-              objectFit={'cover'}
-              streamURL={revRemoteVideoStream.toURL()}
-              zOrder={0}
-              style={styles.revParticipantVideoStyle}
+      <TouchableOpacity
+        style={[
+          revSiteStyles.revFlexContainer,
+          {
+            backgroundColor: '#F7F7F7',
+            opacity: 1,
+            paddingHorizontal: 4,
+            paddingVertical: 4,
+            marginTop: revIndex ? 1 : 0,
+          },
+        ]}>
+        <View style={[revSiteStyles.revFlexWrapper]}>
+          <View style={styles.revCommentMsgUserIcon}>
+            <FontAwesome
+              name="user"
+              style={[
+                revSiteStyles.revSiteColorIconGreen,
+                revSiteStyles.revSiteTxtLarge,
+              ]}
             />
           </View>
-        )}
-      </View>
+
+          <View style={styles.revCommentMsgUserIcon}>
+            <FontAwesome
+              name="user"
+              style={[
+                revSiteStyles.revSiteColorIconGreen,
+                revSiteStyles.revSiteTxtLarge,
+              ]}
+            />
+          </View>
+
+          <View style={styles.revCommentMsgUserIcon}>
+            <FontAwesome
+              name="user"
+              style={[
+                revSiteStyles.revSiteColorIconGreen,
+                revSiteStyles.revSiteTxtLarge,
+              ]}
+            />
+          </View>
+        </View>
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorDark,
+            revSiteStyles.revSiteTxtTiny_X,
+            {marginTop: 2},
+          ]}>
+          {
+            'If you have write (push) access to the repository, you should use the SSH URL for a more seamless experience.'
+          }
+        </Text>
+      </TouchableOpacity>
     );
   };
+
+  let revEndCall = (
+    <View style={styles.revEndCallBtnWrapper}>
+      <TouchableOpacity onPress={async () => await revEndVideoCall([])}>
+        <Text style={styles.revEndCallBtn}>
+          <FontAwesome name="power-off" style={styles.revEndCallBtnIcon} />
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   useEffect(() => {
     if (revMainPeerStream) {
@@ -113,40 +190,93 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
           mirror={true}
           objectFit={'cover'}
           streamURL={revMainPeerStream.revRemoteStream.toURL()}
-          zOrder={0}
-          style={styles.revRemoteVideoStyle}
+          style={[styles.revRTCVideoContainer, styles.revRTCVideo]}
         />,
       );
     }
   }, [revMainPeerStream]);
 
   return (
-    <View style={styles.revModalVideoChatArea}>
-      <View style={styles.revModalrevPeerVideoContainer}>
-        {revMainPeerStreamView}
-      </View>
-
-      {revLocalStreamView}
+    <View style={[revSiteStyles.revFlex_1_Container]}>
+      <RevPageContentHeader revVarArgs={{revIsIndented: true}} />
 
       <View
         style={[
-          revSiteStyles.revFlexContainer,
-          styles.revVideoAudiencetContainer,
+          revSiteStyles.revFlex_1_Container,
+          {
+            backgroundColor: '#FFF',
+            width: '100%',
+            borderRadius: revBorderRadius,
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: 3,
+          },
         ]}>
         <View
           style={[
+            revSiteStyles.revFlex_1_Container,
+            {
+              backgroundColor: '#444',
+              width: '100%',
+              borderRadius: revBorderRadius,
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: 3,
+            },
+          ]}>
+          {revMainPeerStreamView}
+        </View>
+
+        <View
+          style={[
             revSiteStyles.revFlexWrapper,
-            styles.revVideoParticipantsWrapper,
+            styles.revRTCVideoContainerPos,
+            {
+              width: '50%',
+              height: 75,
+              bottom: 55,
+              left: 8,
+            },
           ]}>
           {revPeerStreamsViewsArr}
         </View>
-      </View>
-      <View style={styles.revEndCallBtnWrapper}>
-        <TouchableOpacity onPress={async () => await revEndVideoCall([])}>
-          <Text style={styles.revEndCallBtn}>
-            <FontAwesome name="power-off" style={styles.revEndCallBtnIcon} />
-          </Text>
-        </TouchableOpacity>
+
+        <View
+          style={[
+            {
+              backgroundColor: '#FFF',
+              width: '55%',
+              height: '60%',
+              opacity: 0.6,
+              padding: 4,
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              borderRadius: revBorderRadius,
+              overflow: 'hidden',
+            },
+          ]}>
+          <View style={[revSiteStyles.revFlexContainer]}>
+            {revMessages.map((revCurr, revIndex) => {
+              return <RevMsgItem key={revIndex} revIndex={revIndex} />;
+            })}
+          </View>
+        </View>
+
+        <View
+          style={[
+            styles.revRTCVideoContainerPos,
+            styles.revRTCVideoContainer,
+            {
+              backgroundColor: 'red',
+              width: 55,
+              height: 100,
+              top: 8,
+              left: 8,
+            },
+          ]}>
+          {revLocalStreamView}
+        </View>
       </View>
     </View>
   );
@@ -158,63 +288,6 @@ var height = Dimensions.get('window').height;
 var maxChatMessageContainerWidth = pageWidth - 75;
 
 const styles = StyleSheet.create({
-  revModalVideoChatArea: {
-    flex: 1,
-    alignItems: 'flex-start',
-    width: '100%',
-    position: 'relative',
-    backgroundColor: '#444',
-    borderRadius: 5,
-  },
-  revModalrevPeerVideoContainer: {
-    flex: 1,
-    width: '100%',
-    position: 'relative',
-  },
-  revPeerVideoContainer: {
-    backgroundColor: '#F7F7F7',
-    height: '100%',
-    overflow: 'hidden',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-    position: 'relative',
-  },
-  revRemoteVideoStyle: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#F7F7F7',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-  },
-  revVideoStyle: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#F7F7F7',
-    borderColor: '#F7F7F7',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    overflow: 'hidden',
-  },
-  revMyVideoStreamContainer: {
-    backgroundColor: '#FFF',
-    width: 75,
-    height: 105,
-    borderColor: '#FFF',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    left: 10,
-    top: 10,
-    borderRadius: 3,
-  },
   revEndCallBtnWrapper: {
     backgroundColor: '#e57373',
     alignSelf: 'center',
@@ -234,34 +307,35 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22,
   },
-  /** START Collective call audience */
-  revVideoAudiencetContainer: {
+  revRTCVideoContainerPos: {
     position: 'absolute',
-    bottom: '20%', // adjust as needed
-    left: 0,
-    right: 0,
   },
-  revVideoParticipantsWrapper: {
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  revParticipantVideoContainer: {
-    backgroundColor: '#CCC',
-    width: 55,
-    height: 105,
-    borderColor: '#DDD',
-    borderStyle: 'solid',
+  revRTCVideoContainer: {
+    borderColor: '#FFFFFF',
     borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: revBorderRadius,
     overflow: 'hidden',
-    marginRight: 4,
-    borderRadius: 3,
   },
-  revParticipantVideoStyle: {
-    backgroundColor: '#CCC',
+  revRTCVideo: {
+    backgroundColor: '#CCCCCC',
     width: '100%',
     height: '100%',
     overflow: 'hidden',
+    borderRadius: revBorderRadius,
   },
 
   /** END Collective call audience */
+  revCommentMsgUserIcon: {
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 27,
+    borderStyle: 'solid',
+    borderColor: '#c5e1a5',
+    borderWidth: 1,
+    paddingHorizontal: 2,
+    marginRight: 2,
+    borderRadius: 2,
+  },
 });

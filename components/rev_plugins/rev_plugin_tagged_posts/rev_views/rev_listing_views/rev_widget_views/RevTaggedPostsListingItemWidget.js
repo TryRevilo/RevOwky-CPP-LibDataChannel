@@ -469,31 +469,59 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 ]}>
                 {revTimePublished}
               </Text>
+
               <View
                 style={[
-                  revSiteStyles.revFlexWrapper_WidthAuto,
-                  styles.revChatMsgOptionsWrapper,
-                  {marginRight: 4},
+                  styles.revChatMsgOptionsTabWrapper,
+                  {width: 'auto', position: 'relative', top: -3, right: 7},
                 ]}>
-                <AntDesign
-                  name="retweet"
+                <View
                   style={[
-                    revSiteStyles.revSiteTxtColorLight,
-                    revSiteStyles.revSiteTxtNormal,
-                    styles.revChatMsgOptions,
+                    {
+                      backgroundColor: '#DDD',
+                      width: '100%',
+                      position: 'relative',
+                      height: 1,
+                      top: '50%',
+                    },
                   ]}
                 />
 
-                <TouchableOpacity onPress={handleRevOnFlagTabPressed}>
-                  <MaterialIcons
-                    name="emoji-flags"
+                <View
+                  style={[
+                    revSiteStyles.revFlexWrapper_WidthAuto,
+                    {marginLeft: 8},
+                  ]}>
+                  <View
                     style={[
-                      revSiteStyles.revSiteTxtColorLight,
-                      revSiteStyles.revSiteTxtSmall,
-                      styles.revChatMsgOptions,
-                    ]}
-                  />
-                </TouchableOpacity>
+                      styles.revChatMsgOptionsTab,
+                      {backgroundColor: '#F7F7F7'},
+                    ]}>
+                    <AntDesign
+                      name="retweet"
+                      style={[
+                        revSiteStyles.revSiteTxtColorLight,
+                        revSiteStyles.revSiteTxtNormal,
+                      ]}
+                    />
+                  </View>
+
+                  <View
+                    style={[
+                      styles.revChatMsgOptionsTab,
+                      {backgroundColor: '#F7F7F7'},
+                    ]}>
+                    <TouchableOpacity onPress={handleRevOnFlagTabPressed}>
+                      <MaterialIcons
+                        name="emoji-flags"
+                        style={[
+                          revSiteStyles.revSiteTxtColorLight,
+                          revSiteStyles.revSiteTxtSmall,
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -555,7 +583,7 @@ const styles = StyleSheet.create({
   },
   revChatMsgContentWrapper: {
     flex: 1,
-    marginTop: 7,
+    marginTop: 10,
     marginLeft: 3,
   },
   revChatMsgContentCarretView: {
@@ -570,24 +598,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'flex-start',
     paddingHorizontal: 5,
-    marginTop: 1,
+    marginTop: -2,
   },
   revChatMsgHeaderWrapper: {
-    alignItems: 'baseline',
-    borderBottomColor: '#rgba(27, 31, 35, 0.06)',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
+    alignItems: 'center',
+    marginBottom: 2,
   },
   revChatMsgSendTime: {
     marginRight: 12,
     marginLeft: 5,
   },
-  revChatMsgOptionsWrapper: {
+  revChatMsgOptionsTabWrapper: {
     alignItems: 'center',
     marginLeft: 'auto',
   },
-  revChatMsgOptions: {
+  revChatMsgOptionsTab: {
     paddingHorizontal: 10,
+    paddingVertical: 3,
+    marginRight: 2,
+    borderRadius: 32,
   },
   revPostTagsListWrapper: {
     alignItems: 'flex-end',
@@ -612,7 +641,7 @@ const styles = StyleSheet.create({
     borderColor: '#F7F7F7',
     borderWidth: 1,
     paddingHorizontal: 5,
-    paddingVertical: 4,
+    paddingVertical: 7,
   },
   revCommentItemWrapper: {
     marginTop: 4,

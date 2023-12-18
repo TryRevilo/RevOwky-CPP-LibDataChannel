@@ -13,20 +13,10 @@ import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 let RevContactItemsDraw = ({revContactsArr}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  let revContactsArrLen = revContactsArr.length;
-
-  if (revContactsArrLen == 1) {
-    let revContactItem = revContactsArr[0];
-    return (
-      <Text
-        style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
-        ]}>
-        {revContactItem.number}
-      </Text>
-    );
-  }
+  let revContactNumbers = revContactsArr.map(
+    (revContactItem, index) =>
+      revContactItem.number + (index == revContactsArr.length - 1 ? '' : ' / '),
+  );
 
   return (
     <Text
@@ -34,11 +24,7 @@ let RevContactItemsDraw = ({revContactsArr}) => {
         revSiteStyles.revSiteTxtColorLight,
         revSiteStyles.revSiteTxtTiny,
       ]}>
-      {revContactsArr.map(
-        (revContactItem, index) =>
-          revContactItem.number +
-          (index == revContactsArr.length - 1 ? '' : ' / '),
-      )}
+      {revContactNumbers.toString().replace(',', '')}
     </Text>
   );
 };
@@ -46,8 +32,11 @@ let RevContactItemsDraw = ({revContactsArr}) => {
 export function RevContact({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
-  let revPhoneNumbers = revVarArgs.phoneNumbers;
-  let revDisplayName = revVarArgs.displayName;
+  const {
+    revIndex,
+    phoneNumbers: revPhoneNumbers,
+    displayName: revDisplayName,
+  } = revVarArgs;
 
   const handleRevContactPressed = () => {
     console.log('>>> handleRevContactPressed', JSON.stringify(revPhoneNumbers));
@@ -75,7 +64,11 @@ export function RevContact({revVarArgs}) {
               ]}
             />
           </View>
-          <View style={styles.revContactContentContainer}>
+          <View
+            style={[
+              styles.revContactContentContainer,
+              {backgroundColor: revIndex % 2 == 0 ? '#FFFFFF' : '#F7F7F7'},
+            ]}>
             <View
               style={[
                 revSiteStyles.revFlexWrapper,
@@ -85,31 +78,16 @@ export function RevContact({revVarArgs}) {
                 style={[
                   revSiteStyles.revSiteTxtColorDark,
                   revSiteStyles.revSiteTxtBold,
-                  revSiteStyles.revSiteTxtTiny,
+                  revSiteStyles.revSiteTxtTiny_X,
                 ]}>
                 {revDisplayName}
               </Text>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteTxtTiny_X,
-                  styles.revContactSendTime,
-                ]}>
-                10:40 Jun 14, 2022
-              </Text>
-              <View style={styles.revrevContactOptionsWrapper}>
-                <Text style={styles.revContactOptions}>
-                  <FontAwesome name="quote-right" />
-                </Text>
-                <Text style={styles.revContactOptions}>
-                  <FontAwesome name="phone" />
-                </Text>
-                <Text style={styles.revContactOptions}>
-                  <FontAwesome name="video-camera" />
-                </Text>
-              </View>
             </View>
-            <View style={styles.revContactContentTxtContainer}>
+            <View
+              style={[
+                revSiteStyles.revFlexWrapper,
+                styles.revContactContentTxtContainer,
+              ]}>
               <RevContactItemsDraw revContactsArr={revPhoneNumbers} />
             </View>
           </View>
@@ -118,9 +96,6 @@ export function RevContact({revVarArgs}) {
     </TouchableOpacity>
   );
 }
-
-var pageWidth = Dimensions.get('window').width;
-var maxChatMessageContainerWidth = pageWidth - 52;
 
 const styles = StyleSheet.create({
   revContactWrapper: {
@@ -145,7 +120,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    width: maxChatMessageContainerWidth,
     marginTop: 2,
     marginLeft: 3,
   },
@@ -160,10 +134,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignSelf: 'flex-start',
-    backgroundColor: '#F7F7F7',
-    width: maxChatMessageContainerWidth,
     paddingHorizontal: 5,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: 2,
   },
   revContactHeaderWrapper: {
@@ -174,29 +146,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     position: 'relative',
   },
-  revContactSendTime: {
-    marginRight: 12,
-    marginLeft: 5,
-  },
-  revrevContactOptionsWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 'auto',
-    marginRight: 12,
-    position: 'relative',
-  },
-  revContactOptions: {
-    color: '#bdbdbd',
-    fontSize: 12,
-    paddingHorizontal: 8,
-  },
   revContactContentTxtContainer: {
-    color: '#444',
-    fontSize: 10,
-    display: 'flex',
-    alignItems: 'flex-start',
-    width: '100%',
     paddingBottom: 4,
     marginTop: 2,
   },

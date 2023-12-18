@@ -51,11 +51,11 @@ const RevFooter_1_Right = () => {
         <Text
           style={[
             revSiteStyles.revSiteTxtOrange,
-            revSiteStyles.revSiteTxtTiny_X,
+            revSiteStyles.revSiteTxtSmall,
             revSiteStyles.revSiteFontBold,
             styles.rightFooterOptionTab,
           ]}>
-          Help
+          HELp
         </Text>
       </TouchableOpacity>
     </View>
@@ -72,8 +72,6 @@ const styles = StyleSheet.create({
   },
   rightFooterOptionTab: {
     paddingHorizontal: 10,
-  },
-  rightFooterHelpTab: {
-    paddingBottom: 1,
+    paddingVertical: 1,
   },
 });

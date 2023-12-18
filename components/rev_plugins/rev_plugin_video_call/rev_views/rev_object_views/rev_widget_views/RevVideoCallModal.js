@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useRef} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,7 +10,7 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
-function RevVideoCallModal({revVarArgs = {}}) {
+export default function RevVideoCallModal({revVarArgs = {}}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   if (RevWebRTCContext == undefined) {
@@ -18,9 +18,10 @@ function RevVideoCallModal({revVarArgs = {}}) {
   }
 
   const {revInitVideoCall} = useContext(RevWebRTCContext);
-  const {SET_REV_SITE_BODY, revInitSiteModal} = useContext(ReViewsContext);
 
   const {revSelectedPeerIdsArr = []} = revVarArgs;
+
+  const {SET_REV_SITE_BODY, revInitSiteModal} = useContext(ReViewsContext);
   const revPeerIdsArrRef = useRef(revSelectedPeerIdsArr);
 
   const revCallPeersListingCallBack = revSelectedPeerIdsArr => {
@@ -60,7 +61,7 @@ function RevVideoCallModal({revVarArgs = {}}) {
         revInitVideoCall({
           revPeerIdsArr: revSelectedPeerIdsArr,
         }).then(revRes => {
-          SET_REV_SITE_BODY(revCallPeersListing);
+          // SET_REV_SITE_BODY(revCallPeersListing);
         });
       } catch (error) {
         console.log('*** error -handleRevInitVideoCallTabPress', error);
@@ -91,9 +92,6 @@ function RevVideoCallModal({revVarArgs = {}}) {
 
   return <RevCallBtn />;
 }
-
-export default RevVideoCallModal;
-
 const styles = StyleSheet.create({
   revCurrentChatOptionTab: {
     backgroundColor: '#ffebee',
