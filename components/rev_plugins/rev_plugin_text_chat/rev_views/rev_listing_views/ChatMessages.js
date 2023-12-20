@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect, useContext} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 
 import {RevSiteDataContext} from '../../../../../rev_contexts/RevSiteDataContext';
+import {RevWebRTCContext} from '../../../../../rev_contexts/RevWebRTCContext';
 
 import RevNullMessagesView from '../../../../rev_views/RevNullMessagesView';
 import InboxMessage from './rev_entity_views/InboxMessage';
@@ -25,6 +26,7 @@ export function useChatMessages() {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
+  const {isRevVideoCallViewMax} = useContext(RevWebRTCContext);
 
   let revLoggedInRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
 
@@ -227,6 +229,10 @@ export function useChatMessages() {
   };
 
   useEffect(() => {
+    if (isRevVideoCallViewMax()) {
+      return;
+    }
+
     revMessagesArrLatestRef.current = revMessagesArr.length;
 
     revFlatListRef.current = revInitChatFlatList(

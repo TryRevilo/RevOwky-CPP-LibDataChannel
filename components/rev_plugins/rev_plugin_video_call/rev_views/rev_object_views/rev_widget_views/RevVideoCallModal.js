@@ -18,10 +18,10 @@ export default function RevVideoCallModal({revVarArgs = {}}) {
   }
 
   const {revInitVideoCall} = useContext(RevWebRTCContext);
+  const {revInitSiteModal, revCloseSiteModal} = useContext(ReViewsContext);
 
   const {revSelectedPeerIdsArr = []} = revVarArgs;
 
-  const {SET_REV_SITE_BODY, revInitSiteModal} = useContext(ReViewsContext);
   const revPeerIdsArrRef = useRef(revSelectedPeerIdsArr);
 
   const revCallPeersListingCallBack = revSelectedPeerIdsArr => {
@@ -61,7 +61,7 @@ export default function RevVideoCallModal({revVarArgs = {}}) {
         revInitVideoCall({
           revPeerIdsArr: revSelectedPeerIdsArr,
         }).then(revRes => {
-          // SET_REV_SITE_BODY(revCallPeersListing);
+          revCloseSiteModal();
         });
       } catch (error) {
         console.log('*** error -handleRevInitVideoCallTabPress', error);

@@ -7,5 +7,6 @@
   "revSiteUploadDirPath": "http://192.168.0.15:4000/rev_api/file_upload",
   "revSiteUploadDirURL": "http://192.168.0.15/rev_wip/rev_pers_api/rev_pers_node/rev_uploads",
   "revAppRootDir": "/storage/emulated/0/Documents/Owki",
-  "revPublishedMediaDir": "/storage/emulated/0/Documents/Owki/rev_media"
+  "revPublishedMediaDir": "/storage/emulated/0/Documents/Owki/rev_media",
+  "revWebRtcLiveChatTempFilesDir": "/storage/emulated/0/Documents/Owki/rev_web_rtc_live_chat_temp_files"
 }

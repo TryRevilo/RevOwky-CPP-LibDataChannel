@@ -51,8 +51,8 @@ const RevFooter_1_Right = () => {
         <Text
           style={[
             revSiteStyles.revSiteTxtOrange,
-            revSiteStyles.revSiteTxtSmall,
-            revSiteStyles.revSiteFontBold,
+            revSiteStyles.revSiteTxtTiny_X,
+            revSiteStyles.revSiteTxtBold,
             styles.rightFooterOptionTab,
           ]}>
           HELp

@@ -8,6 +8,7 @@ import {
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {RTCView} from 'react-native-webrtc';
 
@@ -18,6 +19,8 @@ import {revPluginsLoader} from '../../../../../rev_plugins_loader';
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
+import {revGetMetadataValue} from '../../../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 
 const revBorderRadius = 2;
 
@@ -26,15 +29,18 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
+  const {revGetPeerIdsArr, revGetPeerMessagesArr} =
+    useContext(RevWebRTCContext);
+
+  let revPeerMessagesArr = revGetPeerMessagesArr(revGetPeerIdsArr());
+
   const {
-    revMessages: _revMessages = [1, 2, 3, 4],
+    revMessages: _revMessages = revPeerMessagesArr,
     revOnAddLocalStream,
     revOnAddRemoteStream,
     revOnVideoChatMessageSent,
     revOnVideoChatMessageReceived,
   } = revVarArgs;
-
-  const {revEndVideoCall} = useContext(RevWebRTCContext);
 
   const revLocalStreamRef = useRef(null);
   const [revLocalStreamView, setRevLocalStreamView] = useState(null);
@@ -65,19 +71,21 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
 
     Object.entries(revRemotePeerStreamsObjRef.current).forEach(
       ([revPeerId, revRemoteStream]) => {
+        let revCurrPeer = {revPeerId, revRemoteStream};
+
         if (!revMainPeer && revRemoteStream) {
-          revMainPeer = {revPeerId, revRemoteStream};
+          revMainPeer = revCurrPeer;
         }
 
         revNewVideoParticipantViewsArr.push(
           <TouchableOpacity
             key={revPeerId}
             onPress={() => {
-              console.log('>>> revPeerId', revPeerId);
+              setRevMainPeerStream(revCurrPeer);
             }}
             style={[
               styles.revRTCVideoContainer,
-              {width: 55, height: 75, marginRight: 2},
+              {width: 45, height: 65, marginRight: 2},
             ]}>
             <RTCView
               mirror={true}
@@ -114,7 +122,18 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
     revSelectedPeerIdsArrRef.current = revSelectedPeerIdsArr;
   };
 
-  const RevMsgItem = ({revIndex}) => {
+  const RevMsgItem = ({revIndex, revChatMessage}) => {
+    const {_revPublisherEntity, revPeersArr, revData} = revChatMessage;
+    const {revMsgGUID, revType, revMsg = {}} = revData;
+    const {_revRemoteGUID = -1} = _revPublisherEntity;
+
+    let revMsgInfoEntity = revMsg._revInfoEntity;
+
+    let revChatMsgStr = revGetMetadataValue(
+      revMsgInfoEntity._revMetadataList,
+      'rev_entity_desc',
+    );
+
     return (
       <TouchableOpacity
         style={[
@@ -127,36 +146,34 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
             marginTop: revIndex ? 1 : 0,
           },
         ]}>
-        <View style={[revSiteStyles.revFlexWrapper]}>
-          <View style={styles.revCommentMsgUserIcon}>
+        <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
+          <View style={styles.revUserIconTab}>
             <FontAwesome
               name="user"
               style={[
                 revSiteStyles.revSiteColorIconGreen,
-                revSiteStyles.revSiteTxtLarge,
+                revSiteStyles.revSiteTxtMedium,
               ]}
             />
           </View>
 
-          <View style={styles.revCommentMsgUserIcon}>
-            <FontAwesome
-              name="user"
+          <View style={{paddingHorizontal: 5}}>
+            <MaterialCommunityIcons
+              name="format-horizontal-align-right"
               style={[
-                revSiteStyles.revSiteColorIconGreen,
-                revSiteStyles.revSiteTxtLarge,
+                revSiteStyles.revSiteTxtColorLight,
+                revSiteStyles.revSiteTxtSmall,
               ]}
             />
           </View>
 
-          <View style={styles.revCommentMsgUserIcon}>
-            <FontAwesome
-              name="user"
-              style={[
-                revSiteStyles.revSiteColorIconGreen,
-                revSiteStyles.revSiteTxtLarge,
-              ]}
-            />
-          </View>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColor,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}>
+            me + {'2'} {' others'}
+          </Text>
         </View>
 
         <Text
@@ -165,9 +182,7 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
             revSiteStyles.revSiteTxtTiny_X,
             {marginTop: 2},
           ]}>
-          {
-            'If you have write (push) access to the repository, you should use the SSH URL for a more seamless experience.'
-          }
+          {revChatMsgStr}
         </Text>
       </TouchableOpacity>
     );
@@ -234,7 +249,7 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
             {
               width: '50%',
               height: 75,
-              bottom: 55,
+              bottom: 8,
               left: 8,
             },
           ]}>
@@ -256,10 +271,49 @@ export const RevVideoCallWidget = ({revVarArgs}) => {
               overflow: 'hidden',
             },
           ]}>
-          <View style={[revSiteStyles.revFlexContainer]}>
-            {revMessages.map((revCurr, revIndex) => {
-              return <RevMsgItem key={revIndex} revIndex={revIndex} />;
-            })}
+          <View
+            style={{
+              flex: 1,
+              borderRadius: revBorderRadius,
+              overflow: 'hidden',
+            }}>
+            <RevScrollView_V
+              revScrollViewContent={
+                <View style={[revSiteStyles.revFlexContainer]}>
+                  {revMessages.map((revCurr, revIndex) => {
+                    return (
+                      <RevMsgItem
+                        key={revIndex}
+                        revIndex={revIndex}
+                        revChatMessage={revCurr}
+                      />
+                    );
+                  })}
+                </View>
+              }
+            />
+          </View>
+
+          <View
+            style={[
+              revSiteStyles.revFlexWrapper,
+              {
+                flex: 0,
+                marginTop: 5,
+                borderRadius: revBorderRadius,
+              },
+            ]}>
+            {[1, 2, 3, 4, 5, 6].map(revCurr => (
+              <View key={revCurr} style={styles.revUserIconTabFooter}>
+                <FontAwesome
+                  name="user"
+                  style={[
+                    revSiteStyles.revSiteColorIconGreen,
+                    revSiteStyles.revSiteTxtMedium,
+                  ]}
+                />
+              </View>
+            ))}
           </View>
         </View>
 
@@ -326,16 +380,22 @@ const styles = StyleSheet.create({
   },
 
   /** END Collective call audience */
-  revCommentMsgUserIcon: {
+  revUserIconTab: {
     flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 27,
-    borderStyle: 'solid',
-    borderColor: '#c5e1a5',
-    borderWidth: 1,
-    paddingHorizontal: 2,
+    height: 22,
     marginRight: 2,
-    borderRadius: 2,
+    borderRadius: revBorderRadius,
+  },
+  revUserIconTabFooter: {
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F7F7F7',
+    width: 22,
+    height: 27,
+    marginRight: 2,
+    borderRadius: revBorderRadius,
   },
 });

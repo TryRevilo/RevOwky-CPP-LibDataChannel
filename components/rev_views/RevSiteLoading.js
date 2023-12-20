@@ -35,8 +35,9 @@ const RevSiteLoading = () => {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   let revAppRootDir = revSettings.revAppRootDir;
-  const DirectoryPath = revAppRootDir + '/rev_media';
-  RNFS.mkdir(DirectoryPath);
+
+  RNFS.mkdir(revSettings.revPublishedMediaDir);
+  RNFS.mkdir(revSettings.revWebRtcLiveChatTempFilesDir);
 
   let dbLong = RevPersLibCreate_React.revPersInitReact(revAppRootDir);
 

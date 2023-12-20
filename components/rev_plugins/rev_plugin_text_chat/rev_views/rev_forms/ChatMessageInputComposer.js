@@ -56,8 +56,10 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const [revRandLoggedInEntities, setRevRandLoggedInEntities] = useState([]);
   const [revActivePeerTabsArea, setRevActivePeerTabsArea] = useState(null);
   const [revRandLoggedInUserTabs, setRevRandLoggedInUserTabs] = useState(null);
+
   const [revActivePeerEntitiesArr, setRevActivePeerEntitiesArr] = useState([]);
   const revActivePeerEntitiesArrRef = useRef([]);
+  const revActivePeerIdsArrRef = useRef([]);
 
   const [revActivePeerTab, setRevActivePeerTab] = useState(null);
   const [isRevShowComposer, setIsRevShowComposer] = useState(false);
@@ -75,17 +77,24 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
-  const {revInitPeerConn, sendMessage, revRecconnectPeer} =
-    useContext(RevWebRTCContext);
+  const {
+    revGetPeerIdsArr,
+    revInitPeerConn,
+    revSendWebRTCMessage,
+    revRecconnectPeer,
+    revPushPeerMessages,
+    revGetPeerMessagesArr,
+  } = useContext(RevWebRTCContext);
 
-  const revPrevConnectionsArrref = useRef([]);
+  const revPrevConnectionsArrref = useRef(revGetPeerIdsArr());
 
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
 
   const {revInitPersFile, revInitPersFilesArr} = useRevInitPersFile();
 
-  const revMessagesArrRef = useRef([]);
-  const revActivePeerMessagesArrRef = useRef([]);
+  const revActivePeerMessagesArrRef = useRef(
+    revGetPeerMessagesArr(revGetPeerIdsArr()),
+  );
 
   const sendTypingMessage = () => {
     if (revIsEmptyJSONObject(revActivePeerEntitiesArr)) {
@@ -93,7 +102,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
     }
 
     if (!hasSentTypingMessage) {
-      //   sendMessage(revActivePeerEntity._revRemoteGUID, {
+      //   revSendWebRTCMessage(revActivePeerEntity._revRemoteGUID, {
       //     revMsg: 'User is typing...',
       //     revSender: REV_LOGGED_IN_ENTITY._revRemoteGUID,
       //   });
@@ -198,7 +207,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
       revURL,
       {
         revLoggedInRemoteGUID: REV_LOGGED_IN_ENTITY._revRemoteGUID,
-        filter: revPrevConnectionsArrref.current,
+        filter: [], // revPrevConnectionsArrref.current,
       },
       revRetPersData => {
         if ('revError' in revRetPersData) {
@@ -264,13 +273,21 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revHandleNextStrangerChat = isRevShowComposer => {
+    revActivePeerMessagesArrRef.current = revGetPeerMessagesArr(
+      revGetPeerIdsArr(),
+    );
+
     if (isRevShowComposer) {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
     } else {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(null);
     }
 
-    revFetchNewPeers();
+    if (!revActivePeerMessagesArrRef.current.length) {
+      revFetchNewPeers();
+    } else {
+      revInitActivePeerChatArea();
+    }
 
     setRevNextChatTab(<RevChatSubmitOptions />);
   };
@@ -377,7 +394,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
   const revInitActivePeerChatArea = async () => {
     for (let i = 0; i < revActivePeerEntitiesArr.length; i++) {
-      const {_revRemoteGUID = -1} = revActivePeerEntitiesArr[i];
+      const {_revRemoteGUID: revPeerId = -1} = revActivePeerEntitiesArr[i];
 
       await revInitPeerConn({
         revEntity: revActivePeerEntitiesArr[i],
@@ -387,7 +404,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
         revOnConnFail: revStatus => {
           console.log('>>> FAIL', revStatus);
 
-          revRecconnectPeer(_revRemoteGUID);
+          revRecconnectPeer(revPeerId);
         },
         revOnMessageSent: revMessage => {
           const {revType} = revMessage;
@@ -403,7 +420,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
           }
         },
         revOnMessageReceived: revData => {
-          revMessagesArrRef.current = [...revMessagesArrRef.current, revData];
+          revPushPeerMessages(revData, revActivePeerIdsArrRef.current);
           revAddChatMessage(revData);
         },
       });
@@ -415,7 +432,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
     };
 
     revInitChatMessagesListingArea({
-      revMessagesArr: revActivePeerMessagesArrRef.current,
+      revMessagesArr: revGetPeerMessagesArr(revActivePeerIdsArrRef.current),
       revOnViewChangeCallBack,
       revPeerEntitiesArr: revActivePeerEntitiesArr,
     });
@@ -613,13 +630,17 @@ export function ChatMessageInputComposer({revVarArgs}) {
     });
 
     const {revMsg} = revMsgData.revData;
+    const {_revRemoteGUID: revMsgGUID} = revMsg;
+
+    let revPeerIdsArr = [];
 
     for (let i = 0; i < revCurrPeersArr.length; i++) {
       let revActivePeerEntity = revCurrPeersArr[i];
 
       let revRemoteTargetEntityGUID = revActivePeerEntity._revRemoteGUID;
+      revPeerIdsArr.push(revRemoteTargetEntityGUID);
 
-      await sendMessage(revRemoteTargetEntityGUID, {
+      await revSendWebRTCMessage(revRemoteTargetEntityGUID, {
         revMsg: revMsgData,
       });
 
@@ -632,14 +653,12 @@ export function ChatMessageInputComposer({revVarArgs}) {
     }
 
     revAddChatMessage(revMsgData);
-    revMessagesArrRef.current.push(revMsgData);
+    revPushPeerMessages(revMsgData, revPeerIdsArr);
 
     revChatMessageTxtLatest.current = '';
     revTextInputRef.current.clear();
 
     /** Send Files */
-    const {_revRemoteGUID} = revMsg;
-
     let revSelectedFilesArr = revSelectedMediaRef.current;
 
     for (let i = 0; i < revCurrPeersArr.length; i++) {
@@ -659,9 +678,9 @@ export function ChatMessageInputComposer({revVarArgs}) {
           let revData = {
             revType: 'revFile',
             revMsgGUID: revSelectedFile._revRemoteGUID,
-            _revContainerGUID: _revRemoteGUID,
+            _revContainerGUID: revMsgGUID,
             revMsg: {
-              _revContainerGUID: _revRemoteGUID,
+              _revContainerGUID: revMsgGUID,
               ...revSelectedFile,
               revArrayBuffer,
               revIsStringArr: true,
@@ -674,7 +693,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
             revPeersArr: [...revActivePeerEntitiesArrRef.current],
           };
 
-          await sendMessage(revRemoteTargetEntityGUID, {revMsg: revMsgData});
+          await revSendWebRTCMessage(revRemoteTargetEntityGUID, {
+            revMsg: revMsgData,
+          });
+
+          revAddChatMessage(revMsgData);
         } catch (error) {
           console.log('>>> ERROR - revSelectedFilesArr', error);
         }
@@ -881,23 +904,12 @@ export function ChatMessageInputComposer({revVarArgs}) {
 
     revActivePeerEntitiesArrRef.current = revActivePeerEntitiesArr;
 
-    revActivePeerMessagesArrRef.current = revMessagesArrRef.current.filter(
-      revCurr => {
-        const {revPeersArr = []} = revCurr;
+    revActivePeerIdsArrRef.current = revActivePeerEntitiesArr.map(
+      revCurr => revCurr._revRemoteGUID,
+    );
 
-        let revMessagesPeerGUIDsArr = revPeersArr
-          .map(revCurr => revCurr._revRemoteGUID)
-          .sort();
-
-        let revActivePeerGUIDsArr = revActivePeerEntitiesArr
-          .map(revCurr => revCurr._revRemoteGUID)
-          .sort();
-
-        return (
-          JSON.stringify(revMessagesPeerGUIDsArr) ==
-          JSON.stringify(revActivePeerGUIDsArr)
-        );
-      },
+    revActivePeerMessagesArrRef.current = revGetPeerMessagesArr(
+      revActivePeerIdsArrRef.current,
     );
 
     revInitActivePeerChatArea();

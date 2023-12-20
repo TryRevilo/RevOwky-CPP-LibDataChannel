@@ -1,11 +1,22 @@
-import React, {createContext, useContext, useState, useEffect} from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import RNFS from 'react-native-fs';
+
 import {RevSiteDataContext} from '../../../../../../rev_contexts/RevSiteDataContext';
-import {RevReadMoreTextView} from '../../../../../rev_views/rev_page_views';
+import {
+  RevReadMoreTextView,
+  RevScrollView_H,
+} from '../../../../../rev_views/rev_page_views';
 
 import RevChatMessageOptions from '../../RevChatMessageOptions';
 
@@ -18,6 +29,8 @@ import {
 import {revTruncateString} from '../../../../../../rev_function_libs/rev_string_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
+const rev_settings = require('../../../../../../rev_res/rev_settings.json');
 
 export default function OutboxChatMessage({revVarArgs, revGetChildFilesArr}) {
   const {revSiteStyles} = useRevSiteStyles();
@@ -33,6 +46,101 @@ export default function OutboxChatMessage({revVarArgs, revGetChildFilesArr}) {
     revDataSetter,
   } = revVarArgs;
   const {revMsgGUID, revType, revMsg = {}} = revData;
+
+  const revImagesArrRef = useRef([]);
+
+  for (let i = 0; i < revChildFilesArr.length; i++) {
+    let revChildFile = revChildFilesArr[i];
+
+    const {_revPublisherEntity, revPeersArr, revData} = revChildFile;
+    const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
+
+    revImagesArrRef.current.push(revMsg);
+  }
+
+  const [revImagesView, setRevImagesView] = useState(
+    revInitImages(revImagesArrRef.current),
+  );
+
+  function RevImageView({revData}) {
+    const {
+      _revRemoteGUID,
+      _revContainerGUID: revFileContainerGUID,
+      revFileName,
+      revFileObjectSubType,
+      revMIME,
+      revIsStringArr = false,
+      revArrayBuffer,
+    } = revData;
+
+    const [revRetImage, setRevRetImage] = useState(null);
+
+    const revInitImage = async () => {
+      const revTempFilePath = `${
+        rev_settings.revWebRtcLiveChatTempFilesDir
+      }/rev_temp_image_${_revRemoteGUID}.${revMIME.split('/')[1]}`;
+
+      await RNFS.writeFile(revTempFilePath, revArrayBuffer, 'base64');
+
+      let revRet = (
+        <Image
+          key={_revRemoteGUID}
+          style={[styles.revImageStyle]}
+          source={{uri: `file://${revTempFilePath}`}}
+        />
+      );
+
+      setRevRetImage(revRet);
+    };
+
+    useEffect(() => {
+      const initializeImage = async () => {
+        await revInitImage();
+      };
+      initializeImage();
+    }, []);
+
+    return revRetImage;
+  }
+
+  function revInitImages(revImagesArr) {
+    if (revImagesArr.length < 1) {
+      return null;
+    }
+
+    let revUpdatedImagesViewsArr = revImagesArr.map((revCurr, revIndex) => (
+      <RevImageView key={revIndex} revData={revCurr} />
+    ));
+
+    let revUpdatedImagesView = (
+      <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+        {revUpdatedImagesViewsArr}
+      </View>
+    );
+
+    return <RevScrollView_H revScrollViewContent={revUpdatedImagesView} />;
+  }
+
+  const revDataSetterCallBack = () => {
+    let revChildFilesArr = revGetChildFilesArr(revMsgGUID);
+
+    revImagesArrRef.current = [];
+
+    for (let i = 0; i < revChildFilesArr.length; i++) {
+      let revChildFile = revChildFilesArr[i];
+
+      const {_revPublisherEntity, revPeersArr, revData} = revChildFile;
+      const {revMsgGUID, _revContainerGUID, revType, revMsg = {}} = revData;
+
+      revImagesArrRef.current.push(revMsg);
+    }
+
+    setRevImagesView(revInitImages(revImagesArrRef.current));
+  };
+
+  if (revDataSetter) {
+    revDataSetter(revDataSetterCallBack);
+  }
 
   const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
 
@@ -109,6 +217,8 @@ export default function OutboxChatMessage({revVarArgs, revGetChildFilesArr}) {
               </View>
             </View>
             <RevReadMoreTextView revText={revChatMsgStr} revMaxLength={255} />
+
+            {revImagesView}
           </View>
           <View style={styles.chatMsgContentCarretView}>
             <FontAwesome
@@ -136,6 +246,12 @@ var maxChatMessageContainerWidth = pageWidth - 45;
 var chatMsgContentTxtContainerWidth = maxChatMessageContainerWidth - 16;
 
 const styles = StyleSheet.create({
+  revImageStyle: {
+    width: 37,
+    height: 37,
+    marginRight: 1,
+    borderRadius: 32,
+  },
   chatMsgWrapper: {
     display: 'flex',
     flexDirection: 'row',

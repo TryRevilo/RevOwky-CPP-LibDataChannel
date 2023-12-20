@@ -26,16 +26,9 @@ export const RevCallPeersListingWidget = ({revVarArgs}) => {
   const {revCallBack} = revVarArgs;
 
   const {revCloseSiteModal} = useContext(ReViewsContext);
-  const {revPeerConnsData} = useContext(RevWebRTCContext);
+  const {revPeerConnsData = {}} = useContext(RevWebRTCContext);
 
-  let revPeerConnsDataObj = {};
-
-  for (let i = 0; i < revPeerConnsData.length; i++) {
-    const {revPeerId = -1} = revPeerConnsData[i];
-    revPeerConnsDataObj[revPeerId] = {revPeerId};
-  }
-
-  const [revPeersObjs, setRevPeersObjs] = useState(revPeerConnsDataObj);
+  const [revPeersObjs, setRevPeersObjs] = useState(revPeerConnsData);
   const revSelectedPeerIdsArrRef = useRef([]);
 
   const [revTotSelected, setRevTotSelected] = useState(0);

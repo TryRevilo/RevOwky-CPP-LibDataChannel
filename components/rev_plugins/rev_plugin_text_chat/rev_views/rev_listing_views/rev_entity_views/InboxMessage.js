@@ -68,10 +68,8 @@ export default function InboxMessage({revVarArgs, revGetChildFilesArr}) {
 
     const revInitImage = async () => {
       const revTempFilePath = `${
-        rev_settings.revAppRootDir
-      }/rev_web_rtc_temp_files/rev_temp_image_${_revRemoteGUID}.${
-        revMIME.split('/')[1]
-      }`;
+        rev_settings.revWebRtcLiveChatTempFilesDir
+      }/rev_temp_image_${_revRemoteGUID}.${revMIME.split('/')[1]}`;
 
       await RNFS.writeFile(revTempFilePath, revArrayBuffer, 'base64');
 
