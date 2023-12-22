@@ -70,12 +70,11 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const [typingTimer, setTypingTimer] = useState(null);
   const [hasSentTypingMessage, setHasSentTypingMessage] = useState(false);
 
-  const {REV_LOGGED_IN_ENTITY_GUID, REV_LOGGED_IN_ENTITY} =
-    useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
   const {SET_REV_SITE_BODY, SET_REV_SITE_FOOTER_1_CONTENT_VIEWER} =
     useContext(ReViewsContext);
 
-  const {REV_IP, REV_ROOT_URL} = useContext(RevRemoteSocketContext);
+  const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const {
     revGetPeerIdsArr,
@@ -434,7 +433,6 @@ export function ChatMessageInputComposer({revVarArgs}) {
     revInitChatMessagesListingArea({
       revMessagesArr: revGetPeerMessagesArr(revActivePeerIdsArrRef.current),
       revOnViewChangeCallBack,
-      revPeerEntitiesArr: revActivePeerEntitiesArr,
     });
 
     let revCurrChatTargetTabsArr = revActivePeerEntitiesArr.map(

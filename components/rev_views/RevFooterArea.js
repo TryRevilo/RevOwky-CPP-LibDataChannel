@@ -352,7 +352,7 @@ function RevFooterArea() {
   );
 
   return (
-    <View>
+    <View style={{flex: 0, zIndex: 100}}>
       <View
         style={[revSiteStyles.revFlexContainer, styles.revChatAreaContainer]}>
         <View

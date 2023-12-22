@@ -360,7 +360,14 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
             : null,
         ]}>
         {revImagesMediaView}
-        {revVideoPlayerView}
+        {revVideoPlayerView && (
+          <View
+            style={{
+              flex: 0,
+            }}>
+            {revVideoPlayerView}
+          </View>
+        )}
       </View>
     </>
   );
@@ -648,8 +655,9 @@ const styles = StyleSheet.create({
   },
   revImagesMediaViewContainer: {
     flex: 1,
+    backgroundColor: '#EEEEEE',
     marginTop: 7,
-    borderRadius: 3,
+    borderRadius: 8,
     overflow: 'hidden',
   },
   revProfileImagesScroller: {

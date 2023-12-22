@@ -11,7 +11,7 @@ export function RevFooter1Left() {
 
   let revRetView = (
     <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
-      <RevNextStrangerChatTab revVarArgs={{_revRemoteGUID: 1055}} />
+      <RevNextStrangerChatTab revVarArgs={{}} />
     </View>
   );
 

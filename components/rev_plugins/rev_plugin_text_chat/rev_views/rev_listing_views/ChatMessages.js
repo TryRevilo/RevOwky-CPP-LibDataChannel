@@ -35,8 +35,6 @@ export function useChatMessages() {
 
   const revDisplayCallBackRef = useRef(null);
 
-  const revPeerEntitiesArrRef = useRef([]);
-
   const revMessagesArrLatestRef = useRef(null);
 
   const revFlatListRef = useRef(null);
@@ -221,10 +219,8 @@ export function useChatMessages() {
   const revInitChatMessagesListingArea = ({
     revMessagesArr: _revMessagesArr,
     revOnViewChangeCallBack,
-    revPeerEntitiesArr,
   }) => {
     revDisplayCallBackRef.current = revOnViewChangeCallBack;
-    revPeerEntitiesArrRef.current = revPeerEntitiesArr;
     setRevMessagesArr([..._revMessagesArr]);
   };
 

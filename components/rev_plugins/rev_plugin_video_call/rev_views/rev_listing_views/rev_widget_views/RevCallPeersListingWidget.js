@@ -19,6 +19,7 @@ import RevVideoCallModal from '../../rev_object_views/rev_widget_views/RevVideoC
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 export const RevCallPeersListingWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -35,7 +36,14 @@ export const RevCallPeersListingWidget = ({revVarArgs}) => {
   const [revContactPeerViewsArr, setRevContactPeerViewsArr] = useState([]);
 
   const handleRevContactItemViewPressed = revPeerId => {
-    let revCurrSelected = !revPeersObjs[revPeerId].isRevSelected;
+    let revPeersObj = revPeersObjs[revPeerId];
+
+    if (revIsEmptyJSONObject(revPeersObj)) {
+      return;
+    }
+
+    const {isRevSelected = false} = revPeersObj;
+    let revCurrSelected = !isRevSelected;
 
     let revNewSelectedPeerIdsArr = revSelectedPeerIdsArrRef.current;
 

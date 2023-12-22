@@ -37,8 +37,6 @@ export const RevFooter1 = () => {
 
 var revPageWidth = Dimensions.get('window').width - 10;
 
-console.log('>>> revPageWidth', revPageWidth);
-
 const styles = StyleSheet.create({
   revFooterWrapper: {
     alignItems: 'flex-end',

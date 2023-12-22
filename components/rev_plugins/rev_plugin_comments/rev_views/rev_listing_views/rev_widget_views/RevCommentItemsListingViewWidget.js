@@ -57,7 +57,6 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
 
     revCommentsArr.push(
       <View
-        key={'RevCommentItem_' + i + '_' + revGetRandInteger(100, 1000)}
         style={[
           revSiteStyles.revFlexWrapper,
           styles.revCommentItemWrapper,
@@ -69,18 +68,17 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
   }
 
   return (
-    <>
+    <View style={{marginTop: 8}}>
       {revCommentsArr.map((revItem, index) => {
         return <View key={index}>{revItem}</View>;
       })}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   revCommentItemWrapper: {
-    paddingTop: 3,
-    paddingLeft: 7,
-    marginTop: 5,
+    paddingTop: 2,
+    paddingLeft: 5,
   },
 });

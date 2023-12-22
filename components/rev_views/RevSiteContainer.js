@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useContext, useState, memo} from 'react';
+import React, {useContext, useState, memo, useRef} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -34,6 +34,44 @@ const RevSiteContainer = () => {
     SET_REV_SITE_BODY,
     REV_SITE_MODAL,
   } = useContext(ReViewsContext);
+
+  const revDynamicViewRefsObj = useRef({});
+  const revActiveViewRef = useRef();
+
+  const revSetRef = revRefKey => ref => {
+    revDynamicViewRefsObj.current[revRefKey] = ref;
+  };
+
+  const revToggleActivePreloadedView = revRefKey => {
+    if (revActiveViewRef.current == revRefKey) {
+      revRefKey = 'revSiteContentContainer';
+    }
+
+    if (
+      revActiveViewRef.current &&
+      revDynamicViewRefsObj.current.hasOwnProperty(revRefKey)
+    ) {
+      revDynamicViewRefsObj.current[revActiveViewRef.current].setNativeProps({
+        style: {
+          zIndex: 0,
+        },
+      });
+    }
+
+    // Access the View and change its style
+    if (revDynamicViewRefsObj.current.hasOwnProperty(revRefKey)) {
+      revDynamicViewRefsObj.current[revRefKey].setNativeProps({
+        style: {
+          zIndex: 2,
+        },
+      });
+
+      revActiveViewRef.current = revRefKey;
+    }
+  };
+
+  let revSiteContentContainerRef = revSetRef('revSiteContentContainer');
+  revActiveViewRef.current = 'revSiteContentContainer';
 
   const {revGetConnectionRequests} = useRevGetConnectionRequests();
   const {revUpdateConnectionRequestStatus} =
@@ -64,14 +102,14 @@ const RevSiteContainer = () => {
     });
   };
 
-  let revHandleContactsPress = () => {
-    let RevContacts = revPluginsLoader({
-      revPluginName: 'rev_contacts',
-      revViewName: 'RevContacts',
-      revData: {},
-    });
+  let revContacts = revPluginsLoader({
+    revPluginName: 'rev_contacts',
+    revViewName: 'RevContacts',
+    revData: {},
+  });
 
-    SET_REV_SITE_BODY(RevContacts);
+  let revHandleContactsPress = () => {
+    revToggleActivePreloadedView('RevContacts');
   };
 
   let revHandleOnSearchTabPress = () => {
@@ -96,8 +134,12 @@ const RevSiteContainer = () => {
 
   return (
     <View style={styles.revSiteContainer}>
-      <View style={styles.pageContainer}>
-        <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
+      <View style={styles.revPageContainer}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper,
+            {flex: 0, alignItems: 'center'},
+          ]}>
           <View
             style={[revSiteStyles.revFlexContainer, styles.revHeaderContainer]}>
             <View
@@ -218,11 +260,44 @@ const RevSiteContainer = () => {
         {REV_PAGE_HEADER_CONTENT_VIEWER}
 
         <View
+          ref={revSiteContentContainerRef}
           style={[
             revSiteStyles.revFlexContainer,
             styles.revSiteContentContainer,
+            {zIndex: 1},
           ]}>
           {REV_SITE_BODY}
+        </View>
+
+        <View
+          ref={revSetRef('RevContacts')}
+          style={[
+            revSiteStyles.revFlexWrapper,
+            {
+              height: '80%',
+              top: 56,
+              right: 11,
+              position: 'absolute',
+              zIndex: 0,
+            },
+          ]}>
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              {
+                backgroundColor: '#F7F7F7',
+                width: 45,
+                height: '105%',
+                opacity: 0.9,
+              },
+            ]}></View>
+          <View
+            style={[
+              revSiteStyles.revFlexContainer,
+              styles.revSiteToggleContentContainer,
+            ]}>
+            {revContacts}
+          </View>
         </View>
 
         <RevFooterArea />
@@ -234,20 +309,10 @@ const RevSiteContainer = () => {
 };
 
 const styles = StyleSheet.create({
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
   revSiteContainer: {
     flex: 1,
   },
-  pageContainer: {
+  revPageContainer: {
     flex: 1,
     flexDirection: 'column',
     paddingTop: 12,
@@ -278,10 +343,18 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   revSiteContentContainer: {
-    flex: 7,
+    flex: 1,
+    backgroundColor: '#FFFFFF',
     position: 'relative',
+    width: '99%',
+    height: '100%',
+    paddingHorizontal: 3,
+  },
+  revSiteToggleContentContainer: {
+    backgroundColor: '#FFFFFF',
+    width: '85%',
     height: 'auto',
-    marginBottom: 12,
+    paddingLeft: 10,
   },
 });
 

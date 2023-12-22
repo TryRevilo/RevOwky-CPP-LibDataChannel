@@ -1,14 +1,70 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
-
-import {useRevSiteStyles} from './RevSiteStyles';
+import React, {useContext, useEffect, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {RevWebRTCContext} from '../../rev_contexts/RevWebRTCContext';
+
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
+
+import {useRevSiteStyles} from './RevSiteStyles';
 
 const RevPageContentHeader = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  const {isRevSocketServerUp} = useContext(RevWebRTCContext);
+
+  let revIsOnline = (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        styles.revHeaderOnlineStateWrapper,
+      ]}>
+      <FontAwesome
+        style={[
+          revSiteStyles.revSiteTxtAlertSafe,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}
+        name="dot-circle-o"
+      />
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtAlertSafe,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+          styles.revHeaderOnlineStateTextLink,
+        ]}>
+        onLiNE
+      </Text>
+    </View>
+  );
+
+  let revIsOoffline = (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        styles.revHeaderOnlineStateWrapper,
+      ]}>
+      <FontAwesome
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny_X,
+        ]}
+        name="dot-circle-o"
+      />
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtBold,
+          revSiteStyles.revSiteTxtTiny_X,
+          styles.revHeaderOnlineStateTextLink,
+        ]}>
+        offLiNE
+      </Text>
+    </View>
+  );
+
+  const [revIsOnlineView, setRevIsOnlineView] = useState(revIsOnline);
 
   let revIsIndented = true;
 
@@ -44,6 +100,14 @@ const RevPageContentHeader = ({revVarArgs}) => {
       </View>
     );
   };
+
+  useEffect(() => {
+    if (isRevSocketServerUp) {
+      setRevIsOnlineView(revIsOnline);
+    } else {
+      setRevIsOnlineView(revIsOoffline);
+    }
+  }, [isRevSocketServerUp]);
 
   let RevHeader = () => {
     return (
@@ -82,22 +146,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
             revSiteStyles.revFlexWrapper,
             styles.revHeaderOnlineStateWrapper,
           ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtTiny_X,
-            ]}
-            name="dot-circle-o"
-          />
-          <Text
-            style={[
-              revSiteStyles.revSiteTxtAlertSafe,
-              revSiteStyles.revSiteTxtBold,
-              revSiteStyles.revSiteTxtTiny_X,
-              styles.revHeaderOnlineStateTextLink,
-            ]}>
-            onLiNE
-          </Text>
+          {revIsOnlineView}
         </View>
       </View>
     );

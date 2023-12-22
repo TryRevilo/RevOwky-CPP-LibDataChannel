@@ -21,7 +21,7 @@ import {revConvertNumberToDecimal} from '../../../../../rev_function_libs/rev_st
 export function RevContacts({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const revIncrementals = 22;
+  const revIncrementals = 100;
 
   const [revTotDataCount, setRevTotDataCount] = useState(0);
   const [revListingData, setRevListingData] = useState([]);
@@ -61,6 +61,7 @@ export function RevContacts({revVarArgs}) {
     if (revPermissionGranted) {
       try {
         let revContacts = await Contacts.getAll();
+        revContacts = revContacts.slice(0, 22);
 
         if (revContacts.length) {
           setRevIsLoading(true);
@@ -85,10 +86,43 @@ export function RevContacts({revVarArgs}) {
     }
   };
 
+  const handleRevContactPressed = revPhoneNumbers => {
+    console.log('>>> handleRevContactPressed', JSON.stringify(revPhoneNumbers));
+  };
+
+  let RevContactItemsDraw = ({revContactsArr}) => {
+    const {revSiteStyles} = useRevSiteStyles();
+
+    let revContactNumbers = revContactsArr.map(
+      (revContactItem, index) =>
+        revContactItem.number +
+        (index == revContactsArr.length - 1 ? '' : ' / '),
+    );
+
+    return (
+      <Text
+        style={[
+          revSiteStyles.revSiteTxtColorLight,
+          revSiteStyles.revSiteTxtTiny,
+        ]}>
+        {revContactNumbers.toString().replace(',', '')}
+      </Text>
+    );
+  };
+
   const revRenderFLItem = revContactData => {
     const {index: revIndex, item} = revContactData;
 
-    return <RevContact revVarArgs={{...item, revIndex}} />;
+    return (
+      <RevContact
+        revVarArgs={{
+          ...item,
+          revIndex,
+          handleRevContactPressed,
+          RevContactItemsDraw,
+        }}
+      />
+    );
   };
 
   const renderFooter = () => {
@@ -144,7 +178,7 @@ export function RevContacts({revVarArgs}) {
           onEndReached={revLoadMoreData}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
-          initialNumToRender={2}
+          initialNumToRender={200}
           maxToRenderPerBatch={revPageSize}
         />
       ) : (

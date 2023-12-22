@@ -91,7 +91,6 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   let revChatMessageText = _revKiwiTxtVal => {
     return (
       <View
-        key={'revChatMessageText_' + revEntityGUID + '_' + revGetRandInteger()}
         style={[
           revSiteStyles.revFlexWrapper,
           styles.revChatMsgContentTxtContainer,
@@ -242,6 +241,5 @@ const styles = StyleSheet.create({
   },
   revChatMsgContentTxtContainer: {
     paddingRight: 5,
-    marginTop: 2,
   },
 });

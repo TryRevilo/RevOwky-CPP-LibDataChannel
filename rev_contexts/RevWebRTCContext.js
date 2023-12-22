@@ -71,9 +71,10 @@ var RevWebRTCContextProvider = ({children}) => {
 
   const {revInitSiteModal, SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
-  // initialize state variable
+  const [isRevSocketServerUp, setIsRevSocketServerUp] = useState(false);
 
   const revPeerIdsArr = useRef([]);
+  const revVideoCallPeerIdsArrRef = useRef([]);
 
   const revPeerConnsDataRef = useRef({});
   const revPeerConnsObjRef = useRef({});
@@ -99,10 +100,13 @@ var RevWebRTCContextProvider = ({children}) => {
   const [revLocalVideoStream, setRevLocalVideoStream] = useState(null);
   const revRemoteVideoStreamsArrRef = useRef({});
 
-  let revOnAddLocalStream = null;
-  let revOnAddRemoteStream = null;
+  const revOnAddLocalStreamRef = useRef(null);
+  const revOnAddRemoteStreamRef = useRef(null);
 
   const revRestartingPeerIdsArr = useRef([]);
+
+  const revOnVideoChatMessageReceivedRef = useRef(null);
+  const revOnVideoChatMessageSentRef = useRef(null);
 
   var revInitPeerConn = async revVarArgs => {
     const {revEntity = {}} = revVarArgs;
@@ -297,6 +301,24 @@ var RevWebRTCContextProvider = ({children}) => {
     }
   };
 
+  var revPushVideoCallPeerId = revPeerId => {
+    if (!revVideoCallPeerIdsArrRef.current.includes(revPeerId)) {
+      revVideoCallPeerIdsArrRef.current = [
+        ...revVideoCallPeerIdsArrRef.current,
+        revPeerId,
+      ];
+    }
+  };
+
+  var revRemoveVideoCallPeerId = revPeerId => {
+    if (!revVideoCallPeerIdsArrRef.current.includes(revPeerId)) {
+      revVideoCallPeerIdsArrRef.current =
+        revVideoCallPeerIdsArrRef.current.filter(
+          revCurr => revCurr != revPeerId,
+        );
+    }
+  };
+
   var revPushPeerMessages = (revMessage, revPeerIdsArr) => {
     const {revData} = revMessage;
     const {revMsg = {}} = revData;
@@ -405,7 +427,7 @@ var RevWebRTCContextProvider = ({children}) => {
     return null;
   };
 
-  var revGetPeerConnection = revPeerId => {
+  var revGetPeerConn = revPeerId => {
     if (revPeerId < 1) {
       return null;
     }
@@ -525,7 +547,7 @@ var RevWebRTCContextProvider = ({children}) => {
           revDataChannel.close();
         }
 
-        let revPeerConn = revGetPeerConnection(revPeerId);
+        let revPeerConn = revGetPeerConn(revPeerId);
 
         if (revPeerConn == null) {
           revConnRestartComplete(revPeerId);
@@ -672,7 +694,8 @@ var RevWebRTCContextProvider = ({children}) => {
     let revConnData = revGetConnData(revPeerId);
 
     if (revConnData) {
-      const {revPeerConn = {}} = revConnData;
+      const {revPeerConn = {}, revIsVideoCall: revIsCurrVideoCall} =
+        revConnData;
       const {connectionState} = revPeerConn;
 
       if (connectionState == 'connected' && !revIsVideoCall) {
@@ -699,53 +722,36 @@ var RevWebRTCContextProvider = ({children}) => {
       });
 
       if (revIsVideoCall) {
-        revOnAddRemoteStream({revPeerId, revRemoteStream: remoteStream});
+        if (revOnAddRemoteStreamRef.current) {
+          revOnAddRemoteStreamRef.current({
+            revPeerId,
+            revRemoteStream: remoteStream,
+          });
+        }
+
         revRemoteVideoStreamsArrRef.current[revPeerId] = remoteStream;
       }
     };
 
     if (revIsVideoCall) {
-      let revVideoCall = revPluginsLoader({
-        revPluginName: 'rev_plugin_video_call',
-        revViewName: 'RevVideoCall',
-        revVarArgs: {
-          revOnAddLocalStream: revCallBack => {
-            revOnAddLocalStream = revCallBack;
-          },
-          revOnAddRemoteStream: revCallBack => {
-            revOnAddRemoteStream = revCallBack;
-          },
-          revOnVideoChatMessageSent: revCallBack => {
-            revUpdateConnDataItemState(
-              revPeerId,
-              'revOnVideoChatMessageSent',
-              revCallBack,
-            );
-          },
-          revOnVideoChatMessageReceived: revCallBack => {
-            revUpdateConnDataItemState(
-              revPeerId,
-              'revOnVideoChatMessageReceived',
-              revCallBack,
-            );
-          },
-        },
-      });
-
-      SET_REV_SITE_BODY(revVideoCall);
-
       isRevVideoCallViewMaxRef.current = true;
 
       try {
-        let revLocalMediaStream = await mediaDevices.getUserMedia(
+        let revNewLocalMediaStream = await mediaDevices.getUserMedia(
           mediaConstraints,
         );
-        revLocalMediaStream
-          .getTracks()
-          .forEach(track => revPeerConn.addTrack(track, revLocalMediaStream));
 
-        revOnAddLocalStream(revLocalMediaStream);
-        // setRevLocalVideoStream(revLocalMediaStream);
+        revNewLocalMediaStream
+          .getTracks()
+          .forEach(track =>
+            revPeerConn.addTrack(track, revNewLocalMediaStream),
+          );
+
+        if (revOnAddLocalStreamRef.current) {
+          revOnAddLocalStreamRef.current(revNewLocalMediaStream);
+        }
+
+        setRevLocalVideoStream(revNewLocalMediaStream);
       } catch (error) {
         console.log('>>> error -set local streeam', error);
       }
@@ -779,10 +785,8 @@ var RevWebRTCContextProvider = ({children}) => {
               let revCallBacks = revPeerConnsCallBacksRef.current[revPeerId];
               const {revOnMessageReceived} = revCallBacks;
 
-              const {revOnVideoChatMessageReceived} = revGetConnData(revPeerId);
-
-              if (revOnVideoChatMessageReceived) {
-                revOnVideoChatMessageReceived(revReceivedMsg);
+              if (revOnVideoChatMessageReceivedRef.current) {
+                revOnVideoChatMessageReceivedRef.current(revReceivedMsg);
               } else if (revOnMessageReceived) {
                 revOnMessageReceived(revReceivedMsg);
               }
@@ -899,6 +903,8 @@ var RevWebRTCContextProvider = ({children}) => {
       return;
     }
 
+    revVideoCallPeerIdsArrRef.current = revPeerIdsArr;
+
     for (let i = 0; i < revPeerIdsArr.length; i++) {
       const {revEntity} = revGetConnData(revPeerIdsArr[i]);
 
@@ -909,7 +915,49 @@ var RevWebRTCContextProvider = ({children}) => {
     }
   };
 
-  const revEndVideoCall = async revPeerId => {};
+  const revEndVideoCall = async (revPeerIdsArr = [], revCallBack) => {
+    for (let i = 0; i < revPeerIdsArr.length; i++) {
+      let revPeerId = revPeerIdsArr[i];
+
+      let revConnData = revGetConnData(revPeerId);
+
+      if (revIsEmptyJSONObject(revConnData)) {
+        continue;
+      }
+
+      const {revPeerConn, revEntity} = revConnData;
+
+      if (revIsEmptyJSONObject(revPeerConn)) {
+        continue;
+      }
+
+      // Get the senders associated with the peer connection
+      const revSenders = revPeerConn.getSenders();
+
+      // Iterate through the senders to access the tracks
+      revSenders.forEach(revSender => {
+        const revTrack = revSender.track;
+
+        if (revTrack) {
+          // Access properties of the track
+          console.log('Track ID:', revTrack.id);
+          console.log('Track Kind:', revTrack.kind);
+          console.log('Track Label:', revTrack.label);
+
+          revTrack.stop();
+        }
+      });
+
+      await revCloseConn(revPeerId);
+      await revCreatePeerConn(revEntity);
+    }
+
+    isRevVideoCallViewMaxRef.current = false;
+
+    if (revCallBack) {
+      revCallBack();
+    }
+  };
 
   // function to handle incoming offer message from remote peer
   var handleOffer = async revVarArgs => {
@@ -926,7 +974,7 @@ var RevWebRTCContextProvider = ({children}) => {
 
     const revIsVideoCall = revDataType == 'revVideo';
 
-    let revPeerConn = revGetPeerConnection(revPeerId);
+    let revPeerConn = revGetPeerConn(revPeerId);
 
     try {
       if (revPeerConn) {
@@ -1135,11 +1183,7 @@ var RevWebRTCContextProvider = ({children}) => {
         continue;
       }
 
-      const {
-        revPeerConn,
-        dataChannel: revDataChannel,
-        revOnVideoChatMessageSent = null,
-      } = revConnData;
+      const {revPeerConn, dataChannel: revDataChannel} = revConnData;
 
       if (!revPeerConn || !revDataChannel) {
         continue;
@@ -1155,8 +1199,8 @@ var RevWebRTCContextProvider = ({children}) => {
             const {revOnMessageSent} =
               revPeerConnsCallBacksRef.current[revPeerId];
 
-            if (revOnVideoChatMessageSent) {
-              revOnVideoChatMessageSent(revSendMsg);
+            if (revOnVideoChatMessageSentRef.current) {
+              revOnVideoChatMessageSentRef.current(revSendMsg);
             }
 
             if (!isRevVideoCallViewMaxRef.current && revOnMessageSent) {
@@ -1216,9 +1260,19 @@ var RevWebRTCContextProvider = ({children}) => {
     }
 
     REV_WEB_SOCKET_SERVER.addEventListener('open', event => {
-      initSocket();
+      setIsRevSocketServerUp(true);
+    });
+
+    REV_WEB_SOCKET_SERVER.addEventListener('close', event => {
+      setIsRevSocketServerUp(false);
     });
   }, [REV_WEB_SOCKET_SERVER]);
+
+  useEffect(() => {
+    if (isRevSocketServerUp) {
+      initSocket();
+    }
+  }, [isRevSocketServerUp]);
 
   useEffect(() => {
     if (revIsCaller && revLocalVideoStream) {
@@ -1237,17 +1291,35 @@ var RevWebRTCContextProvider = ({children}) => {
 
   // create context value with state variables and functions
   const contextValue = {
+    isRevSocketServerUp,
     revPeerConnsData: revPeerConnsObjRef.current,
     revGetPeerIdsArr: () => revPeerIdsArr.current,
+    revPushVideoCallPeerId,
+    revRemoveVideoCallPeerId,
+    revGetVideoCallPeerIdsArr: () => revVideoCallPeerIdsArrRef.current,
     revInitPeerConn,
     revGetConnData,
     revPushPeerData,
+    revUpdateConnDataItemState,
     revGetPeersDataArr,
     revPushPeerMessages,
     revGetPeerMessagesArr,
+    revLocalVideoStream,
+    revSetOnVideoChatMessageSent: _revOnVideoChatMessageSent => {
+      revOnVideoChatMessageSentRef.current = _revOnVideoChatMessageSent;
+    },
+    revSetOnVideoChatMessageReceived: _revOnVideoChatMessageReceived => {
+      revOnVideoChatMessageReceivedRef.current = _revOnVideoChatMessageReceived;
+    },
     isRevVideoCallViewMax: () => isRevVideoCallViewMaxRef.current,
     revSendWebRTCMessage,
     revInitVideoCall,
+    revSetOnAddLocalStream: _revOnAddLocalStream => {
+      revOnAddLocalStreamRef.current = _revOnAddLocalStream;
+    },
+    revSetOnAddRemoteStream: _revOnAddRemoteStream => {
+      revOnAddRemoteStreamRef.current = _revOnAddRemoteStream;
+    },
     revEndVideoCall,
     revGetRandLoggedInGUIDs,
     revRecconnectPeer,

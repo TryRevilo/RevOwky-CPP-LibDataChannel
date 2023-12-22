@@ -247,6 +247,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
                 revSiteStyles.revSiteTxtColor,
                 revSiteStyles.revSiteTxtBold,
                 revSiteStyles.revSiteTxtTiny_X,
+                {paddingHorizontal: 9, paddingVertical: 5},
               ]}>
               Loading video...
             </Text>
@@ -316,7 +317,12 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
             revSiteStyles.revSiteTxtColor,
             revSiteStyles.revSiteTxtBold,
             revSiteStyles.revSiteTxtTiny_X,
-            {paddingHorizontal: 9, paddingVertical: 5},
+            {
+              paddingHorizontal: 9,
+              paddingVertical: 5,
+              position: 'absolute',
+              bottom: 42,
+            },
           ]}>
           Unable to connect to the server.
         </Text>
@@ -328,6 +334,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
 const styles = StyleSheet.create({
   revVideoContainer: {
     flex: 1,
+    minHeight: 205,
     backgroundColor: '#EEEEEE',
     position: 'relative',
   },
@@ -361,7 +368,12 @@ const styles = StyleSheet.create({
   },
   revVidFooterTabsWrapper: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F7F7F7',
+    borderTopColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    position: 'absolute',
+    bottom: 0,
   },
   revVidFooterTab: {
     paddingHorizontal: 12,

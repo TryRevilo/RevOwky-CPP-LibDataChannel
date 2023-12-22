@@ -10,25 +10,6 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
-let RevContactItemsDraw = ({revContactsArr}) => {
-  const {revSiteStyles} = useRevSiteStyles();
-
-  let revContactNumbers = revContactsArr.map(
-    (revContactItem, index) =>
-      revContactItem.number + (index == revContactsArr.length - 1 ? '' : ' / '),
-  );
-
-  return (
-    <Text
-      style={[
-        revSiteStyles.revSiteTxtColorLight,
-        revSiteStyles.revSiteTxtTiny,
-      ]}>
-      {revContactNumbers.toString().replace(',', '')}
-    </Text>
-  );
-};
-
 export function RevContact({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
@@ -36,14 +17,15 @@ export function RevContact({revVarArgs}) {
     revIndex,
     phoneNumbers: revPhoneNumbers,
     displayName: revDisplayName,
+    handleRevContactPressed,
+    RevContactItemsDraw,
   } = revVarArgs;
 
-  const handleRevContactPressed = () => {
-    console.log('>>> handleRevContactPressed', JSON.stringify(revPhoneNumbers));
-  };
-
   return (
-    <TouchableOpacity onPress={handleRevContactPressed}>
+    <TouchableOpacity
+      onPress={() => {
+        handleRevContactPressed(revPhoneNumbers);
+      }}>
       <View style={[revSiteStyles.revFlexWrapper, styles.revContactWrapper]}>
         <View style={styles.revContactUserIcon}>
           <FontAwesome

@@ -18,27 +18,30 @@ export default function RevVideoCallModal({revVarArgs = {}}) {
   }
 
   const {revInitVideoCall} = useContext(RevWebRTCContext);
-  const {revInitSiteModal, revCloseSiteModal} = useContext(ReViewsContext);
+  const {revInitSiteModal, revCloseSiteModal, SET_REV_SITE_BODY} =
+    useContext(ReViewsContext);
 
   const {revSelectedPeerIdsArr = []} = revVarArgs;
-
   const revPeerIdsArrRef = useRef(revSelectedPeerIdsArr);
 
   const revCallPeersListingCallBack = revSelectedPeerIdsArr => {
-    revSelectedPeerIdsArrRef.current = revSelectedPeerIdsArr;
+    revPeerIdsArrRef.current = [
+      ...revPeerIdsArrRef.current,
+      ...revSelectedPeerIdsArr,
+    ];
   };
 
   let revCallPeersListing = revPluginsLoader({
     revPluginName: 'rev_plugin_video_call',
     revViewName: 'RevCallPeersListing',
     revVarArgs: {
-      revSelectedPeerIdsArr: revPeerIdsArrRef.current,
+      revSelectedPeerIdsArr: revPeerIdsArrRef.current.current,
       revCallBack: revCallPeersListingCallBack,
     },
   });
 
   const handleRevInitVideoCallTabPress = async () => {
-    if (!revSelectedPeerIdsArr.length) {
+    if (!revPeerIdsArrRef.current.length) {
       revInitSiteModal(
         <View
           style={[
@@ -58,10 +61,18 @@ export default function RevVideoCallModal({revVarArgs = {}}) {
       );
     } else {
       try {
+        revCloseSiteModal();
+
         revInitVideoCall({
-          revPeerIdsArr: revSelectedPeerIdsArr,
-        }).then(revRes => {
-          revCloseSiteModal();
+          revPeerIdsArr: revPeerIdsArrRef.current,
+        }).then(() => {
+          let revVideoCall = revPluginsLoader({
+            revPluginName: 'rev_plugin_video_call',
+            revViewName: 'RevVideoCall',
+            revVarArgs: {},
+          });
+
+          SET_REV_SITE_BODY(revVideoCall);
         });
       } catch (error) {
         console.log('*** error -handleRevInitVideoCallTabPress', error);
