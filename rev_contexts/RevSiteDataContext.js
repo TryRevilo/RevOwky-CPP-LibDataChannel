@@ -30,7 +30,7 @@ const RevSiteDataContextProvider = ({children}) => {
     useState(0);
   const [REV_SITE_ENTITY_GUID, SET_REV_SITE_ENTITY_GUID] = useState(0);
 
-  const [REV_LOGGED_IN_ENTITY, SET_REV_LOGGED_IN_ENTITY] = useState(null);
+  const [REV_LOGGED_IN_ENTITY, SET_REV_LOGGED_IN_ENTITY] = useState({});
 
   const [REV_PEER_CONNECTIONS, SET_REV_PEER_CONNECTIONS] = useState({});
 

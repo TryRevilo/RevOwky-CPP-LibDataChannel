@@ -27,7 +27,7 @@ import {
 
 import RevVideoCallModal from '../rev_plugins/rev_plugin_video_call/rev_views/rev_object_views/rev_widget_views/RevVideoCallModal';
 
-import ChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/ChatMessageInputComposer';
+import RevChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/RevChatMessageInputComposer';
 
 import {RevSendFile} from '../../rev_webrtc_libs/RevSendFile';
 
@@ -409,7 +409,7 @@ function RevFooterArea() {
       </View>
 
       {revChatStatus ? (
-        <ChatMessageInputComposer
+        <RevChatMessageInputComposer
           revSetText={revInputText => {
             revSetChatMessageTxt(revInputText);
           }}

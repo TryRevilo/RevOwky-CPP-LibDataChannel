@@ -7,47 +7,48 @@ import {RTCView} from 'react-native-webrtc';
 
 import {ReViewsContext} from '../../../../../../rev_contexts/ReViewsContext';
 
-import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
-
 import {useRevSiteStyles} from '../../../../RevSiteStyles';
+import {revTimeoutAsync} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
-export const RevDialingCallWidget = ({revVarArgs}) => {
+export const RevDialingCallWidget = ({revVarArgs = {}}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  if (
-    revIsEmptyJSONObject(revVarArgs) ||
-    !('revCancelCallBackFunc' in revVarArgs)
-  ) {
-    return (
-      <Text style={revSiteStyles.revSiteTxtColor}>NULL - RevDialingCall</Text>
-    );
+  const {
+    revLocalVideoStream = {},
+    revCancelCallBackFunc = null,
+    revMaxDialTime = 60000,
+    revEndDialCallBack,
+  } = revVarArgs;
+  const {revStream = {}} = revLocalVideoStream;
+
+  if (!revCancelCallBackFunc) {
+    return <Text style={revSiteStyles.revSiteTxtColor}>Error Dialing</Text>;
   }
 
-  const [currentSequence, setCurrentSequence] = useState([1]);
-  const dotColors = ['#F26871', 'green', 'blue', '#999', '#BF64E8'];
+  const [revCurrentSequence, setRevCurrentSequence] = useState([1]);
+  const revDotColors = ['#F26871', 'green', 'blue', '#999', '#BF64E8'];
 
-  let revLocalVideoStream = revVarArgs.revLocalVideoStream;
-  let revCancelCallBackFunc = revVarArgs.revCancelCallBackFunc;
-
-  const {revCloseSiteModal} = useContext(ReViewsContext);
+  revTimeoutAsync({
+    revTimeDelay: revMaxDialTime,
+    revCallback: revEndDialCallBack,
+  });
 
   const handleRevCancelVideoCall = () => {
     revCancelCallBackFunc();
-    revCloseSiteModal();
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSequence(prevSequence => {
-        if (prevSequence[prevSequence.length - 1] === 6) {
+    const revInterval = setInterval(() => {
+      setRevCurrentSequence(revPrev => {
+        if (revPrev[revPrev.length - 1] === 6) {
           return [1];
         } else {
-          return [...prevSequence, prevSequence[prevSequence.length - 1] + 1];
+          return [...revPrev, revPrev[revPrev.length - 1] + 1];
         }
       });
     }, 200);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(revInterval);
   }, []);
 
   return (
@@ -57,11 +58,11 @@ export const RevDialingCallWidget = ({revVarArgs}) => {
         styles.revDialingCallingContainer,
       ]}>
       <View style={styles.revMyVideoStreamContainer}>
-        {revLocalVideoStream && (
+        {revStream && (
           <RTCView
             mirror={true}
             objectFit={'cover'}
-            streamURL={revLocalVideoStream.toURL()}
+            streamURL={revStream.toURL()}
             zOrder={0}
             style={styles.revVideoStyle}
           />
@@ -117,14 +118,14 @@ export const RevDialingCallWidget = ({revVarArgs}) => {
               revSiteStyles.revFlexWrapper_WidthAuto,
               styles.revCallDialingDotsTextWrapper,
             ]}>
-            {currentSequence.map((num, index) => (
+            {revCurrentSequence.map((num, index) => (
               <React.Fragment key={index}>
-                {index < currentSequence.length - 1 && (
+                {index < revCurrentSequence.length - 1 && (
                   <Text
                     style={[
                       revSiteStyles.revSiteTxtLarge,
                       revSiteStyles.revSiteTxtBold,
-                      {color: dotColors[num - 1]},
+                      {color: revDotColors[num - 1]},
                       styles.revCallDialingDotsText,
                     ]}>
                     .

@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   },
   profileVideoContainer: {
     backgroundColor: '#444',
-    width: 225,
+    width: 215,
     height: 35,
     borderRadius: 15,
     marginRight: 1,

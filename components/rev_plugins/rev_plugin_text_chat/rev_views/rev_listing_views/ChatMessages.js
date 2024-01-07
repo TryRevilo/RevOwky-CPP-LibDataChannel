@@ -25,10 +25,10 @@ import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 export function useChatMessages() {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
+  const {REV_LOGGED_IN_ENTITY = {}} = useContext(RevSiteDataContext);
   const {isRevVideoCallViewMax} = useContext(RevWebRTCContext);
 
-  let revLoggedInRemoteGUID = REV_LOGGED_IN_ENTITY._revRemoteGUID;
+  const {_revRemoteGUID: revLoggedInRemoteGUID = -1} = REV_LOGGED_IN_ENTITY;
 
   const [revMessagesArr, setRevMessagesArr] = useState([]);
   const revMessagesArrRef = useRef([]);

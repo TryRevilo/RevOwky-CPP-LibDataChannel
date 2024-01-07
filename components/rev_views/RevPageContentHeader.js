@@ -17,7 +17,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
   let revIsOnline = (
     <View
       style={[
-        revSiteStyles.revFlexWrapper,
+        revSiteStyles.revFlexWrapper_WidthAuto,
         styles.revHeaderOnlineStateWrapper,
       ]}>
       <FontAwesome
@@ -42,7 +42,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
   let revIsOoffline = (
     <View
       style={[
-        revSiteStyles.revFlexWrapper,
+        revSiteStyles.revFlexWrapper_WidthAuto,
         styles.revHeaderOnlineStateWrapper,
       ]}>
       <FontAwesome
@@ -184,8 +184,7 @@ const styles = StyleSheet.create({
   },
   revHeaderOnlineStateWrapper: {
     alignItems: 'center',
-    width: 'auto',
-    marginRight: 17,
+    marginRight: 5,
     marginLeft: 'auto',
   },
   revHeaderOnlineStateTextLink: {

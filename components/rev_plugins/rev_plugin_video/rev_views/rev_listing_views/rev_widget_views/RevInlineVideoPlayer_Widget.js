@@ -334,7 +334,7 @@ export const RevInlineVideoPlayer_Widget = ({revVarArgs}) => {
 const styles = StyleSheet.create({
   revVideoContainer: {
     flex: 1,
-    minHeight: 205,
+    minHeight: 190,
     backgroundColor: '#EEEEEE',
     position: 'relative',
   },
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
   },
   revOverlayScreen: {
     ...StyleSheet.absoluteFillObject,
-    top: '15%',
+    top: '13%',
     left: '32%',
   },
   revPlayButton: {

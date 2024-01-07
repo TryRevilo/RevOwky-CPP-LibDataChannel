@@ -147,27 +147,56 @@ export function RevContacts({revVarArgs}) {
 
   return (
     <View style={revSiteStyles.revFlexContainer}>
-      <Text
+      <View
         style={[
-          revSiteStyles.revSiteTxtColorLight,
-          revSiteStyles.revSiteTxtTiny,
+          revSiteStyles.revFlexWrapper,
           styles.revContentBodyTtlTellTxt,
+          {alignItems: 'baseline'},
         ]}>
-        <FontAwesome name="hashtag" style={revSiteStyles.revSiteTxtTiny} />{' '}
-        {revConvertNumberToDecimal(revTotDataCount) + ' '}
-        <FontAwesome name="dot-circle-o" style={revSiteStyles.revSiteTxtTiny} />
-        <FontAwesome
-          name="long-arrow-right"
-          style={revSiteStyles.revSiteTxtTiny}
-        />{' '}
-        Connections 27{' '}
-        <FontAwesome name="dot-circle-o" style={revSiteStyles.revSiteTxtTiny} />
-        <FontAwesome
-          name="long-arrow-right"
-          style={revSiteStyles.revSiteTxtTiny}
-        />{' '}
-        Find
-      </Text>
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+          ]}>
+          <FontAwesome name="hashtag" style={revSiteStyles.revSiteTxtTiny} />
+          {'Phone '}
+          {revConvertNumberToDecimal(revTotDataCount) + ' '}
+        </Text>
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            {paddingHorizontal: 8},
+          ]}>
+          <FontAwesome
+            name="dot-circle-o"
+            style={revSiteStyles.revSiteTxtTiny}
+          />
+          <FontAwesome
+            name="long-arrow-right"
+            style={revSiteStyles.revSiteTxtTiny}
+          />{' '}
+          Connections 27{' '}
+        </Text>
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny,
+            {marginLeft: 22},
+          ]}>
+          <FontAwesome
+            name="dot-circle-o"
+            style={revSiteStyles.revSiteTxtTiny}
+          />
+          <FontAwesome
+            name="long-arrow-right"
+            style={revSiteStyles.revSiteTxtTiny}
+          />{' '}
+          Find
+        </Text>
+      </View>
       {revTotDataCount > 0 ? (
         <FlatList
           data={revListingData.slice(0, revPage * revPageSize)}
@@ -197,7 +226,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingRight: 12,
     marginBottom: 5,
-    paddingLeft: 38,
+    paddingLeft: 32,
   },
   revFooterLoadingWrapper: {
     alignItems: 'center',

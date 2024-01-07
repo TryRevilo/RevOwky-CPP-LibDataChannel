@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '99%',
     height: '100%',
-    paddingHorizontal: 3,
+    paddingHorizontal: 5,
   },
   revSiteToggleContentContainer: {
     backgroundColor: '#FFFFFF',

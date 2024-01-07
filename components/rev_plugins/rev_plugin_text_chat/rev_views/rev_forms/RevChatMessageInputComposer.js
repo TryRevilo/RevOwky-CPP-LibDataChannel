@@ -44,7 +44,7 @@ import {revTruncateFullNamesString} from '../../../../../rev_function_libs/rev_s
 import {useRevSiteStyles} from '../../../../rev_views/RevSiteStyles';
 import {RevPurchaseReceipt} from '../../../rev_plugin_check_out/rev_views/rev_object_views/RevPurchaseReceipt';
 
-export function ChatMessageInputComposer({revVarArgs}) {
+export function RevChatMessageInputComposer({revVarArgs}) {
   const {revSiteStyles} = useRevSiteStyles();
 
   const {_revContainerGUID = -1} = revVarArgs;
@@ -77,7 +77,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const {
-    revGetPeerIdsArr,
+    revActivePeerIdsArr,
     revInitPeerConn,
     revSendWebRTCMessage,
     revRecconnectPeer,
@@ -85,14 +85,14 @@ export function ChatMessageInputComposer({revVarArgs}) {
     revGetPeerMessagesArr,
   } = useContext(RevWebRTCContext);
 
-  const revPrevConnectionsArrref = useRef(revGetPeerIdsArr());
+  const revPrevConnectionsArrref = useRef(revActivePeerIdsArr);
 
   const {revInitChatMessagesListingArea, revAddChatMessage} = useChatMessages();
 
   const {revInitPersFile, revInitPersFilesArr} = useRevInitPersFile();
 
   const revActivePeerMessagesArrRef = useRef(
-    revGetPeerMessagesArr(revGetPeerIdsArr()),
+    revGetPeerMessagesArr(revActivePeerIdsArr),
   );
 
   const sendTypingMessage = () => {
@@ -272,9 +272,8 @@ export function ChatMessageInputComposer({revVarArgs}) {
   };
 
   const revHandleNextStrangerChat = isRevShowComposer => {
-    revActivePeerMessagesArrRef.current = revGetPeerMessagesArr(
-      revGetPeerIdsArr(),
-    );
+    revActivePeerMessagesArrRef.current =
+      revGetPeerMessagesArr(revActivePeerIdsArr);
 
     if (isRevShowComposer) {
       SET_REV_SITE_FOOTER_1_CONTENT_VIEWER(revChatInputArea());
@@ -365,6 +364,22 @@ export function ChatMessageInputComposer({revVarArgs}) {
         }}>
         {revNextUserIcon}
       </TouchableOpacity>
+    );
+  };
+
+  const revChatExitTab = () => {
+    return (
+      <View style={[styles.revChatSettingsTabWrapper]}>
+        <TouchableOpacity style={revSiteStyles.revFlexWrapper}>
+          <Feather
+            name="power"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtMedium,
+            ]}
+          />
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -489,6 +504,7 @@ export function ChatMessageInputComposer({revVarArgs}) {
                 revSiteStyles.revFlexWrapper_WidthAuto,
                 {alignItems: 'center', marginLeft: 'auto'},
               ]}>
+              {revChatExitTab()}
               {revChatSettingsTab()}
               {revRandLoggedInUserTabs}
               <RevHeaderNextStrangerTab />

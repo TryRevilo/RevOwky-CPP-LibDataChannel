@@ -1,6 +1,6 @@
 import React from 'react';
-import {ChatMessageInputComposer} from '../rev_forms/ChatMessageInputComposer';
+import {RevChatMessageInputComposer} from '../rev_forms/RevChatMessageInputComposer';
 
 export default function RevNextStrangerChatTab({revVarArgs}) {
-  return <ChatMessageInputComposer revVarArgs={revVarArgs} />;
+  return <RevChatMessageInputComposer revVarArgs={revVarArgs} />;
 }

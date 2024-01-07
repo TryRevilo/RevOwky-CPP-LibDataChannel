@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+import React, {useContext, useState, useRef, useEffect} from 'react';
 
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
@@ -113,7 +107,7 @@ export default function OutboxChatMessage({revVarArgs, revGetChildFilesArr}) {
     ));
 
     let revUpdatedImagesView = (
-      <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+      <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {marginTop: 4}]}>
         {revUpdatedImagesViewsArr}
       </View>
     );

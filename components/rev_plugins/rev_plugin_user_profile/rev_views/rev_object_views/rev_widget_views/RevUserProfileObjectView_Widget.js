@@ -201,7 +201,11 @@ export const RevUserProfileObjectView_Widget = ({revVarArgs}) => {
   );
 
   let revRetView = (
-    <View style={revSiteStyles.revFlexContainer}>
+    <View
+      style={[
+        revSiteStyles.revFlexContainer,
+        {width: '100%', paddingHorizontal: 5},
+      ]}>
       {!revAddPageHeader ? null : (
         <RevPageContentHeader revVarArgs={{revIsIndented: false}} />
       )}

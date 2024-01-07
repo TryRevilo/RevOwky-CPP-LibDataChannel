@@ -104,7 +104,7 @@ export default function InboxMessage({revVarArgs, revGetChildFilesArr}) {
     ));
 
     let revUpdatedImagesView = (
-      <View style={[revSiteStyles.revFlexWrapper_WidthAuto]}>
+      <View style={[revSiteStyles.revFlexWrapper_WidthAuto, {marginTop: 4}]}>
         {revUpdatedImagesViewsArr}
       </View>
     );

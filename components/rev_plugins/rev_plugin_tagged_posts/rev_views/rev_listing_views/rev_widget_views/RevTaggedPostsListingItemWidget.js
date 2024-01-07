@@ -460,22 +460,28 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 revSiteStyles.revFlexWrapper,
                 styles.revChatMsgHeaderWrapper,
               ]}>
-              <Text
+              <View
                 style={[
-                  revSiteStyles.revSiteTxtColorDark,
-                  revSiteStyles.revSiteTxtTiny,
-                  revSiteStyles.revSiteTxtBold,
+                  revSiteStyles.revFlexWrapper_WidthAuto,
+                  {alignItems: 'baseline'},
                 ]}>
-                {revPublisherEntityNames_Trunc}
-              </Text>
-              <Text
-                style={[
-                  revSiteStyles.revSiteTxtColorLight,
-                  revSiteStyles.revSiteTxtTiny_X,
-                  styles.revChatMsgSendTime,
-                ]}>
-                {revTimePublished}
-              </Text>
+                <Text
+                  style={[
+                    revSiteStyles.revSiteTxtColorDark,
+                    revSiteStyles.revSiteTxtTiny,
+                    revSiteStyles.revSiteTxtBold,
+                  ]}>
+                  {revPublisherEntityNames_Trunc}
+                </Text>
+                <Text
+                  style={[
+                    revSiteStyles.revSiteTxtColorLight,
+                    revSiteStyles.revSiteTxtTiny_X,
+                    styles.revChatMsgSendTime,
+                  ]}>
+                  {revTimePublished}
+                </Text>
+              </View>
 
               <View
                 style={[
