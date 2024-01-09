@@ -174,7 +174,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
       let revPersVarArgs = {
         revEntityNameVal: revTagsArr[i],
         revContainerEntityGUID: revEntityGUID,
-        revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+        _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       };
 
       let revPersRes = await revCreateNewTagFormAction(revPersVarArgs);
@@ -186,7 +186,7 @@ export const RevCreateNewOrganizationWidget = ({revVarArgs}) => {
 
   const handleRevSaveOrgTabPressed = async () => {
     let revPassVarArgs = {
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameTextRef.current,
       revEntityDescVal: revEntityDescTextRef.current,
       revMainOrganizationIconPath: revMainOrganizationIconPath,

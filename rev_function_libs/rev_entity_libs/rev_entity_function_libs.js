@@ -10,6 +10,14 @@ export const revIsEmptyInfo = revEntity => {
   );
 };
 
+export const revGetInfoEntity = revEntity => {
+  if (revIsEmptyInfo(revEntity)) {
+    return null;
+  }
+
+  return revEntity._revInfoEntity;
+};
+
 export const revIsUserEntity_WithInfo = revEntity => {
   if (revIsEmptyJSONObject(revEntity)) {
     return false;

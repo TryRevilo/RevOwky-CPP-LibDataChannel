@@ -21,7 +21,8 @@ import {useRevCreateCommentAction} from '../../../rev_actions/rev_create_comment
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
 
-const {RevPersLibRead_React} = NativeModules;
+import {useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
+import {revGetInfoEntity} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -30,62 +31,52 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  let revIsCommentUpdate = false;
+  const {revPersGetLocalEntityGUID_BY_RemoteEntityGUID} =
+    useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID();
 
-  if (revVarArgs.hasOwnProperty('revIsCommentUpdate')) {
-    revIsCommentUpdate = revVarArgs.revIsCommentUpdate;
+  if (revIsEmptyJSONObject(revVarArgs)) {
+    return null;
   }
 
   let revCommentTxtVal = '';
-
-  let revCancelFunc;
 
   if (!revVarArgs.hasOwnProperty('revCancel')) {
     return null;
   }
 
-  if (!revVarArgs.hasOwnProperty('revEntity')) {
+  const {
+    revEntity: revContainerEntity = {},
+    revContainerPublisherEntity,
+    revCommentEntity = {},
+    revCancel,
+  } = revVarArgs;
+
+  let revContainerInfoEntity = revGetInfoEntity(revContainerEntity);
+
+  if (!revContainerInfoEntity) {
     return null;
   }
 
-  let revCommentContainerEntity = revVarArgs.revEntity;
-  let revCommentContainerEntityGUID = revCommentContainerEntity._revGUID;
+  const {_revGUID = -1} = revContainerEntity;
+  let revContainerGUID = _revGUID;
 
-  revCancelFunc = revVarArgs.revCancel;
+  let revIsCommentUpdate = !revIsEmptyJSONObject(revCommentEntity);
 
   var handleRevSitePublisherCancelTab = () => {
-    revCancelFunc();
+    if (revCancel) {
+      revCancel();
+    }
   };
 
-  if (
-    !revIsEmptyJSONObject(revVarArgs) &&
-    revVarArgs.hasOwnProperty('revEntity') &&
-    revIsCommentUpdate
-  ) {
-    let revInfoEntityGUIDArrStr =
-      RevPersLibRead_React.revPersGetSubjectGUIDs_BY_RelStr_TargetGUID(
-        'rev_entity_info',
-        revCommentContainerEntityGUID,
-      );
+  if (revIsCommentUpdate) {
+    let revCommentInfoEntity = revGetInfoEntity(revCommentEntity);
 
-    let revInfoEntityGUIDArr = JSON.parse(revInfoEntityGUIDArrStr);
-
-    if (
-      !Array.isArray(revInfoEntityGUIDArr) ||
-      revInfoEntityGUIDArr.length < 1
-    ) {
+    if (!revCommentInfoEntity) {
       return null;
     }
 
-    let revInfoEntityGUID = revInfoEntityGUIDArr[0];
-
-    let revInfoEntityStr =
-      RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
-
-    let revInfoEntity = JSON.parse(revInfoEntityStr);
-
     revCommentTxtVal = revGetMetadataValue(
-      revInfoEntity._revMetadataList,
+      revCommentInfoEntity._revMetadataList,
       'rev_entity_desc',
     );
   }
@@ -98,18 +89,24 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
 
   const {revCreateCommentAction} = useRevCreateCommentAction();
 
-  const revHandleCreateCommentTab = () => {
+  const revHandleCreateCommentTab = async () => {
+    if (revContainerGUID < 1) {
+      revContainerGUID = await revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+        revContainerEntity,
+        revContainerPublisherEntity,
+      );
+    }
+
     let revPassVaArgs = {
-      revCommentContainerGUID: revCommentContainerEntityGUID,
-      revIsCommentUpdate: revIsCommentUpdate,
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revContainerGUID: revContainerGUID,
+      revIsCommentUpdate,
+      revCommentEntity,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revCommentText,
       revSelectedMedia: revSelectedMedia,
     };
 
     revCreateCommentAction(revPassVaArgs, revRetData => {
-      console.log('>>> revRetData', JSON.stringify(revRetData));
-
       if (revRetData) {
         setRevCommentText('');
         handleRevSitePublisherCancelTab();

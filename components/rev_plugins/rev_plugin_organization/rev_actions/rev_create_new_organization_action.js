@@ -28,7 +28,7 @@ export const useRevCreateNewOrganizationAction = () => {
       return revPersCallBack(-1);
     }
 
-    let revPersEntityInfoMetadataList = [
+    let _revMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revEntityNameVal),
       REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
       REV_METADATA_FILLER(
@@ -37,7 +37,7 @@ export const useRevCreateNewOrganizationAction = () => {
       ),
     ];
 
-    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+    revVarArgs['_revMetadataList'] = _revMetadataList;
 
     try {
       let revPersEntity = await revSaveNewEntity(revVarArgs);

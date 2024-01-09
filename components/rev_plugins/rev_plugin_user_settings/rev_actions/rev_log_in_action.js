@@ -8,6 +8,7 @@ import {useRevCreateNewUserEntity} from '../../../rev_libs_pers/rev_pers_rev_ent
 
 import {revIsEmptyJSONObject} from '../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetServerData} from '../../../rev_libs_pers/rev_server/rev_pers_lib_read';
+import {revGetInfoEntity} from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -16,6 +17,42 @@ export const useRevLogin = () => {
 
   const {revCreateNewUserEntity} = useRevCreateNewUserEntity();
 
+  const revDownloadUserProfile = async (revUserId, revPassword) => {
+    try {
+      let revLogInURL =
+        REV_ROOT_URL +
+        '/rev_api?' +
+        'rev_entity_unique_id=' +
+        revUserId +
+        '&revPassword1=' +
+        revPassword +
+        '&revIsSettings=' +
+        true +
+        '&revPluginHookContextsRemoteArr=revHookRemoteHandlerLogIn,revHookRemoteSendLoggedInPresenceToConnections,revHookRemoteHandlerProfile,revHookRemoteHandlerProfileStats';
+
+      let revData = await revGetServerData(revLogInURL);
+
+      if (revIsEmptyJSONObject(revData) || revData.hasOwnProperty('revError')) {
+        return -1;
+      }
+
+      const {revLoggedInUserEntity = {}, revProfileConnEntitiesArr = []} =
+        revData;
+
+      let revLoggedInUserGUID = revCreateNewUserEntity(revLoggedInUserEntity);
+
+      for (let i = 0; i < revProfileConnEntitiesArr.length; i++) {
+        revCreateNewUserEntity(revProfileConnEntitiesArr[i]);
+      }
+
+      return revLoggedInUserGUID;
+    } catch (error) {
+      console.log('*** ERROR - revDownloadUserProfile', error);
+
+      return -1;
+    }
+  };
+
   const revLogin = async (revUserId, revPassword) => {
     let revUniqueIdEntityGUID =
       RevPersLibRead_React.revPersGetMetadataOwnerGUID_By_Name_Value(
@@ -23,7 +60,9 @@ export const useRevLogin = () => {
         revUserId,
       );
 
-    console.log('>>> revUniqueIdEntityGUID', revUniqueIdEntityGUID);
+    if (revUniqueIdEntityGUID < 1) {
+      return await revDownloadUserProfile(revUserId, revPassword);
+    }
 
     let revUserIdOwnerGUID =
       RevPersLibRead_React.revPersGetEntityOwnerGUID_BY_EntityGUID(
@@ -62,27 +101,12 @@ export const useRevLogin = () => {
       }
     }
 
+    console.log('>>> revLoggedInUserGUID', revLoggedInUserGUID);
+
     if (revLoggedInUserGUID < 1) {
-      let revLogInURL =
-        REV_ROOT_URL +
-        '/rev_api?' +
-        'rev_entity_unique_id=' +
-        revUserId +
-        '&revPassword1=' +
-        revPassword +
-        '&revPluginHookContextsRemoteArr=revHookRemoteHandlerLogIn,revHookRemoteSendLoggedInPresenceToConnections,revHookRemoteHandlerProfile,revHookRemoteHandlerProfileStats';
-
-      let revData = await revGetServerData(revLogInURL);
-
-      if (
-        revIsEmptyJSONObject(revData) ||
-        !revData.hasOwnProperty('revLoggedInUserEntity')
-      ) {
-        return -1;
-      }
-
-      revLoggedInUserGUID = revCreateNewUserEntity(
-        revData.revLoggedInUserEntity,
+      revLoggedInUserGUID = await revDownloadUserProfile(
+        revUserId,
+        revPassword,
       );
     }
 

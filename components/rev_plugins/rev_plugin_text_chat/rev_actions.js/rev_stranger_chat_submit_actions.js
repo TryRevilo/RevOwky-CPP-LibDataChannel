@@ -13,23 +13,23 @@ export const useRevHandleSendMsgAction = () => {
 
   const revHandleSendMsgAction = async revVarArgs => {
     let revTargetEntityGUID = revVarArgs.revTargetEntityGUID;
-    let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
+    let _revOwnerGUID = revVarArgs._revOwnerGUID;
 
     if (revTargetEntityGUID < 1) {
       return {revTargetEntityGUID: revTargetEntityGUID};
     }
 
-    if (revEntityOwnerGUID < 1) {
-      return {revEntityOwnerGUID: revEntityOwnerGUID};
+    if (_revOwnerGUID < 1) {
+      return {_revOwnerGUID: _revOwnerGUID};
     }
 
     revVarArgs['revSubType'] = 'rev_stranger_chat_message';
 
-    let revPersEntityInfoMetadataList = [
+    let _revMetadataList = [
       REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),
     ];
 
-    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+    revVarArgs['_revMetadataList'] = _revMetadataList;
 
     let revRetEntity = revVarArgs; // await revSaveNewEntity(revVarArgs);
     let revPersEntityGUID = revRetEntity._revGUID;
@@ -44,7 +44,7 @@ export const useRevHandleSendMsgAction = () => {
       revMsgSenderOfRel._revGUID = revPersEntityGUID;
       revMsgSenderOfRel._revRemoteGUID = -1;
 
-      revMsgSenderOfRel._revTargetGUID = revEntityOwnerGUID;
+      revMsgSenderOfRel._revTargetGUID = _revOwnerGUID;
       revMsgSenderOfRel._revSubjectGUID = revTargetEntityGUID;
 
       //   let revMsgRelId = RevPersLibCreate_React.revPersRelationshipJSON(

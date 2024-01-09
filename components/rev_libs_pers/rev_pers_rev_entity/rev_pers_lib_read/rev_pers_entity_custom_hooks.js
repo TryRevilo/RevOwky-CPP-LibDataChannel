@@ -7,9 +7,45 @@ import {
 } from '../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetMetadataValue} from '../../rev_db_struct_models/revEntityMetadata';
 
+import {useRevSaveNewEntity} from '../rev_pers_lib_create/revPersLibCreateCustomHooks';
+
 const rev_settings = require('../../../../rev_res/rev_settings.json');
 
 const {RevPersLibRead_React} = NativeModules;
+
+export function useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID() {
+  const {revSaveNewEntity} = useRevSaveNewEntity();
+
+  const revPersGetLocalEntityGUID_BY_RemoteEntityGUID = async (
+    revEntity = {},
+    _revPublisherEntity = {},
+  ) => {
+    const {_revGUID = -1, _revRemoteGUID = -1} = revEntity;
+
+    if (_revGUID > 0) {
+      return _revGUID;
+    } else if (_revRemoteGUID < 1) {
+      return -1;
+    }
+
+    let revLocalGUID =
+      RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+        _revRemoteGUID,
+      );
+
+    if (revLocalGUID > 0) {
+      return revLocalGUID;
+    }
+
+    if (revIsEmptyJSONObject(_revPublisherEntity)) {
+      return -1;
+    }
+
+    return await revSaveNewEntity({...revEntity, _revPublisherEntity});
+  };
+
+  return {revPersGetLocalEntityGUID_BY_RemoteEntityGUID};
+}
 
 export function useRevPersGetRevEnty_By_EntityGUID() {
   const revPersGetRevEnty_By_EntityGUID = revEntityGUID => {

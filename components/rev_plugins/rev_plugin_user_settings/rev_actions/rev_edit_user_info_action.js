@@ -30,7 +30,7 @@ export const useRevEditUserInfoFormAction = () => {
       return revPersCallBack(-1);
     }
 
-    let revPersEntityInfoMetadataList = [
+    let _revMetadataList = [
       REV_METADATA_FILLER('rev_entity_name', revEntityNameVal),
       REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
       REV_METADATA_FILLER('rev_about_entity_info', revAboutEntityInfo),
@@ -41,7 +41,7 @@ export const useRevEditUserInfoFormAction = () => {
       ),
     ];
 
-    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+    revVarArgs['_revMetadataList'] = _revMetadataList;
 
     try {
       let revPersEntity = await revSaveNewEntity(revVarArgs);

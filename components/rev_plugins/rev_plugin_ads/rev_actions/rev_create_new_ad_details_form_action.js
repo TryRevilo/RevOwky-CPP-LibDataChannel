@@ -34,13 +34,13 @@ export const useRevCreateNewAdDetailsForm = () => {
 
     revVarArgs['revSubType'] = 'rev_ad';
 
-    let revPersEntityInfoMetadataList = [
+    let _revMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revEntityNameVal),
       REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
       REV_METADATA_FILLER('revMainCampaignIconPath', revMainCampaignIconPath),
     ];
 
-    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+    revVarArgs['_revMetadataList'] = _revMetadataList;
 
     let revOrgRel = REV_ENTITY_RELATIONSHIP_STRUCT();
     revOrgRel._revType = 'rev_organization_of';

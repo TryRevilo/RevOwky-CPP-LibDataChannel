@@ -2,6 +2,7 @@ import {useEffect, useState, useContext} from 'react';
 
 import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
 import {RevRemoteSocketContext} from '../../../rev_contexts/RevRemoteSocketContext';
+import {revIsEmptyJSONObject} from '../../../rev_function_libs/rev_gen_helper_functions';
 
 export const revGetServerData_Async = async revURL => {
   let revResponse;
@@ -14,6 +15,8 @@ export const revGetServerData_Async = async revURL => {
 
   // Set a timeout for the fetch operation
   let revTimeoutId = setTimeout(() => {
+    console.log('>>> revTimeoutId', revTimeoutId);
+
     revController.abort(); // Abort the fetch operation after the timeout
   }, revTimeoutMillis);
 
@@ -42,21 +45,27 @@ export const revGetServerData_Async = async revURL => {
 };
 
 export const revGetServerData = async revURL => {
-  let revResponseData = null;
+  let revResponseData = {};
 
   try {
     let revResponse = await revGetServerData_Async(revURL);
 
-    if (revResponse !== null) {
-      revResponseData = await revResponse.json();
+    if (!revIsEmptyJSONObject(revResponse)) {
+      const revContentType = revResponse.headers.get('Content-Type');
+
+      // Check if the response is in JSON format
+      if (revContentType && revContentType.includes('application/json')) {
+        let revRes = await revResponse.json();
+        revResponseData = {...revResponseData, ...revRes};
+      }
     }
   } catch (error) {
-    revResponseData = {
-      revError: error,
-    };
-  }
+    console.log('*** Error - Failed to parse JSON', error);
 
-  return revResponseData;
+    revResponseData = {...revResponseData, revError: error};
+  } finally {
+    return revResponseData;
+  }
 };
 
 export const useRevGetServerData_JSON_Async = revURL => {

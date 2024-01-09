@@ -112,7 +112,7 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     let revPassVaArgs = {
       revCommentContainerGUID: revContainerLocalEntityGUID,
       revIsCommentUpdate: revIsCommentUpdate,
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityDescVal: revEntityDescValText,
       revSelectedMedia: revSelectedMedia,
     };

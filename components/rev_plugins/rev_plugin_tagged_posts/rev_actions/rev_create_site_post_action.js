@@ -15,13 +15,13 @@ export const useRevCreateSitePostAction = () => {
   const revCreateSitePostAction = async (revVarArgs, revPersCallBack) => {
     const {
       _revGUID = -1,
-      revEntityOwnerGUID = -1,
+      _revOwnerGUID = -1,
       revSitePostText = '',
     } = revVarArgs;
 
     let revPersEntityGUID = _revGUID;
 
-    if (revEntityOwnerGUID < 1) {
+    if (_revOwnerGUID < 1) {
       return revPersCallBack({});
     }
 
@@ -30,7 +30,7 @@ export const useRevCreateSitePostAction = () => {
     if (revPersEntityGUID < 0) {
       revVarArgs['_revSubType'] = 'rev_kiwi';
 
-      revVarArgs['revPersEntityInfoMetadataList'] = [
+      revVarArgs['_revMetadataList'] = [
         REV_METADATA_FILLER('rev_entity_desc', revSitePostText),
       ];
 

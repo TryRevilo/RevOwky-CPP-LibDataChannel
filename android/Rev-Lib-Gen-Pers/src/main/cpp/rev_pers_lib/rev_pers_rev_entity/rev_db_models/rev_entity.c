@@ -127,6 +127,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revResolveStatus)) {
         int _revResolveStatusVal = _revResolveStatus->valueint;
         revEntity->_revResolveStatus = _revResolveStatusVal;
+    } else if (cJSON_IsString(_revResolveStatus)) {
+        char *revNumberStrVal = _revResolveStatus->valuestring;
+        revEntity->_revResolveStatus = strtol(revNumberStrVal, NULL, 10);
     }
 
     // _revChildableStatus
@@ -135,6 +138,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revChildableStatus)) {
         int _revChildableStatusVal = _revChildableStatus->valueint;
         revEntity->_revChildableStatus = _revChildableStatusVal;
+    } else if (cJSON_IsString(_revChildableStatus)) {
+        char *revNumberStrVal = _revChildableStatus->valuestring;
+        revEntity->_revChildableStatus = strtol(revNumberStrVal, NULL, 10);
     }
 
     // _revAccessPermission
@@ -143,6 +149,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revAccessPermission)) {
         int _revAccessPermissionVal = _revAccessPermission->valueint;
         revEntity->_revAccessPermission = _revAccessPermissionVal;
+    } else if (cJSON_IsString(_revAccessPermission)) {
+        char *revNumberStrVal = _revAccessPermission->valuestring;
+        revEntity->_revAccessPermission = strtol(revNumberStrVal, NULL, 10);
     }
 
     // _revGUID
@@ -151,6 +160,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revGUID)) {
         long _revGUIDVal = _revGUID->valueint;
         revEntity->_revGUID = _revGUIDVal;
+    } else if (cJSON_IsString(_revGUID)) {
+        char *revNumberStrVal = _revGUID->valuestring;
+        revEntity->_revGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revRemoteGUID
@@ -159,6 +171,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revRemoteGUID)) {
         long _revRemoteGUIDVal = _revRemoteGUID->valueint;
         revEntity->_revRemoteGUID = _revRemoteGUIDVal;
+    } else if (cJSON_IsString(_revRemoteGUID)) {
+        char *revNumberStrVal = _revRemoteGUID->valuestring;
+        revEntity->_revRemoteGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revOwnerGUID
@@ -167,6 +182,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revOwnerGUID)) {
         long _revOwnerGUIDVal = _revOwnerGUID->valueint;
         revEntity->_revOwnerGUID = _revOwnerGUIDVal;
+    } else if (cJSON_IsString(_revOwnerGUID)) {
+        char *revNumberStrVal = _revOwnerGUID->valuestring;
+        revEntity->_revOwnerGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revContainerGUID
@@ -175,6 +193,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revContainerGUID)) {
         long _revContainerGUIDVal = _revContainerGUID->valueint;
         revEntity->_revContainerGUID = _revContainerGUIDVal;
+    } else if (cJSON_IsString(_revContainerGUID)) {
+        char *revNumberStrVal = _revContainerGUID->valuestring;
+        revEntity->_revContainerGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revRemoteContainerGUID
@@ -183,6 +204,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revRemoteContainerGUID)) {
         long _revRemoteContainerGUIDVal = _revRemoteContainerGUID->valueint;
         revEntity->_revRemoteContainerGUID = _revRemoteContainerGUIDVal;
+    } else if (cJSON_IsString(_revRemoteContainerGUID)) {
+        char *revNumberStrVal = _revRemoteContainerGUID->valuestring;
+        revEntity->_revRemoteContainerGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revSiteGUID
@@ -191,6 +215,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revSiteGUID)) {
         long _revSiteGUIDVal = _revSiteGUID->valueint;
         revEntity->_revSiteGUID = _revSiteGUIDVal;
+    } else if (cJSON_IsString(_revSiteGUID)) {
+        char *revNumberStrVal = _revSiteGUID->valuestring;
+        revEntity->_revSiteGUID = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revInfoEntity
@@ -209,6 +236,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revTimeCreated)) {
         long _revTimeCreatedVal = _revTimeCreated->valueint;
         revEntity->_revTimeCreated = _revTimeCreatedVal;
+    } else if (cJSON_IsString(_revTimeCreated)) {
+        char *revNumberStrVal = _revTimeCreated->valuestring;
+        revEntity->_revTimeCreated = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revTimePublished
@@ -217,6 +247,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revTimePublished)) {
         long _revTimePublishedVal = _revTimePublished->valueint;
         revEntity->_revTimePublished = _revTimePublishedVal;
+    } else if (cJSON_IsString(_revTimePublished)) {
+        char *revNumberStrVal = _revTimePublished->valuestring;
+        revEntity->_revTimePublished = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revTimePublishedUpdated
@@ -225,6 +258,9 @@ RevEntity *revJSONEntityFiller(const char *const revJSONStringEntity) {
     if (cJSON_IsNumber(_revTimePublishedUpdated)) {
         long _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
         revEntity->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
+    } else if (cJSON_IsString(_revTimePublishedUpdated)) {
+        char *revNumberStrVal = _revTimePublishedUpdated->valuestring;
+        revEntity->_revTimePublishedUpdated = strtoll(revNumberStrVal, NULL, 10);
     }
 
     // _revMetadataList

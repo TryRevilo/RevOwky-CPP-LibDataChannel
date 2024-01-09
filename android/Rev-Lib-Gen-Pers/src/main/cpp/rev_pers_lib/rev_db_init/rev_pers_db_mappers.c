@@ -544,7 +544,19 @@ cJSON *revPersGetQuery_By_RevVarArgs(char *revVarArgs, htable_strstr_t *revMap, 
                 case SQLITE_INTEGER:
                 {
                     long long revEntityIntPtrVal = sqlite3_column_int64(stmt, i);
-                    cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateNumber(revEntityIntPtrVal)); // Set the value using the member pointer address
+                    // cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateNumber(revEntityIntPtrVal)); // Set the value using the member pointer address
+
+                    // Determine the maximum size needed for the string representation
+                    // The size is based on the maximum length of a long long plus one for the null terminator
+                    int revBufferSize = snprintf(NULL, 0, "%lld", revEntityIntPtrVal);
+                    
+                    // Allocate a buffer for the string representation
+                    char revBuffer[revBufferSize + 1]; // +1 for the null terminator
+
+                    // Convert int / long / long long to string
+                    snprintf(revBuffer, sizeof(revBuffer), "%lld", revEntityIntPtrVal);
+
+                    cJSON_AddItemToObject(revCurrJsonObject, revMappedEntityColName, cJSON_CreateString(revBuffer)); // Set the value using the member pointer address
 
                     break;
                 }

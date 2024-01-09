@@ -42,7 +42,7 @@ export const RevCreateFlagFormWidget = ({revVarArgs}) => {
   const handleRevSaveTabPressed = () => {
     let revPassVarArgs = {
       revContainerEntityGUID: revEntityGUID,
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revFlagValsArr: revFlagsArr,
       revFlagRefLinkValsArr: revFlagRefLinkValsArrRef.current,
       revEntityDescVal: revEntityDescTextRef.current,

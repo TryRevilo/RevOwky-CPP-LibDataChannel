@@ -19,19 +19,15 @@ export const useRevCreateFlagFormAction = () => {
   const revCreateFlagFormAction = async revVarArgs => {
     const {
       revFlagEntityGUID = -1,
-      revContainerEntityGUID = -1,
-      revEntityOwnerGUID = -1,
+      _revContainerGUID = -1,
+      _revOwnerGUID = -1,
       revFlagValsArr = [],
       revFlagRefLinkValsArr = [],
       revEntityNameVal = '',
       revEntityDescVal = '',
     } = revVarArgs;
 
-    if (
-      revContainerEntityGUID < 1 ||
-      revEntityOwnerGUID < 1 ||
-      !revFlagValsArr.length
-    ) {
+    if (_revContainerGUID < 1 || _revOwnerGUID < 1 || !revFlagValsArr.length) {
       return -1;
     }
 
@@ -40,12 +36,12 @@ export const useRevCreateFlagFormAction = () => {
     if (revPersEntityGUID < 0) {
       revVarArgs['revSubType'] = 'rev_flag_val';
 
-      revVarArgs['revPersEntityInfoMetadataList'] = [];
+      revVarArgs['_revMetadataList'] = [];
 
       for (let i = 0; i < revFlagValsArr.length; i++) {
         let revFlagVal = revFlagValsArr[i];
 
-        revVarArgs.revPersEntityInfoMetadataList.push(
+        revVarArgs._revMetadataList.push(
           REV_METADATA_FILLER('rev_flag_val', revFlagVal),
         );
       }
@@ -53,26 +49,26 @@ export const useRevCreateFlagFormAction = () => {
       for (let i = 0; i < revFlagRefLinkValsArr.length; i++) {
         let revFlagRefLinkVal = revFlagRefLinkValsArr[i];
 
-        revVarArgs.revPersEntityInfoMetadataList.push(
+        revVarArgs._revMetadataList.push(
           REV_METADATA_FILLER('rev_flag_ref_link', revFlagRefLinkVal),
         );
       }
 
       if (!revStringEmpty(revEntityNameVal)) {
-        revVarArgs.revPersEntityInfoMetadataList.push(
+        revVarArgs._revMetadataList.push(
           REV_METADATA_FILLER('rev_entity_name_val', revEntityNameVal),
         );
       }
 
       if (!revStringEmpty(revEntityDescVal)) {
-        revVarArgs.revPersEntityInfoMetadataList.push(
+        revVarArgs._revMetadataList.push(
           REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
         );
       }
 
       let revFlagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
       revFlagRel._revType = 'rev_flag_of';
-      revFlagRel._revTargetGUID = revContainerEntityGUID;
+      revFlagRel._revTargetGUID = _revContainerGUID;
       revFlagRel._revSubjectGUID = -1;
 
       revVarArgs['revSubjectRelsArr'] = [revFlagRel];

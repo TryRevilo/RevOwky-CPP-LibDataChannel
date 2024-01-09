@@ -14,7 +14,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {
   revFormatLongDate,
-  revGetRandInteger,
   revIsEmptyJSONObject,
   revIsEmptyVar,
 } from '../../../../../../rev_function_libs/rev_gen_helper_functions';
@@ -88,25 +87,13 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
 
   let revMaxMessageLen = 200;
 
-  let revChatMessageText = _revKiwiTxtVal => {
-    return (
-      <View
-        style={[
-          revSiteStyles.revFlexWrapper,
-          styles.revChatMsgContentTxtContainer,
-        ]}>
-        <RevReadMoreTextView
-          revText={_revKiwiTxtVal}
-          revMaxLength={revMaxMessageLen}
-        />
-      </View>
-    );
-  };
-
   return (
     <TouchableOpacity style={revSiteStyles.revFlexWrapper}>
       <TouchableOpacity style={styles.revCommentMsgUserIcon}>
-        <FontAwesome name="user" style={styles.revChatCommentNonIcon} />
+        <FontAwesome
+          name="user"
+          style={[revSiteStyles.revSiteTxtLarge, {color: '#c5e1a5'}]}
+        />
       </TouchableOpacity>
 
       <View style={styles.revChatMsgCommentContentContainer}>
@@ -132,11 +119,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
             {revFormatLongDate(revVarArgs._revTimeCreated)}
           </Text>
 
-          <View
-            style={[
-              styles.revChatMsgOptionsTabWrapper,
-              {width: 'auto', position: 'relative', top: -3},
-            ]}>
+          <View style={[styles.revChatMsgOptionsTabWrapper]}>
             <View
               style={[
                 {
@@ -150,7 +133,10 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
             />
 
             <View
-              style={[revSiteStyles.revFlexWrapper_WidthAuto, {marginLeft: 8}]}>
+              style={[
+                revSiteStyles.revFlexWrapper_WidthAuto,
+                {alignItems: 'center', marginLeft: 8},
+              ]}>
               <View
                 style={[
                   styles.revChatMsgOptionsTab,
@@ -183,12 +169,11 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
             </View>
           </View>
         </View>
-        <View
-          style={[
-            revSiteStyles.revFlexContainer,
-            styles.revChatMsgCommentContentTxtContainer,
-          ]}>
-          {revChatMessageText(revCommentTxtVal)}
+        <View style={[revSiteStyles.revFlexContainer, {paddingRight: 10}]}>
+          <RevReadMoreTextView
+            revText={revCommentTxtVal}
+            revMaxLength={revMaxMessageLen}
+          />
         </View>
       </View>
     </TouchableOpacity>
@@ -210,7 +195,6 @@ const styles = StyleSheet.create({
   },
   revChatCommentNonIcon: {
     color: '#c5e1a5',
-    fontSize: 15,
   },
   revChatMsgCommentContentContainer: {
     flex: 1,
@@ -227,19 +211,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   revChatMsgOptionsTabWrapper: {
-    alignItems: 'center',
     marginLeft: 'auto',
+    width: 'auto',
+    position: 'relative',
+    top: -3,
   },
   revChatMsgOptionsTab: {
     paddingHorizontal: 10,
     paddingVertical: 3,
     marginRight: 2,
     borderRadius: 32,
-  },
-  revChatMsgCommentContentTxtContainer: {
-    paddingRight: 5,
-  },
-  revChatMsgContentTxtContainer: {
-    paddingRight: 5,
   },
 });

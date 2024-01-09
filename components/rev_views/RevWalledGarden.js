@@ -128,8 +128,7 @@ const RevWalledGarden = () => {
       }
 
       let revSiteEntity = revSiteEntitiesArr[0];
-
-      let revSiteEntityOwnerGUID = revSiteEntity._revOwnerGUID;
+      const {_revOwnerGUID: revSiteEntityOwnerGUID} = revSiteEntity;
 
       if (revSiteEntityOwnerGUID) {
         SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);

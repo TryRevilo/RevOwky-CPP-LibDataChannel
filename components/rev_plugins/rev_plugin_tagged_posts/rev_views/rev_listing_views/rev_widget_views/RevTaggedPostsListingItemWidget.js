@@ -97,6 +97,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   }
 
   let revInfoEntity = revVarArgs._revInfoEntity;
+
   let revTimePublished = revFormatLongDate(revVarArgs._revTimeCreated);
 
   const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
@@ -112,21 +113,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   if (!revKiwiTxtVal) {
     return null;
   }
-
-  let revChatMessageText = _revKiwiTxtVal => {
-    return (
-      <View
-        style={[
-          revSiteStyles.revFlexWrapper,
-          styles.revChatMsgContentTxtContainer,
-        ]}>
-        <RevReadMoreTextView
-          revText={_revKiwiTxtVal}
-          revMaxLength={revMaxMessageLen}
-        />
-      </View>
-    );
-  };
 
   let revTagEntitiesInlineListingView = () => {
     let revTagEntityGUIDsStr =
@@ -339,6 +325,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
       revViewName: 'RevCommentForm',
       revVarArgs: {
         revEntity: revVarArgs,
+        revContainerPublisherEntity: revPublisherEntity,
         revIsCommentUpdate: false,
         revCancel: () => {
           setRevIsCommetForm(false);
@@ -351,7 +338,16 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   let revContentBody = (
     <>
-      {revChatMessageText(revKiwiTxtVal)}
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revChatMsgContentTxtContainer,
+        ]}>
+        <RevReadMoreTextView
+          revText={revKiwiTxtVal}
+          revMaxLength={revMaxMessageLen}
+        />
+      </View>
 
       <View
         style={[
@@ -483,11 +479,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 </Text>
               </View>
 
-              <View
-                style={[
-                  styles.revChatMsgOptionsTabWrapper,
-                  {width: 'auto', position: 'relative', top: -3, right: 7},
-                ]}>
+              <View style={[styles.revChatMsgOptionsTabWrapper]}>
                 <View
                   style={[
                     {
@@ -503,7 +495,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                 <View
                   style={[
                     revSiteStyles.revFlexWrapper_WidthAuto,
-                    {marginLeft: 8},
+                    {alignItems: 'center', marginLeft: 8},
                   ]}>
                   <View
                     style={[
@@ -622,7 +614,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   revChatMsgOptionsTabWrapper: {
-    alignItems: 'center',
+    width: 'auto',
+    position: 'relative',
+    top: -3,
+    right: 7,
     marginLeft: 'auto',
   },
   revChatMsgOptionsTab: {

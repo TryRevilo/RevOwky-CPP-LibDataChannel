@@ -16,7 +16,7 @@ export function RevSubmitChatTab({}) {
   const handleRevSendChatMsg = () => {
     let revPassVaArgs = {
       revTargetEntityGUID: revGetCurrentChatTarget(),
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityDescVal: revGetChatTextImput(),
     };
 

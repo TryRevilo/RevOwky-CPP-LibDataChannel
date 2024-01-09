@@ -206,7 +206,7 @@ export const RevEditUserInfoForm_Widget = ({revVarArgs}) => {
   const handleRevSaveInfoTabPress = () => {
     let revPassVarArgs = {
       _revGUID: REV_LOGGED_IN_ENTITY_GUID,
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameTxt,
       revEntityDescVal: revEntityDescTxt,
       revAboutEntityInfo: revAboutEntityInfoTxt,

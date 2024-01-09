@@ -4,10 +4,16 @@ import {REV_ENTITY_STRUCT} from '../../../rev_libs_pers/rev_db_struct_models/rev
 import {REV_METADATA_FILLER} from '../../../rev_libs_pers/rev_db_struct_models/revEntityMetadata';
 import {REV_ENTITY_RELATIONSHIP_STRUCT} from '../../../rev_libs_pers/rev_db_struct_models/revEntityRelationship';
 
-const {RevPersLibCreate_React, RevPersLibRead_React} = NativeModules;
+const {RevPersLibCreate_React} = NativeModules;
 
 export const revRegisterUserEntity = revVarArgs => {
-  let {revUserId = '', revPassword1 = '', revEMail = '', revPhoneNu = '', revFullNames = ''} = revVarArgs;
+  let {
+    revUserId = '',
+    revPassword1 = '',
+    revEMail = '',
+    revPhoneNu = '',
+    revFullNames = '',
+  } = revVarArgs;
 
   let revPersUserEntity = REV_ENTITY_STRUCT();
   revPersUserEntity._revType = 'rev_user_entity';

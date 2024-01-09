@@ -85,19 +85,6 @@ export const RevLogInFormWidgetView = () => {
           SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
         }
       }
-    } else {
-      let revSiteEntitiesArr = revPersGetRevEntities_By_ResolveStatus_SubType(
-        2,
-        'rev_site',
-      );
-
-      let revSiteEntity = revSiteEntitiesArr[0];
-
-      let revSiteEntityOwnerGUID = revSiteEntity._revOwnerGUID;
-
-      if (revSiteEntityOwnerGUID) {
-        SET_REV_LOGGED_IN_ENTITY_GUID(revSiteEntityOwnerGUID);
-      }
     }
 
     SET_REV_SITE_ENTITY_GUID(revSiteEntityGUID);

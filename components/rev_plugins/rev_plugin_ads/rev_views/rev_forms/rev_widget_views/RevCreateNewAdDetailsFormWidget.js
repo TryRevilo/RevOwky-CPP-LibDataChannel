@@ -102,7 +102,7 @@ export const RevCreateNewAdDetailsFormWidget = ({revVarArgs}) => {
 
   const handleRevSaveAdDetailsTabPressed = async () => {
     let revPassVarArgs = {
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revEntityNameVal: revEntityNameText,
       revEntityDescVal: revEntityDescText,
       revOrganizationEntityGUID: revOrganizationEntityGUID,

@@ -58,7 +58,7 @@ export const RevCreateProductLineWidget = ({revVarArgs}) => {
 
   const handleRevSaveProductLineTabPressed = async () => {
     let revPassVarArgs = {
-      revEntityOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
+      _revOwnerGUID: REV_LOGGED_IN_ENTITY_GUID,
       revContainerEntityGUID: revContainerEntityGUID,
       revEntityNameVal: revEntityNameText,
       revEntityDescVal: revEntityDescText,

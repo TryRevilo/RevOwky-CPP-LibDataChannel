@@ -19,13 +19,13 @@ export const useRevCreateCommentAction = () => {
   const revCreateCommentAction = async (revVarArgs, revPersCallBack) => {
     let revCommentContainerGUID = revVarArgs.revCommentContainerGUID;
     let revIsCommentUpdate = revVarArgs.revIsCommentUpdate;
-    let revEntityOwnerGUID = revVarArgs.revEntityOwnerGUID;
+    let _revOwnerGUID = revVarArgs._revOwnerGUID;
 
     if (revCommentContainerGUID < 1) {
       return revPersCallBack({});
     }
 
-    if (revEntityOwnerGUID < 1) {
+    if (_revOwnerGUID < 1) {
       return revPersCallBack({});
     }
 
@@ -36,12 +36,11 @@ export const useRevCreateCommentAction = () => {
     if (!revIsCommentUpdate) {
       revVarArgs['revSubType'] = 'rev_message';
 
-      let revPersEntityInfoMetadataList = [
+      let _revMetadataList = [
         REV_METADATA_FILLER('rev_entity_desc_val', revVarArgs.revEntityDescVal),
       ];
 
-      revVarArgs['revPersEntityInfoMetadataList'] =
-        revPersEntityInfoMetadataList;
+      revVarArgs['_revMetadataList'] = _revMetadataList;
 
       let revMsgRecipientOfRel = REV_ENTITY_RELATIONSHIP_STRUCT();
       revMsgRecipientOfRel._revType = 'rev_msg_recipient_of';

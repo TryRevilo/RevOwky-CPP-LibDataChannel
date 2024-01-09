@@ -42,17 +42,17 @@ export const useRevCreateNewTagFormAction = () => {
 
     revVarArgs['revSubType'] = 'rev_tag';
 
-    let revPersEntityInfoMetadataList = [
+    let _revMetadataList = [
       REV_METADATA_FILLER('rev_entity_name_val', revEntityNameValPers),
     ];
 
     if (!revStringEmpty(revEntityDescVal)) {
-      revPersEntityInfoMetadataList.push(
+      _revMetadataList.push(
         REV_METADATA_FILLER('rev_entity_desc_val', revEntityDescVal),
       );
     }
 
-    revVarArgs['revPersEntityInfoMetadataList'] = revPersEntityInfoMetadataList;
+    revVarArgs['_revMetadataList'] = _revMetadataList;
 
     if (revEntityGUID > 0) {
       let revEntityTagRel = REV_ENTITY_RELATIONSHIP_STRUCT();
