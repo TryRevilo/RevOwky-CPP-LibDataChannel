@@ -2,13 +2,12 @@ import React, {useContext} from 'react';
 import {NativeModules} from 'react-native';
 
 import {RevSiteDataContext} from '../../../../rev_contexts/RevSiteDataContext';
+import {RevSiteInitContext} from '../../../../rev_contexts/RevSiteInitContext';
 
 import {
   useRevGetRevEntityMetadata_By_MetadataName_MetadataValue,
   userevPersGetMetadata_By_Name_EntityGUID,
 } from '../../rev_pers_metadata/rev_read/RevPersReadMetadataCustomHooks';
-
-import {useRevPersSyncDataComponent} from '../../rev_server/RevPersSyncDataComponent';
 
 import {REV_ENTITY_STRUCT} from '../../rev_db_struct_models/revEntity';
 import {REV_METADATA_FILLER} from '../../../../rev_function_libs/rev_entity_libs/rev_metadata_function_libs';
@@ -35,7 +34,7 @@ import {
   revReplaceWiteSpaces,
   revStringEmpty,
 } from '../../../../rev_function_libs/rev_string_function_libs';
-import {revGetMetadataValue} from '../../rev_db_struct_models/revEntityMetadata';
+import {revIsEmptyInfo} from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 const {
   RevPersLibCreate_React,
@@ -49,7 +48,12 @@ export const useRevCreateNewEntity = () => {
     useContext(RevSiteDataContext);
 
   const revCreateNewEntity = revPersData => {
-    let revEntityType = revPersData._revType;
+    const {
+      _revType: revEntityType,
+      _revGUID = -1,
+      _revRemoteGUID = -1,
+      _revSiteGUID = -1,
+    } = revPersData;
 
     if (
       revEntityType !== 'rev_user_entity' &&
@@ -74,7 +78,23 @@ export const useRevCreateNewEntity = () => {
       return -1;
     }
 
-    revPersData._revSiteGUID = REV_SITE_ENTITY_GUID;
+    // If is remote set the Site GUID to local GUID
+    let revLocalSiteGUID = -1;
+
+    if (_revRemoteGUID > 1 && _revGUID < 1) {
+      revLocalSiteGUID =
+        RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+          _revSiteGUID,
+        );
+    } else {
+      revLocalSiteGUID = REV_SITE_ENTITY_GUID;
+    }
+
+    revPersData['_revSiteGUID'] = revLocalSiteGUID;
+
+    if (!revIsEmptyInfo(revPersData)) {
+      revPersData['_revInfoEntity']['_revSiteGUID'] = revLocalSiteGUID;
+    }
 
     let revPersEntityGUID = RevPersLibCreate_React.revPersInitJSON(
       JSON.stringify(revPersData),
@@ -471,7 +491,7 @@ export const useRevCreateNewTag = () => {
 };
 
 export const useRevSaveNewEntity = () => {
-  const {REV_SITE_ENTITY_GUID} = useContext(RevSiteDataContext);
+  const {SET_IS_REV_LOCAL_DATA_IN_SYNC} = useContext(RevSiteInitContext);
 
   const {revPersGetRevEnty_By_EntityGUID} =
     useRevPersGetRevEnty_By_EntityGUID();
@@ -482,8 +502,6 @@ export const useRevSaveNewEntity = () => {
   const {revCreateNewEntity} = useRevCreateNewEntity();
   const {revCreateMediaAlbum} = useRevCreateMediaAlbum();
   const {revCreateNewTag} = useRevCreateNewTag();
-
-  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   const revSaveNewEntity = async revVarArgs => {
     if (revIsEmptyJSONObject(revVarArgs)) {
@@ -497,6 +515,7 @@ export const useRevSaveNewEntity = () => {
       _revRemoteGUID = -1,
       _revOwnerGUID = -1,
       _revContainerGUID = -1,
+      _revSiteGUID = -1,
       _revMetadataList = [],
       _revInfoEntity = {},
       _revPublisherEntity = {},
@@ -536,6 +555,7 @@ export const useRevSaveNewEntity = () => {
 
       if (revPublisherLocalGUID < 1) {
         revPublisherLocalGUID = revCreateNewUserEntity(_revPublisherEntity);
+        _revPublisherEntity['_revGUID'] = revPublisherLocalGUID;
 
         if (revPublisherLocalGUID) {
           return -1;
@@ -581,8 +601,6 @@ export const useRevSaveNewEntity = () => {
           _revName,
           revInfoLocalGUID,
         );
-
-        console.log('>>> revMetadata', JSON.stringify(revMetadata));
 
         const {_revId = -1, revMetadataValue = ''} = revMetadata;
 
@@ -634,6 +652,7 @@ export const useRevSaveNewEntity = () => {
         revPersInfoEntityData._revType = 'rev_object';
         revPersInfoEntityData._revSubType = 'rev_entity_info';
         revPersInfoEntityData._revOwnerGUID = revPublisherLocalGUID;
+        revPersInfoEntityData._revContainerGUID = revPersEntityGUID;
         revPersInfoEntityData._revMetadataList = revPersMetadataList;
 
         if (revInfoRemoteGUID > 0) {
@@ -643,8 +662,11 @@ export const useRevSaveNewEntity = () => {
         revPersEntityData._revInfoEntity = revPersInfoEntityData;
       }
 
-      revPersEntityGUID = revCreateNewEntity(revPersEntityData);
+      if (_revSubType !== 'rev_entity_info') {
+        revPersEntityData['_revMetadataList'] = {};
+      }
 
+      revPersEntityGUID = revCreateNewEntity(revPersEntityData);
       revPersEntityData['_revGUID'] = revPersEntityGUID;
 
       if (revPersEntityGUID < 1) {
@@ -671,7 +693,7 @@ export const useRevSaveNewEntity = () => {
 
         revSubjectRel._revSubjectGUID = revPersEntityGUID;
 
-        let revSubjectRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+        RevPersLibCreate_React.revPersRelationshipJSON(
           JSON.stringify(revSubjectRel),
         );
       }
@@ -695,16 +717,14 @@ export const useRevSaveNewEntity = () => {
 
         revTargetRel._revTargetGUID = revPersEntityGUID;
 
-        let revTargetRelId = RevPersLibCreate_React.revPersRelationshipJSON(
+        RevPersLibCreate_React.revPersRelationshipJSON(
           JSON.stringify(revTargetRel),
         );
       }
       /** END SAVE TARGET RELS */
 
       /** START SAVE REMOTE */
-      revPersSyncDataComponent().then(revRes => {
-        console.log('>>> revRes', revRes);
-      });
+      SET_IS_REV_LOCAL_DATA_IN_SYNC(false);
       /** END SAVE REMOTE */
     }
 
@@ -761,10 +781,68 @@ export const useRevSaveNewEntity = () => {
   return {revSaveNewEntity};
 };
 
-export const useRevCreateNewUserEntity = () => {
+export const useRevSaveRemoteSiteEntity = () => {
+  const {revSaveNewEntity} = useRevSaveNewEntity();
+  const {revCreateNewUserEntity} = useRevCreateNewUserEntity();
+
+  const revSaveRemoteSiteEntity = async revVarArgs => {
+    const {revSiteEntity = {}, revSiteOwnerEntity = {}} = revVarArgs;
+    const {
+      _revGUID = -1,
+      _revRemoteGUID = -1,
+      _revOwnerGUID = -1,
+    } = revSiteEntity;
+
+    let revSiteOwnerLocalGUID = -1;
+    ({_revGUID: revSiteOwnerLocalGUID = -1} = revSiteOwnerEntity);
+
+    let revSiteLocalGUID = -1;
+
+    if (_revGUID > 0) {
+      return {revSiteLocalGUID, revSiteOwnerLocalGUID};
+    }
+
+    if (!revIsEmptyJSONObject(revSiteEntity)) {
+      revSiteLocalGUID =
+        RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+          _revRemoteGUID,
+        );
+
+      if (revSiteLocalGUID < 1) {
+        revSiteLocalGUID = await revSaveNewEntity(revSiteEntity);
+      }
+
+      if (revSiteOwnerLocalGUID !== _revOwnerGUID) {
+        if (revSiteOwnerLocalGUID < 1) {
+          revSiteOwnerLocalGUID =
+            RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+              _revRemoteGUID,
+            );
+        }
+
+        if (revSiteOwnerLocalGUID < 1) {
+          revSiteOwnerLocalGUID = await revCreateNewUserEntity(
+            revSiteOwnerEntity,
+          );
+        }
+
+        RevPersLibUpdate_React.revPersResetEntityOwnerGUID(
+          revSiteLocalGUID,
+          revSiteOwnerLocalGUID,
+        );
+      }
+    }
+
+    return {revSiteLocalGUID, revSiteOwnerLocalGUID};
+  };
+
+  return {revSaveRemoteSiteEntity};
+};
+
+export function useRevCreateNewUserEntity() {
   const {revSetRemoteRelGUID} = useRevSetRemoteRelGUID();
 
-  const revCreateNewUserEntity = revUserEntity => {
+  const revCreateNewUserEntity = async revUserEntity => {
     if (revIsEmptyJSONObject(revUserEntity)) {
       return -1;
     }
@@ -932,4 +1010,4 @@ export const useRevCreateNewUserEntity = () => {
   };
 
   return {revCreateNewUserEntity};
-};
+}

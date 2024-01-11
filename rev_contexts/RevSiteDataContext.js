@@ -32,8 +32,6 @@ const RevSiteDataContextProvider = ({children}) => {
 
   const [REV_LOGGED_IN_ENTITY, SET_REV_LOGGED_IN_ENTITY] = useState({});
 
-  const [REV_PEER_CONNECTIONS, SET_REV_PEER_CONNECTIONS] = useState({});
-
   const {revGetSiteEntity} = useRevGetSiteEntity();
   const {revCreateSiteEntity} = useRevCreateSiteEntity();
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
@@ -104,8 +102,6 @@ const RevSiteDataContextProvider = ({children}) => {
         SET_REV_LOGGED_IN_ENTITY,
         REV_SITE_ENTITY_GUID,
         SET_REV_SITE_ENTITY_GUID,
-        REV_PEER_CONNECTIONS,
-        SET_REV_PEER_CONNECTIONS,
       }}>
       {children}
     </RevSiteDataContext.Provider>

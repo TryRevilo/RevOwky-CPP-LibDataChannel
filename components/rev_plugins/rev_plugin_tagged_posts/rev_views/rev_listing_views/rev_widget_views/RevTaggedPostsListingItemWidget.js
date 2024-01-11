@@ -56,16 +56,14 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
     return null;
   }
 
-  if (
-    !revVarArgs.hasOwnProperty('_revPublisherEntity') ||
-    revIsEmptyJSONObject(revVarArgs._revPublisherEntity)
-  ) {
+  const {_revPublisherEntity: revPublisherEntity = {}} = revVarArgs;
+
+  if (revIsEmptyJSONObject(revPublisherEntity)) {
     return null;
   }
 
   const {revGetEntityIcon} = useRevGetEntityIcon();
 
-  let revPublisherEntity = revVarArgs._revPublisherEntity;
   let revPublisherInfoEntity = revPublisherEntity._revInfoEntity;
   let revPublisherInfoEntityMetadataList =
     revPublisherInfoEntity._revMetadataList;

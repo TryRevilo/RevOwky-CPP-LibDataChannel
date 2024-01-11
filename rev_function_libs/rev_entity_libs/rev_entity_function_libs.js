@@ -84,37 +84,6 @@ export const revGetLocal_OR_RemoteGUID = revEntity => {
   return revEntityGUID >= 0 ? revEntityGUID : revGetRemoteEntityGUID(revEntity);
 };
 
-export const revGetPublisherEntity = (revPublishersArr, revEntityGUID) => {
-  let revPublisherEntity = null;
-
-  if (!revPublishersArr) {
-    console.log('ERR -> NULL PUBLISHERS!');
-    return revPublisherEntity;
-  }
-
-  for (let i = 0; i < revPublishersArr.length; i++) {
-    let revPublisher = revPublishersArr[i];
-
-    let revPublisherGUID = revGetLocal_OR_RemoteGUID(revPublisher);
-
-    if (revIsEmptyJSONObject(revPublisher)) {
-      continue;
-    }
-
-    if (revPublisherGUID == revEntityGUID) {
-      if (revPublisher.revEntity) {
-        revPublisherEntity = revPublisher.revEntity;
-      } else {
-        revPublisherEntity = revPublisher;
-      }
-
-      break;
-    }
-  }
-
-  return revPublisherEntity;
-};
-
 export const revGetEntityChildren_By_Subtype = (
   revEntityChildrenArr,
   revSubType,

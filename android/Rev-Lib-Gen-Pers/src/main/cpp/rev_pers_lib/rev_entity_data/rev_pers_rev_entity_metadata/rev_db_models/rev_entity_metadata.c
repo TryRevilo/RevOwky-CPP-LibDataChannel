@@ -91,11 +91,9 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     RevEntityMetadata *revEntityMetadata = revInitializedMetadata();
 
-    if (rev_entity_metadata_json == NULL)
-    {
+    if (rev_entity_metadata_json == NULL) {
         const char *error_ptr = cJSON_GetErrorPtr();
-        if (error_ptr != NULL)
-        {
+        if (error_ptr != NULL) {
             __android_log_print(ANDROID_LOG_ERROR, "MyApp", "Error -revJSONStrMetadataFiller %s\n", error_ptr);
         }
 
@@ -105,8 +103,7 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
     // _revName
     const cJSON *_revName = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revName");
 
-    if (cJSON_IsString(_revName) && (_revName->valuestring != NULL))
-    {
+    if (cJSON_IsString(_revName) && (_revName->valuestring != NULL)) {
         char *_revNameVal = _revName->valuestring;
         revEntityMetadata->_revName = _revNameVal;
     }
@@ -114,8 +111,7 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
     // _revValue
     const cJSON *_revValue = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revValue");
 
-    if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL))
-    {
+    if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL)) {
         char *_revValueVal = _revValue->valuestring;
         revEntityMetadata->_revValue = _revValueVal;
     }
@@ -125,9 +121,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revResolveStatus");
 
-    if (cJSON_IsNumber(_revResolveStatus))
-    {
+    if (cJSON_IsNumber(_revResolveStatus)) {
         _revResolveStatusVal = _revResolveStatus->valueint;
+    } else if (cJSON_IsString(_revResolveStatus)) {
+        char *revNumberStrVal = _revResolveStatus->valuestring;
+        _revResolveStatusVal = strtol(revNumberStrVal, NULL, 10);
     }
     
     revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
@@ -137,9 +135,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     const cJSON *_revGUID = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revGUID");
 
-    if (cJSON_IsNumber(_revGUID))
-    {
+    if (cJSON_IsNumber(_revGUID)) {
         _revGUIDVal = _revGUID->valueint;
+    } else if (cJSON_IsString(_revGUID)) {
+        char *revNumberStrVal = _revGUID->valuestring;
+        _revGUIDVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revGUID = _revGUIDVal;
@@ -149,9 +149,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     long _revIdVal = -1l;
 
-    if (cJSON_IsNumber(_revId))
-    {
+    if (cJSON_IsNumber(_revId)) {
         _revIdVal = _revId->valueint;
+    } else if (cJSON_IsString(_revId)) {
+        char *revNumberStrVal = _revId->valuestring;
+        _revIdVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revId = _revIdVal;
@@ -161,9 +163,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     long _revRemoteIdVal = -1l;
 
-    if (cJSON_IsNumber(_revRemoteId))
-    {
+    if (cJSON_IsNumber(_revRemoteId)) {
         _revRemoteIdVal = _revRemoteId->valueint;
+    } else if (cJSON_IsString(_revRemoteId)) {
+        char *revNumberStrVal = _revRemoteId->valuestring;
+        _revRemoteIdVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revRemoteId = _revRemoteIdVal;
@@ -173,9 +177,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     const cJSON *_revTimeCreated = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimeCreated");
 
-    if (cJSON_IsNumber(_revTimeCreated))
-    {
+    if (cJSON_IsNumber(_revTimeCreated)) {
         _revTimeCreatedVal = _revTimeCreated->valueint;
+    } else if (cJSON_IsString(_revTimeCreated)) {
+        char *revNumberStrVal = _revTimeCreated->valuestring;
+        _revTimeCreatedVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revTimeCreated = _revTimeCreatedVal;
@@ -185,9 +191,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     const cJSON *_revTimePublished = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimePublished");
 
-    if (cJSON_IsNumber(_revTimePublished))
-    {
+    if (cJSON_IsNumber(_revTimePublished)) {
         _revTimePublishedVal = _revTimePublished->valueint;
+    } else if (cJSON_IsString(_revTimePublished)) {
+        char *revNumberStrVal = _revTimePublished->valuestring;
+        _revTimePublishedVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revTimePublished = _revTimePublishedVal;
@@ -197,9 +205,11 @@ RevEntityMetadata *revJSONStrMetadataFiller(const char *revEntityMetadataJSONStr
 
     const cJSON *_revTimePublishedUpdated = cJSON_GetObjectItemCaseSensitive(rev_entity_metadata_json, "_revTimePublishedUpdated");
 
-    if (cJSON_IsNumber(_revTimePublishedUpdated))
-    {
+    if (cJSON_IsNumber(_revTimePublishedUpdated)) {
         _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
+    } else if (cJSON_IsString(_revTimePublishedUpdated)) {
+        char *revNumberStrVal = _revTimePublishedUpdated->valuestring;
+        _revTimePublishedUpdatedVal = strtoll(revNumberStrVal, NULL, 10);
     }
 
     revEntityMetadata->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;
@@ -224,8 +234,7 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
             // _revName
             const cJSON *_revName = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revName");
 
-            if (cJSON_IsString(_revName) && (_revName->valuestring != NULL))
-            {
+            if (cJSON_IsString(_revName) && (_revName->valuestring != NULL)) {
                 char *_revNameVal = _revName->valuestring;
                 revEntityMetadata->_revName = _revNameVal;
             }
@@ -233,8 +242,7 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
             // _revValue
             const cJSON *_revValue = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revValue");
 
-            if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL))
-            {
+            if (cJSON_IsString(_revValue) && (_revValue->valuestring != NULL)) {
                 char *_revValueVal = _revValue->valuestring;
                 revEntityMetadata->_revValue = _revValueVal;
             }
@@ -244,9 +252,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             const cJSON *_revResolveStatus = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revResolveStatus");
 
-            if (cJSON_IsNumber(_revResolveStatus))
-            {
+            if (cJSON_IsNumber(_revResolveStatus)) {
                 _revResolveStatusVal = _revResolveStatus->valueint;
+            } else if (cJSON_IsString(_revResolveStatus)) {
+                char *revNumberStrVal = _revResolveStatus->valuestring;
+                _revResolveStatusVal = strtol(revNumberStrVal, NULL, 10);
             }
             
             revEntityMetadata->_revResolveStatus = _revResolveStatusVal;
@@ -259,9 +269,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             long _revIdVal = -1l;
 
-            if (cJSON_IsNumber(_revId))
-            {
+            if (cJSON_IsNumber(_revId)) {
                 _revIdVal = _revId->valueint;
+            } else if (cJSON_IsString(_revId)) {
+                char *revNumberStrVal = _revId->valuestring;
+                _revIdVal = strtoll(revNumberStrVal, NULL, 10);
             }
 
             revEntityMetadata->_revId = _revIdVal;
@@ -271,9 +283,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             long _revRemoteIdVal = -1l;
 
-            if (cJSON_IsNumber(_revRemoteId))
-            {
+            if (cJSON_IsNumber(_revRemoteId)) {
                 _revRemoteIdVal = _revRemoteId->valueint;
+            } else if (cJSON_IsString(_revRemoteId)) {
+                char *revNumberStrVal = _revRemoteId->valuestring;
+                _revRemoteIdVal = strtoll(revNumberStrVal, NULL, 10);
             }
 
             revEntityMetadata->_revRemoteId = _revRemoteIdVal;
@@ -283,9 +297,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             const cJSON *_revTimeCreated = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimeCreated");
 
-            if (cJSON_IsNumber(_revTimeCreated))
-            {
+            if (cJSON_IsNumber(_revTimeCreated)) {
                 _revTimeCreatedVal = _revTimeCreated->valueint;
+            } else if (cJSON_IsString(_revTimeCreated)) {
+                char *revNumberStrVal = _revTimeCreated->valuestring;
+                _revTimeCreatedVal = strtoll(revNumberStrVal, NULL, 10);
             }
 
             revEntityMetadata->_revTimeCreated = _revTimeCreatedVal;
@@ -295,9 +311,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             const cJSON *_revTimePublished = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimePublished");
 
-            if (cJSON_IsNumber(_revTimePublished))
-            {
+            if (cJSON_IsNumber(_revTimePublished)) {
                 _revTimePublishedVal = _revTimePublished->valueint;
+            } else if (cJSON_IsString(_revTimePublished)) {
+                char *revNumberStrVal = _revTimePublished->valuestring;
+                _revTimePublishedVal = strtoll(revNumberStrVal, NULL, 10);
             }
 
             revEntityMetadata->_revTimePublished = _revTimePublishedVal;
@@ -307,9 +325,11 @@ void revMetaDataJSONArrStrFiller(list *revList, const char *const revEntityMetad
 
             const cJSON *_revTimePublishedUpdated = cJSON_GetObjectItemCaseSensitive(revEntityMetadataJSON, "_revTimePublishedUpdated");
 
-            if (cJSON_IsNumber(_revTimePublishedUpdated))
-            {
+            if (cJSON_IsNumber(_revTimePublishedUpdated)) {
                 _revTimePublishedUpdatedVal = _revTimePublishedUpdated->valueint;
+            } else if (cJSON_IsString(_revTimePublishedUpdated)) {
+                char *revNumberStrVal = _revTimePublishedUpdated->valuestring;
+                _revTimePublishedUpdatedVal = strtoll(revNumberStrVal, NULL, 10);
             }
 
             revEntityMetadata->_revTimePublishedUpdated = _revTimePublishedUpdatedVal;

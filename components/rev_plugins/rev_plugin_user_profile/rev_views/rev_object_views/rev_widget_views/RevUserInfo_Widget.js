@@ -180,69 +180,60 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
     revColumnArrays[revInsertionColumn].push(revPicView);
   }
 
-  const RevUserProfileMedia = () => {
+  let revImageURL =
+    'file:///storage/emulated/0/DCIM/Camera/IMG_20220428_093819_620.jpg';
+
+  const RevProfileImageView = ({revMediaURL, revMediaType}) => {
     return (
-      <ScrollView
-        horizontal
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.revEntityProfileImagesScroller}>
-        <View
-          style={[
-            [revSiteStyles.revFlexWrapper, styles.revProfileMediaWrapper],
-          ]}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.imageStyle}
-              source={{
-                uri: 'file:///storage/emulated/0/DCIM/Camera/IMG_20220428_093819_620.jpg',
-              }}
-            />
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.imageStyle}
-              source={{
-                uri: 'file:///storage/emulated/0/DCIM/Camera/IMG_20220604_115651_061.jpg',
-              }}
-            />
-          </View>
-          <View style={styles.profileVideoContainer}>
-            <View style={styles.profileVideoStyle}>
-              <Image
-                style={styles.imageStyle}
-                source={{
-                  uri: 'file:///storage/emulated/0/DCIM/Camera/IMG_20220505_154409_825.jpg',
-                }}
-              />
-            </View>
-            <View style={styles.profilePlayVideoStyle}>
-              <FontAwesome
-                style={styles.profilePlayVideoStyleTxt}
-                name="play"
-              />
-            </View>
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.imageStyle}
-              source={{
-                uri: 'file:///storage/emulated/0/DCIM/Camera/IMG_20220604_135207_430.jpg',
-              }}
-            />
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.imageStyle}
-              source={{
-                uri: 'file:///storage/emulated/0/DCIM/Camera/IMG_20220721_090725_387.jpg',
-              }}
-            />
-          </View>
-        </View>
-      </ScrollView>
+      <View style={styles.revProfileImageContainer}>
+        {revMediaType == 'rev_image' ? (
+          <Image
+            style={styles.revProfileImage}
+            source={{
+              uri: revMediaURL,
+            }}
+          />
+        ) : null}
+      </View>
     );
   };
+
+  let revProfileImagesArea = (
+    <View
+      style={[[revSiteStyles.revFlexWrapper, styles.revProfileMediaWrapper]]}>
+      <RevProfileImageView
+        revMediaURL={revImageURL}
+        revMediaType={'rev_image'}
+      />
+
+      <RevProfileImageView
+        revMediaURL={revImageURL}
+        revMediaType={'rev_image'}
+      />
+
+      <View style={styles.revProfVidContainer}>
+        <View style={styles.revProfPlayVid}>
+          <FontAwesome
+            style={[
+              revSiteStyles.revSiteTxtColorWhite,
+              revSiteStyles.revSiteTxtLarge,
+            ]}
+            name="play"
+          />
+        </View>
+      </View>
+
+      <RevProfileImageView
+        revMediaURL={revImageURL}
+        revMediaType={'rev_image'}
+      />
+
+      <RevProfileImageView
+        revMediaURL={revImageURL}
+        revMediaType={'rev_image'}
+      />
+    </View>
+  );
 
   const revGetTagTab = revTag => {
     return (
@@ -296,7 +287,7 @@ export const RevUserInfo_Widget = ({revVarArgs}) => {
 
       {revEntityTagsOutputView}
 
-      <RevUserProfileMedia />
+      <View style={{marginTop: 8}}>{revProfileImagesArea}</View>
 
       <RevDescriptiveTitleView
         revVarArgs={{
@@ -371,36 +362,40 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 4,
   },
-  revEntityProfileImagesScroller: {
-    flexGrow: 0,
-    marginTop: 12,
-  },
   revProfileMediaWrapper: {
     alignItems: 'center',
   },
-  imageContainer: {
-    backgroundColor: '#444',
+
+  /** Start Profile Images */
+  revProfileMediaWrapper: {
+    alignItems: 'center',
+  },
+  revProfileImageContainer: {
+    backgroundColor: '#F7F7F7',
     width: 25,
     height: 25,
+    borderColor: '#EEE',
+    borderWidth: 1,
     borderRadius: 22,
     marginRight: 1,
   },
-  imageStyle: {
+  revProfileImage: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
   },
-  profileVideoContainer: {
-    backgroundColor: '#444',
-    width: 215,
+  revProfVidContainer: {
+    flex: 1,
+    backgroundColor: '#CCCCCC',
+    minWidth: 215,
     height: 35,
     borderRadius: 15,
     marginRight: 1,
     position: 'relative',
   },
-  profileVideoStyle: {
+  revProfileVid: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -409,16 +404,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
-  profilePlayVideoStyle: {
+  revProfPlayVid: {
     position: 'absolute',
-    top: '17%',
+    top: '25%',
     left: '45%',
   },
-  profilePlayVideoStyleTxt: {
-    color: '#FFF',
-    fontSize: 25,
-  },
-
   /** */
 
   /** START TAGS */

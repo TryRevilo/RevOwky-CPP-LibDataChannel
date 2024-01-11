@@ -29,8 +29,6 @@ import RevVideoCallModal from '../rev_plugins/rev_plugin_video_call/rev_views/re
 
 import RevChatMessageInputComposer from '../rev_plugins/rev_plugin_text_chat/rev_views/rev_forms/RevChatMessageInputComposer';
 
-import {RevSendFile} from '../../rev_webrtc_libs/RevSendFile';
-
 const {RevPersLibRead_React} = NativeModules;
 
 import {useRevSiteStyles} from './RevSiteStyles';
@@ -117,7 +115,6 @@ function RevFooterArea() {
       );
 
       revPicAlbumEntity._revChildrenList = revPicsEntitiesArr;
-
       revEntitiesArr[i]._revChildrenList.push(revPicAlbumEntity);
     }
 
@@ -220,22 +217,7 @@ function RevFooterArea() {
     });
   };
 
-  const handleDocumentSelection = useCallback(async () => {
-    try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        allowMultiSelection: true,
-      });
-
-      for (let i = 0; i < response.length; i++) {
-        new RevSendFile(peerConnections[2].dataChannel).transferFile(
-          response[i],
-        );
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }, []);
+  const handleDocumentSelection = useCallback(async () => {}, []);
 
   let revChatMessageTxt = '';
 
@@ -277,10 +259,7 @@ function RevFooterArea() {
         revSiteStyles.revFlexWrapper_WidthAuto,
         styles.revChannelsOptionsWrapper,
       ]}>
-      <TouchableOpacity
-        onPress={() => {
-          revHandleTaggedPostsTabPress();
-        }}>
+      <TouchableOpacity onPress={revHandleTaggedPostsTabPress}>
         <FontAwesome
           name="hashtag"
           style={[
@@ -314,6 +293,42 @@ function RevFooterArea() {
         ]}
       />
 
+      <TouchableOpacity
+        onPress={() => {
+          handleDocumentSelection();
+        }}>
+        <View
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            styles.revChannelOptionItem,
+            {alignItems: 'baseline'},
+          ]}>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorBlueLink,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtMedium,
+            ]}>
+            Q
+          </Text>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorBlueLink,
+              revSiteStyles.revSiteTxtTiny,
+            ]}>
+            &
+          </Text>
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorBlueLink,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtSmall,
+            ]}>
+            A
+          </Text>
+        </View>
+      </TouchableOpacity>
+
       <MaterialCommunityIcons
         name="select-group"
         style={[
@@ -322,21 +337,6 @@ function RevFooterArea() {
           styles.revChannelOptionItem,
         ]}
       />
-
-      <TouchableOpacity
-        onPress={() => {
-          handleDocumentSelection();
-        }}>
-        <FontAwesome
-          name="folder"
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtSmall,
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
-            styles.revChannelOptionItem,
-          ]}></FontAwesome>
-      </TouchableOpacity>
 
       <TouchableOpacity onPress={handleRevShowUserAdsTabPress}>
         <Text

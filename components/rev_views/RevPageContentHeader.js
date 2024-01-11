@@ -1,18 +1,21 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useState} from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {RevWebRTCContext} from '../../rev_contexts/RevWebRTCContext';
+import {RevRemoteSocketContext} from '../../rev_contexts/RevRemoteSocketContext';
 
-import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyJSONObject,
+  revSetStateData,
+} from '../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
 const RevPageContentHeader = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const {isRevSocketServerUp} = useContext(RevWebRTCContext);
+  const {isRevSocketServerUp} = useContext(RevRemoteSocketContext);
 
   let revIsOnline = (
     <View
@@ -39,7 +42,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
     </View>
   );
 
-  let revIsOoffline = (
+  let revIsOffline = (
     <View
       style={[
         revSiteStyles.revFlexWrapper_WidthAuto,
@@ -81,7 +84,8 @@ const RevPageContentHeader = ({revVarArgs}) => {
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtTiny,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
             styles.revHeaderTextLink,
           ]}>
           / {'   '}
@@ -94,65 +98,72 @@ const RevPageContentHeader = ({revVarArgs}) => {
   let RevHeaderLinks = () => {
     return (
       <View style={[revSiteStyles.revFlexWrapper, {alignItems: 'center'}]}>
-        <RevHeaderLink revLinkText={'mine'} />
-        <RevHeaderLink revLinkText={'contacts'} />
-        <RevHeaderLink revLinkText={<FontAwesome name="shopping-bag" />} />
+        <RevHeaderLink revLinkText={'MiNE'} />
+        <RevHeaderLink revLinkText={'CoNTActs'} />
       </View>
     );
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isRevSocketServerUp) {
-      setRevIsOnlineView(revIsOnline);
+      revSetStateData(setRevIsOnlineView, revIsOnline);
     } else {
-      setRevIsOnlineView(revIsOoffline);
+      revSetStateData(setRevIsOnlineView, revIsOffline);
     }
   }, [isRevSocketServerUp]);
 
-  let RevHeader = () => {
-    return (
+  return (
+    <View
+      style={[
+        revSiteStyles.revFlexWrapper,
+        styles.revPageHeaderAreaWrapper,
+        revIsIndented
+          ? styles.revAllItemsListingFilterTabIndented
+          : styles.revAllItemsListingFilterTabUnIndented,
+      ]}>
       <View
-        style={[revSiteStyles.revFlexWrapper, styles.revPageHeaderAreaWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper_WidthAuto,
+          styles.revHeaderTextLink,
+          {alignItems: 'center'},
+        ]}>
+        <FontAwesome
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny_X,
+          ]}
+          name="dot-circle-o"
+        />
+        <FontAwesome
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtTiny_X,
+          ]}
+          name="long-arrow-right"
+        />
         <Text
           style={[
             revSiteStyles.revSiteTxtColorLight,
             revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny,
-            revIsIndented
-              ? styles.revAllItemsListingFilterTabIndented
-              : styles.revAllItemsListingFilterTabUnIndented,
+            revSiteStyles.revSiteTxtTiny_X,
           ]}>
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="dot-circle-o"
-          />
-          <FontAwesome
-            style={[
-              revSiteStyles.revSiteTxtColorLight,
-              revSiteStyles.revSiteTxtTiny,
-            ]}
-            name="long-arrow-right"
-          />{' '}
-          All
+          {' '}
+          ALL
         </Text>
-
-        <RevHeaderLinks />
-
-        <View
-          style={[
-            revSiteStyles.revFlexWrapper,
-            styles.revHeaderOnlineStateWrapper,
-          ]}>
-          {revIsOnlineView}
-        </View>
       </View>
-    );
-  };
 
-  return <RevHeader />;
+      <RevHeaderLinks />
+
+      <View
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revHeaderOnlineStateWrapper,
+          styles.revHeaderTextLink,
+        ]}>
+        {revIsOnlineView}
+      </View>
+    </View>
+  );
 };
 
 export default RevPageContentHeader;
@@ -166,14 +177,16 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   revHeaderTextLink: {
-    marginLeft: 4,
+    paddingHorizontal: 8,
+    paddingTop: 5,
+    paddingBottom: 8,
   },
   revAllItemsListingFilterTabIndented: {
     paddingHorizontal: 2,
     paddingTop: 8,
     paddingRight: 12,
     marginBottom: 5,
-    paddingLeft: 38,
+    paddingLeft: 22,
   },
   revAllItemsListingFilterTabUnIndented: {
     paddingHorizontal: 2,

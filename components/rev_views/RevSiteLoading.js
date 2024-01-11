@@ -1,12 +1,5 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {
-  StatusBar,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  NativeModules,
-} from 'react-native';
+import {StyleSheet, Text, View, NativeModules} from 'react-native';
 
 var RNFS = require('react-native-fs');
 
@@ -15,7 +8,6 @@ import {ReViewsContext} from '../../rev_contexts/ReViewsContext';
 
 import RevWalledGarden from './RevWalledGarden';
 import {useRevGetLoggedInSiteEntity} from '../rev_libs_pers/rev_pers_rev_entity/rev_site_entity';
-import {useRevPersSyncDataComponent} from '../rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 import {revIsEmptyJSONObject} from '../../rev_function_libs/rev_gen_helper_functions';
 
@@ -24,15 +16,9 @@ const {RevPersLibCreate_React} = NativeModules;
 const revSettings = require('../../rev_res/rev_settings.json');
 
 const RevSiteLoading = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [revPageReady, setRevPageReady] = useState(false);
-
-  const {SET_REV_LOGGED_IN_ENTITY_GUID, REV_SITE_ENTITY_GUID} =
-    useContext(RevSiteDataContext);
+  const {SET_REV_LOGGED_IN_ENTITY_GUID} = useContext(RevSiteDataContext);
   const {REV_SITE_INIT_VIEW, SET_REV_SITE_INIT_VIEW} =
     useContext(ReViewsContext);
-
-  const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   let revAppRootDir = revSettings.revAppRootDir;
 
@@ -44,7 +30,6 @@ const RevSiteLoading = () => {
   if (dbLong < 1) {
     return (
       <View style={styles.revSiteLoadingContainer}>
-        {isLoading && <StatusBar backgroundColor="#F7F7F7" />}
         <Text style={styles.revSiteLoadingTxt}>ERR Loading DB !</Text>
       </View>
     );
@@ -53,32 +38,18 @@ const RevSiteLoading = () => {
   const {revGetLoggedInSiteEntity} = useRevGetLoggedInSiteEntity();
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      StatusBar.setBarStyle('dark-content');
-      StatusBar.setBackgroundColor('#F7F7F7');
+    let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
+
+    if (!revIsEmptyJSONObject(revLoggedInSiteEntity)) {
+      let revLoggedInEntityGUID = revLoggedInSiteEntity._revOwnerGUID;
+
+      if (revLoggedInEntityGUID > 0) {
+        SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
+      }
     }
 
-    setTimeout(() => {
-      let revLoggedInSiteEntity = revGetLoggedInSiteEntity();
-
-      if (!revIsEmptyJSONObject(revLoggedInSiteEntity)) {
-        let revLoggedInEntityGUID = revLoggedInSiteEntity._revOwnerGUID;
-
-        if (revLoggedInEntityGUID > 0) {
-          SET_REV_LOGGED_IN_ENTITY_GUID(revLoggedInEntityGUID);
-        }
-      }
-
-      SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
-      setIsLoading(false);
-    }, 1000);
-
-    revPersSyncDataComponent();
-  }, [revPageReady]);
-
-  setTimeout(() => {
-    setRevPageReady(true);
-  }, 3000);
+    SET_REV_SITE_INIT_VIEW(<RevWalledGarden />);
+  }, []);
 
   return REV_SITE_INIT_VIEW;
 };

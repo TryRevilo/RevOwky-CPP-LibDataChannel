@@ -18,6 +18,7 @@ import Modal from 'react-native-modal';
 
 const ReViewsContext = createContext();
 
+import RevPageContentHeader from '../components/rev_views/RevPageContentHeader';
 import RevNullMessagesView from '../components/rev_views/RevNullMessagesView';
 import RevFooter1_Center from '../components/rev_views/rev_site_footer_views/rev_footer_1/RevFooter1_Center';
 
@@ -45,8 +46,26 @@ const ReViewsContextProvider = ({children}) => {
 
   const [REV_SITE_BODY, setRevSiteBody] = useState(<RevNullMessagesView />);
 
-  const SET_REV_SITE_BODY = useCallback(newBody => {
-    setRevSiteBody(newBody);
+  const SET_REV_SITE_BODY = useCallback(revNewView => {
+    setTimeout(() => {
+      setRevSiteBody(revNewView);
+    }, 0);
+
+    setRevSiteBody(
+      <View style={[{flex: 1}]}>
+        <RevPageContentHeader />
+
+        <Text
+          style={[
+            revSiteStyles.revSiteTxtColorLight,
+            revSiteStyles.revSiteTxtBold,
+            revSiteStyles.revSiteTxtTiny_X,
+            {paddingHorizontal: 22, paddingVertical: 10},
+          ]}>
+          . . . Loading
+        </Text>
+      </View>,
+    );
   }, []);
 
   const [

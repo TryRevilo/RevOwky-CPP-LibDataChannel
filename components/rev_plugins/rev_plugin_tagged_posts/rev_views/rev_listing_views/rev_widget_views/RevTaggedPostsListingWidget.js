@@ -10,7 +10,7 @@ import {useRevPersQuery_By_RevVarArgs} from '../../../../../rev_libs_pers/rev_pe
 import RevPageContentHeader from '../../../../../rev_views/RevPageContentHeader';
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetLocal_OR_RemoteGUID} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
-import {revGetPublisherEntity} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {revGetPublisherEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {RevInfoArea} from '../../../../../rev_views/rev_page_views';
@@ -29,13 +29,15 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
   revVarArgs = revVarArgs.revVarArgs;
 
-  const {revGetData} = revVarArgs;
+  const {
+    revTimelineEntities = [],
+    revEntityPublishersArr = [],
+    revSitesArr = [],
+    revSiteOwnersArr = [],
+    revGetData,
+  } = revVarArgs;
 
-  if (
-    revIsEmptyJSONObject(revVarArgs) ||
-    !revVarArgs.hasOwnProperty('revTimelineEntities') ||
-    !revVarArgs.hasOwnProperty('revEntityPublishersArr')
-  ) {
+  if (revIsEmptyJSONObject(revVarArgs) || !revTimelineEntities.length) {
     return null;
   }
 
@@ -43,8 +45,6 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
 
   let revTimelineEntitiesArr = revVarArgs.revTimelineEntities;
   revTimelineEntitiesArr = revTimelineEntitiesArr.slice(0, REV_INCREMENTALS);
-
-  let revEntityPublishersArr = revVarArgs.revEntityPublishersArr;
 
   const [revListingData, setRevListingData] = useState(revTimelineEntitiesArr);
   const [revPage, setRevPage] = useState(1);
@@ -205,28 +205,48 @@ export const RevTaggedPostsListingWidget = ({revVarArgs}) => {
       return null;
     }
 
-    let revEntityOwnerGUID = item._revOwnerGUID;
+    const {
+      _fromRemote = false,
+      _revOwnerGUID: revEntityOwnerGUID,
+      _revSiteGUID,
+    } = item;
 
-    let revPublisherEntity = revGetPublisherEntity(
+    let revRetPublisherData = revGetPublisherEntity(
       revEntityPublishersArr,
       revEntityOwnerGUID,
+      _fromRemote,
     );
 
-    if (revIsEmptyJSONObject(revPublisherEntity)) {
-      let revPublisherEntityStr =
-        RevPersLibRead_React.revPersGetEntity_By_GUID(revEntityOwnerGUID);
-      revPublisherEntity = JSON.parse(revPublisherEntityStr);
+    if (revIsEmptyJSONObject(revRetPublisherData)) {
+      return;
+    }
 
-      if (revIsEmptyJSONObject(revPublisherEntity)) {
-        return null;
-      }
+    const {revPublishersArr = [], revPublisherEntity = {}} =
+      revRetPublisherData;
 
-      revVarArgs.revEntityPublishersArr.push(revPublisherEntity);
+    if (revPublishersArr && Array.isArray(revPublishersArr)) {
+      revVarArgs['revEntityPublishersArr'] = revPublishersArr;
     }
 
     revIsLoadingRef.current = true;
 
     item['_revPublisherEntity'] = revPublisherEntity;
+
+    let revSiteEntity = revSitesArr.find(
+      revCurr => revCurr._revRemoteGUID == _revSiteGUID,
+    );
+
+    item['revSiteEntity'] = revSiteEntity;
+
+    if (!revIsEmptyJSONObject(revSiteEntity)) {
+      const {_revOwnerGUID} = revSiteEntity;
+
+      let revSiteOwnerEntity = revSiteOwnersArr.find(
+        revCurr => revCurr._revRemoteGUID == _revOwnerGUID,
+      );
+
+      item['revSiteOwnerEntity'] = revSiteOwnerEntity;
+    }
 
     let revAddAd = revCounter % 2 == 0;
 

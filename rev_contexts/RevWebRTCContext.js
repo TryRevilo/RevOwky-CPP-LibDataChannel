@@ -4,7 +4,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useLayoutEffect,
 } from 'react';
 
 import {} from 'react-native';
@@ -24,6 +23,8 @@ import {RevRemoteSocketContext} from './RevRemoteSocketContext';
 
 import {
   revIsEmptyJSONObject,
+  revPingServer,
+  revSetStateData,
   revTimeoutAsync,
 } from '../rev_function_libs/rev_gen_helper_functions';
 
@@ -63,9 +64,12 @@ var revMediaConstraints = {
 };
 
 var RevWebRTCContextProvider = ({children}) => {
-  const deviceModel = DeviceInfo.getModel();
+  const {REV_PORT, REV_IP, isRevSocketServerUp} = useContext(
+    RevRemoteSocketContext,
+  );
+  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
 
-  const [isRevSocketServerUp, setIsRevSocketServerUp] = useState(false);
+  const deviceModel = DeviceInfo.getModel();
 
   const [revActivePeerIdsArr, setRevActivePeerIdsArr] = useState([]);
   const [revActiveVideoPeerIdsArr, setRevActiveVideoPeerIdsArr] = useState([]);
@@ -85,10 +89,6 @@ var RevWebRTCContextProvider = ({children}) => {
 
   const [REV_WEB_SOCKET_SERVER, SET_REV_WEB_SOCKET_SERVER] = useState(null);
   const [revLoggedInEntityGUID, setRevLoggedInEntityGUID] = useState(0);
-
-  const {REV_PORT, REV_IP} = useContext(RevRemoteSocketContext);
-
-  const {REV_LOGGED_IN_ENTITY} = useContext(RevSiteDataContext);
 
   const [revLocalVideoStream, setRevLocalVideoStream] = useState(null);
   const [revRemoteVideoStreamsObj, setRevRemoteVideoStreamsObj] = useState({});
@@ -190,8 +190,8 @@ var RevWebRTCContextProvider = ({children}) => {
   };
 
   var revInitWebServer = () => {
-    const ws = new WebSocket(`ws://${REV_IP}:${REV_PORT}`);
-    SET_REV_WEB_SOCKET_SERVER(ws);
+    const revNewWS = new WebSocket(`ws://${REV_IP}:${REV_PORT}`);
+    SET_REV_WEB_SOCKET_SERVER(revNewWS);
   };
 
   // function to initialize WebSocket and set up event listeners
@@ -1304,13 +1304,9 @@ var RevWebRTCContextProvider = ({children}) => {
       return;
     }
 
-    REV_WEB_SOCKET_SERVER.addEventListener('open', event => {
-      setIsRevSocketServerUp(true);
-    });
+    REV_WEB_SOCKET_SERVER.addEventListener('open', event => {});
 
-    REV_WEB_SOCKET_SERVER.addEventListener('close', event => {
-      setIsRevSocketServerUp(false);
-    });
+    REV_WEB_SOCKET_SERVER.addEventListener('close', event => {});
   }, [REV_WEB_SOCKET_SERVER]);
 
   useEffect(() => {
@@ -1327,7 +1323,6 @@ var RevWebRTCContextProvider = ({children}) => {
 
   // create context value with state variables and functions
   const contextValue = {
-    isRevSocketServerUp,
     revPeerConnsData: revPeerConnsObjRef.current,
     revActivePeerIdsArr,
     revPushVideoCallPeerId,

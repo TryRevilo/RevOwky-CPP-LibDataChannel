@@ -23,6 +23,7 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 
 import {useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 import {revGetInfoEntity} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
+import {useRevSaveRemoteSiteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -30,6 +31,8 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
   revVarArgs = revVarArgs.revVarArgs;
+
+  const {revSaveRemoteSiteEntity} = useRevSaveRemoteSiteEntity();
 
   const {revPersGetLocalEntityGUID_BY_RemoteEntityGUID} =
     useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID();
@@ -57,7 +60,11 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
     return null;
   }
 
-  const {_revGUID = -1} = revContainerEntity;
+  const {
+    _revGUID = -1,
+    revSiteEntity = {},
+    revSiteOwnerEntity = {},
+  } = revContainerEntity;
   let revContainerGUID = _revGUID;
 
   let revIsCommentUpdate = !revIsEmptyJSONObject(revCommentEntity);
@@ -90,6 +97,12 @@ export const RevCommentFormWidget = ({revVarArgs}) => {
   const {revCreateCommentAction} = useRevCreateCommentAction();
 
   const revHandleCreateCommentTab = async () => {
+    const {revSiteLocalGUID, revSiteOwnerLocalGUID} =
+      await revSaveRemoteSiteEntity({
+        revSiteEntity,
+        revSiteOwnerEntity,
+      });
+
     if (revContainerGUID < 1) {
       revContainerGUID = await revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
         revContainerEntity,

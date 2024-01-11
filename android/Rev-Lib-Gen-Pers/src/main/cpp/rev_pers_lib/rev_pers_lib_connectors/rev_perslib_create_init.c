@@ -43,6 +43,7 @@ long revPersInit(RevEntity *revEntity) {
     }
 
     RevEntity *revInfoEntity = revEntity->_revInfoEntity;
+
     char *revEntityType = revInfoEntity->_revType;
     char *revInfoEntitySubType = revInfoEntity->_revSubType;
 

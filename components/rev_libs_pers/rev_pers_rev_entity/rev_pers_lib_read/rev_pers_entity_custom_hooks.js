@@ -8,6 +8,7 @@ import {
 import {revGetMetadataValue} from '../../rev_db_struct_models/revEntityMetadata';
 
 import {useRevSaveNewEntity} from '../rev_pers_lib_create/revPersLibCreateCustomHooks';
+import {revIsEmptyInfo} from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 const rev_settings = require('../../../../rev_res/rev_settings.json');
 
@@ -20,7 +21,7 @@ export function useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID() {
     revEntity = {},
     _revPublisherEntity = {},
   ) => {
-    const {_revGUID = -1, _revRemoteGUID = -1} = revEntity;
+    const {_revGUID = -1, _revRemoteGUID = -1, _revSiteGUID = -1} = revEntity;
 
     if (_revGUID > 0) {
       return _revGUID;
@@ -39,6 +40,17 @@ export function useRevPersGetLocalEntityGUID_BY_RemoteEntityGUID() {
 
     if (revIsEmptyJSONObject(_revPublisherEntity)) {
       return -1;
+    }
+
+    let revLocalSiteGUID =
+      RevPersLibRead_React.revPersGetLocalEntityGUID_BY_RemoteEntityGUID(
+        _revSiteGUID,
+      );
+
+    revEntity['_revSiteGUID'] = revLocalSiteGUID;
+
+    if (!revIsEmptyInfo(revEntity)) {
+      revEntity['_revInfoEntity']['_revSiteGUID'] = revLocalSiteGUID;
     }
 
     return await revSaveNewEntity({...revEntity, _revPublisherEntity});
@@ -230,6 +242,51 @@ export const revPersGetSubjectGUIDs_BY_RelStr_TargetGUID = (
     );
 
   return JSON.parse(revEntityGUIDsString);
+};
+
+export const revGetPublisherEntity = (
+  revPublishersArr = [],
+  revPlublisherGUID,
+  isRevFromRemote = false,
+) => {
+  if (!Array.isArray(revPublishersArr)) {
+    console.log('*** ERR -> NULL PUBLISHERS!');
+    return {};
+  }
+
+  let revPublisherEntity = null;
+
+  for (let i = 0; i < revPublishersArr.length; i++) {
+    let revPublisher = revPublishersArr[i];
+
+    if (revIsEmptyJSONObject(revPublisher)) {
+      continue;
+    }
+
+    const {_revGUID = -1, _revRemoteGUID = -1} = revPublisher;
+
+    let revGUID = isRevFromRemote ? _revGUID : _revRemoteGUID;
+
+    if (revGUID == revPlublisherGUID) {
+      revPublisherEntity = revPublisher;
+
+      break;
+    }
+  }
+
+  if (revIsEmptyJSONObject(revPublisherEntity)) {
+    let revPublisherEntityStr =
+      RevPersLibRead_React.revPersGetEntity_By_GUID(revPlublisherGUID);
+    revPublisherEntity = JSON.parse(revPublisherEntityStr);
+
+    if (revIsEmptyJSONObject(revPublisherEntity)) {
+      return null;
+    }
+
+    revPublishersArr.push(revPublisherEntity);
+  }
+
+  return {revPublishersArr, revPublisherEntity};
 };
 
 export const useRevGetEntityPictureAlbumPics = () => {

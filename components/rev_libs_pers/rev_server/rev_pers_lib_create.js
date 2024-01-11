@@ -83,7 +83,7 @@ export var revPostServerData = (revURL, revJSONData, callback) => {
   const xhr = new XMLHttpRequest();
 
   xhr.onerror = function () {
-    console.log('There was an error making the request.');
+    console.log('*** There was an error making the request - revURL', revURL);
 
     return callback({
       revError: {status: xhr.status, statusText: xhr.statusText},
@@ -95,10 +95,10 @@ export var revPostServerData = (revURL, revJSONData, callback) => {
 
   xhr.onprogress = event => {
     if (event.lengthComputable) {
-      const progress = Math.round((event.loaded / event.total) * 100);
-      console.log(`Received ${progress}%`);
+      const revProgress = Math.round((event.loaded / event.total) * 100);
+      console.log(`>>> Received ${revProgress}%`);
     } else {
-      console.log('Received data...');
+      console.log('>>> Received data...');
     }
   };
 

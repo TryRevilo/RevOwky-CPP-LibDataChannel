@@ -6,6 +6,16 @@ import {revGetServerData_JSON} from '../components/rev_libs_pers/rev_server/rev_
 import {NativeModules, Platform} from 'react-native';
 import {revStringEmpty} from './rev_string_function_libs';
 
+export const revSetStateData = (revSetter, revData) => {
+  if (!revSetter) {
+    return;
+  }
+
+  setTimeout(() => {
+    revSetter(revData);
+  }, 0);
+};
+
 // Function to get the absolute file path
 export const revGetFileAbsolutePath = async uri => {
   let revRetVal = null;
