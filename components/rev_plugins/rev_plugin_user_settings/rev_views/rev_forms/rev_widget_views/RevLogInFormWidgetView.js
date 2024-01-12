@@ -52,6 +52,8 @@ export const RevLogInFormWidgetView = () => {
 
     let revLoggedInEntityGUID = await revLogin(revUserId, revPassword);
 
+    console.log('>>> revLoggedInEntityGUID', revLoggedInEntityGUID);
+
     let revSiteEntityGUID = -1;
 
     if (revLoggedInEntityGUID > 0) {

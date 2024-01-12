@@ -19,6 +19,8 @@ import RevFooterArea from './RevFooterArea';
 import {useRevGetConnectionRequests} from '../rev_plugins/rev_plugin_member_connections/rev_actions/rev_get_connection_requests';
 import {useRevUpdateConnectionRequestStatus} from '../rev_plugins/rev_plugin_member_connections/rev_remote_update_actions/rev_update_connection_request_status';
 
+import {useRevInitPlugins} from '../rev_plugins_loader';
+
 import {useRevSiteStyles} from './RevSiteStyles';
 
 const RevSiteContainer = () => {
@@ -34,6 +36,9 @@ const RevSiteContainer = () => {
     SET_REV_SITE_BODY,
     REV_SITE_MODAL,
   } = useContext(ReViewsContext);
+
+  const {revInitPluginHooks} = useRevInitPlugins();
+  revInitPluginHooks('rev_new_msgs', {revVarArgs: 'Hello World !'});
 
   const revDynamicViewRefsObj = useRef({});
   const revActiveViewRef = useRef();

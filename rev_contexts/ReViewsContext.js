@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ReViewsContext = createContext();
 
@@ -52,19 +53,33 @@ const ReViewsContextProvider = ({children}) => {
     }, 0);
 
     setRevSiteBody(
-      <View style={[{flex: 1}]}>
-        <RevPageContentHeader />
+      <LinearGradient
+        colors={['#F7F7F7', '#FFFFFF', '#192f6a']}
+        style={styles.revLinearGradient}>
+        <View style={[{flex: 1}]}>
+          <RevPageContentHeader />
 
-        <Text
-          style={[
-            revSiteStyles.revSiteTxtColorLight,
-            revSiteStyles.revSiteTxtBold,
-            revSiteStyles.revSiteTxtTiny_X,
-            {paddingHorizontal: 22, paddingVertical: 10},
-          ]}>
-          . . . Loading
-        </Text>
-      </View>,
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
+              {paddingHorizontal: 22, paddingVertical: 10},
+            ]}>
+            . . . Loading
+          </Text>
+
+          <Text
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtBold,
+              revSiteStyles.revSiteTxtTiny_X,
+              {position: 'absolute', right: 32, bottom: '5%'},
+            ]}>
+            CampAnn .inc
+          </Text>
+        </View>
+      </LinearGradient>,
     );
   }, []);
 
@@ -226,5 +241,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  revLinearGradient: {
+    flex: 1,
   },
 });

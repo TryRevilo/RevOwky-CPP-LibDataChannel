@@ -35,7 +35,7 @@ export const revGetServerData_Async = async revURL => {
         `*** Request timed out after ${revTimeoutMillis} milliseconds`,
       );
     } else {
-      console.log(`*** Error during fetch: ${error.message}`);
+      // console.log(`*** Error during fetch: ${error.message}`);
     }
   } finally {
     clearTimeout(revTimeoutId); // Clear the timeout to avoid unnecessary abortion

@@ -184,25 +184,20 @@ export function useRevPersGetRevEntities_By_ResolveStatus_SubType() {
   return {revPersGetRevEntities_By_ResolveStatus_SubType};
 }
 
-export function useRevGetEntityInfo(revEntityGUID) {
-  let revInfoEntityGUID =
-    RevPersLibRead_React.revPersGetSubjectGUID_BY_RelStr_TargetGUID(
-      'rev_entity_info',
+export function revGetEntityInfo(revEntityGUID) {
+  let revRetDataArrStr =
+    RevPersLibRead_React.revPersGetEntities_By_ContainerGUID_SubTYPE(
       revEntityGUID,
+      'rev_entity_info',
     );
 
-  if (revInfoEntityGUID < 1) {
+  if (revIsEmptyVar(revRetDataArrStr)) {
     return {};
   }
 
-  let revInfoEntityStr =
-    RevPersLibRead_React.revPersGetEntity_By_GUID(revInfoEntityGUID);
+  let revInfoEntityArr = JSON.parse(revRetDataArrStr);
 
-  if (revIsEmptyVar(revInfoEntityStr)) {
-    return {};
-  }
-
-  return JSON.parse(revInfoEntityStr);
+  return revInfoEntityArr[0];
 }
 
 export const revPersGetTargetGUIDs_BY_RelStr_SubjectGUID = (
@@ -349,7 +344,7 @@ export function revPersGetFilledRevEntity_By_GUID(revEntityGUID) {
     RevPersLibRead_React.revPersGetEntity_By_GUID(revEntityGUID);
 
   let revEntity = JSON.parse(revEntityStr);
-  revEntity['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+  revEntity['_revInfoEntity'] = revGetEntityInfo(revEntityGUID);
 
   return revEntity;
 }
@@ -364,7 +359,7 @@ export function useRevPersGetALLFilledRevEntity_By_SubType(revSubType) {
     let revCurrEntity = revEntitiesArr[i];
     let revEntityGUID = revCurrEntity._revGUID;
 
-    revEntitiesArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+    revEntitiesArr[i]['_revInfoEntity'] = revGetEntityInfo(revEntityGUID);
   }
 
   return revEntitiesArr;
@@ -395,7 +390,7 @@ export function useRevPersQuery_By_RevVarArgs() {
       let revCurrEntity = revDataArr[i];
       let revEntityGUID = revCurrEntity._revGUID;
 
-      revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+      revDataArr[i]['_revInfoEntity'] = revGetEntityInfo(revEntityGUID);
     }
 
     return revDataArr;
@@ -430,7 +425,7 @@ export function useRevPersQuery_By_RevVarArgs() {
       let revCurrEntity = revDataArr[i];
       let revEntityGUID = revCurrEntity._revGUID;
 
-      revDataArr[i]['_revInfoEntity'] = useRevGetEntityInfo(revEntityGUID);
+      revDataArr[i]['_revInfoEntity'] = revGetEntityInfo(revEntityGUID);
     }
 
     return revDataArr;

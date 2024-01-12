@@ -8,6 +8,8 @@
 import React from 'react';
 import {Platform, StatusBar} from 'react-native';
 
+import {Provider} from 'react-redux';
+
 import {RevRemoteSocketContextProvider} from './rev_contexts/RevRemoteSocketContext';
 import {RevSiteDataContextProvider} from './rev_contexts/RevSiteDataContext';
 import {ReViewsContextProvider} from './rev_contexts/ReViewsContext';
@@ -16,6 +18,8 @@ import {RevSiteInitContextProvider} from './rev_contexts/RevSiteInitContext';
 
 import RevSiteLoading from './components/rev_views/RevSiteLoading';
 
+import RevReduxStore from './rev_contexts/RevReduxStore';
+
 function App() {
   if (Platform.OS === 'android') {
     StatusBar.setBarStyle('dark-content');
@@ -23,17 +27,19 @@ function App() {
   }
 
   return (
-    <ReViewsContextProvider>
-      <RevSiteDataContextProvider>
-        <RevRemoteSocketContextProvider>
-          <RevWebRTCContextProvider>
-            <RevSiteInitContextProvider>
-              <RevSiteLoading />
-            </RevSiteInitContextProvider>
-          </RevWebRTCContextProvider>
-        </RevRemoteSocketContextProvider>
-      </RevSiteDataContextProvider>
-    </ReViewsContextProvider>
+    <Provider store={RevReduxStore}>
+      <ReViewsContextProvider>
+        <RevSiteDataContextProvider>
+          <RevRemoteSocketContextProvider>
+            <RevWebRTCContextProvider>
+              <RevSiteInitContextProvider>
+                <RevSiteLoading />
+              </RevSiteInitContextProvider>
+            </RevWebRTCContextProvider>
+          </RevRemoteSocketContextProvider>
+        </RevSiteDataContextProvider>
+      </ReViewsContextProvider>
+    </Provider>
   );
 }
 

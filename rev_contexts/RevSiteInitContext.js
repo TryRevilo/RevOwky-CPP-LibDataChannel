@@ -1,13 +1,13 @@
 import React, {createContext, useContext, useState, useEffect} from 'react';
 
-import {RevWebRTCContext} from './RevWebRTCContext';
+import {RevRemoteSocketContext} from './RevRemoteSocketContext';
 
 import {useRevPersSyncDataComponent} from '../components/rev_libs_pers/rev_server/RevPersSyncDataComponent';
 
 const RevSiteInitContext = createContext();
 
 const RevSiteInitContextProvider = ({children}) => {
-  const {isRevSocketServerUp} = useContext(RevWebRTCContext);
+  const {isRevSocketServerUp} = useContext(RevRemoteSocketContext);
 
   const [IS_REV_LOCAL_DATA_IN_SYNC, SET_IS_REV_LOCAL_DATA_IN_SYNC] =
     useState(true);
@@ -15,8 +15,15 @@ const RevSiteInitContextProvider = ({children}) => {
   const {revPersSyncDataComponent} = useRevPersSyncDataComponent();
 
   useEffect(() => {
-    if (!IS_REV_LOCAL_DATA_IN_SYNC || isRevSocketServerUp) {
-      revPersSyncDataComponent();
+    SET_IS_REV_LOCAL_DATA_IN_SYNC(false);
+  }, []);
+
+  useEffect(() => {
+    if (isRevSocketServerUp && !IS_REV_LOCAL_DATA_IN_SYNC) {
+      revPersSyncDataComponent().then(revretData => {
+        console.log('+++ revretData', revretData);
+        SET_IS_REV_LOCAL_DATA_IN_SYNC(true);
+      });
     }
   }, [IS_REV_LOCAL_DATA_IN_SYNC, isRevSocketServerUp]);
 

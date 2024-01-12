@@ -18,6 +18,7 @@ import {useRevPersGetRevEnty_By_EntityGUID} from '../../../../../rev_libs_pers/r
 import {revIsEmptyJSONObject} from '../../../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {RevScrollView_V} from '../../../../../rev_views/rev_page_views';
+import {revIsEmptyInfo} from '../../../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 
@@ -33,14 +34,15 @@ export const RevUserSettingsWidget = ({revVarArgs}) => {
     SET_REV_LOGGED_IN_ENTITY_GUID,
   } = useContext(RevSiteDataContext);
 
-  if (
-    revIsEmptyJSONObject(REV_LOGGED_IN_ENTITY) ||
-    !REV_LOGGED_IN_ENTITY.hasOwnProperty('_revInfoEntity')
-  ) {
+  if (revIsEmptyInfo(REV_LOGGED_IN_ENTITY)) {
+    console.log('>>> revIsEmptyInfo <<<', JSON.stringify(REV_LOGGED_IN_ENTITY));
+
     return null;
   }
 
   if (REV_LOGGED_IN_ENTITY_GUID < 1) {
+    console.log('>>> REV_LOGGED_IN_ENTITY_GUID <<<');
+
     return null;
   }
 

@@ -10,6 +10,9 @@ import {
   NativeModules,
 } from 'react-native';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {setMessage} from '../../../../../../rev_contexts/rev_redux/rev_reducers/messageReducer';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -43,6 +46,7 @@ import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_enti
 const {RevPersLibRead_React} = NativeModules;
 
 import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+import {incrementCounter} from '../../../../../../rev_contexts/rev_redux/rev_reducers/counterReducer';
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
 export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
@@ -405,6 +409,15 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
 
   const [revCommentsView, setRevCommentsView] = useState(null);
 
+  const dispatch = useDispatch();
+  const message = useSelector(state => state.message);
+  const counter = useSelector(state => state.counter);
+
+  const handleChangeMessage = () => {
+    dispatch(setMessage(''));
+    dispatch(incrementCounter());
+  };
+
   useEffect(() => {
     let revCommentItemsListingView = revPluginsLoader({
       revPluginName: 'rev_plugin_comments',
@@ -420,16 +433,13 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
       onLongPress={() => {
         // handleRevTaggedPostLongPressed(revVarArgs);
       }}
+      onPress={handleChangeMessage}
       // onPressIn={handleRevPressIn}
-      onPressOut={() => {
-        // handleRevPressOut(revVarArgs);
-      }}>
+      // onPressOut={handleChangeMessage}
+    >
       <View style={revSiteStyles.revFlexWrapper}>
         <View style={styles.revChatMsgUserIcon}>
-          <TouchableOpacity
-            onPress={() => {
-              handleRevUserProfileClick();
-            }}>
+          <TouchableOpacity onPress={handleRevUserProfileClick}>
             {revMainEntityIconView}
           </TouchableOpacity>
         </View>
@@ -473,7 +483,7 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                     revSiteStyles.revSiteTxtTiny_X,
                     styles.revChatMsgSendTime,
                   ]}>
-                  {revTimePublished}
+                  {revTimePublished + ' - ' + message + ' - ' + counter}
                 </Text>
               </View>
 

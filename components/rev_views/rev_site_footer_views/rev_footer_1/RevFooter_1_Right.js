@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {ReViewsContext} from '../../../../rev_contexts/ReViewsContext';
 import {revPluginsLoader} from '../../../rev_plugins_loader';
+import {revSetStateData} from '../../../../rev_function_libs/rev_gen_helper_functions';
 
 import {useRevSiteStyles} from '../../RevSiteStyles';
 
@@ -20,7 +21,7 @@ const RevFooter_1_Right = () => {
       revData: {},
     });
 
-    SET_REV_SITE_BODY(RevUserSettings);
+    revSetStateData(SET_REV_SITE_BODY, RevUserSettings);
   };
 
   const revHandleHelpTabPressed = () => {};

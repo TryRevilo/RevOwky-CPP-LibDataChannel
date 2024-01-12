@@ -4,14 +4,10 @@ import {NativeModules} from 'react-native';
 
 import {RevRemoteSocketContext} from '../../../../rev_contexts/RevRemoteSocketContext';
 
-import {
-  useRevCreateNewUserEntity,
-  useRevSaveRemoteSiteEntity,
-} from '../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
+import {useRevCreateNewUserEntity} from '../../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_create/revPersLibCreateCustomHooks';
 
 import {revIsEmptyJSONObject} from '../../../../rev_function_libs/rev_gen_helper_functions';
 import {revGetServerData} from '../../../rev_libs_pers/rev_server/rev_pers_lib_read';
-import {revGetInfoEntity} from '../../../../rev_function_libs/rev_entity_libs/rev_entity_function_libs';
 
 const {RevPersLibRead_React} = NativeModules;
 
@@ -19,7 +15,6 @@ export const useRevLogin = () => {
   const {REV_ROOT_URL} = useContext(RevRemoteSocketContext);
 
   const {revCreateNewUserEntity} = useRevCreateNewUserEntity();
-  const {revSaveRemoteSiteEntity} = useRevSaveRemoteSiteEntity();
 
   const revDownloadUserProfile = async (revUserId, revPassword) => {
     try {

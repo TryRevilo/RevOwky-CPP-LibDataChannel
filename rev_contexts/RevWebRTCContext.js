@@ -1292,28 +1292,29 @@ var RevWebRTCContextProvider = ({children}) => {
   }, [REV_LOGGED_IN_ENTITY]);
 
   useEffect(() => {
-    if (revLoggedInEntityGUID < 1 || !REV_PORT || !REV_IP) {
+    if (
+      !isRevSocketServerUp ||
+      revLoggedInEntityGUID < 1 ||
+      !REV_PORT ||
+      !REV_IP
+    ) {
       return;
     }
 
     revInitWebServer();
-  }, [revLoggedInEntityGUID, REV_PORT, REV_IP]);
+  }, [isRevSocketServerUp, revLoggedInEntityGUID, REV_PORT, REV_IP]);
 
   useEffect(() => {
     if (!REV_WEB_SOCKET_SERVER) {
       return;
     }
 
-    REV_WEB_SOCKET_SERVER.addEventListener('open', event => {});
+    REV_WEB_SOCKET_SERVER.addEventListener('open', event => {
+      initSocket();
+    });
 
     REV_WEB_SOCKET_SERVER.addEventListener('close', event => {});
   }, [REV_WEB_SOCKET_SERVER]);
-
-  useEffect(() => {
-    if (isRevSocketServerUp) {
-      initSocket();
-    }
-  }, [isRevSocketServerUp]);
 
   useEffect(() => {
     if (revOnAddLocalStreamRef.current) {

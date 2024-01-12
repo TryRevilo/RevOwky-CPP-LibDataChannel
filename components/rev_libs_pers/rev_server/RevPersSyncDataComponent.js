@@ -518,8 +518,6 @@ export function useRevPersSyncDataComponent() {
         revPersMetadataURL,
         {filter: revPersMetadataArr},
         revResult => {
-          console.log('>>> revResult', JSON.stringify(revResult));
-
           resolve(revResult);
         },
       );
@@ -817,7 +815,7 @@ export function useRevPersSyncDataComponent() {
       await revPingServerCallBack(revPingRes);
     }
 
-    return 'Success !';
+    return 1;
   };
 
   return {revPersSyncDataComponent};
