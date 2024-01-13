@@ -1,6 +1,6 @@
 export const SET_MESSAGE = 'SET_MESSAGE';
 
-export const messageReducer = (state = 'Hello World', action) => {
+export const revNewConnReqsArrReducer = (state = [], action) => {
   switch (action.type) {
     case SET_MESSAGE:
       return action.payload;
@@ -9,7 +9,7 @@ export const messageReducer = (state = 'Hello World', action) => {
   }
 };
 
-export const setMessage = message => ({
+export const revSetNewConnReqsArr = revNewConnReqsArr => ({
   type: SET_MESSAGE,
-  payload: message,
+  payload: revNewConnReqsArr,
 });

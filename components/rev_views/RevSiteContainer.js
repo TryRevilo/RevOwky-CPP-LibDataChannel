@@ -6,8 +6,10 @@
  * @flow strict-local
  */
 
-import React, {useContext, useState, memo, useRef} from 'react';
+import React, {useContext, memo, useRef} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+
+import {useSelector} from 'react-redux';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -17,17 +19,13 @@ import {revPluginsLoader} from '../rev_plugins_loader';
 import RevFooterArea from './RevFooterArea';
 
 import {useRevGetConnectionRequests} from '../rev_plugins/rev_plugin_member_connections/rev_actions/rev_get_connection_requests';
-import {useRevUpdateConnectionRequestStatus} from '../rev_plugins/rev_plugin_member_connections/rev_remote_update_actions/rev_update_connection_request_status';
-
-import {useRevInitPlugins} from '../rev_plugins_loader';
 
 import {useRevSiteStyles} from './RevSiteStyles';
 
 const RevSiteContainer = () => {
   const {revSiteStyles} = useRevSiteStyles();
 
-  const [isRevNoticiasAlert, setIsRevNoticiasAlert] = useState(false);
-  const [revNoticiasAlertsCount, setRevNoticiasAlertsCount] = useState(0);
+  const revNewConnReqsArr = useSelector(state => state.revNewConnReqsArr);
 
   const {
     REV_PAGE_HEADER_CONTENT_VIEWER,
@@ -35,10 +33,8 @@ const RevSiteContainer = () => {
     REV_SITE_BODY,
     SET_REV_SITE_BODY,
     REV_SITE_MODAL,
+    REV_VIRTUAL_VIEW,
   } = useContext(ReViewsContext);
-
-  const {revInitPluginHooks} = useRevInitPlugins();
-  revInitPluginHooks('rev_new_msgs', {revVarArgs: 'Hello World !'});
 
   const revDynamicViewRefsObj = useRef({});
   const revActiveViewRef = useRef();
@@ -79,32 +75,9 @@ const RevSiteContainer = () => {
   revActiveViewRef.current = 'revSiteContentContainer';
 
   const {revGetConnectionRequests} = useRevGetConnectionRequests();
-  const {revUpdateConnectionRequestStatus} =
-    useRevUpdateConnectionRequestStatus();
 
-  let revHandleAllTabPress = () => {
-    revGetConnectionRequests(revRetData => {
-      let revNoticiasArrFilter = revRetData.filter;
-
-      if (revNoticiasArrFilter.length) {
-        setIsRevNoticiasAlert(true);
-        setRevNoticiasAlertsCount(revNoticiasArrFilter.length);
-      } else {
-        setIsRevNoticiasAlert(false);
-      }
-
-      let RevNoticias = revPluginsLoader({
-        revPluginName: 'rev_plugin_noticias',
-        revViewName: 'RevNoticias',
-        revVarArgs: revNoticiasArrFilter,
-      });
-
-      SET_REV_SITE_BODY(RevNoticias);
-
-      revUpdateConnectionRequestStatus(revRetData => {
-        console.log('>>> revRetData ' + JSON.stringify(revRetData));
-      });
-    });
+  let revHandleNoticiasTabPress = () => {
+    revGetConnectionRequests(revRetData => {});
   };
 
   let revContacts = revPluginsLoader({
@@ -190,25 +163,23 @@ const RevSiteContainer = () => {
               revSiteStyles.revFlexWrapper,
               styles.siteHeaderOptionsTabsWrapper,
             ]}>
-            <TouchableOpacity
-              onPress={() => {
-                revHandleAllTabPress();
-              }}>
+            <TouchableOpacity onPress={revHandleNoticiasTabPress}>
               <View
                 style={[
                   revSiteStyles.revFlexWrapper,
                   styles.siteHeaderOptionItemTabWrapper,
                   styles.revHeaderOptionTab,
                 ]}>
-                {isRevNoticiasAlert ? (
+                {Array.isArray(revNewConnReqsArr) &&
+                revNewConnReqsArr.length ? (
                   <Text
                     style={[
                       revSiteStyles.revSiteTxtAlertDangerColor,
-                      revSiteStyles.revSiteTxtTiny,
+                      revSiteStyles.revSiteTxtTiny_X,
                       revSiteStyles.revSiteTxtBold,
                       styles.siteHeaderOptionItemTabTxt,
                     ]}>
-                    {revNoticiasAlertsCount}
+                    {revNewConnReqsArr.length}
                   </Text>
                 ) : null}
                 <FontAwesome
@@ -309,6 +280,7 @@ const RevSiteContainer = () => {
       </View>
 
       {REV_SITE_MODAL}
+      {REV_VIRTUAL_VIEW}
     </View>
   );
 };

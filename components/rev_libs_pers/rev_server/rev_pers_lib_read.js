@@ -7,7 +7,7 @@ import {revIsEmptyJSONObject} from '../../../rev_function_libs/rev_gen_helper_fu
 export const revGetServerData_Async = async revURL => {
   let revResponse;
 
-  let revTimeoutMillis = 10000; // 5 seconds timeout (adjust as needed)
+  let revTimeoutMillis = 10000; // 10 seconds timeout
 
   // Create an AbortController and get its signal
   let revController = new AbortController();
@@ -15,8 +15,6 @@ export const revGetServerData_Async = async revURL => {
 
   // Set a timeout for the fetch operation
   let revTimeoutId = setTimeout(() => {
-    console.log('>>> revTimeoutId', revTimeoutId);
-
     revController.abort(); // Abort the fetch operation after the timeout
   }, revTimeoutMillis);
 
@@ -35,7 +33,7 @@ export const revGetServerData_Async = async revURL => {
         `*** Request timed out after ${revTimeoutMillis} milliseconds`,
       );
     } else {
-      // console.log(`*** Error during fetch: ${error.message}`);
+      console.log(`*** Error during fetch: ${error.message}`);
     }
   } finally {
     clearTimeout(revTimeoutId); // Clear the timeout to avoid unnecessary abortion

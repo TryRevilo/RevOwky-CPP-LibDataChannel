@@ -22,7 +22,11 @@ import {revGetMetadataValue} from '../../../../../../rev_function_libs/rev_entit
 
 const {RevPersLibRead_React} = NativeModules;
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
+  const {revSiteStyles} = useRevSiteStyles();
+
   revVarArgs = revVarArgs.revVarArgs;
 
   let revIsCommentUpdate = false;
@@ -151,14 +155,14 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
     }
   }, [revSelectedMedia]);
 
-  let revBtnTxt = revIsCommentUpdate ? 'Update' : 'Publish';
+  let revBtnTxt = revIsCommentUpdate ? 'Update' : 'Send';
 
   return (
     <View style={[styles.revFlexContainer, styles.revSitePublisherContainer]}>
       <TextInput
         style={styles.revEntityDescValTextInput}
         placeholder=" Your message"
-        placeholderTextColor="#999"
+        placeholderTextColor={revSiteStyles.revSiteTxtColorLight.color}
         multiline={true}
         numberOfLines={3}
         onChangeText={revNewText => {
@@ -168,10 +172,13 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
       />
 
       <View
-        style={[styles.revFlexWrapper, styles.revSitePublisherFooterWrapper]}>
+        style={[
+          revSiteStyles.revFlexWrapper,
+          styles.revSitePublisherFooterWrapper,
+        ]}>
         <View
           style={[
-            styles.revFlexWrapper,
+            revSiteStyles.revFlexWrapper,
             styles.revSitePublisherSubmitTabWrapper,
           ]}>
           <TouchableOpacity
@@ -180,8 +187,9 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
             }}>
             <Text
               style={[
-                styles.revSiteTxtSmall,
-                styles.revSitePublisherSubmitTab,
+                revSiteStyles.revSiteTxtColorWhite,
+                revSiteStyles.revSiteTxtTiny_X,
+                revSiteStyles.revSaveTab,
               ]}>
               {revBtnTxt}
             </Text>
@@ -195,8 +203,8 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
           <FontAwesome
             name="upload"
             style={[
-              styles.revSiteTxtColor,
-              styles.revSiteTxtMedium,
+              revSiteStyles.revSiteTxtColorBlueLink,
+              revSiteStyles.revSiteTxtNormal,
               styles.revSitePublisherUpload,
             ]}></FontAwesome>
         </TouchableOpacity>
@@ -204,31 +212,32 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
         <TouchableOpacity
           onPress={() => {
             handleRevSitePublisherCancelTab();
-          }}>
+          }}
+          style={[
+            revSiteStyles.revFlexWrapper_WidthAuto,
+            {alignItems: 'center'},
+          ]}>
+          <FontAwesome
+            name="dot-circle-o"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}
+          />
+          <FontAwesome
+            name="long-arrow-right"
+            style={[
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny_X,
+            ]}
+          />
           <Text
             style={[
-              styles.revSiteTxtColorLight,
-              styles.revSiteTxtTiny,
-              styles.revSiteFontBold,
-              styles.revSitePublisherCancelTab,
+              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtTiny_X,
+              {paddingBottom: 1},
             ]}>
-            <FontAwesome
-              name="dot-circle-o"
-              style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteTxtTiny,
-                styles.revSiteFontWeightNormal,
-              ]}
-            />
-            <FontAwesome
-              name="long-arrow-right"
-              style={[
-                styles.revSiteTxtColorLight,
-                styles.revSiteTxtTiny,
-                styles.revSiteFontWeightNormal,
-              ]}
-            />{' '}
-            Cancel
+            {' Cancel'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -237,38 +246,6 @@ export const RevCreateSiteMessageFormWidget = ({revVarArgs}) => {
 };
 
 const styles = StyleSheet.create({
-  revSiteTxtColor: {
-    color: '#757575',
-  },
-  revSiteTxtColorLight: {
-    color: '#999',
-  },
-  revSiteFontBold: {
-    fontWeight: '500',
-  },
-  revSiteFontWeightNormal: {
-    fontWeight: '100',
-  },
-  revSiteTxtTiny: {
-    fontSize: 9,
-  },
-  revSiteTxtSmall: {
-    fontSize: 10,
-  },
-  revSiteTxtMedium: {
-    fontSize: 12,
-  },
-  revFlexWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  revFlexContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  revSiteTxtMediumLarge: {
-    fontSize: 14,
-  },
   chatFooterWrapper: {
     backgroundColor: '#FFF',
     flex: 0,
@@ -341,19 +318,8 @@ const styles = StyleSheet.create({
   revSitePublisherSubmitTabWrapper: {
     width: 'auto',
   },
-  revSitePublisherSubmitTab: {
-    color: '#FFF',
-    backgroundColor: '#444',
-    width: 'auto',
-    paddingHorizontal: 12,
-    paddingVertical: 3,
-    borderRadius: 32,
-  },
   revSitePublisherUpload: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
     marginLeft: 5,
-  },
-  revSitePublisherCancelTab: {
-    paddingHorizontal: 5,
   },
 });

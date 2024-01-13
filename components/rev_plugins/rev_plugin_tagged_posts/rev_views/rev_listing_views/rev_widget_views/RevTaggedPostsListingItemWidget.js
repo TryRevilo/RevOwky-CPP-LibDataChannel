@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {setMessage} from '../../../../../../rev_contexts/rev_redux/rev_reducers/messageReducer';
+import {setMessage} from '../../../../../../rev_contexts/rev_redux/rev_reducers/revNewConnReqsArrReducer';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';

@@ -28,6 +28,14 @@ import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
 const ReViewsContextProvider = ({children}) => {
   const {revSiteStyles} = useRevSiteStyles();
 
+  const [REV_VIRTUAL_VIEW, setRevVirtualView] = useState(null);
+
+  const SET_REV_VIRTUAL_VIEW = revView => {
+    setRevVirtualView(
+      <View style={{width: 0, height: 0, overflow: 'hidden'}}>{revView}</View>,
+    );
+  };
+
   const [REV_PAGE_HEADER_CONTENT_VIEWER, SET_REV_PAGE_HEADER_CONTENT_VIEWER] =
     useState(null);
 
@@ -54,7 +62,7 @@ const ReViewsContextProvider = ({children}) => {
 
     setRevSiteBody(
       <LinearGradient
-        colors={['#F7F7F7', '#FFFFFF', '#192f6a']}
+        colors={['#FFFFFF', '#F7F7F7', '#BEB5D4']}
         style={styles.revLinearGradient}>
         <View style={[{flex: 1}]}>
           <RevPageContentHeader />
@@ -64,14 +72,14 @@ const ReViewsContextProvider = ({children}) => {
               revSiteStyles.revSiteTxtColorLight,
               revSiteStyles.revSiteTxtBold,
               revSiteStyles.revSiteTxtTiny_X,
-              {paddingHorizontal: 22, paddingVertical: 10},
+              {paddingHorizontal: 21, paddingVertical: 10},
             ]}>
             . . . Loading
           </Text>
 
           <Text
             style={[
-              revSiteStyles.revSiteTxtColorLight,
+              revSiteStyles.revSiteTxtColorWhite,
               revSiteStyles.revSiteTxtBold,
               revSiteStyles.revSiteTxtTiny_X,
               {position: 'absolute', right: 32, bottom: '5%'},
@@ -220,6 +228,8 @@ const ReViewsContextProvider = ({children}) => {
         REV_SITE_MODAL: revSiteModal,
         revInitSiteModal,
         revCloseSiteModal,
+        REV_VIRTUAL_VIEW,
+        SET_REV_VIRTUAL_VIEW,
       }}>
       {children}
     </ReViewsContext.Provider>

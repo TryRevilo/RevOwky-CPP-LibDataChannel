@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 
 import NetInfo from '@react-native-community/netinfo';
 import {
@@ -17,12 +17,17 @@ const RevRemoteSocketContextProvider = ({children}) => {
 
   const [REV_WEB_SOCKET_SERVER, SET_REV_WEB_SOCKET_SERVER] = useState();
 
+  const [isRevInternetOn, setIsRevInternetOn] = useState(false);
   const [isRevSocketServerUp, setIsRevSocketServerUp] = useState(false);
 
-  NetInfo.addEventListener(state => {
-    let isRevConnected = state.isConnected;
+  NetInfo.addEventListener(revNetState => {
+    const {isConnected: isRevConnected = false} = revNetState;
 
-    if (isRevConnected) {
+    revSetStateData(setIsRevInternetOn, isRevConnected);
+  });
+
+  useEffect(() => {
+    if (isRevInternetOn) {
       let revPingVarArgs = {
         revInterval: 1000,
         revIP: REV_ROOT_URL,
@@ -34,8 +39,11 @@ const RevRemoteSocketContextProvider = ({children}) => {
 
           const {revServerStatus} = revPingRes;
 
-          if (revServerStatus == 200) {
+          if (revServerStatus == 200 && isRevInternetOn) {
             revSetStateData(setIsRevSocketServerUp, true);
+            return clearTimeout(revTimeoutId);
+          } else if (revServerStatus !== 200 && !isRevInternetOn) {
+            revSetStateData(setIsRevSocketServerUp, false);
             return clearTimeout(revTimeoutId);
           }
 
@@ -47,7 +55,7 @@ const RevRemoteSocketContextProvider = ({children}) => {
     } else {
       revSetStateData(setIsRevSocketServerUp, false);
     }
-  });
+  }, [isRevInternetOn]);
 
   return (
     <RevRemoteSocketContext.Provider

@@ -1,9 +1,21 @@
-import React, {useContext, useState, memo, useRef} from 'react';
+import React, {useContext} from 'react';
 import {} from 'react-native';
 
-import {RevSiteDataContext} from '../../../rev_contexts/RevSiteDataContext';
+import {useDispatch} from 'react-redux';
+
+import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
+import {useRevUpdateConnectionRequestStatus} from '../rev_plugin_member_connections/rev_remote_update_actions/rev_update_connection_request_status';
+import {revPluginsLoader} from '../../rev_plugins_loader';
+import {revSetNewConnReqsArr} from '../../../rev_contexts/rev_redux/rev_reducers/revNewConnReqsArrReducer';
 
 export const useRevStart = () => {
+  const dispatch = useDispatch();
+
+  const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
+
+  const {revUpdateConnectionRequestStatus} =
+    useRevUpdateConnectionRequestStatus();
+
   const revInit = ({revVarArgs}) => {};
 
   const revUpcommingFeatures = () => [
@@ -90,14 +102,32 @@ export const useRevStart = () => {
     }
   };
 
+  const useRevHookNewNoticias = (revConnRequests = []) => {
+    if (revConnRequests.length) {
+      dispatch(revSetNewConnReqsArr(revConnRequests));
+    }
+
+    let revNoticias = revPluginsLoader({
+      revPluginName: 'rev_plugin_noticias',
+      revViewName: 'RevNoticias',
+      revVarArgs: revConnRequests,
+    });
+
+    SET_REV_SITE_BODY(revNoticias);
+
+    revUpdateConnectionRequestStatus(revRetData => {
+      console.log('>>> revRetData ' + JSON.stringify(revRetData));
+    });
+
+    return null;
+  };
+
   const revPluginHooks = ({revVarArgs}) => {
     const {revPluginHookName = ''} = revVarArgs;
 
     switch (revPluginHookName) {
       case 'rev_new_msgs':
-        return revVarArgs => {
-          console.log('>>> revVarArgs', JSON.stringify(revVarArgs));
-        };
+        return useRevHookNewNoticias;
 
       default:
         break;

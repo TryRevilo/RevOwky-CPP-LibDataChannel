@@ -3,11 +3,11 @@ import {combineReducers} from 'redux';
 
 import thunk from 'redux-thunk';
 
-import {messageReducer} from './rev_redux/rev_reducers/messageReducer';
+import {revNewConnReqsArrReducer} from './rev_redux/rev_reducers/revNewConnReqsArrReducer';
 import {counterReducer} from './rev_redux/rev_reducers/counterReducer';
 
 const revRootReducer = combineReducers({
-  message: messageReducer,
+  revNewConnReqsArr: revNewConnReqsArrReducer,
   counter: counterReducer,
 });
 
