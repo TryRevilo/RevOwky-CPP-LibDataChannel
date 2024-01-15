@@ -3,10 +3,13 @@ import {} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 
+import {revPluginsLoader} from '../../rev_plugins_loader';
+
 import {ReViewsContext} from '../../../rev_contexts/ReViewsContext';
 import {useRevUpdateConnectionRequestStatus} from '../rev_plugin_member_connections/rev_remote_update_actions/rev_update_connection_request_status';
-import {revPluginsLoader} from '../../rev_plugins_loader';
-import {revSetNewConnReqsArr} from '../../../rev_contexts/rev_redux/rev_reducers/revNewConnReqsArrReducer';
+
+import {revNewConnReqsArrReducer} from './rev_redux/rev_reducers/revNewConnReqsArrReducer';
+import {revSetNewConnReqsArrAction} from './rev_redux/rev_actions/revNewConnReqsArrAction';
 
 export const useRevStart = () => {
   const dispatch = useDispatch();
@@ -104,7 +107,7 @@ export const useRevStart = () => {
 
   const useRevHookNewNoticias = (revConnRequests = []) => {
     if (revConnRequests.length) {
-      dispatch(revSetNewConnReqsArr(revConnRequests));
+      dispatch(revSetNewConnReqsArrAction(revConnRequests));
     }
 
     let revNoticias = revPluginsLoader({
@@ -122,11 +125,14 @@ export const useRevStart = () => {
     return null;
   };
 
-  const revPluginHooks = ({revVarArgs}) => {
+  const revPluginHooks = ({revVarArgs = {}}) => {
     const {revPluginHookName = ''} = revVarArgs;
 
     switch (revPluginHookName) {
-      case 'rev_new_msgs':
+      case 'revNewConnReqRelsArr':
+        return useRevHookNewNoticias;
+
+      case 'revConnRequests':
         return useRevHookNewNoticias;
 
       default:
@@ -139,5 +145,12 @@ export const useRevStart = () => {
     revUpcommingFeatures,
     revPluginContextViewsArr,
     revPluginHooks,
+    revReduxReducers,
+  };
+};
+
+export const revReduxReducers = () => {
+  return {
+    revNewConnReqsArr: revNewConnReqsArrReducer,
   };
 };

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useContext, memo, useRef} from 'react';
+import React, {useContext, memo, useRef, useEffect} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 import {useSelector} from 'react-redux';

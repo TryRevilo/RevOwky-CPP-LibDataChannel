@@ -1,10 +1,11 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, Component} from 'react';
 
 import {} from 'react-native';
 
 import loadable from '@loadable/component';
 
 import {ReViewsContext} from '../rev_contexts/ReViewsContext';
+import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
 
 var REV_PLUGINS = {
   rev_plugin_flag: {
@@ -156,7 +157,7 @@ export function revPluginsLoader(revVarArgs) {
 }
 
 /** START REV INIT PLUGINS */
-const REV_PLUGINS_ARR = [
+export const REV_PLUGINS_ARR = [
   {
     revPluginName: 'rev_plugin_noticias',
     revModule: async () =>
@@ -164,7 +165,7 @@ const REV_PLUGINS_ARR = [
   },
 ];
 
-function revGetProperty(revObject, revPropertyName) {
+export function revGetProperty(revObject, revPropertyName) {
   let revPropertyNames = revPropertyName.split('.');
   let revValue = revObject;
 
@@ -175,7 +176,7 @@ function revGetProperty(revObject, revPropertyName) {
   return revValue;
 }
 
-const revFlattenArray = revArr => {
+export const revFlattenArray = revArr => {
   let revFlattened = [];
 
   revArr.forEach(revCurrItem => {
@@ -205,6 +206,8 @@ const RevHOC = ({revItemsArr, revFuncName, revCallBack}) => {
   }
 
   revCallBack(revRetArr);
+
+  return null;
 };
 
 export const useRevInitPlugins = () => {
@@ -215,7 +218,6 @@ export const useRevInitPlugins = () => {
 
     for (let i = 0; i < REV_PLUGINS_ARR.length; i++) {
       let revPlugin = REV_PLUGINS_ARR[i];
-      let revPluginName = revPlugin.revPluginName;
       let revModule = await revPlugin.revModule();
 
       const {useRevStart} = revModule;
@@ -273,15 +275,12 @@ export const useRevInitPluginHooks = () => {
   const revInitPluginHooks = async ({revPluginHookName, revVarArgs}) => {
     let revRetArr = [];
 
-    if (!revPluginHookName || !revVarArgs) {
+    if (!revPluginHookName || revIsEmptyJSONObject(revVarArgs)) {
       return revRetArr;
     }
 
     let revSitePluginHooks = await revInitPlugins({
       revFuncName: 'revPluginHooks',
-      revVarArgs: {
-        revPluginHookName,
-      },
     });
 
     if (Array.isArray(revSitePluginHooks)) {
@@ -290,11 +289,19 @@ export const useRevInitPluginHooks = () => {
       for (let i = 0; i < revSitePluginHooks.length; i++) {
         let revPluginHooks = revSitePluginHooks[i];
 
+        if (typeof revPluginHooks !== 'function') {
+          continue;
+        }
+
         let revPluginHook = revPluginHooks({
           revVarArgs: {
             revPluginHookName,
           },
         });
+
+        if (typeof revPluginHook !== 'function') {
+          continue;
+        }
 
         let revRes = revPluginHook(revVarArgs);
         revRetArr.push(revRes);
@@ -336,5 +343,19 @@ export const RevSubTypeContextView = ({revData = {}}) => {
   }, []);
 
   return revSubTypeContextView;
+};
+
+export const revGetPluginsReduxReducers = async () => {
+  let revReducersObj = {};
+
+  for (let i = 0; i < REV_PLUGINS_ARR.length; i++) {
+    let revPlugin = REV_PLUGINS_ARR[i];
+    let revModule = await revPlugin.revModule();
+
+    const {revReduxReducers} = revModule;
+    revReducersObj = {...revReducersObj, ...revReduxReducers()};
+  }
+
+  return revReducersObj;
 };
 /** END REV INIT PLUGINS */

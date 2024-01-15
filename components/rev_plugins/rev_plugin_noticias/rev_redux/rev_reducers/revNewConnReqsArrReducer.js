@@ -1,4 +1,4 @@
-export const SET_MESSAGE = 'SET_MESSAGE';
+import {SET_MESSAGE} from '../rev_data';
 
 export const revNewConnReqsArrReducer = (state = [], action) => {
   switch (action.type) {
@@ -8,8 +8,3 @@ export const revNewConnReqsArrReducer = (state = [], action) => {
       return state;
   }
 };
-
-export const revSetNewConnReqsArr = revNewConnReqsArr => ({
-  type: SET_MESSAGE,
-  payload: revNewConnReqsArr,
-});

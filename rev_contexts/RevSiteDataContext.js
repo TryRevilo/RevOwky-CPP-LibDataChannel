@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from 'react';
+import React, {createContext, useContext, useState, useEffect} from 'react';
 import {NativeModules} from 'react-native';
 
 import {ReViewsContext} from './ReViewsContext';
@@ -26,8 +20,6 @@ import {
 
 import RevWalledGarden from '../components/rev_views/RevWalledGarden';
 
-import {revSetStateData} from '../rev_function_libs/rev_gen_helper_functions';
-
 const RevSiteDataContext = createContext();
 
 const RevSiteDataContextProvider = ({children}) => {
@@ -36,8 +28,6 @@ const RevSiteDataContextProvider = ({children}) => {
   const [REV_SITE_VAR_ARGS, SET_REV_SITE_VAR_ARGS] = useState({
     revRemoteEntityGUID: 0,
   });
-
-  const REV_GLOBAL_SITE_STATES_ref = useRef({});
 
   const [REV_LOGGED_IN_ENTITY_GUID, SET_REV_LOGGED_IN_ENTITY_GUID] =
     useState(0);
@@ -48,44 +38,6 @@ const RevSiteDataContextProvider = ({children}) => {
   const {revGetSiteEntity} = useRevGetSiteEntity();
   const {revCreateSiteEntity} = useRevCreateSiteEntity();
   const {revGetEntityPictureAlbums} = useRevGetEntityPictureAlbums();
-
-  const revAddGlobalSiteState = revVarArgs => {
-    const {revStateId, revState, revSetter} = revVarArgs;
-
-    let revNewGlobalState = {
-      ...REV_GLOBAL_SITE_STATES_ref.current,
-      [revStateId]: {revState, revSetter},
-    };
-
-    REV_GLOBAL_SITE_STATES_ref.current = revNewGlobalState;
-  };
-
-  const revSetGlobalSiteState = (revStateId, revValue) => {
-    if (!REV_GLOBAL_SITE_STATES_ref.current.hasOwnProperty(revStateId)) {
-      return;
-    }
-
-    const {revSetter} = REV_GLOBAL_SITE_STATES_ref.current[revStateId];
-
-    console.log('>>> revSetter', typeof revSetter);
-
-    if (revSetter) {
-      revSetter(revValue);
-    }
-  };
-
-  const revGetGlobalSiteState = revStateId => {
-    console.log(
-      '>>> REV_GLOBAL_SITE_STATES_ref.current',
-      REV_GLOBAL_SITE_STATES_ref.current,
-    );
-
-    if (!REV_GLOBAL_SITE_STATES_ref.current.hasOwnProperty(revStateId)) {
-      return null;
-    }
-
-    return REV_GLOBAL_SITE_STATES_ref.current[revStateId].revState;
-  };
 
   useEffect(() => {
     if (
@@ -156,9 +108,6 @@ const RevSiteDataContextProvider = ({children}) => {
         SET_REV_LOGGED_IN_ENTITY,
         REV_SITE_ENTITY_GUID,
         SET_REV_SITE_ENTITY_GUID,
-        revAddGlobalSiteState,
-        revSetGlobalSiteState,
-        revGetGlobalSiteState,
       }}>
       {children}
     </RevSiteDataContext.Provider>

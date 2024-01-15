@@ -236,7 +236,20 @@ const ReViewsContextProvider = ({children}) => {
   );
 };
 
-export {ReViewsContextProvider, ReViewsContext};
+// Helper function to use ReViewsContext
+const useReViewsContext = () => {
+  const reViewsContext = useContext(ReViewsContext);
+
+  if (!reViewsContext) {
+    throw new Error(
+      'useReViewsContext must be used within a ReViewsContextProvider',
+    );
+  }
+
+  return reViewsContext;
+};
+
+export {ReViewsContextProvider, ReViewsContext, useReViewsContext};
 
 const styles = StyleSheet.create({
   overlay: {

@@ -67,7 +67,7 @@ const RevPageContentHeader = ({revVarArgs}) => {
     </View>
   );
 
-  const [revIsOnlineView, setRevIsOnlineView] = useState(revIsOnline);
+  const [revIsOnlineView, setRevIsOnlineView] = useState(revIsOffline);
 
   let revIsIndented = true;
 

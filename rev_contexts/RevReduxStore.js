@@ -3,13 +3,23 @@ import {combineReducers} from 'redux';
 
 import thunk from 'redux-thunk';
 
-import {revNewConnReqsArrReducer} from './rev_redux/rev_reducers/revNewConnReqsArrReducer';
+import {revGetPluginsReduxReducers} from '../components/rev_plugins_loader';
+
 import {counterReducer} from './rev_redux/rev_reducers/counterReducer';
 
-const revRootReducer = combineReducers({
-  revNewConnReqsArr: revNewConnReqsArrReducer,
-  counter: counterReducer,
-});
+export const useRevReduxStoreInit = () => {
+  const revReduxStoreInit = async () => {
+    let revPluginsReducers = await revGetPluginsReduxReducers();
 
-const RevReduxStore = createStore(revRootReducer);
-export default RevReduxStore;
+    const revRootReducer = combineReducers({
+      ...revPluginsReducers,
+      counter: counterReducer,
+    });
+
+    const RevReduxStore = createStore(revRootReducer);
+
+    return RevReduxStore;
+  };
+
+  return {revReduxStoreInit};
+};

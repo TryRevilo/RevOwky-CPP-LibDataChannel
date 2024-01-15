@@ -29,10 +29,13 @@ export const useRevGetConnectionRequests = () => {
       let revKeys = Object.keys(revRetData);
 
       for (let i = 0; i < revKeys.length; i++) {
-        let revCurr = revRetData[revKeys[i]];
+        let revPluginHookName = revKeys[i];
+        let revCurr = revRetData[revPluginHookName];
+
+        console.log('>>> revPluginHookName', revPluginHookName);
 
         revInitPluginHooks({
-          revPluginHookName: 'rev_new_msgs',
+          revPluginHookName,
           revVarArgs: revCurr,
         });
       }

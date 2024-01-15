@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {setMessage} from '../../../../../../rev_contexts/rev_redux/rev_reducers/revNewConnReqsArrReducer';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -45,12 +44,16 @@ import {useRevDeleteEntity} from '../../../../../rev_libs_pers/rev_pers_rev_enti
 
 const {RevPersLibRead_React} = NativeModules;
 
-import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
 import {incrementCounter} from '../../../../../../rev_contexts/rev_redux/rev_reducers/counterReducer';
 const revSettings = require('../../../../../../rev_res/rev_settings.json');
 
+import {useRevSiteStyles} from '../../../../../rev_views/RevSiteStyles';
+
 export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const {revSiteStyles} = useRevSiteStyles();
+
+  const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
+    useContext(ReViewsContext);
 
   revVarArgs = revVarArgs.revVarArgs;
 
@@ -101,9 +104,6 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   let revInfoEntity = revVarArgs._revInfoEntity;
 
   let revTimePublished = revFormatLongDate(revVarArgs._revTimeCreated);
-
-  const {SET_REV_SITE_BODY, revInitSiteModal, revCloseSiteModal} =
-    useContext(ReViewsContext);
 
   let revMaxMessageLen = 200;
 
@@ -410,11 +410,10 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
   const [revCommentsView, setRevCommentsView] = useState(null);
 
   const dispatch = useDispatch();
-  const message = useSelector(state => state.message);
+  const revNewConnReqsArr = useSelector(state => state.revNewConnReqsArr);
   const counter = useSelector(state => state.counter);
 
   const handleChangeMessage = () => {
-    dispatch(setMessage(''));
     dispatch(incrementCounter());
   };
 
@@ -483,7 +482,11 @@ export const RevTaggedPostsListingItemWidget = ({revVarArgs}) => {
                     revSiteStyles.revSiteTxtTiny_X,
                     styles.revChatMsgSendTime,
                   ]}>
-                  {revTimePublished + ' - ' + message + ' - ' + counter}
+                  {revTimePublished +
+                    ' - rs : ' +
+                    revNewConnReqsArr.length +
+                    ' - c : ' +
+                    counter}
                 </Text>
               </View>
 
