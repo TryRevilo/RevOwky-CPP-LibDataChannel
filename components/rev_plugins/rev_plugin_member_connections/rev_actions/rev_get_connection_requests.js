@@ -21,7 +21,7 @@ export const useRevGetConnectionRequests = () => {
 
     let revURL = `${REV_ROOT_URL}/rev_api?rev_logged_in_entity_guid=${revLoggedInRemoteEntityGUID}&revPluginHookContextsRemoteArr=revHookRemoteHandlerOwky_GetConnRequestEntities`;
 
-    revGetServerData_JSON(revURL, revRetData => {
+    revGetServerData_JSON(revURL, async revRetData => {
       if (revRetData.hasOwnProperty('revError')) {
         console.log('>>> revRetData :', JSON.stringify(revRetData));
       }
@@ -34,7 +34,7 @@ export const useRevGetConnectionRequests = () => {
 
         console.log('>>> revPluginHookName', revPluginHookName);
 
-        revInitPluginHooks({
+        await revInitPluginHooks({
           revPluginHookName,
           revVarArgs: revCurr,
         });

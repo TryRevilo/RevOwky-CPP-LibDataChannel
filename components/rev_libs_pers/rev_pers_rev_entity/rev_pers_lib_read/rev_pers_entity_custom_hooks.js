@@ -260,7 +260,7 @@ export const revGetPublisherEntity = (
 
     const {_revGUID = -1, _revRemoteGUID = -1} = revPublisher;
 
-    let revGUID = isRevFromRemote ? _revGUID : _revRemoteGUID;
+    let revGUID = isRevFromRemote ? _revRemoteGUID : _revGUID;
 
     if (revGUID == revPlublisherGUID) {
       revPublisherEntity = revPublisher;

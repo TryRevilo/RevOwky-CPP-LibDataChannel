@@ -37,7 +37,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
     return null;
   }
 
-  let revCommentInfoEntity = revVarArgs._revInfoEntity;
+  const {revIndex = -1, _revInfoEntity: revCommentInfoEntity = {}} = revVarArgs;
 
   let revCommentTxtVal = revGetMetadataValue(
     revCommentInfoEntity._revMetadataList,
@@ -80,6 +80,9 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
   );
 
   let revMaxMessageLen = 200;
+
+  let revTabBackgroundColor =
+    revIndex % 2 !== 0 || revIndex == 0 ? '#F7F7F7' : '#EEE';
 
   return (
     <TouchableOpacity style={revSiteStyles.revFlexWrapper}>
@@ -134,7 +137,7 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
               <View
                 style={[
                   styles.revChatMsgOptionsTab,
-                  {backgroundColor: '#F7F7F7'},
+                  {backgroundColor: revTabBackgroundColor},
                 ]}>
                 <AntDesign
                   name="retweet"
@@ -148,7 +151,9 @@ export const RevCommentItemListingViewWidget = ({revVarArgs}) => {
               <View
                 style={[
                   styles.revChatMsgOptionsTab,
-                  {backgroundColor: '#F7F7F7'},
+                  {
+                    backgroundColor: revTabBackgroundColor,
+                  },
                 ]}>
                 <TouchableOpacity>
                   <MaterialIcons

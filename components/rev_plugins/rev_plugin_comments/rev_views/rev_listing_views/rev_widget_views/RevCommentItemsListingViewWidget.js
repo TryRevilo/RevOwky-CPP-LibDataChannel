@@ -45,7 +45,7 @@ export const RevCommentItemsListingViewWidget = ({revVarArgs}) => {
     let revCommentItemListingView = revPluginsLoader({
       revPluginName: 'rev_plugin_comments',
       revViewName: 'RevCommentItemListingView',
-      revVarArgs: revCurrComment,
+      revVarArgs: {...revCurrComment, revIndex: i},
     });
 
     if (revCommentItemListingView == null) {

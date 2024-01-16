@@ -24,6 +24,7 @@ import RevNullMessagesView from '../components/rev_views/RevNullMessagesView';
 import RevFooter1_Center from '../components/rev_views/rev_site_footer_views/rev_footer_1/RevFooter1_Center';
 
 import {useRevSiteStyles} from '../components/rev_views/RevSiteStyles';
+import {revSetStateData} from '../rev_function_libs/rev_gen_helper_functions';
 
 const ReViewsContextProvider = ({children}) => {
   const {revSiteStyles} = useRevSiteStyles();
@@ -31,7 +32,8 @@ const ReViewsContextProvider = ({children}) => {
   const [REV_VIRTUAL_VIEW, setRevVirtualView] = useState(null);
 
   const SET_REV_VIRTUAL_VIEW = revView => {
-    setRevVirtualView(
+    revSetStateData(
+      setRevVirtualView,
       <View style={{width: 0, height: 0, overflow: 'hidden'}}>{revView}</View>,
     );
   };

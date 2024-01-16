@@ -5,7 +5,10 @@ import {} from 'react-native';
 import loadable from '@loadable/component';
 
 import {ReViewsContext} from '../rev_contexts/ReViewsContext';
-import {revIsEmptyJSONObject} from '../rev_function_libs/rev_gen_helper_functions';
+import {
+  revIsEmptyJSONObject,
+  revSetStateData,
+} from '../rev_function_libs/rev_gen_helper_functions';
 
 var REV_PLUGINS = {
   rev_plugin_flag: {
@@ -159,6 +162,11 @@ export function revPluginsLoader(revVarArgs) {
 /** START REV INIT PLUGINS */
 export const REV_PLUGINS_ARR = [
   {
+    revPluginName: '_rev_plugin_owki',
+    revModule: async () =>
+      await import('./rev_plugins/_rev_plugin_owki/revInit'),
+  },
+  {
     revPluginName: 'rev_plugin_noticias',
     revModule: async () =>
       await import('./rev_plugins/rev_plugin_noticias/revInit'),
@@ -225,7 +233,8 @@ export const useRevInitPlugins = () => {
     }
 
     return new Promise(resolve => {
-      SET_REV_VIRTUAL_VIEW(
+      revSetStateData(
+        SET_REV_VIRTUAL_VIEW,
         <RevHOC
           revItemsArr={revItemsArr}
           revFuncName={revFuncName}
@@ -270,6 +279,8 @@ export const useRevInitPlugins = () => {
 };
 
 export const useRevInitPluginHooks = () => {
+  const {SET_REV_VIRTUAL_VIEW} = useContext(ReViewsContext);
+
   const {revInitPlugins} = useRevInitPlugins();
 
   const revInitPluginHooks = async ({revPluginHookName, revVarArgs}) => {
@@ -303,7 +314,7 @@ export const useRevInitPluginHooks = () => {
           continue;
         }
 
-        let revRes = revPluginHook(revVarArgs);
+        let revRes = await revPluginHook(revVarArgs);
         revRetArr.push(revRes);
       }
     }

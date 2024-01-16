@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {} from 'react-native';
 
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 import {revPluginsLoader} from '../../rev_plugins_loader';
 
@@ -10,9 +10,15 @@ import {useRevUpdateConnectionRequestStatus} from '../rev_plugin_member_connecti
 
 import {revNewConnReqsArrReducer} from './rev_redux/rev_reducers/revNewConnReqsArrReducer';
 import {revSetNewConnReqsArrAction} from './rev_redux/rev_actions/revNewConnReqsArrAction';
+import {revSetStateData} from '../../../rev_function_libs/rev_gen_helper_functions';
+import {revGetPublisherEntity} from '../../rev_libs_pers/rev_pers_rev_entity/rev_pers_lib_read/rev_pers_entity_custom_hooks';
 
 export const useRevStart = () => {
   const dispatch = useDispatch();
+
+  const revPublisherEntitiesArr = useSelector(
+    state => state.revPublisherEntitiesArr,
+  );
 
   const {SET_REV_SITE_BODY} = useContext(ReViewsContext);
 
@@ -105,18 +111,33 @@ export const useRevStart = () => {
     }
   };
 
-  const useRevHookNewNoticias = (revConnRequests = []) => {
-    if (revConnRequests.length) {
-      dispatch(revSetNewConnReqsArrAction(revConnRequests));
+  const useRevHookNewNoticias = (revNewConnReqRelsArr = []) => {
+    if (revNewConnReqRelsArr.length) {
+      dispatch(revSetNewConnReqsArrAction(revNewConnReqRelsArr));
+    }
+
+    let revConnEntitiesArr = [];
+
+    for (let i = 0; i < revNewConnReqRelsArr.length; i++) {
+      let revNewConnReqRel = revNewConnReqRelsArr[i];
+      const {_revRemoteSubjectGUID = -1} = revNewConnReqRel;
+
+      const {revPublisherEntity} = revGetPublisherEntity(
+        revPublisherEntitiesArr,
+        _revRemoteSubjectGUID,
+        true,
+      );
+
+      revConnEntitiesArr.push(revPublisherEntity);
     }
 
     let revNoticias = revPluginsLoader({
       revPluginName: 'rev_plugin_noticias',
       revViewName: 'RevNoticias',
-      revVarArgs: revConnRequests,
+      revVarArgs: revConnEntitiesArr,
     });
 
-    SET_REV_SITE_BODY(revNoticias);
+    revSetStateData(SET_REV_SITE_BODY, revNoticias);
 
     revUpdateConnectionRequestStatus(revRetData => {
       console.log('>>> revRetData ' + JSON.stringify(revRetData));
@@ -130,9 +151,6 @@ export const useRevStart = () => {
 
     switch (revPluginHookName) {
       case 'revNewConnReqRelsArr':
-        return useRevHookNewNoticias;
-
-      case 'revConnRequests':
         return useRevHookNewNoticias;
 
       default:
